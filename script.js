@@ -244,6 +244,28 @@ const products = [
   },
   {
     id: 22,
+    nama: " Essen Garut Id",
+    harga: "Rp34.000",
+    hargaCoret: "Rp58.000",
+    diskon: "41%",
+    gambar: "assets/products/essen-garut-id.jpg",
+    deskripsi: "Essen Oplosan siap gacor dari essen garut.id spesial mancing Ikan Mas.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/5VVmqQLy0T"
+  },
+  {
+    id: 21,
+    nama: "Umpan Mancing Ikan Mas & Nila 30g",
+    harga: "Rp14.000",
+    hargaCoret: "Rp18.000",
+    diskon: "22%",
+    gambar: "assets/products/umpan-mancing-ikan-mas.jpg",
+    deskripsi: "Formula pelet umpan aroma wangi perangsang nafsu makan ikan air tawar. Mudah dibentuk, merekat kuat di kail, dan cepat menarik perhatian ikan di kolam pancing.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/20vlXdm0ow"
+  },
+  {
+    id: 22,
     nama: "Essen Oplosan Super Ikan NILA 30ml",
     harga: "Rp120.000",
     hargaCoret: "Rp145.000",
