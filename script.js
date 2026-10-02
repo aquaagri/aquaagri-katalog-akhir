@@ -248,7 +248,7 @@ const products = [
     harga: "Rp34.000",
     hargaCoret: "Rp58.000",
     diskon: "41%",
-    gambar: "assets/products/essen-garut-id.jpg",
+    gambar: "assets/products/essen-garut.jpg",
     deskripsi: "Essen Oplosan siap gacor dari essen garut.id spesial mancing Ikan Mas.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/5VVmqQLy0T"
