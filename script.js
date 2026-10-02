@@ -248,24 +248,24 @@ const products = [
     harga: "Rp34.000",
     hargaCoret: "Rp58.000",
     diskon: "41%",
-    gambar: "assets/products/essen-garut-id.jpg",
+    gambar: "assets/products/essen-garut.jpg",
     deskripsi: "Essen Oplosan siap gacor dari essen garut.id spesial mancing Ikan Mas.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/5VVmqQLy0T"
   },
   {
-    id: 21,
-    nama: "Umpan Mancing Ikan Mas & Nila 30g",
-    harga: "Rp14.000",
+    id: 23,
+    nama: " Biang Varian Aroma BUAH 10ml",
+    harga: "Rp17.000",
     hargaCoret: "Rp18.000",
-    diskon: "22%",
-    gambar: "assets/products/umpan-mancing-ikan-mas.jpg",
-    deskripsi: "Formula pelet umpan aroma wangi perangsang nafsu makan ikan air tawar. Mudah dibentuk, merekat kuat di kail, dan cepat menarik perhatian ikan di kolam pancing.",
+    diskon: "1%",
+    gambar: "assets/products/AGA-Fishing.jpg",
+    deskripsi: "AGA Fishing Essen Biang Varian Aroma BUAH BUAHAN merupakan cairan konsentrat aroma untuk campuran racikan umpan pancing. Produk ini membantu memperkuat karakter aroma umpan dan dapat disesuaikan dengan jenis racikan, kondisi air, target ikan, serta lokasi memancing.",
     kategori: "pancing-umpan",
-    linkAffiliate: "https://s.shopee.co.id/20vlXdm0ow"
+    linkAffiliate: "https://s.shopee.co.id/AUuT1SwZlV"
   },
   {
-    id: 22,
+    id: 24,
     nama: "Essen Oplosan Super Ikan NILA 30ml",
     harga: "Rp120.000",
     hargaCoret: "Rp145.000",
@@ -275,10 +275,32 @@ const products = [
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/5LCKobxOA1"
   },
+  {
+    id: 25,
+    nama: "257 PCS Umpan Pancing Ikan Set",
+    harga: "Rp168.000",
+    hargaCoret: "Rp200.000",
+    diskon: "17%",
+    gambar: "assets/products/Umpan-Pancing-Ikan-Set.jpg",
+    deskripsi: "Kotak box ini didesain khusus untuk meletakkan berbagai macam kail yang Anda ingin bawa untuk memancing.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/9KiVdtyA5p"
+  },
+  {
+    id: 24,
+    nama: "AQUASEA Tali Pancing Germany200m",
+    harga: "Rp21.000",
+    hargaCoret: "Rp50.000",
+    diskon: "58%",
+    gambar: "assets/products/AQUASEA-Tali-Pancing.jpg",
+    deskripsi: "Tali pancing berkualitas tinggi dari Germany dengan panjang 200 meter, cocok untuk memancing ikan di berbagai jenis air.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/3g48uACWxh"
+  },
 
   // --- Kategori: Benih, Pakan & Budidaya ---
   {
-    id: 23,
+    id: 25,
     nama: "Aerator Aquarium & Kolam Ikan Koi 4 Cabang",
     harga: "Rp150.000",
     hargaCoret: "Rp185.000",
@@ -289,7 +311,7 @@ const products = [
     linkAffiliate: "https://s.shopee.co.id/1BMeZfH9oP"
   },
   {
-    id: 24,
+    id: 26,
     nama: "Jaring Waring Pembatas Kolam 100M x 120CM",
     harga: "Rp279.000",
     hargaCoret: "Rp330.000",
