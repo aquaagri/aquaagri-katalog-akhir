@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AquaAgri.id — Katalog Kebutuhan Perikanan & Bahari Terpercaya</title>
+<meta name="description" content="Katalog resmi kurasi produk perikanan, hasil laut segar, aneka olahan ikan higienis, alat pancing, dan sarana budidaya modern berkolaborasi dengan Shopee Indonesia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       TOPBAR / NAVIGASI
+       ============================================================ -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand" id="brandLogo" role="button" tabindex="0" aria-label="Beranda AquaAgri.id">
+        <img src="nama-brand.png" alt="aquaagri.id" class="brand-logo-img">
+      </div>
+      <div class="topbar-partner">
+        <span class="partner-text">Bermitra Resmi dengan</span>
+        <span class="partner-shopee">Shopee</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       KONTEN UTAMA
+       ============================================================ -->
+  <main>
+
+    <!-- ------------------------------------------------------------
+         1. HALAMAN BERANDA (HOME VIEW)
+         - Tidak memuat daftar produk
+         - Menampilkan Hero, Pencarian, Kategori, & Panduan Pembayaran
+         ------------------------------------------------------------ -->
+    <section id="homeView" class="view">
+      
+      <!-- HERO BANNER (Head dengan Background Foto Lanskap Keramba) -->
+      <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="badge-dot"></span>
+            Kolaborasi & Bermitra Resmi dengan Shopee Indonesia
+          </div>
+          <h1>Katalog Kebutuhan Perikanan & Bahari</h1>
+          <p>Pusat kurasi kebutuhan perikanan terlengkap: hasil laut segar, aneka olahan ikan bergizi, perlengkapan pancing, dan sarana budidaya modern berkualitas prima.</p>
+        </div>
+      </section>
+
+      <!-- PENCARIAN REAL-TIME -->
+      <section class="search-bar">
+        <div class="search-input-wrap">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input type="text" id="searchInput" placeholder="Cari kebutuhan perikanan: ikan salmon, pelet, joran, abon..." aria-label="Cari produk perikanan">
+        </div>
+      </section>
+
+      <!-- KATEGORI PRODUK -->
+      <section class="categories">
+        <div class="section-header">
+          <div>
+            <span class="section-tag">KATEGORI PILIHAN</span>
+            <h2 class="section-title">Pilihan Kebutuhan Perikanan</h2>
+          </div>
+          <p class="section-desc">Pilih kategori untuk melihat katalog produk lengkap dengan penawaran diskon spesial.</p>
+        </div>
+        <div class="category-grid" id="categoryGrid">
+          <!-- Kartu kategori di-render lewat script.js -->
+        </div>
+      </section>
+
+      <!-- PANDUAN PEMBAYARAN & JAMINAN BELANJA AMAN (Pengganti Produk di Beranda) -->
+      <section class="payment-guide-section">
+        <div class="section-header">
+          <div>
+            <span class="section-tag">TRANSAKSI MUDAH & TERPERCAYA</span>
+            <h2 class="section-title">Panduan Pembayaran & Jaminan Belanja</h2>
+          </div>
+          <p class="section-desc">Seluruh transaksi terhubung langsung dengan sistem pembayaran resmi Shopee yang terverifikasi, aman, dan dilindungi garansi 100% uang kembali.</p>
+        </div>
+
+        <div class="payment-grid">
+          
+          <!-- KARTU SENTUHAN NYATA (Foto Pembudidaya Asli: poto-background.jpg) -->
+          <div class="real-touch-card">
+            <div class="real-touch-img-wrap">
+              <img src="poto-background.jpg" alt="Mitra Petambak dan Pembudidaya Ikan AquaAgri" class="real-touch-img" loading="lazy">
+              <div class="real-touch-badge">
+                <span class="real-touch-icon">✓</span>
+                <span>Mitra Petambak & Pembudidaya Langsung</span>
+              </div>
+            </div>
+            <div class="real-touch-body">
+              <h3>Mutu Terjamin dari Sumber Asli</h3>
+              <p>Produk perikanan kami dikurasi langsung dari jaringan petambak dan pembudidaya terpercaya. Pengemasan higienis berstandar rantai dingin (cold chain) untuk menjaga kualitas dan kesegaran optimal.</p>
+            </div>
+          </div>
+
+          <!-- 4 LANGKAH PEMESANAN & PEMBAYARAN -->
+          <div class="payment-steps-card">
+            <h3 class="steps-title">4 Langkah Mudah Belanja di AquaAgri</h3>
+            
+            <div class="steps-list">
+              <div class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-info">
+                  <h4>Pilih Kategori & Produk</h4>
+                  <p>Buka kategori pilihan Anda dan temukan produk perikanan terbaik dengan promo diskon spesial.</p>
+                </div>
+              </div>
+
+              <div class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-info">
+                  <h4>Klik "Lihat Produk"</h4>
+                  <p>Sistem akan mengarahkan Anda langsung ke toko resmi mitra terverifikasi di platform Shopee.</p>
+                </div>
+              </div>
+
+              <div class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-info">
+                  <h4>Pilih Metode Pembayaran Fleksibel</h4>
+                  <p>Tersedia metode bayar lengkap: COD (Bayar di Tempat), Transfer Bank, ShopeePay, SPayLater, atau gerai retail.</p>
+                </div>
+              </div>
+
+              <div class="step-item">
+                <div class="step-num">4</div>
+                <div class="step-info">
+                  <h4>Pengiriman Cepat & Garansi Shopee</h4>
+                  <p>Pesanan dipacking aman dan dikirim dengan perlindungan Garansi Shopee. Dana Anda aman sampai barang tiba.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- CHIPS METODE BAYAR YANG DIDUKUNG -->
+            <div class="payment-methods-strip">
+              <span class="pay-method-badge">💵 COD (Bayar di Tempat)</span>
+              <span class="pay-method-badge">📱 ShopeePay</span>
+              <span class="pay-method-badge">🏦 Transfer Bank (BCA, Mandiri, BRI, BNI)</span>
+              <span class="pay-method-badge">💳 SPayLater</span>
+              <span class="pay-method-badge">🏪 Indomaret & Alfamart</span>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+    </section>
+
+    <!-- ------------------------------------------------------------
+         2. HALAMAN KATALOG PRODUK PER KATEGORI (CATEGORY VIEW)
+         - Produk ditampilkan di sini sesuai kategori yang dipilih
+         - Dilengkapi sentuhan diskon di setiap produk
+         ------------------------------------------------------------ -->
+    <section id="categoryView" class="view hidden">
+      <div class="category-header">
+        <button id="backBtn" class="back-btn" type="button">
+          <span aria-hidden="true">←</span> Kembali ke Beranda
+        </button>
+        <div class="category-header-text">
+          <h2 id="categoryTitle">Semua Produk</h2>
+          <span class="category-count" id="categoryCount">Menampilkan katalog produk</span>
+        </div>
+      </div>
+
+      <!-- FILTER & PENCARIAN DI HALAMAN KATEGORI -->
+      <section class="filter-bar">
+        <div class="search-input-wrap search-input-wrap-cat">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input type="text" id="searchInputCategory" placeholder="Cari dalam kategori ini..." aria-label="Cari produk dalam kategori">
+        </div>
+        <select id="filterSelect" aria-label="Filter kategori produk">
+          <option value="semua">Semua Kategori (Semua Produk)</option>
+          <option value="produk-olahan-ikan">Produk Olahan Ikan</option>
+          <option value="ikan-seafood-segar">Ikan & Seafood Segar</option>
+          <option value="pancing-umpan">Pancing & Umpan</option>
+          <option value="Benih-Pakan-Budidaya">Benih, Pakan & Budidaya</option>
+        </select>
+      </section>
+
+      <!-- GRID PRODUK DENGAN SENTUHAN DISKON -->
+      <div class="product-grid" id="productGrid">
+        <!-- Kartu produk di-render secara dinamis lewat script.js -->
+      </div>
+
+      <!-- PESAN KOSONG JIKA TIDAK DITEMUKAN -->
+      <p class="empty-state hidden" id="emptyState">
+        Produk tidak ditemukan. Coba gunakan kata kunci atau pilihan kategori lain ya.
+      </p>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="nama-brand.png" alt="aquaagri.id" class="footer-logo-img">
+      </div>
+      <p class="footer-collab">Kolaborasi & bermitra resmi dengan pihak Shopee untuk kemudahan transaksi, jaminan keamanan dana, dan pengiriman terpercaya ke seluruh Indonesia.</p>
+      <p class="footer-copy">&copy; 2026 aquaagri.id — Katalog resmi produk perikanan, hasil laut, dan alat budidaya.</p>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

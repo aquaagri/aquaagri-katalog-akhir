@@ -1,0 +1,876 @@
+/* ==========================================================
+   AquaAgri.id — Style Katalog Profesional, Clean & Modern
+   Palet Warna: Mengikuti Logo (#2e98b0 & #18927f)
+   ========================================================== */
+
+:root {
+  /* Warna Brand Sesuai Logo */
+  --brand-aqua: #2e98b0;
+  --brand-aqua-dark: #207d92;
+  --brand-aqua-light: #edf7fa;
+  --brand-agri: #18927f;
+  --brand-agri-dark: #117263;
+  --brand-agri-light: #eaf7f5;
+  
+  /* Aksen Shopee & Status */
+  --shopee-orange: #ee4d2d;
+  --shopee-light: #fff2ed;
+  
+  /* Netral & Permukaan */
+  --gelap: #0f2a22;
+  --abu-teks: #52635d;
+  --abu-terang: #f7faf9;
+  --putih: #ffffff;
+  --border: #e0ece7;
+  --border-focus: #2e98b0;
+  
+  /* Geometri & Elevasi */
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow-sm: 0 2px 8px rgba(15, 42, 34, 0.04);
+  --shadow: 0 6px 20px rgba(15, 42, 34, 0.06);
+  --shadow-hover: 0 12px 32px rgba(24, 146, 127, 0.12);
+  --font: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font);
+  background-color: #f7faf9;
+  /* Kombinasi gradien ambient halus sesuai warna logo: #2e98b0 & #18927f */
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(46, 152, 176, 0.10) 0px, transparent 45%),
+    radial-gradient(at 100% 12%, rgba(24, 146, 127, 0.09) 0px, transparent 40%),
+    radial-gradient(at 15% 45%, rgba(24, 146, 127, 0.06) 0px, transparent 50%),
+    radial-gradient(at 90% 70%, rgba(46, 152, 176, 0.08) 0px, transparent 45%),
+    radial-gradient(at 50% 100%, rgba(24, 146, 127, 0.08) 0px, transparent 50%);
+  background-attachment: fixed;
+  color: var(--gelap);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hidden {
+  display: none !important;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ============================================================
+   TOPBAR (NAVIGASI)
+   ============================================================ */
+
+.topbar {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(15, 42, 34, 0.03);
+}
+
+.topbar-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+}
+
+.brand-logo-img {
+  height: 34px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.topbar-partner {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--shopee-light);
+  border: 1px solid #ffd8cc;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: var(--abu-teks);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.partner-text {
+  color: #6c7873;
+}
+
+.partner-shopee {
+  color: var(--shopee-orange);
+  font-weight: 700;
+}
+
+/* ============================================================
+   LAYOUT UMUM
+   ============================================================ */
+
+main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 18px 48px;
+}
+
+.section-header {
+  margin-bottom: 18px;
+}
+
+.section-tag {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--brand-agri);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin: 0 0 6px;
+  color: var(--gelap);
+  letter-spacing: -0.3px;
+}
+
+.section-desc {
+  font-size: 0.92rem;
+  color: var(--abu-teks);
+  margin: 0;
+  max-width: 640px;
+  line-height: 1.55;
+}
+
+/* ============================================================
+   HERO BANNER (Head dengan Background Foto Lanskap Keramba)
+   ============================================================ */
+
+.hero {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 18px 0 28px;
+  background-image: url('poto-background-2.jpg');
+  background-size: cover;
+  background-position: center 30%;
+  background-repeat: no-repeat;
+  color: var(--putih);
+  padding: 52px 24px;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(15, 42, 34, 0.12);
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(14, 55, 83, 0.88) 0%, rgba(15, 42, 34, 0.84) 100%);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 14px;
+  letter-spacing: 0.2px;
+}
+
+.badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #2dd4bf;
+  box-shadow: 0 0 8px #2dd4bf;
+}
+
+.hero h1 {
+  font-size: 2.15rem;
+  font-weight: 800;
+  margin: 0 0 12px;
+  color: #ffffff;
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+}
+
+.hero p {
+  color: rgba(255, 255, 255, 0.94);
+  margin: 0 auto;
+  max-width: 580px;
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+/* ============================================================
+   PENCARIAN
+   ============================================================ */
+
+.search-bar {
+  margin: 0 0 32px;
+}
+
+.search-input-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.95rem;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.search-input-wrap input {
+  width: 100%;
+  padding: 14px 18px 14px 46px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--putih);
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.search-input-wrap input:focus {
+  border-color: var(--brand-aqua);
+  box-shadow: 0 4px 18px rgba(46, 152, 176, 0.15);
+}
+
+/* ============================================================
+   KATEGORI PRODUK (BERANDA)
+   ============================================================ */
+
+.categories {
+  margin-bottom: 38px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.category-card {
+  background: var(--putih);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 14px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.category-card:hover,
+.category-card:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--brand-aqua);
+  outline: none;
+}
+
+.category-icon {
+  font-size: 2rem;
+  display: block;
+}
+
+.category-name {
+  font-weight: 700;
+  font-size: 0.94rem;
+  color: var(--gelap);
+  line-height: 1.35;
+}
+
+.category-badge {
+  font-size: 0.76rem;
+  color: var(--brand-aqua-dark);
+  font-weight: 600;
+  background: var(--brand-aqua-light);
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-top: 4px;
+}
+
+/* ============================================================
+   PANDUAN PEMBAYARAN & JAMINAN BELANJA (PENGGANTI PRODUK)
+   ============================================================ */
+
+.payment-guide-section {
+  margin-top: 42px;
+}
+
+.payment-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+
+@media (min-width: 860px) {
+  .payment-grid {
+    grid-template-columns: 370px 1fr;
+    align-items: stretch;
+  }
+}
+
+/* Kartu Sentuhan Nyata (Foto Pembudidaya Asli) */
+
+.real-touch-card {
+  background: var(--putih);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+}
+
+.real-touch-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--abu-terang);
+}
+
+.real-touch-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  transition: transform 0.3s ease;
+}
+
+.real-touch-card:hover .real-touch-img {
+  transform: scale(1.03);
+}
+
+.real-touch-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  background: rgba(15, 42, 34, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.real-touch-icon {
+  background: var(--brand-agri);
+  color: #ffffff;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.real-touch-body {
+  padding: 20px;
+  flex: 1;
+}
+
+.real-touch-body h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--gelap);
+  margin: 0 0 8px;
+}
+
+.real-touch-body p {
+  font-size: 0.86rem;
+  color: var(--abu-teks);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Langkah-langkah Pembayaran */
+
+.payment-steps-card {
+  background: var(--putih);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.steps-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gelap);
+  margin: 0 0 20px;
+}
+
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--brand-agri-light);
+  color: var(--brand-agri-dark);
+  font-weight: 800;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(24, 146, 127, 0.25);
+}
+
+.step-info h4 {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--gelap);
+  margin: 0 0 4px;
+}
+
+.step-info p {
+  font-size: 0.84rem;
+  color: var(--abu-teks);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.payment-methods-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.pay-method-badge {
+  display: inline-flex;
+  align-items: center;
+  background: var(--abu-terang);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--abu-teks);
+}
+
+/* ============================================================
+   HALAMAN KATEGORI (CATEGORY VIEW)
+   ============================================================ */
+
+.category-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px 0 18px;
+}
+
+@media (min-width: 640px) {
+  .category-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  background: var(--putih);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--gelap);
+  font-family: inherit;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  align-self: flex-start;
+}
+
+.back-btn:hover {
+  background: var(--brand-agri-light);
+  border-color: var(--brand-agri);
+  color: var(--brand-agri-dark);
+}
+
+.category-header-text h2 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--gelap);
+  letter-spacing: -0.3px;
+}
+
+.category-count {
+  font-size: 0.84rem;
+  color: var(--abu-teks);
+  font-weight: 500;
+}
+
+.filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 640px) {
+  .filter-bar {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.search-input-wrap-cat {
+  flex: 1;
+}
+
+.filter-bar select {
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--putih);
+  padding: 12px 18px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: var(--gelap);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-bar select:focus {
+  border-color: var(--brand-aqua);
+}
+
+/* ============================================================
+   GRID PRODUK & KARTU PRODUK DENGAN SENTUHAN DISKON
+   ============================================================ */
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.product-card {
+  background: var(--putih);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--brand-agri);
+}
+
+.product-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: var(--abu-terang);
+  overflow: hidden;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.04);
+}
+
+/* Badge Diskon di Pojok Foto Produk */
+.product-discount-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--shopee-orange);
+  color: #ffffff;
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(238, 77, 45, 0.35);
+  letter-spacing: 0.2px;
+}
+
+.product-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.product-name {
+  font-weight: 700;
+  font-size: 0.94rem;
+  margin: 0;
+  color: var(--gelap);
+  line-height: 1.35;
+}
+
+.product-desc {
+  font-size: 0.82rem;
+  color: var(--abu-teks);
+  margin: 0;
+  flex: 1;
+  line-height: 1.5;
+}
+
+/* Baris Harga dengan Harga Asli Coret & Diskon */
+.product-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.product-price {
+  font-weight: 800;
+  color: var(--brand-agri-dark);
+  font-size: 1.05rem;
+}
+
+.product-price-coret {
+  font-size: 0.8rem;
+  color: #8fa099;
+  text-decoration: line-through;
+  font-weight: 500;
+}
+
+.product-btn {
+  margin-top: 8px;
+  border: none;
+  background: linear-gradient(135deg, var(--brand-agri) 0%, var(--brand-agri-dark) 100%);
+  color: var(--putih);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  box-shadow: 0 2px 8px rgba(24, 146, 127, 0.25);
+}
+
+.product-btn:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(24, 146, 127, 0.35);
+}
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+
+.empty-state {
+  text-align: center;
+  color: var(--abu-teks);
+  padding: 48px 16px;
+  font-size: 0.95rem;
+  background: var(--putih);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  margin-top: 16px;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.footer {
+  text-align: center;
+  padding: 38px 18px 40px;
+  background: rgba(255, 255, 255, 0.85);
+  border-top: 1px solid var(--border);
+  margin-top: 48px;
+}
+
+.footer-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-logo-img {
+  height: 30px;
+  width: auto;
+  opacity: 0.9;
+}
+
+.footer-collab {
+  font-size: 0.86rem;
+  color: var(--abu-teks);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.footer-copy {
+  font-size: 0.78rem;
+  color: #84938d;
+  margin: 0;
+}
+
+/* ============================================================
+   RESPONSIVITAS MOBILE & DESKTOP
+   ============================================================ */
+
+@media (max-width: 639px) {
+  .hero {
+    padding: 36px 16px;
+    margin: 12px 0 20px;
+  }
+
+  .hero h1 {
+    font-size: 1.55rem;
+  }
+
+  .hero p {
+    font-size: 0.88rem;
+  }
+
+  .hero-badge {
+    font-size: 0.72rem;
+    padding: 5px 11px;
+    margin-bottom: 10px;
+  }
+
+  .topbar-inner {
+    padding: 10px 14px;
+  }
+
+  .brand-logo-img {
+    height: 28px;
+  }
+
+  .topbar-partner {
+    font-size: 0.72rem;
+    padding: 4px 9px;
+  }
+
+  .payment-steps-card {
+    padding: 18px;
+  }
+
+  .steps-title {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .category-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hero h1 {
+    font-size: 2.3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
