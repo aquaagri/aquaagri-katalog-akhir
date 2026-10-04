@@ -1,9 +1,10 @@
 /* ==========================================================
-   AquaAgri.id — Logika Katalog & Navigasi Terpercaya
-   Kategori, Diskon Produk, & Redirect Shopee
+   aquaagri.id — Logika Katalog & Navigasi Terpercaya
+   Kategori, Diskon Produk, Carousel Otomatis & Mode Malam HP
    ========================================================== */
 
 // ---------- 1. DATA PRODUK DENGAN SENTUHAN DISKON ----------
+// (Format produk tidak diubah sesuai instruksi)
 
 const products = [
   // --- Kategori: Produk Olahan Ikan ---
@@ -323,13 +324,37 @@ const products = [
   }
 ];
 
-// ---------- 2. DAFTAR KATEGORI ----------
+// ---------- 2. DAFTAR KATEGORI DENGAN BACKGROUND FOTO ----------
 
 const categories = [
-  { id: "produk-olahan-ikan", nama: "Produk Olahan Ikan", ikon: "🍥🐠", deskripsi: "Abon, kerupuk, sambal roa & aneka olahan" },
-  { id: "ikan-seafood-segar", nama: "Ikan & Seafood Segar", ikon: "🦐🐟", deskripsi: "Kakap, salmon, udang, kepiting & tuna segar" },
-  { id: "pancing-umpan", nama: "Pancing & Umpan", ikon: "🎣🌊", deskripsi: "Joran carbon, umpan pelet & essen oplosan" },
-  { id: "Benih-Pakan-Budidaya", nama: "Benih, Pakan & Budidaya", ikon: "🌱🧰", deskripsi: "Aerator hemat listrik, jaring waring & sarana kolam" }
+  { 
+    id: "produk-olahan-ikan", 
+    nama: "Produk Olahan Ikan", 
+    ikon: "🍥🐠", 
+    deskripsi: "Abon, kerupuk, sambal roa & aneka olahan",
+    bg: "cat-olahan-ikan.jpg"
+  },
+  { 
+    id: "ikan-seafood-segar", 
+    nama: "Ikan & Seafood Segar", 
+    ikon: "🦐🐟", 
+    deskripsi: "Kakap, salmon, udang, kepiting & tuna segar",
+    bg: "cat-seafood-segar.jpg"
+  },
+  { 
+    id: "pancing-umpan", 
+    nama: "Pancing & Umpan", 
+    ikon: "🎣🌊", 
+    deskripsi: "Joran carbon, umpan pelet & essen oplosan",
+    bg: "cat-pancing-umpan.jpg"
+  },
+  { 
+    id: "Benih-Pakan-Budidaya", 
+    nama: "Benih, Pakan & Budidaya", 
+    ikon: "🌱🧰", 
+    deskripsi: "Aerator hemat listrik, jaring waring & sarana kolam",
+    bg: "cat-budidaya.jpg"
+  }
 ];
 
 // Placeholder gambar cadangan
@@ -338,7 +363,7 @@ const PLACEHOLDER_IMG =
   encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">' +
     '<rect width="300" height="300" fill="#edf7fa"/>' +
-    '<text x="50%" y="50%" font-family="sans-serif" font-size="15" fill="#2e98b0" text-anchor="middle" dominant-baseline="middle">Foto Produk AquaAgri</text>' +
+    '<text x="50%" y="50%" font-family="sans-serif" font-size="15" fill="#2e98b0" text-anchor="middle" dominant-baseline="middle">Foto Produk aquaagri.</text>' +
     '</svg>'
   );
 
@@ -364,17 +389,56 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchInputCategory = document.getElementById("searchInputCategory");
   const filterSelect = document.getElementById("filterSelect");
 
-  if (
-    !homeView || !categoryView || !categoryGrid || !productGrid ||
-    !categoryTitle || !emptyState || !backBtn || !searchInput ||
-    !searchInputCategory || !filterSelect
-  ) {
-    return;
+  const sampleCarouselViewport = document.getElementById("sampleCarouselViewport");
+  const sampleCarouselTrack = document.getElementById("sampleCarouselTrack");
+  const samplePrevBtn = document.getElementById("samplePrevBtn");
+  const sampleNextBtn = document.getElementById("sampleNextBtn");
+
+  const themeToggleBtn = document.getElementById("themeToggleBtn");
+  const themeIcon = document.getElementById("themeIcon");
+  const themeText = document.getElementById("themeText");
+
+  // ---------- 5. SISTEM MODE TAMPILAN (DEFAULT TIDAK OTOMATIS MODE MALAM) ----------
+
+  function initTheme() {
+    const savedTheme = localStorage.getItem("aquaagri_theme");
+    // DEFAULT SELALU TERANG, KECUALI JIKA USER PERNAH MEMILIH 'dark'
+    if (savedTheme === "dark") {
+      setDarkMode(true, false);
+    } else {
+      setDarkMode(false, false);
+    }
   }
 
-  // ---------- 5. RENDER KATEGORI DI BERANDA ----------
+  function setDarkMode(isDark, savePreference = true) {
+    if (isDark) {
+      document.body.classList.add("dark-mode");
+      document.body.classList.remove("light-mode");
+      if (themeIcon) themeIcon.textContent = "☀️";
+      if (themeText) themeText.textContent = "Terang";
+      if (savePreference) localStorage.setItem("aquaagri_theme", "dark");
+    } else {
+      document.body.classList.remove("dark-mode");
+      document.body.classList.add("light-mode");
+      if (themeIcon) themeIcon.textContent = "🌙";
+      if (themeText) themeText.textContent = "Malam";
+      if (savePreference) localStorage.setItem("aquaagri_theme", "light");
+    }
+  }
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", function () {
+      const isCurrentlyDark = document.body.classList.contains("dark-mode");
+      setDarkMode(!isCurrentlyDark, true);
+    });
+  }
+
+  initTheme();
+
+  // ---------- 6. RENDER 4 KATEGORI UTAMA DENGAN BACKGROUND FOTO & ANIMASI PANAH KURSOR ----------
 
   function renderCategories() {
+    if (!categoryGrid) return;
     categoryGrid.innerHTML = "";
     categories.forEach(function (cat) {
       const card = document.createElement("div");
@@ -382,6 +446,19 @@ document.addEventListener("DOMContentLoaded", function () {
       card.setAttribute("role", "button");
       card.setAttribute("tabindex", "0");
       card.setAttribute("aria-label", "Buka kategori " + cat.nama);
+
+      // Lapisan background foto kategori
+      const bgLayer = document.createElement("div");
+      bgLayer.className = "category-card-bg-wrap";
+      bgLayer.style.backgroundImage = "url('" + cat.bg + "')";
+
+      // Lapisan overlay transparan cerdas
+      const overlay = document.createElement("div");
+      overlay.className = "category-card-overlay";
+
+      // Isi teks kartu
+      const content = document.createElement("div");
+      content.className = "category-card-content";
 
       const icon = document.createElement("span");
       icon.className = "category-icon";
@@ -391,13 +468,21 @@ document.addEventListener("DOMContentLoaded", function () {
       name.className = "category-name";
       name.textContent = cat.nama;
 
+      // Badge dengan animasi panah komputer kecil (mouse cursor)
       const badge = document.createElement("span");
       badge.className = "category-badge";
-      badge.textContent = "Lihat Produk & Promo →";
+      badge.innerHTML = '<span>Lihat Produk</span>' +
+        '<svg class="mouse-pointer-anim" width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+        '<path d="M4 2L18 10L11.5 12.5L9 19L4 2Z" fill="#38d9b8" stroke="#ffffff" stroke-width="1.8" stroke-linejoin="round"/>' +
+        '</svg>';
 
-      card.appendChild(icon);
-      card.appendChild(name);
-      card.appendChild(badge);
+      content.appendChild(icon);
+      content.appendChild(name);
+      content.appendChild(badge);
+
+      card.appendChild(bgLayer);
+      card.appendChild(overlay);
+      card.appendChild(content);
 
       card.addEventListener("click", function () {
         openCategory(cat.id, cat.nama);
@@ -413,13 +498,294 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ---------- 6. PEMBUATAN KARTU PRODUK DENGAN SENTUHAN DISKON ----------
+  // ---------- 7. CAROUSEL OTOMATIS: SAMPEL PRODUK DI BAWAH 4 KATEGORI ----------
+
+  function getCategoryShortLabel(catId) {
+    switch (catId) {
+      case "produk-olahan-ikan": return "Olahan Ikan";
+      case "ikan-seafood-segar": return "Seafood Segar";
+      case "pancing-umpan": return "Pancing & Umpan";
+      case "Benih-Pakan-Budidaya": return "Sarana Budidaya";
+      default: return "Produk aquaagri.";
+    }
+  }
+
+  function renderSampleCarousel() {
+    if (!sampleCarouselTrack) return;
+    sampleCarouselTrack.innerHTML = "";
+
+    // Ambil sampel representatif dari masing-masing 4 kategori
+    const samples = [];
+    categories.forEach(function (cat) {
+      const prodsInCat = products.filter(function (p) {
+        return p.kategori === cat.id;
+      });
+      samples.push(...prodsInCat.slice(0, 3));
+    });
+
+    samples.forEach(function (prod) {
+      const card = document.createElement("div");
+      card.className = "sample-card";
+
+      const imgBox = document.createElement("div");
+      imgBox.className = "sample-img-box";
+
+      const img = document.createElement("img");
+      img.className = "sample-img";
+      img.src = prod.gambar || PLACEHOLDER_IMG;
+      img.alt = prod.nama;
+      img.loading = "lazy";
+      img.addEventListener("error", function () {
+        img.src = PLACEHOLDER_IMG;
+      });
+
+      const catBadge = document.createElement("span");
+      catBadge.className = "sample-badge-category";
+      catBadge.textContent = getCategoryShortLabel(prod.kategori);
+
+      imgBox.appendChild(img);
+      imgBox.appendChild(catBadge);
+
+      if (prod.diskon) {
+        const disc = document.createElement("span");
+        disc.className = "sample-discount-tag";
+        disc.textContent = "-" + prod.diskon;
+        imgBox.appendChild(disc);
+      }
+
+      const body = document.createElement("div");
+      body.className = "sample-card-body";
+
+      const name = document.createElement("h3");
+      name.className = "sample-card-name";
+      name.textContent = prod.nama;
+      name.title = prod.nama;
+
+      const priceWrap = document.createElement("div");
+      priceWrap.className = "sample-price-wrap";
+
+      const price = document.createElement("span");
+      price.className = "sample-price";
+      price.textContent = prod.harga;
+      priceWrap.appendChild(price);
+
+      if (prod.hargaCoret) {
+        const coret = document.createElement("span");
+        coret.className = "sample-price-coret";
+        coret.textContent = prod.hargaCoret;
+        priceWrap.appendChild(coret);
+      }
+
+      const btn = document.createElement("button");
+      btn.className = "sample-card-btn";
+      btn.type = "button";
+      btn.textContent = "Lihat Produk";
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        openAffiliateLink(prod);
+      });
+
+      body.appendChild(name);
+      body.appendChild(priceWrap);
+      body.appendChild(btn);
+
+      card.appendChild(imgBox);
+      card.appendChild(body);
+
+      // Klik kartu membuka kategori terkait
+      card.addEventListener("click", function () {
+        const catObj = categories.find(function (c) {
+          return c.id === prod.kategori;
+        });
+        openCategory(prod.kategori, catObj ? catObj.nama : "Katalog Produk");
+      });
+
+      sampleCarouselTrack.appendChild(card);
+    });
+
+    initSampleAutoScroll();
+  }
+
+  // Kontrol Auto-Scroll Carousel Sampel
+  let sampleScrollTimer = null;
+  let isSamplePaused = false;
+
+  function initSampleAutoScroll() {
+    if (!sampleCarouselViewport) return;
+
+    function stepScroll(direction = 1) {
+      const scrollStep = 270;
+      const maxScroll = sampleCarouselViewport.scrollWidth - sampleCarouselViewport.clientWidth;
+      
+      if (direction === 1) {
+        if (sampleCarouselViewport.scrollLeft >= maxScroll - 15) {
+          sampleCarouselViewport.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+          sampleCarouselViewport.scrollBy({ left: scrollStep, behavior: "smooth" });
+        }
+      } else {
+        if (sampleCarouselViewport.scrollLeft <= 15) {
+          sampleCarouselViewport.scrollTo({ left: maxScroll, behavior: "smooth" });
+        } else {
+          sampleCarouselViewport.scrollBy({ left: -scrollStep, behavior: "smooth" });
+        }
+      }
+    }
+
+    function startAutoScroll() {
+      stopAutoScroll();
+      sampleScrollTimer = setInterval(function () {
+        if (!isSamplePaused) {
+          stepScroll(1);
+        }
+      }, 3400);
+    }
+
+    function stopAutoScroll() {
+      if (sampleScrollTimer) clearInterval(sampleScrollTimer);
+    }
+
+    // Jeda otomatis jika kursor hover atau disentuh di layar HP
+    sampleCarouselViewport.addEventListener("mouseenter", function () { isSamplePaused = true; });
+    sampleCarouselViewport.addEventListener("mouseleave", function () { isSamplePaused = false; });
+    sampleCarouselViewport.addEventListener("touchstart", function () { isSamplePaused = true; }, { passive: true });
+    sampleCarouselViewport.addEventListener("touchend", function () {
+      setTimeout(function () { isSamplePaused = false; }, 2000);
+    }, { passive: true });
+
+    if (samplePrevBtn) {
+      samplePrevBtn.addEventListener("click", function () {
+        stepScroll(-1);
+      });
+    }
+    if (sampleNextBtn) {
+      sampleNextBtn.addEventListener("click", function () {
+        stepScroll(1);
+      });
+    }
+
+    startAutoScroll();
+  }
+
+  // ---------- 8. CAROUSEL OTOMATIS: POTRET EKOSISTEM BAHARI ----------
+  // (Petambak, Produk Olahan Ikan, Pemancing, Ikan Segar, Pembudidaya)
+
+  function initStoryCarousel() {
+    const storyTrack = document.getElementById("storyTrack");
+    const storyPrevBtn = document.getElementById("storyPrevBtn");
+    const storyNextBtn = document.getElementById("storyNextBtn");
+    const storyDots = document.getElementById("storyDots");
+    const storyBox = document.getElementById("storyCarousel");
+
+    if (!storyTrack) return;
+    const slides = storyTrack.querySelectorAll(".story-slide");
+    if (slides.length === 0) return;
+
+    let currentSlide = 0;
+    let storyTimer = null;
+    let isStoryPaused = false;
+
+    function showSlide(index) {
+      if (index >= slides.length) currentSlide = 0;
+      else if (index < 0) currentSlide = slides.length - 1;
+      else currentSlide = index;
+
+      slides.forEach(function (slide, i) {
+        if (i === currentSlide) {
+          slide.classList.add("active");
+        } else {
+          slide.classList.remove("active");
+        }
+      });
+
+      if (storyDots) {
+        const dots = storyDots.querySelectorAll(".story-dot");
+        dots.forEach(function (dot, i) {
+          if (i === currentSlide) {
+            dot.classList.add("active");
+          } else {
+            dot.classList.remove("active");
+          }
+        });
+      }
+    }
+
+    function nextStorySlide() {
+      showSlide(currentSlide + 1);
+    }
+
+    function prevStorySlide() {
+      showSlide(currentSlide - 1);
+    }
+
+    function startStoryTimer() {
+      stopStoryTimer();
+      storyTimer = setInterval(function () {
+        if (!isStoryPaused) {
+          nextStorySlide();
+        }
+      }, 4500);
+    }
+
+    function stopStoryTimer() {
+      if (storyTimer) clearInterval(storyTimer);
+    }
+
+    if (storyNextBtn) {
+      storyNextBtn.addEventListener("click", function () {
+        nextStorySlide();
+        startStoryTimer();
+      });
+    }
+
+    if (storyPrevBtn) {
+      storyPrevBtn.addEventListener("click", function () {
+        prevStorySlide();
+        startStoryTimer();
+      });
+    }
+
+    if (storyDots) {
+      const dots = storyDots.querySelectorAll(".story-dot");
+      dots.forEach(function (dot, i) {
+        dot.addEventListener("click", function () {
+          showSlide(i);
+          startStoryTimer();
+        });
+      });
+    }
+
+    if (storyBox) {
+      storyBox.addEventListener("mouseenter", function () { isStoryPaused = true; });
+      storyBox.addEventListener("mouseleave", function () { isStoryPaused = false; });
+      
+      // Swipe gesture di layar sentuh HP
+      let touchStartX = 0;
+      storyBox.addEventListener("touchstart", function (e) {
+        touchStartX = e.touches[0].clientX;
+        isStoryPaused = true;
+      }, { passive: true });
+
+      storyBox.addEventListener("touchend", function (e) {
+        const diffX = e.changedTouches[0].clientX - touchStartX;
+        if (diffX > 45) {
+          prevStorySlide();
+        } else if (diffX < -45) {
+          nextStorySlide();
+        }
+        setTimeout(function () { isStoryPaused = false; }, 2000);
+      }, { passive: true });
+    }
+
+    startStoryTimer();
+  }
+
+  // ---------- 9. PEMBUATAN KARTU PRODUK KATALOG ----------
 
   function createProductCard(produk) {
     const card = document.createElement("div");
     card.className = "product-card";
 
-    // Bungkus foto + badge diskon
     const imgWrap = document.createElement("div");
     imgWrap.className = "product-img-wrap";
 
@@ -434,7 +800,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     imgWrap.appendChild(img);
 
-    // Tambahkan label diskon jika ada
     if (produk.diskon) {
       const discBadge = document.createElement("span");
       discBadge.className = "product-discount-badge";
@@ -442,7 +807,6 @@ document.addEventListener("DOMContentLoaded", function () {
       imgWrap.appendChild(discBadge);
     }
 
-    // Bagian isi kartu
     const body = document.createElement("div");
     body.className = "product-body";
 
@@ -454,14 +818,12 @@ document.addEventListener("DOMContentLoaded", function () {
     desc.className = "product-desc";
     desc.textContent = produk.deskripsi;
 
-    // Baris harga: harga promo + harga coret
     const priceRow = document.createElement("div");
     priceRow.className = "product-price-row";
 
     const harga = document.createElement("span");
     harga.className = "product-price";
     harga.textContent = produk.harga;
-
     priceRow.appendChild(harga);
 
     if (produk.hargaCoret) {
@@ -490,17 +852,18 @@ document.addEventListener("DOMContentLoaded", function () {
     return card;
   }
 
-  // ---------- 7. RENDER PRODUK DI HALAMAN KATEGORI ----------
+  // ---------- 10. RENDER PRODUK DI HALAMAN KATEGORI ----------
 
   function renderProducts(list) {
+    if (!productGrid) return;
     productGrid.innerHTML = "";
 
     if (list.length === 0) {
-      emptyState.classList.remove("hidden");
+      if (emptyState) emptyState.classList.remove("hidden");
       if (categoryCount) categoryCount.textContent = "0 produk ditemukan";
       return;
     }
-    emptyState.classList.add("hidden");
+    if (emptyState) emptyState.classList.add("hidden");
 
     if (categoryCount) {
       categoryCount.textContent = "Menampilkan " + list.length + " produk pilihan";
@@ -511,7 +874,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ---------- 8. FILTER & PENCARIAN ----------
+  // ---------- 11. FILTER & PENCARIAN ----------
 
   function getFilteredProducts() {
     const keyword = currentKeyword.trim().toLowerCase();
@@ -545,19 +908,24 @@ document.addEventListener("DOMContentLoaded", function () {
     renderProducts(getFilteredProducts());
   }
 
-  // ---------- 9. NAVIGASI HALAMAN (BERANDA & KATEGORI) ----------
+  // ---------- 12. NAVIGASI HALAMAN (BERANDA & KATEGORI) ----------
 
   function openCategory(categoryId, categoryName) {
     currentCategory = categoryId;
     currentKeyword = searchInput ? searchInput.value : "";
 
-    categoryTitle.textContent = categoryName || getCategoryName(categoryId);
-    filterSelect.value = categoryId;
-    searchInputCategory.value = currentKeyword;
+    if (categoryTitle) {
+      categoryTitle.textContent = categoryName || getCategoryName(categoryId);
+    }
+    if (filterSelect) {
+      filterSelect.value = categoryId;
+    }
+    if (searchInputCategory) {
+      searchInputCategory.value = currentKeyword;
+    }
 
-    // Sembunyikan beranda, buka halaman kategori produk
-    homeView.classList.add("hidden");
-    categoryView.classList.remove("hidden");
+    if (homeView) homeView.classList.add("hidden");
+    if (categoryView) categoryView.classList.remove("hidden");
 
     refreshProductView();
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -569,48 +937,55 @@ document.addEventListener("DOMContentLoaded", function () {
     if (searchInput) searchInput.value = "";
     if (searchInputCategory) searchInputCategory.value = "";
 
-    // Sembunyikan halaman kategori, kembalikan beranda
-    categoryView.classList.add("hidden");
-    homeView.classList.remove("hidden");
+    if (categoryView) categoryView.classList.add("hidden");
+    if (homeView) homeView.classList.remove("hidden");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  // ---------- 10. EVENT LISTENERS ----------
+  // ---------- 13. EVENT LISTENERS ----------
 
-  backBtn.addEventListener("click", goHome);
-  brandLogo.addEventListener("click", goHome);
-  brandLogo.addEventListener("keydown", function (e) {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      goHome();
-    }
-  });
+  if (backBtn) backBtn.addEventListener("click", goHome);
+  if (brandLogo) {
+    brandLogo.addEventListener("click", goHome);
+    brandLogo.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        goHome();
+      }
+    });
+  }
 
   // Pencarian dari beranda langsung membuka halaman kategori
-  searchInput.addEventListener("input", function () {
-    const keyword = searchInput.value;
-    if (keyword.trim().length > 0) {
-      openCategory("semua", "Hasil Pencarian");
-      searchInputCategory.value = keyword;
-      currentKeyword = keyword;
-      refreshProductView();
-    }
-  });
+  if (searchInput) {
+    searchInput.addEventListener("input", function () {
+      const keyword = searchInput.value;
+      if (keyword.trim().length > 0) {
+        openCategory("semua", "Hasil Pencarian");
+        if (searchInputCategory) searchInputCategory.value = keyword;
+        currentKeyword = keyword;
+        refreshProductView();
+      }
+    });
+  }
 
   // Pencarian real-time di halaman kategori
-  searchInputCategory.addEventListener("input", function () {
-    currentKeyword = searchInputCategory.value;
-    refreshProductView();
-  });
+  if (searchInputCategory) {
+    searchInputCategory.addEventListener("input", function () {
+      currentKeyword = searchInputCategory.value;
+      refreshProductView();
+    });
+  }
 
   // Filter dropdown kategori
-  filterSelect.addEventListener("change", function () {
-    currentCategory = filterSelect.value;
-    categoryTitle.textContent = getCategoryName(currentCategory);
-    refreshProductView();
-  });
+  if (filterSelect) {
+    filterSelect.addEventListener("change", function () {
+      currentCategory = filterSelect.value;
+      if (categoryTitle) categoryTitle.textContent = getCategoryName(currentCategory);
+      refreshProductView();
+    });
+  }
 
-  // ---------- 11. REDIRECT AFFILIATE SHOPEE ----------
+  // ---------- 14. REDIRECT AFFILIATE SHOPEE ----------
 
   function openAffiliateLink(produk) {
     if (!produk || !produk.linkAffiliate) {
@@ -629,7 +1004,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ---------- 12. INISIALISASI HALAMAN AWAL ----------
+  // ---------- 15. INISIALISASI HALAMAN AWAL ----------
 
   renderCategories();
+  renderSampleCarousel();
+  initStoryCarousel();
 });

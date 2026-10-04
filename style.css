@@ -1,10 +1,11 @@
 /* ==========================================================
-   AquaAgri.id — Style Katalog Profesional, Clean & Modern
-   Palet Warna: Mengikuti Logo (#2e98b0 & #18927f)
+   aquaagri.id — Style Ekosistem & Katalog Bahari Modern
+   Palet Warna: Kombinasi Brand (#2e98b0 & #18927f)
+   Dukungan Mode Terang (Default) & Mode Malam HP Profesional
    ========================================================== */
 
 :root {
-  /* Warna Brand Sesuai Logo */
+  /* Warna Brand Pokok Sesuai Logo */
   --brand-aqua: #2e98b0;
   --brand-aqua-dark: #207d92;
   --brand-aqua-light: #edf7fa;
@@ -15,23 +16,73 @@
   /* Aksen Shopee & Status */
   --shopee-orange: #ee4d2d;
   --shopee-light: #fff2ed;
+  --shopee-dark: #d83d1e;
   
-  /* Netral & Permukaan */
-  --gelap: #0f2a22;
-  --abu-teks: #52635d;
-  --abu-terang: #f7faf9;
-  --putih: #ffffff;
-  --border: #e0ece7;
+  /* Palet Mode Terang (Default Bawaan) */
+  --bg-page: #f6faf8;
+  --bg-gradient-1: rgba(46, 152, 176, 0.12);
+  --bg-gradient-2: rgba(24, 146, 127, 0.11);
+  --bg-gradient-3: rgba(46, 152, 176, 0.08);
+  
+  --surface-card: #ffffff;
+  --surface-card-hover: #ffffff;
+  --surface-muted: #f0f7f4;
+  --surface-topbar: rgba(255, 255, 255, 0.94);
+  
+  --text-main: #0e2a22;
+  --text-muted: #4e635c;
+  --text-subtle: #7a9188;
+  
+  --border-color: #e0eee8;
+  --border-card: #e4efe9;
   --border-focus: #2e98b0;
   
-  /* Geometri & Elevasi */
-  --radius: 16px;
-  --radius-sm: 10px;
-  --shadow-sm: 0 2px 8px rgba(15, 42, 34, 0.04);
-  --shadow: 0 6px 20px rgba(15, 42, 34, 0.06);
-  --shadow-hover: 0 12px 32px rgba(24, 146, 127, 0.12);
-  --font: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --shadow-sm: 0 2px 8px rgba(14, 42, 34, 0.04);
+  --shadow-md: 0 6px 20px rgba(14, 42, 34, 0.06);
+  --shadow-lg: 0 14px 34px rgba(24, 146, 127, 0.12);
+  
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 8px;
+  --font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
+
+/* ============================================================
+   PALET MODE MALAM (HANYA AKTIF JIKA DITOGGLE OLEH USER)
+   Default sistem tidak akan memaksa mode malam
+   ============================================================ */
+
+body.dark-mode {
+  --bg-page: #0a1815;
+  --bg-gradient-1: rgba(46, 152, 176, 0.20);
+  --bg-gradient-2: rgba(24, 146, 127, 0.18);
+  --bg-gradient-3: rgba(46, 152, 176, 0.14);
+  
+  --surface-card: #122822;
+  --surface-card-hover: #16332b;
+  --surface-muted: #0d211c;
+  --surface-topbar: rgba(10, 24, 21, 0.94);
+  
+  --text-main: #ecf7f3;
+  --text-muted: #a4c2b7;
+  --text-subtle: #739387;
+  
+  --border-color: #1c3d33;
+  --border-card: #204439;
+  --border-focus: #38b6d3;
+  
+  --brand-aqua-light: rgba(46, 152, 176, 0.18);
+  --brand-agri-light: rgba(24, 146, 127, 0.18);
+  --shopee-light: rgba(238, 77, 45, 0.18);
+  
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 38px rgba(0, 0, 0, 0.55);
+}
+
+/* ============================================================
+   RESET & DASAR
+   ============================================================ */
 
 * {
   box-sizing: border-box;
@@ -40,22 +91,24 @@
 html, body {
   margin: 0;
   padding: 0;
+  scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font);
-  background-color: #f7faf9;
-  /* Kombinasi gradien ambient halus sesuai warna logo: #2e98b0 & #18927f */
+  background-color: var(--bg-page);
+  /* Kombinasi gradien ambient brand aquaagri.: #2e98b0 & #18927f */
   background-image: 
-    radial-gradient(at 0% 0%, rgba(46, 152, 176, 0.10) 0px, transparent 45%),
-    radial-gradient(at 100% 12%, rgba(24, 146, 127, 0.09) 0px, transparent 40%),
-    radial-gradient(at 15% 45%, rgba(24, 146, 127, 0.06) 0px, transparent 50%),
-    radial-gradient(at 90% 70%, rgba(46, 152, 176, 0.08) 0px, transparent 45%),
-    radial-gradient(at 50% 100%, rgba(24, 146, 127, 0.08) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, var(--bg-gradient-1) 0px, transparent 48%),
+    radial-gradient(at 100% 12%, var(--bg-gradient-2) 0px, transparent 45%),
+    radial-gradient(at 15% 45%, var(--bg-gradient-2) 0px, transparent 50%),
+    radial-gradient(at 90% 70%, var(--bg-gradient-1) 0px, transparent 45%),
+    radial-gradient(at 50% 100%, var(--bg-gradient-3) 0px, transparent 50%);
   background-attachment: fixed;
-  color: var(--gelap);
+  color: var(--text-main);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .hidden {
@@ -67,23 +120,34 @@ img {
   display: block;
 }
 
+button {
+  font-family: inherit;
+}
+
+/* Logo adaptif di mode malam */
+body.dark-mode .brand-logo-img,
+body.dark-mode .footer-logo-img {
+  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.6)) brightness(1.1);
+}
+
 /* ============================================================
-   TOPBAR (NAVIGASI)
+   TOPBAR DENGAN TOGGLE MODE MALAM
    ============================================================ */
 
 .topbar {
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
+  background: var(--surface-topbar);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 2px 12px rgba(15, 42, 34, 0.03);
+  box-shadow: var(--shadow-sm);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .topbar-inner {
-  max-width: 1120px;
+  max-width: 1160px;
   margin: 0 auto;
   padding: 12px 18px;
   display: flex;
@@ -105,6 +169,17 @@ img {
   width: auto;
   display: block;
   object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.brand:hover .brand-logo-img {
+  transform: scale(1.02);
+}
+
+.topbar-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .topbar-partner {
@@ -112,17 +187,17 @@ img {
   align-items: center;
   gap: 6px;
   background: var(--shopee-light);
-  border: 1px solid #ffd8cc;
+  border: 1px solid rgba(238, 77, 45, 0.25);
   padding: 5px 12px;
   border-radius: 999px;
   font-size: 0.8rem;
-  color: var(--abu-teks);
+  color: var(--text-muted);
   font-weight: 500;
   white-space: nowrap;
 }
 
 .partner-text {
-  color: #6c7873;
+  color: var(--text-muted);
 }
 
 .partner-shopee {
@@ -130,18 +205,67 @@ img {
   font-weight: 700;
 }
 
+/* Tombol Toggle Mode Terang/Malam */
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--brand-agri-light);
+  border-color: var(--brand-agri);
+  color: var(--brand-agri-dark);
+  transform: translateY(-1px);
+}
+
+body.dark-mode .theme-toggle-btn {
+  background: #17332c;
+  border-color: #275246;
+  color: #ecf7f3;
+}
+
+body.dark-mode .theme-toggle-btn:hover {
+  background: #1e453b;
+  border-color: var(--brand-aqua);
+  color: #38b6d3;
+}
+
+.theme-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
 /* ============================================================
-   LAYOUT UMUM
+   LAYOUT CONTAINER
    ============================================================ */
 
 main {
-  max-width: 1120px;
+  max-width: 1160px;
   margin: 0 auto;
-  padding: 0 18px 48px;
+  padding: 0 18px 56px;
 }
 
 .section-header {
+  margin-bottom: 20px;
+}
+
+.section-header-carousel {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
   margin-bottom: 18px;
+  gap: 16px;
 }
 
 .section-tag {
@@ -154,95 +278,139 @@ main {
   margin-bottom: 4px;
 }
 
+body.dark-mode .section-tag {
+  color: #38b6d3;
+}
+
 .section-title {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 800;
   margin: 0 0 6px;
-  color: var(--gelap);
+  color: var(--text-main);
   letter-spacing: -0.3px;
 }
 
 .section-desc {
   font-size: 0.92rem;
-  color: var(--abu-teks);
+  color: var(--text-muted);
   margin: 0;
-  max-width: 640px;
+  max-width: 660px;
   line-height: 1.55;
 }
 
 /* ============================================================
-   HERO BANNER (Head dengan Background Foto Lanskap Keramba)
+   1. HERO BANNER
+   Background: poto-background-2.jpg (Cerah, tidak gelap)
+   Deskripsi: Menjelaskan platform aquaagri.id
    ============================================================ */
 
 .hero {
   position: relative;
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   margin: 18px 0 28px;
   background-image: url('poto-background-2.jpg');
   background-size: cover;
-  background-position: center 30%;
+  background-position: center 36%;
   background-repeat: no-repeat;
-  color: var(--putih);
-  padding: 52px 24px;
-  text-align: center;
-  box-shadow: 0 8px 30px rgba(15, 42, 34, 0.12);
+  color: #ffffff;
+  padding: 56px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(24, 146, 127, 0.15);
+  min-height: 420px;
 }
 
+/* Overlay transparan cerah khas brand, TIDAK GELAP */
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(14, 55, 83, 0.88) 0%, rgba(15, 42, 34, 0.84) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(24, 146, 127, 0.28) 0%,
+    rgba(46, 152, 176, 0.22) 50%,
+    rgba(14, 42, 34, 0.38) 100%
+  );
   z-index: 1;
 }
 
-.hero-content {
+.hero-card {
   position: relative;
   z-index: 2;
-  max-width: 680px;
+  max-width: 760px;
   margin: 0 auto;
+  padding: 36px 30px;
+  text-align: center;
+  background: rgba(14, 42, 34, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
 }
 
 .hero-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.35);
   padding: 6px 14px;
   border-radius: 999px;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #ffffff;
   margin-bottom: 14px;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.3px;
 }
 
 .badge-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #2dd4bf;
-  box-shadow: 0 0 8px #2dd4bf;
+  background: #38d9b8;
+  box-shadow: 0 0 8px #38d9b8;
 }
 
 .hero h1 {
-  font-size: 2.15rem;
+  font-size: 2.2rem;
   font-weight: 800;
-  margin: 0 0 12px;
+  margin: 0 0 14px;
   color: #ffffff;
-  line-height: 1.25;
-  letter-spacing: -0.5px;
+  line-height: 1.22;
+  letter-spacing: -0.6px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
 }
 
-.hero p {
-  color: rgba(255, 255, 255, 0.94);
-  margin: 0 auto;
-  max-width: 580px;
+.hero-desc {
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0 auto 20px;
+  max-width: 620px;
   font-size: 0.98rem;
   line-height: 1.65;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+}
+
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.hero-tag-item {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #ffffff;
 }
 
 /* ============================================================
@@ -264,16 +432,17 @@ main {
   top: 50%;
   transform: translateY(-50%);
   font-size: 0.95rem;
-  opacity: 0.55;
+  color: var(--text-subtle);
   pointer-events: none;
 }
 
 .search-input-wrap input {
   width: 100%;
-  padding: 14px 18px 14px 46px;
+  padding: 15px 18px 15px 48px;
   border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--putih);
+  border: 1px solid var(--border-color);
+  background: var(--surface-card);
+  color: var(--text-main);
   font-size: 0.95rem;
   font-family: inherit;
   outline: none;
@@ -281,17 +450,22 @@ main {
   box-shadow: var(--shadow-sm);
 }
 
+.search-input-wrap input::placeholder {
+  color: var(--text-subtle);
+}
+
 .search-input-wrap input:focus {
-  border-color: var(--brand-aqua);
-  box-shadow: 0 4px 18px rgba(46, 152, 176, 0.15);
+  border-color: var(--border-focus);
+  box-shadow: 0 4px 18px rgba(46, 152, 176, 0.2);
 }
 
 /* ============================================================
-   KATEGORI PRODUK (BERANDA)
+   4 KATEGORI PRODUK UTAMA
+   Dengan Background Foto Sesuai Kategori & Animasi Panah Komputer
    ============================================================ */
 
 .categories {
-  margin-bottom: 38px;
+  margin-bottom: 40px;
 }
 
 .category-grid {
@@ -301,213 +475,547 @@ main {
 }
 
 .category-card {
-  background: var(--putih);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 22px 14px;
-  text-align: center;
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  min-height: 200px;
   cursor: pointer;
-  box-shadow: var(--shadow);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  border: 1px solid var(--border-card);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 6px;
+  justify-content: flex-end;
+  background-color: var(--surface-muted);
 }
 
 .category-card:hover,
 .category-card:focus-visible {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
   border-color: var(--brand-aqua);
   outline: none;
 }
 
+/* Layer foto background kategori */
+.category-card-bg-wrap {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.5s ease;
+  z-index: 1;
+}
+
+.category-card:hover .category-card-bg-wrap {
+  transform: scale(1.08);
+}
+
+/* Overlay transparan cerdas agar foto terlihat jelas & teks 100% terbaca */
+.category-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(8, 24, 19, 0.94) 0%,
+    rgba(8, 24, 19, 0.62) 55%,
+    rgba(8, 24, 19, 0.35) 100%
+  );
+  z-index: 2;
+  transition: background 0.3s ease;
+}
+
+.category-card:hover .category-card-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(10, 32, 25, 0.96) 0%,
+    rgba(24, 146, 127, 0.50) 60%,
+    rgba(46, 152, 176, 0.25) 100%
+  );
+}
+
+/* Isi konten teks kategori */
+.category-card-content {
+  position: relative;
+  z-index: 3;
+  padding: 18px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+}
+
 .category-icon {
-  font-size: 2rem;
+  font-size: 2.3rem;
   display: block;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+  transition: transform 0.25s ease;
+}
+
+.category-card:hover .category-icon {
+  transform: translateY(-2px) scale(1.06);
 }
 
 .category-name {
-  font-weight: 700;
-  font-size: 0.94rem;
-  color: var(--gelap);
-  line-height: 1.35;
+  font-weight: 800;
+  font-size: 1.02rem;
+  color: #ffffff;
+  line-height: 1.3;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 }
 
 .category-badge {
   font-size: 0.76rem;
-  color: var(--brand-aqua-dark);
-  font-weight: 600;
-  background: var(--brand-aqua-light);
-  padding: 3px 10px;
+  color: #ffffff;
+  font-weight: 700;
+  background: rgba(24, 146, 127, 0.88);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  padding: 4px 10px;
   border-radius: 999px;
   margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: background 0.2s ease;
 }
 
-/* ============================================================
-   PANDUAN PEMBAYARAN & JAMINAN BELANJA (PENGGANTI PRODUK)
-   ============================================================ */
-
-.payment-guide-section {
-  margin-top: 42px;
+.category-card:hover .category-badge {
+  background: var(--brand-agri);
+  border-color: #38d9b8;
 }
 
-.payment-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 22px;
+/* Animasi Panah Komputer Kecil (Mouse Cursor Pointer) */
+.mouse-pointer-anim {
+  display: inline-block;
+  vertical-align: middle;
+  animation: mousePointerFloat 1.8s ease-in-out infinite;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
 }
 
-@media (min-width: 860px) {
-  .payment-grid {
-    grid-template-columns: 370px 1fr;
-    align-items: stretch;
+@keyframes mousePointerFloat {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(3px, 3px);
   }
 }
 
-/* Kartu Sentuhan Nyata (Foto Pembudidaya Asli) */
+/* ============================================================
+   2. CAROUSEL SAMPEL PRODUK DI BAWAH 4 KATEGORI (OTOMATIS)
+   ============================================================ */
 
-.real-touch-card {
-  background: var(--putih);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+.sample-carousel-section {
+  margin-bottom: 44px;
+}
+
+.carousel-nav-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.carousel-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--surface-card);
+  color: var(--text-main);
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.carousel-btn:hover {
+  background: var(--brand-agri-light);
+  border-color: var(--brand-agri);
+  color: var(--brand-agri-dark);
+  transform: scale(1.05);
+}
+
+body.dark-mode .carousel-btn:hover {
+  color: #38d9b8;
+}
+
+.sample-carousel-viewport {
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 6px 2px 14px;
+}
+
+.sample-carousel-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.sample-carousel-track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  user-select: none;
+}
+
+/* Kartu Sampel Produk */
+.sample-card {
+  width: 250px;
+  flex-shrink: 0;
+  background: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.sample-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--brand-aqua);
+}
+
+.sample-img-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: var(--surface-muted);
+  overflow: hidden;
+}
+
+.sample-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.sample-card:hover .sample-img {
+  transform: scale(1.06);
+}
+
+.sample-badge-category {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(14, 42, 34, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.2px;
+}
+
+.sample-discount-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--shopee-orange);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 7px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(238, 77, 45, 0.4);
+}
+
+.sample-card-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 6px;
+}
+
+.sample-card-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 2.7em;
+}
+
+.sample-price-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.sample-price {
+  font-weight: 800;
+  color: var(--brand-agri-dark);
+  font-size: 1.02rem;
+}
+
+body.dark-mode .sample-price {
+  color: #38d9b8;
+}
+
+.sample-price-coret {
+  font-size: 0.78rem;
+  color: var(--text-subtle);
+  text-decoration: line-through;
+}
+
+.sample-card-btn {
+  margin-top: 10px;
+  background: linear-gradient(135deg, var(--brand-agri) 0%, var(--brand-agri-dark) 100%);
+  color: #ffffff;
+  border: none;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(24, 146, 127, 0.25);
+}
+
+.sample-card-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(24, 146, 127, 0.35);
+}
+
+/* ============================================================
+   3. CAROUSEL EKOSISTEM BAHARI & KOMUNITAS (OTOMATIS)
+   (Petambak/Pembudidaya, Produk Olahan Ikan, Pemancing, Ikan Segar)
+   Gambar disederhanakan, crop pas, foto dari folder
+   ============================================================ */
+
+.story-carousel-section {
+  margin-bottom: 46px;
+}
+
+.story-carousel-box {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface-card);
+  border: 1px solid var(--border-card);
+  box-shadow: var(--shadow-md);
+}
+
+.story-track {
+  position: relative;
+  min-height: 480px;
+}
+
+.story-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s;
   display: flex;
   flex-direction: column;
 }
 
-.real-touch-img-wrap {
+.story-slide.active {
+  opacity: 1;
+  visibility: visible;
+  position: relative;
+}
+
+/* Wadah foto bersih dengan aspect-ratio 16/9 pas untuk HP dan Komputer */
+.story-img-container {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  max-height: 460px;
   overflow: hidden;
-  background: var(--abu-terang);
+  background: var(--surface-muted);
 }
 
-.real-touch-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 25%;
-  transition: transform 0.3s ease;
-}
-
-.real-touch-card:hover .real-touch-img {
-  transform: scale(1.03);
-}
-
-.real-touch-badge {
+.story-floating-badge {
   position: absolute;
-  bottom: 12px;
-  left: 12px;
-  right: 12px;
-  background: rgba(15, 42, 34, 0.9);
+  top: 14px;
+  left: 14px;
+  z-index: 3;
+  background: rgba(10, 28, 22, 0.88);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   color: #ffffff;
-  padding: 8px 12px;
-  border-radius: 10px;
+  padding: 5px 12px;
+  border-radius: 999px;
   font-size: 0.78rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.real-touch-icon {
-  background: var(--brand-agri);
-  color: #ffffff;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.7rem;
-  font-weight: 800;
-  flex-shrink: 0;
-}
-
-.real-touch-body {
-  padding: 20px;
-  flex: 1;
-}
-
-.real-touch-body h3 {
-  font-size: 1.05rem;
   font-weight: 700;
-  color: var(--gelap);
-  margin: 0 0 8px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
 }
 
-.real-touch-body p {
-  font-size: 0.86rem;
-  color: var(--abu-teks);
+.story-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transition: transform 0.5s ease;
+}
+
+.story-slide.active .story-photo {
+  transform: scale(1.02);
+}
+
+/* Bagian teks terpisah rapi di bawah foto (tidak menutupi gambar) */
+.story-card-body {
+  padding: 22px 24px 26px;
+  background: var(--surface-card);
+  color: var(--text-main);
+  border-top: 1px solid var(--border-card);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.story-heading {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--text-main);
+  line-height: 1.35;
+}
+
+.story-paragraph {
+  font-size: 0.92rem;
+  color: var(--text-muted);
   margin: 0;
   line-height: 1.6;
 }
 
-/* Langkah-langkah Pembayaran */
+/* Dots Indikator */
+.story-dots {
+  position: absolute;
+  bottom: 16px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 3;
+}
 
-.payment-steps-card {
-  background: var(--putih);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px;
-  box-shadow: var(--shadow);
+.story-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: var(--border-color);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.25s ease;
+}
+
+body.dark-mode .story-dot {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.story-dot.active {
+  width: 26px;
+  border-radius: 999px;
+  background: var(--brand-agri);
+  box-shadow: 0 0 8px rgba(24, 146, 127, 0.5);
+}
+
+body.dark-mode .story-dot.active {
+  background: #38d9b8;
+  box-shadow: 0 0 8px #38d9b8;
+}
+
+/* ============================================================
+   4. TRANSAKSI MUDAH & TERPERCAYA (4 LANGKAH BELANJA)
+   ============================================================ */
+
+.payment-guide-section {
+  margin-top: 44px;
+}
+
+.payment-steps-full {
+  background: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
+  gap: 24px;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.step-card {
+  background: var(--surface-muted);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.step-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--brand-agri);
+}
+
+.step-header-card {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
-.steps-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--gelap);
-  margin: 0 0 20px;
-}
-
-.steps-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-bottom: 22px;
-}
-
-.step-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-.step-num {
-  width: 32px;
-  height: 32px;
+.step-badge-num {
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background: var(--brand-agri-light);
-  color: var(--brand-agri-dark);
+  background: var(--brand-agri);
+  color: #ffffff;
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 0.86rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  border: 1px solid rgba(24, 146, 127, 0.25);
 }
 
-.step-info h4 {
-  font-size: 0.94rem;
+.step-emoji {
+  font-size: 1.3rem;
+}
+
+.step-card-title {
+  font-size: 0.96rem;
   font-weight: 700;
-  color: var(--gelap);
-  margin: 0 0 4px;
+  color: var(--text-main);
+  margin: 0;
 }
 
-.step-info p {
+.step-card-desc {
   font-size: 0.84rem;
-  color: var(--abu-teks);
+  color: var(--text-muted);
   margin: 0;
   line-height: 1.5;
 }
@@ -515,21 +1023,29 @@ main {
 .payment-methods-strip {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
+  padding-top: 18px;
+  border-top: 1px solid var(--border-color);
+}
+
+.pay-method-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-right: 4px;
 }
 
 .pay-method-badge {
   display: inline-flex;
   align-items: center;
-  background: var(--abu-terang);
-  border: 1px solid var(--border);
+  background: var(--surface-muted);
+  border: 1px solid var(--border-color);
   padding: 6px 12px;
   border-radius: 999px;
   font-size: 0.78rem;
   font-weight: 600;
-  color: var(--abu-teks);
+  color: var(--text-muted);
 }
 
 /* ============================================================
@@ -543,26 +1059,18 @@ main {
   padding: 22px 0 18px;
 }
 
-@media (min-width: 640px) {
-  .category-header {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-}
-
 .back-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  border: 1px solid var(--border);
-  background: var(--putih);
+  border: 1px solid var(--border-color);
+  background: var(--surface-card);
   border-radius: 999px;
   padding: 8px 18px;
   font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
-  color: var(--gelap);
+  color: var(--text-main);
   font-family: inherit;
   transition: all 0.2s ease;
   box-shadow: var(--shadow-sm);
@@ -575,17 +1083,21 @@ main {
   color: var(--brand-agri-dark);
 }
 
+body.dark-mode .back-btn:hover {
+  color: #38d9b8;
+}
+
 .category-header-text h2 {
   font-size: 1.35rem;
   font-weight: 800;
   margin: 0;
-  color: var(--gelap);
+  color: var(--text-main);
   letter-spacing: -0.3px;
 }
 
 .category-count {
   font-size: 0.84rem;
-  color: var(--abu-teks);
+  color: var(--text-muted);
   font-weight: 500;
 }
 
@@ -596,25 +1108,18 @@ main {
   margin-bottom: 24px;
 }
 
-@media (min-width: 640px) {
-  .filter-bar {
-    flex-direction: row;
-    align-items: center;
-  }
-}
-
 .search-input-wrap-cat {
   flex: 1;
 }
 
 .filter-bar select {
   border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--putih);
+  border: 1px solid var(--border-color);
+  background: var(--surface-card);
   padding: 12px 18px;
   font-size: 0.9rem;
   font-family: inherit;
-  color: var(--gelap);
+  color: var(--text-main);
   outline: none;
   cursor: pointer;
   transition: border-color 0.2s ease;
@@ -622,11 +1127,11 @@ main {
 }
 
 .filter-bar select:focus {
-  border-color: var(--brand-aqua);
+  border-color: var(--border-focus);
 }
 
 /* ============================================================
-   GRID PRODUK & KARTU PRODUK DENGAN SENTUHAN DISKON
+   GRID PRODUK DI HALAMAN KATEGORI
    ============================================================ */
 
 .product-grid {
@@ -636,9 +1141,9 @@ main {
 }
 
 .product-card {
-  background: var(--putih);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -649,7 +1154,7 @@ main {
 
 .product-card:hover {
   transform: translateY(-3px);
-  box-shadow: var(--shadow-hover);
+  box-shadow: var(--shadow-md);
   border-color: var(--brand-agri);
 }
 
@@ -657,7 +1162,7 @@ main {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  background: var(--abu-terang);
+  background: var(--surface-muted);
   overflow: hidden;
 }
 
@@ -672,7 +1177,6 @@ main {
   transform: scale(1.04);
 }
 
-/* Badge Diskon di Pojok Foto Produk */
 .product-discount-badge {
   position: absolute;
   top: 10px;
@@ -699,19 +1203,18 @@ main {
   font-weight: 700;
   font-size: 0.94rem;
   margin: 0;
-  color: var(--gelap);
+  color: var(--text-main);
   line-height: 1.35;
 }
 
 .product-desc {
   font-size: 0.82rem;
-  color: var(--abu-teks);
+  color: var(--text-muted);
   margin: 0;
   flex: 1;
   line-height: 1.5;
 }
 
-/* Baris Harga dengan Harga Asli Coret & Diskon */
 .product-price-row {
   display: flex;
   align-items: baseline;
@@ -726,9 +1229,13 @@ main {
   font-size: 1.05rem;
 }
 
+body.dark-mode .product-price {
+  color: #38d9b8;
+}
+
 .product-price-coret {
   font-size: 0.8rem;
-  color: #8fa099;
+  color: var(--text-subtle);
   text-decoration: line-through;
   font-weight: 500;
 }
@@ -737,9 +1244,9 @@ main {
   margin-top: 8px;
   border: none;
   background: linear-gradient(135deg, var(--brand-agri) 0%, var(--brand-agri-dark) 100%);
-  color: var(--putih);
+  color: #ffffff;
   padding: 10px 14px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   font-size: 0.86rem;
   font-weight: 600;
   font-family: inherit;
@@ -760,12 +1267,12 @@ main {
 
 .empty-state {
   text-align: center;
-  color: var(--abu-teks);
+  color: var(--text-muted);
   padding: 48px 16px;
   font-size: 0.95rem;
-  background: var(--putih);
-  border: 1px dashed var(--border);
-  border-radius: var(--radius);
+  background: var(--surface-card);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-md);
   margin-top: 16px;
 }
 
@@ -775,14 +1282,15 @@ main {
 
 .footer {
   text-align: center;
-  padding: 38px 18px 40px;
-  background: rgba(255, 255, 255, 0.85);
-  border-top: 1px solid var(--border);
-  margin-top: 48px;
+  padding: 40px 18px 44px;
+  background: var(--surface-card);
+  border-top: 1px solid var(--border-color);
+  margin-top: 52px;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .footer-inner {
-  max-width: 640px;
+  max-width: 660px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -791,67 +1299,132 @@ main {
 }
 
 .footer-logo-img {
-  height: 30px;
+  height: 32px;
   width: auto;
-  opacity: 0.9;
+  opacity: 0.92;
 }
 
 .footer-collab {
   font-size: 0.86rem;
-  color: var(--abu-teks);
+  color: var(--text-muted);
   margin: 0;
   line-height: 1.6;
 }
 
 .footer-copy {
   font-size: 0.78rem;
-  color: #84938d;
+  color: var(--text-subtle);
   margin: 0;
 }
 
 /* ============================================================
-   RESPONSIVITAS MOBILE & DESKTOP
+   RESPONSIVITAS MOBILE & DESKTOP (OPTIMASI HP)
    ============================================================ */
 
 @media (max-width: 639px) {
   .hero {
-    padding: 36px 16px;
+    padding: 28px 14px;
     margin: 12px 0 20px;
+    min-height: 360px;
+  }
+
+  .hero-card {
+    padding: 24px 16px;
+    border-radius: 16px;
   }
 
   .hero h1 {
-    font-size: 1.55rem;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
   }
 
-  .hero p {
+  .hero-desc {
     font-size: 0.88rem;
+    margin-bottom: 14px;
   }
 
   .hero-badge {
     font-size: 0.72rem;
-    padding: 5px 11px;
+    padding: 4px 10px;
     margin-bottom: 10px;
   }
 
+  .hero-tag-item {
+    font-size: 0.72rem;
+    padding: 3px 9px;
+  }
+
   .topbar-inner {
-    padding: 10px 14px;
+    padding: 10px 12px;
   }
 
   .brand-logo-img {
-    height: 28px;
+    height: 26px;
   }
 
   .topbar-partner {
     font-size: 0.72rem;
-    padding: 4px 9px;
+    padding: 4px 8px;
   }
 
-  .payment-steps-card {
-    padding: 18px;
+  .partner-text {
+    display: none;
   }
 
-  .steps-title {
-    font-size: 1rem;
+  .theme-toggle-btn {
+    padding: 5px 9px;
+    font-size: 0.76rem;
+  }
+
+  .theme-text {
+    display: none;
+  }
+
+  .category-card {
+    min-height: 175px;
+  }
+
+  .category-name {
+    font-size: 0.92rem;
+  }
+
+  .category-badge {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+  }
+
+  .sample-card {
+    width: 190px;
+  }
+
+  .story-track {
+    min-height: 340px;
+  }
+
+  .story-img-container {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .story-card-body {
+    padding: 16px 14px 20px;
+  }
+
+  .story-heading {
+    font-size: 1.08rem;
+  }
+
+  .story-paragraph {
+    font-size: 0.84rem;
+  }
+
+  .story-dots {
+    bottom: 12px;
+    right: 16px;
+  }
+
+  .payment-steps-full {
+    padding: 20px 16px;
   }
 }
 
@@ -860,12 +1433,43 @@ main {
     grid-template-columns: repeat(4, 1fr);
   }
 
+  .steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .product-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .hero h1 {
-    font-size: 2.3rem;
+  .category-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .filter-bar {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+@media (min-width: 860px) {
+  .steps-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .story-track {
+    min-height: 460px;
+  }
+
+  .story-img-container {
+    height: auto;
+    aspect-ratio: 16 / 9;
+    max-height: 460px;
+  }
+
+  .story-heading {
+    font-size: 1.35rem;
   }
 }
 

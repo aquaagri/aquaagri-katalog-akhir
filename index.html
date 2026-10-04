@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AquaAgri.id — Katalog Kebutuhan Perikanan & Bahari Terpercaya</title>
-<meta name="description" content="Katalog resmi kurasi produk perikanan, hasil laut segar, aneka olahan ikan higienis, alat pancing, dan sarana budidaya modern berkolaborasi dengan Shopee Indonesia.">
+<title>aquaagri.id — Solusi Terpadu Dunia Perikanan & Bahari Nusantara</title>
+<meta name="description" content="aquaagri.id adalah platform dan ekosistem bahari terintegrasi: mitra resmi Shopee Indonesia untuk hasil laut segar, olahan ikan bergizi, perlengkapan pancing, dan sarana budidaya modern.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -13,16 +13,22 @@
 <body>
 
   <!-- ============================================================
-       TOPBAR / NAVIGASI
+       TOPBAR / NAVIGASI DENGAN TOGGLE MODE GELAP
        ============================================================ -->
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="brand" id="brandLogo" role="button" tabindex="0" aria-label="Beranda AquaAgri.id">
+      <div class="brand" id="brandLogo" role="button" tabindex="0" aria-label="Beranda aquaagri.id">
         <img src="nama-brand.png" alt="aquaagri.id" class="brand-logo-img">
       </div>
-      <div class="topbar-partner">
-        <span class="partner-text">Bermitra Resmi dengan</span>
-        <span class="partner-shopee">Shopee</span>
+      <div class="topbar-actions">
+        <div class="topbar-partner">
+          <span class="partner-text">Bermitra Resmi dengan</span>
+          <span class="partner-shopee">Shopee</span>
+        </div>
+        <button id="themeToggleBtn" class="theme-toggle-btn" type="button" aria-label="Ganti mode tampilan terang atau malam" title="Mode Malam/Terang">
+          <span class="theme-icon" id="themeIcon">🌙</span>
+          <span class="theme-text" id="themeText">Malam</span>
+        </button>
       </div>
     </div>
   </header>
@@ -34,21 +40,27 @@
 
     <!-- ------------------------------------------------------------
          1. HALAMAN BERANDA (HOME VIEW)
-         - Tidak memuat daftar produk
-         - Menampilkan Hero, Pencarian, Kategori, & Panduan Pembayaran
          ------------------------------------------------------------ -->
     <section id="homeView" class="view">
       
-      <!-- HERO BANNER (Head dengan Background Foto Lanskap Keramba) -->
+      <!-- HERO BANNER (Background Foto Keramba Cerah & Deskripsi aquaagri.id) -->
       <section class="hero">
         <div class="hero-overlay"></div>
-        <div class="hero-content">
+        <div class="hero-card">
           <div class="hero-badge">
             <span class="badge-dot"></span>
-            Kolaborasi & Bermitra Resmi dengan Shopee Indonesia
+            Ekosistem Maritim & Agribisnis Terpercaya
           </div>
-          <h1>Katalog Kebutuhan Perikanan & Bahari</h1>
-          <p>Pusat kurasi kebutuhan perikanan terlengkap: hasil laut segar, aneka olahan ikan bergizi, perlengkapan pancing, dan sarana budidaya modern berkualitas prima.</p>
+          <h1>Solusi Terpadu Dunia Perikanan & Bahari Nusantara</h1>
+          <p class="hero-desc">
+            aquaagri.id hadir sebagai platform terintegrasi yang menghubungkan para petambak, pembudidaya, pehobi mancing, serta masyarakat dengan hasil laut segar dan produk perikanan terbaik nusantara.
+          </p>
+          <div class="hero-tags">
+            <span class="hero-tag-item">🌊 Hasil Laut Segar</span>
+            <span class="hero-tag-item">🌱 Budidaya Modern</span>
+            <span class="hero-tag-item">🎣 Perlengkapan Mancing</span>
+            <span class="hero-tag-item">🍥 Olahan Ikan Higienis</span>
+          </div>
         </div>
       </section>
 
@@ -56,100 +68,201 @@
       <section class="search-bar">
         <div class="search-input-wrap">
           <span class="search-icon" aria-hidden="true">🔍</span>
-          <input type="text" id="searchInput" placeholder="Cari kebutuhan perikanan: ikan salmon, pelet, joran, abon..." aria-label="Cari produk perikanan">
+          <input type="text" id="searchInput" placeholder="Cari kebutuhan perikanan: salmon, pelet, joran, abon, udang..." aria-label="Cari produk perikanan">
         </div>
       </section>
 
-      <!-- KATEGORI PRODUK -->
+      <!-- 4 KATEGORI PRODUK UTAMA -->
       <section class="categories">
         <div class="section-header">
           <div>
-            <span class="section-tag">KATEGORI PILIHAN</span>
+            <span class="section-tag">KATEGORI UTAMA</span>
             <h2 class="section-title">Pilihan Kebutuhan Perikanan</h2>
           </div>
-          <p class="section-desc">Pilih kategori untuk melihat katalog produk lengkap dengan penawaran diskon spesial.</p>
+          <p class="section-desc">Pilih kategori untuk menjelajahi katalog lengkap dengan penawaran diskon spesial mitra Shopee.</p>
         </div>
         <div class="category-grid" id="categoryGrid">
-          <!-- Kartu kategori di-render lewat script.js -->
+          <!-- Kartu kategori di-render dinamis lewat script.js dengan foto background & animasi panah kursor -->
         </div>
       </section>
 
-      <!-- PANDUAN PEMBAYARAN & JAMINAN BELANJA AMAN (Pengganti Produk di Beranda) -->
+      <!-- ============================================================
+           CAROUSEL OTOMATIS: SAMPEL PRODUK DARI 4 KATEGORI
+           ============================================================ -->
+      <section class="sample-carousel-section" aria-label="Sampel Produk Unggulan Tiap Kategori">
+        <div class="section-header-carousel">
+          <div>
+            <span class="section-tag">SAMPEL DARI 4 KATEGORI</span>
+            <h2 class="section-title">Sampel Produk Pilihan aquaagri.</h2>
+            <p class="section-desc">Cuplikan produk dari masing-masing kategori: olahan ikan, seafood segar, alat pancing, dan budidaya.</p>
+          </div>
+          <div class="carousel-nav-btns">
+            <button id="samplePrevBtn" class="carousel-btn" aria-label="Geser ke kiri" type="button">‹</button>
+            <button id="sampleNextBtn" class="carousel-btn" aria-label="Geser ke kanan" type="button">›</button>
+          </div>
+        </div>
+
+        <div class="sample-carousel-viewport" id="sampleCarouselViewport">
+          <div class="sample-carousel-track" id="sampleCarouselTrack">
+            <!-- Kartu sampel produk di-render lewat script.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           CAROUSEL OTOMATIS: EKOSISTEM BAHARI & KOMUNITAS
+           (Petambak/Pembudidaya, Produk Olahan Ikan, Pemancing, Ikan Segar)
+           Gambar disederhanakan, crop pas, foto dari folder
+           ============================================================ -->
+      <section class="story-carousel-section" aria-label="Ekosistem dan Dedikasi Bahari">
+        <div class="section-header-carousel">
+          <div>
+            <span class="section-tag">POTRET EKOSISTEM & KOMUNITAS</span>
+            <h2 class="section-title">Dedikasi Bahari dari Hulu ke Hilir</h2>
+            <p class="section-desc">Kolaborasi nyata bersama petambak, pembudidaya, perajin olahan ikan, pehobi mancing, serta nelayan hasil laut segar.</p>
+          </div>
+          <div class="carousel-nav-btns">
+            <button id="storyPrevBtn" class="carousel-btn" aria-label="Slide sebelumnya" type="button">‹</button>
+            <button id="storyNextBtn" class="carousel-btn" aria-label="Slide berikutnya" type="button">›</button>
+          </div>
+        </div>
+
+        <div class="story-carousel-box" id="storyCarousel">
+          <div class="story-track" id="storyTrack">
+            
+            <!-- Slide 1: Petambak Keramba Apung -->
+            <div class="story-slide active">
+              <div class="story-img-container">
+                <span class="story-floating-badge">🌱 Mitra Petambak Keramba</span>
+                <img src="poto-petambak.jpg" alt="Mitra Petambak Keramba Apung aquaagri." class="story-photo" loading="lazy">
+              </div>
+              <div class="story-card-body">
+                <h3 class="story-heading">Ketekunan Petambak Keramba Apung Nusantara</h3>
+                <p class="story-paragraph">Bermitra langsung dengan petambak pesisir dalam menjaga kelestarian keramba apung serta pemantauan kualitas panen yang sehat dan berkelanjutan.</p>
+              </div>
+            </div>
+
+            <!-- Slide 2: Aneka Produk Olahan Ikan -->
+            <div class="story-slide">
+              <div class="story-img-container">
+                <span class="story-floating-badge">🍥 Produk Olahan Ikan</span>
+                <img src="produk-olahan-ikan.jpg" alt="Ragam Produk Olahan Ikan Higienis aquaagri." class="story-photo" loading="lazy">
+              </div>
+              <div class="story-card-body">
+                <h3 class="story-heading">Aneka Olahan Ikan Higienis, Lezat & Bergizi</h3>
+                <p class="story-paragraph">Dari abon tuna asli, sambal roa asap khas Manado, kerupuk tenggiri gurih, hingga baso ikan bernutrisi tinggi yang siap saji untuk keluarga.</p>
+              </div>
+            </div>
+
+            <!-- Slide 3: Komunitas Pemancing -->
+            <div class="story-slide">
+              <div class="story-img-container">
+                <span class="story-floating-badge">🎣 Sahabat Pemancing</span>
+                <img src="poto-pemancing-1.jpg" alt="Komunitas Pemancing Bahari aquaagri." class="story-photo" loading="lazy">
+              </div>
+              <div class="story-card-body">
+                <h3 class="story-heading">Solusi Lengkap Kebutuhan Pemancing Bahari</h3>
+                <p class="story-paragraph">Dukungan penuh bagi pecinta sportfishing dengan pilihan joran carbon berdaya lentur prima, senar tangguh, serta racikan pelet dan essen aroma pikat teruji.</p>
+              </div>
+            </div>
+
+            <!-- Slide 4: Ikan & Seafood Segar -->
+            <div class="story-slide">
+              <div class="story-img-container">
+                <span class="story-floating-badge">🦐 Ikan & Seafood Segar</span>
+                <img src="ikan-segar.jpg" alt="Ikan dan Seafood Segar Nelayan aquaagri." class="story-photo" loading="lazy">
+              </div>
+              <div class="story-card-body">
+                <h3 class="story-heading">Tangkapan Laut Segar Standar Ekspor</h3>
+                <p class="story-paragraph">Hasil laut pilihan mulai dari kakap merah, udang vaname, kepiting bakau, hingga fillet salmon trout segar berstandar cold-chain higienis.</p>
+              </div>
+            </div>
+
+            <!-- Slide 5: Pembudidaya Ikan -->
+            <div class="story-slide">
+              <div class="story-img-container">
+                <span class="story-floating-badge">🐟 Inovasi Pembudidaya</span>
+                <img src="poto-pembudidaya.jpg" alt="Pembudidaya Ikan aquaagri." class="story-photo" loading="lazy">
+              </div>
+              <div class="story-card-body">
+                <h3 class="story-heading">Pemberdayaan Pembudidaya Ikan Modern</h3>
+                <p class="story-paragraph">Mendukung sarana pembibitan unggul, aerasi hemat energi, dan jaring waring bermutu tinggi untuk memaksimalkan produktivitas kolam budidaya.</p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Carousel Indicators (Dots) -->
+          <div class="story-dots" id="storyDots">
+            <button class="story-dot active" data-index="0" aria-label="Slide 1"></button>
+            <button class="story-dot" data-index="1" aria-label="Slide 2"></button>
+            <button class="story-dot" data-index="2" aria-label="Slide 3"></button>
+            <button class="story-dot" data-index="3" aria-label="Slide 4"></button>
+            <button class="story-dot" data-index="4" aria-label="Slide 5"></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           PANDUAN PEMBAYARAN & 4 LANGKAH MUDAH BELANJA DI aquaagri.id
+           ============================================================ -->
       <section class="payment-guide-section">
         <div class="section-header">
           <div>
             <span class="section-tag">TRANSAKSI MUDAH & TERPERCAYA</span>
-            <h2 class="section-title">Panduan Pembayaran & Jaminan Belanja</h2>
+            <h2 class="section-title">4 Langkah Mudah Belanja di aquaagri.id</h2>
           </div>
-          <p class="section-desc">Seluruh transaksi terhubung langsung dengan sistem pembayaran resmi Shopee yang terverifikasi, aman, dan dilindungi garansi 100% uang kembali.</p>
+          <p class="section-desc">Nikmati kemudahan transaksi terpercaya, praktis, dan dilindungi garansi keamanan pembayaran resmi Shopee Indonesia.</p>
         </div>
 
-        <div class="payment-grid">
-          
-          <!-- KARTU SENTUHAN NYATA (Foto Pembudidaya Asli: poto-background.jpg) -->
-          <div class="real-touch-card">
-            <div class="real-touch-img-wrap">
-              <img src="poto-background.jpg" alt="Mitra Petambak dan Pembudidaya Ikan AquaAgri" class="real-touch-img" loading="lazy">
-              <div class="real-touch-badge">
-                <span class="real-touch-icon">✓</span>
-                <span>Mitra Petambak & Pembudidaya Langsung</span>
+        <div class="payment-steps-full">
+          <div class="steps-grid">
+            <div class="step-card">
+              <div class="step-header-card">
+                <span class="step-badge-num">1</span>
+                <span class="step-emoji">🧭</span>
               </div>
+              <h4 class="step-card-title">Pilih Kategori & Produk</h4>
+              <p class="step-card-desc">Jelajahi kategori produk perikanan sesuai kebutuhan Anda dan dapatkan penawaran diskon spesial.</p>
             </div>
-            <div class="real-touch-body">
-              <h3>Mutu Terjamin dari Sumber Asli</h3>
-              <p>Produk perikanan kami dikurasi langsung dari jaringan petambak dan pembudidaya terpercaya. Pengemasan higienis berstandar rantai dingin (cold chain) untuk menjaga kualitas dan kesegaran optimal.</p>
+
+            <div class="step-card">
+              <div class="step-header-card">
+                <span class="step-badge-num">2</span>
+                <span class="step-emoji">🛍️</span>
+              </div>
+              <h4 class="step-card-title">Klik "Lihat Produk"</h4>
+              <p class="step-card-desc">Sistem mengarahkan Anda langsung ke toko mitra resmi terverifikasi di aplikasi Shopee Indonesia.</p>
+            </div>
+
+            <div class="step-card">
+              <div class="step-header-card">
+                <span class="step-badge-num">3</span>
+                <span class="step-emoji">💳</span>
+              </div>
+              <h4 class="step-card-title">Pilih Metode Pembayaran</h4>
+              <p class="step-card-desc">Fleksibel bayar via COD (Bayar di Tempat), Transfer Bank, ShopeePay, SPayLater, atau gerai retail.</p>
+            </div>
+
+            <div class="step-card">
+              <div class="step-header-card">
+                <span class="step-badge-num">4</span>
+                <span class="step-emoji">📦</span>
+              </div>
+              <h4 class="step-card-title">Kirim Cepat & Garansi Aman</h4>
+              <p class="step-card-desc">Pesanan dipacking higienis dan dikirim dengan proteksi Garansi Shopee 100% uang kembali.</p>
             </div>
           </div>
 
-          <!-- 4 LANGKAH PEMESANAN & PEMBAYARAN -->
-          <div class="payment-steps-card">
-            <h3 class="steps-title">4 Langkah Mudah Belanja di AquaAgri</h3>
-            
-            <div class="steps-list">
-              <div class="step-item">
-                <div class="step-num">1</div>
-                <div class="step-info">
-                  <h4>Pilih Kategori & Produk</h4>
-                  <p>Buka kategori pilihan Anda dan temukan produk perikanan terbaik dengan promo diskon spesial.</p>
-                </div>
-              </div>
-
-              <div class="step-item">
-                <div class="step-num">2</div>
-                <div class="step-info">
-                  <h4>Klik "Lihat Produk"</h4>
-                  <p>Sistem akan mengarahkan Anda langsung ke toko resmi mitra terverifikasi di platform Shopee.</p>
-                </div>
-              </div>
-
-              <div class="step-item">
-                <div class="step-num">3</div>
-                <div class="step-info">
-                  <h4>Pilih Metode Pembayaran Fleksibel</h4>
-                  <p>Tersedia metode bayar lengkap: COD (Bayar di Tempat), Transfer Bank, ShopeePay, SPayLater, atau gerai retail.</p>
-                </div>
-              </div>
-
-              <div class="step-item">
-                <div class="step-num">4</div>
-                <div class="step-info">
-                  <h4>Pengiriman Cepat & Garansi Shopee</h4>
-                  <p>Pesanan dipacking aman dan dikirim dengan perlindungan Garansi Shopee. Dana Anda aman sampai barang tiba.</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- CHIPS METODE BAYAR YANG DIDUKUNG -->
-            <div class="payment-methods-strip">
-              <span class="pay-method-badge">💵 COD (Bayar di Tempat)</span>
-              <span class="pay-method-badge">📱 ShopeePay</span>
-              <span class="pay-method-badge">🏦 Transfer Bank (BCA, Mandiri, BRI, BNI)</span>
-              <span class="pay-method-badge">💳 SPayLater</span>
-              <span class="pay-method-badge">🏪 Indomaret & Alfamart</span>
-            </div>
-
+          <!-- CHIPS METODE BAYAR YANG DIDUKUNG -->
+          <div class="payment-methods-strip">
+            <span class="pay-method-title">Metode Pembayaran Resmi:</span>
+            <span class="pay-method-badge">💵 COD (Bayar di Tempat)</span>
+            <span class="pay-method-badge">📱 ShopeePay</span>
+            <span class="pay-method-badge">🏦 Transfer Bank (BCA, Mandiri, BRI, BNI)</span>
+            <span class="pay-method-badge">💳 SPayLater</span>
+            <span class="pay-method-badge">🏪 Indomaret & Alfamart</span>
           </div>
-
         </div>
       </section>
 
@@ -157,8 +270,6 @@
 
     <!-- ------------------------------------------------------------
          2. HALAMAN KATALOG PRODUK PER KATEGORI (CATEGORY VIEW)
-         - Produk ditampilkan di sini sesuai kategori yang dipilih
-         - Dilengkapi sentuhan diskon di setiap produk
          ------------------------------------------------------------ -->
     <section id="categoryView" class="view hidden">
       <div class="category-header">
@@ -207,8 +318,8 @@
       <div class="footer-brand">
         <img src="nama-brand.png" alt="aquaagri.id" class="footer-logo-img">
       </div>
-      <p class="footer-collab">Kolaborasi & bermitra resmi dengan pihak Shopee untuk kemudahan transaksi, jaminan keamanan dana, dan pengiriman terpercaya ke seluruh Indonesia.</p>
-      <p class="footer-copy">&copy; 2026 aquaagri.id — Katalog resmi produk perikanan, hasil laut, dan alat budidaya.</p>
+      <p class="footer-collab">Solusi terpadu perikanan nusantara bermitra resmi dengan Shopee Indonesia untuk kemudahan transaksi, jaminan keamanan dana, dan pengiriman terpercaya ke seluruh Indonesia.</p>
+      <p class="footer-copy">&copy; 2026 aquaagri.id — Solusi Terpadu Dunia Perikanan & Agribisnis Bahari Nusantara.</p>
     </div>
   </footer>
 
