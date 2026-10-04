@@ -129,6 +129,162 @@ const products = [
     kategori: "produk-olahan-ikan",
     linkAffiliate: "https://s.shopee.co.id/9V1p1QZKrx"
   },
+   {
+    id: 12,
+    nama: "Siomay Ikan Tenggiri Frozen 10 Pcs Jumbo",
+    harga: "Rp59.000",
+    hargaCoret: "Rp70.000",
+    diskon: "15%",
+    gambar: "assets/products/Siomay-Ikan-Tenggiri-Frozen.jpg",
+    deskripsi: "Siomay ikan tenggiri frozen 10 pcs jumbo dengan tekstur lembut dan rasa gurih. Sangat cocok untuk camilan atau hidangan utama.",
+    kategori: "produk-olahan-ikan",
+    linkAffiliate: "https://s.shopee.co.id/70KdySvDX6"
+  },
+   {
+    id: 13,
+    nama: "Otak Otak Ikan Tenggiri Fresh Frozen Isi 50pcs",
+    harga: "Rp18.500",
+    hargaCoret: "Rp30.000",
+    diskon: "53%",
+    gambar: "assets/products/Otak-Otak-Ikan-Tenggiri-Fresh-Frozen.jpg",
+    deskripsi: "Otak otak ikan tenggiri fresh frozen isi 50pcs dengan tekstur lembut dan rasa gurih. Sangat cocok untuk camilan atau hidangan utama.",
+    kategori: "produk-olahan-ikan",
+    linkAffiliate: "https://s.shopee.co.id/5VVqC4JCA4"
+  },
+  {
+    id: 14,
+    nama: "Baby Fish Crispy Original Gurih Daun Jeruk 100gr",
+    harga: "Rp17.000",
+    hargaCoret: "Rp35.000",
+    diskon: "51%",
+    gambar: "assets/products/Baby-Fish-Crispy-Original.jpg",
+    deskripsi: "Baby fish crispy original gurih daun jeruk 100gr. Sangat cocok untuk camilan atau hidangan utama.",
+    kategori: "produk-olahan-ikan",
+    linkAffiliate: "https://s.shopee.co.id/9zyFZ82pEA"
+  },
+  {
+    id: 15,
+    nama: "Edo Chikuwa Olahan Ikan 250gr",
+    harga: "Rp29.000",
+    hargaCoret: "Rp45.000",
+    diskon: "35%",
+    gambar: "assets/products/Edo-Chikuwa-Olahan-Ikan.jpg",
+    deskripsi: "Edo chikuwa olahan ikan 250 gr. Sangat cocok untuk camilan atau hidangan utama.",
+    kategori: "produk-olahan-ikan",
+    linkAffiliate: "https://s.shopee.co.id/113QqwF09o"
+  },
+  {
+    id: 16,
+    nama: "Dimsum Frozen Isi 32 500gr",
+    harga: "Rp17.000",
+    hargaCoret: "Rp30.000",
+    diskon: "43%",
+    gambar: "assets/products/Dimsum-Frozen-Isi-32-500gr.jpg",
+    deskripsi: "Dimsum frozen isi 32 pcs 500gr. Sangat cocok untuk camilan atau hidangan utama.",
+    kategori: "produk-olahan-ikan",
+    linkAffiliate: "https://s.shopee.co.id/2LYoRfy7M5"
+  },
+  {
+    id: 17,
+    nama: "Basreng KATAJI Mentah 10Kg",
+    harga: "Rp177.000",
+    hargaCoret: "Rp200.000",
+    diskon: "11%",
+    gambar: "assets/products/Basreng-KATAJI-Mentah-10Kg.jpg",
+    deskripsi: "Basreng KATAJI mentah 10Kg. Sangat cocok untuk camilan atau hidangan utama.",
+    kategori: "produk-olahan-ikan",
+    linkAffiliate: "https://s.shopee.co.id/30oVFLPZpQ"
+  },
+  {
+    id: 18,
+    nama: "Basreng Lontong Mentah Juragan Basreng Ikan",
+    harga: "Rp25.000",
+    hargaCoret: "Rp40.000",
+    diskon: "38%",
+    gambar: "assets/products/Basreng-Lontong-Mentah-Juragan-Basreng-Ikan.jpg",
+    deskripsi: "Basreng lontong mentah juragan basreng ikan. Sangat cocok untuk camilan atau hidangan utama.",
+    kategori: "produk-olahan-ikan",
+    linkAffiliate: "https://s.shopee.co.id/5fpGQQVfpS"
+  },
+  {
+    id: 19,
+    nama: "Scallop Ikan Isi 40 Butir",
+    harga: "Rp15.000",
+    hargaCoret: "Rp30.000",
+    diskon: "50%",
+    gambar: "assets/products/Scallop-Ikan-Isi-40-Butir.jpg",
+    deskripsi: "Scallop ikan isi 40 butir. Sangat cocok untuk camilan atau hidangan utama.",
+    kategori: "produk-olahan-ikan",
+    linkAffiliate: "https://s.shopee.co.id/3g4C3L31xN"
+  },
+  {
+    id: 20,
+    nama: "Pempek Lala 26 Ilir Palembang 40pc",
+    harga: "Rp115.000",
+    hargaCoret: "Rp150.000",
+    diskon: "23%",
+    gambar: "assets/products/PEMPEK-Lala-26-Ilir-Palembang-40pc.jpg",
+    deskripsi: "Pempek Lala 26 ilir dikirim dalam keadaan beku atau frozen,Terbuat dari ikan segar pilihan tanpa bahan pengawet",
+    kategori: "produk-olahan-ikan",
+    linkAffiliate: "https://s.shopee.co.id/1BMr5IxrLq"
+  },
+  {
+    id: 21,
+    nama: "Pempek Frozen Khas Palembang Paket Hemat 10 Pcs",
+    harga: "Rp32.000",
+    hargaCoret: "Rp47.000",
+    diskon: "32%",
+    gambar: "assets/products/Pempek-Frozen-Khas-Palembang-Paket-10-pcs.jpg",
+    deskripsi: "Pempek frozen khas Palembang paket hemat 10 pcs.Terbuat dari ikan segar pilihan tanpa bahan pengawet.",
+    kategori: "produk-olahan-ikan",
+    linkAffiliate: "https://s.shopee.co.id/50ZZejawl9"
+  },
+  {
+    id: 22,
+    nama: "Cemilan Baby Crab Crispy Khas Lamongan",
+    harga: "Rp30.000",
+    hargaCoret: "Rp45.000",
+    diskon: "33%",
+    gambar: "assets/products/Cemilan-Baby-Crab-Crispy-Khas-Lamongan.jpg",
+    deskripsi: "Camilan kepiting bayi yang renyah dan gurih, rasanya enak, cocok sebagai camilan kapan saja.",
+    kategori: "produk-olahan-ikan",
+    linkAffiliate: "https://s.shopee.co.id/4B0SfUWIWz"
+  },
+{
+    id: 23,
+    nama: "Baby Crab Crispy 75gr",
+    harga: "Rp14.000",
+    hargaCoret: "Rp30.000",
+    diskon: "53%",
+    gambar: "assets/products/Baby-Crab-Crispy-75gr.jpg",
+    deskripsi: "Camilan seafood renyah berbahan dasar baby rajungan utuh, digoreng krispi dan dibumbui dengan rasa yang menggoda!",
+    kategori: "produk-olahan-ikan",
+    linkAffiliate: "https://s.shopee.co.id/BUJvFWquL"
+  },
+  {
+    id: 24,
+    nama: " Sambal Teri",
+    harga: "Rp32.000",
+    hargaCoret: "Rp40.000",
+    diskon: "20%",
+    gambar: "assets/products/Sambal-Teri.jpg",
+    deskripsi: "Sambal teri yang lezat dan pedas, cocok sebagai pelengkap nasi atau camilan.",
+    kategori: "produk-olahan-ikan",
+    linkAffiliate: "https://s.shopee.co.id/AAHfqAQLNI"
+  },
+  {
+    id: 25,
+    nama: "Sambal Cumi Pedas Gurih",
+    harga: "Rp27.000",
+    hargaCoret: "Rp35.000",
+    diskon: "23%",
+    gambar: "assets/products/Sambal-Cumi-Pedas-Gurih.jpg",
+    deskripsi: "Sambal cumi pedas gurih yang lezat, cocok sebagai pelengkap nasi atau camilan.",
+    kategori: "produk-olahan-ikan",
+    linkAffiliate: "https://s.shopee.co.id/6fhnfxX7RM"
+  },
+
+
 
   // --- Kategori: Ikan & Seafood Segar ---
   {
