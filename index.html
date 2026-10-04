@@ -279,6 +279,7 @@
         <div class="category-header-text">
           <h2 id="categoryTitle">Semua Produk</h2>
           <span class="category-count" id="categoryCount">Menampilkan katalog produk</span>
+          <p id="categoryHeaderDesc" class="category-header-desc hidden"></p>
         </div>
       </div>
 
@@ -322,6 +323,48 @@
       <p class="footer-copy">&copy; 2026 aquaagri.id — Solusi Terpadu Dunia Perikanan & Agribisnis Bahari Nusantara.</p>
     </div>
   </footer>
+
+  <!-- ============================================================
+       MODAL DETAIL PRODUK (DESKRIPSI LENGKAP & SPESIFIKASI)
+       ============================================================ -->
+  <div id="modalBackdrop" class="modal-backdrop hidden" aria-hidden="true"></div>
+
+  <div id="productDetailModal" class="product-modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalProductTitle">
+    <div class="product-modal-header">
+      <div class="product-modal-tag-wrap">
+        <span class="product-modal-tag" id="modalProductCategory">Kategori</span>
+        <span class="product-modal-disc hidden" id="modalProductDiscount">Diskon</span>
+      </div>
+      <button id="modalCloseBtn" class="product-modal-close-btn" type="button" aria-label="Tutup detail produk">✕</button>
+    </div>
+
+    <div class="product-modal-body">
+      <div class="product-modal-img-wrap">
+        <img id="modalProductImage" src="" alt="" class="product-modal-img">
+      </div>
+
+      <div class="product-modal-info">
+        <h3 id="modalProductTitle" class="product-modal-title">Nama Produk</h3>
+
+        <div class="product-modal-price-row">
+          <span id="modalProductPrice" class="product-modal-price">Rp0</span>
+          <span id="modalProductPriceCoret" class="product-modal-price-coret hidden">Rp0</span>
+        </div>
+
+        <div class="product-modal-desc-box">
+          <h4 class="product-modal-desc-heading">Deskripsi Lengkap Produk:</h4>
+          <p id="modalProductDesc" class="product-modal-desc-text"></p>
+        </div>
+
+        <div class="product-modal-shopee-box">
+          <span class="product-modal-shopee-note">🔒 Transaksi terpercaya resmi via Shopee Indonesia</span>
+          <a id="modalProductShopeeLink" href="#" target="_blank" rel="noopener noreferrer" class="product-modal-buy-btn">
+            Beli Sekarang di Shopee ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js" defer></script>
 </body>

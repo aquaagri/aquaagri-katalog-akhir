@@ -973,6 +973,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const desc = document.createElement("p");
     desc.className = "product-desc";
     desc.textContent = produk.deskripsi;
+    desc.title = produk.deskripsi;
 
     const priceRow = document.createElement("div");
     priceRow.className = "product-price-row";
@@ -989,11 +990,18 @@ document.addEventListener("DOMContentLoaded", function () {
       priceRow.appendChild(coret);
     }
 
+    desc.title = "Klik untuk menampilkan deskripsi lengkap";
+    desc.addEventListener("click", function (e) {
+      e.stopPropagation();
+      desc.classList.toggle("expanded");
+    });
+
     const btn = document.createElement("button");
     btn.className = "product-btn";
     btn.type = "button";
     btn.textContent = "Lihat Produk";
-    btn.addEventListener("click", function () {
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
       openAffiliateLink(produk);
     });
 
@@ -1004,6 +1012,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     card.appendChild(imgWrap);
     card.appendChild(body);
+
+    // Klik produk untuk menampilkan deskripsi lengkap via Modal
+    card.setAttribute("role", "button");
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("aria-label", "Lihat detail " + produk.nama);
+    card.addEventListener("click", function () {
+      openProductDetailModal(produk);
+    });
+    card.addEventListener("keydown", function (e) {
+      if ((e.key === "Enter" || e.key === " ") && e.target === card) {
+        e.preventDefault();
+        openProductDetailModal(produk);
+      }
+    });
 
     return card;
   }
@@ -1080,6 +1102,20 @@ document.addEventListener("DOMContentLoaded", function () {
       searchInputCategory.value = currentKeyword;
     }
 
+    const categoryHeaderDesc = document.getElementById("categoryHeaderDesc");
+    if (categoryHeaderDesc) {
+      const catObj = categories.find(function (c) {
+        return c.id === categoryId;
+      });
+      if (catObj && catObj.deskripsi && categoryId !== "semua") {
+        categoryHeaderDesc.textContent = catObj.deskripsi;
+        categoryHeaderDesc.classList.remove("hidden");
+      } else {
+        categoryHeaderDesc.textContent = "";
+        categoryHeaderDesc.classList.add("hidden");
+      }
+    }
+
     if (homeView) homeView.classList.add("hidden");
     if (categoryView) categoryView.classList.remove("hidden");
 
@@ -1092,6 +1128,12 @@ document.addEventListener("DOMContentLoaded", function () {
     currentKeyword = "";
     if (searchInput) searchInput.value = "";
     if (searchInputCategory) searchInputCategory.value = "";
+
+    const categoryHeaderDesc = document.getElementById("categoryHeaderDesc");
+    if (categoryHeaderDesc) {
+      categoryHeaderDesc.textContent = "";
+      categoryHeaderDesc.classList.add("hidden");
+    }
 
     if (categoryView) categoryView.classList.add("hidden");
     if (homeView) homeView.classList.remove("hidden");
@@ -1160,7 +1202,111 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ---------- 15. INISIALISASI HALAMAN AWAL ----------
+  // ============================================================
+  // 15. MODAL DETAIL PRODUK (DESKRIPSI LENGKAP & SPESIFIKASI)
+  // ============================================================
+
+  const modalBackdrop = document.getElementById("modalBackdrop");
+  const productDetailModal = document.getElementById("productDetailModal");
+  const modalCloseBtn = document.getElementById("modalCloseBtn");
+  const modalProductCategory = document.getElementById("modalProductCategory");
+  const modalProductDiscount = document.getElementById("modalProductDiscount");
+  const modalProductImage = document.getElementById("modalProductImage");
+  const modalProductTitle = document.getElementById("modalProductTitle");
+  const modalProductPrice = document.getElementById("modalProductPrice");
+  const modalProductPriceCoret = document.getElementById("modalProductPriceCoret");
+  const modalProductDesc = document.getElementById("modalProductDesc");
+  const modalProductShopeeLink = document.getElementById("modalProductShopeeLink");
+
+  function openProductDetailModal(produk) {
+    if (!produk || !productDetailModal || !modalBackdrop) return;
+
+    if (modalProductCategory) {
+      modalProductCategory.textContent = getCategoryName(produk.kategori);
+    }
+
+    if (modalProductDiscount) {
+      if (produk.diskon) {
+        modalProductDiscount.textContent = produk.diskon;
+        modalProductDiscount.classList.remove("hidden");
+      } else {
+        modalProductDiscount.classList.add("hidden");
+      }
+    }
+
+    if (modalProductImage) {
+      modalProductImage.src = produk.gambar || "placeholder.jpg";
+      modalProductImage.alt = produk.nama || "Produk AquaAgri";
+    }
+
+    if (modalProductTitle) {
+      modalProductTitle.textContent = produk.nama || "Detail Produk";
+    }
+
+    if (modalProductPrice) {
+      modalProductPrice.textContent = produk.harga || "";
+    }
+
+    if (modalProductPriceCoret) {
+      if (produk.hargaCoret) {
+        modalProductPriceCoret.textContent = produk.hargaCoret;
+        modalProductPriceCoret.classList.remove("hidden");
+      } else {
+        modalProductPriceCoret.classList.add("hidden");
+      }
+    }
+
+    if (modalProductDesc) {
+      modalProductDesc.textContent = produk.deskripsi || "Tidak ada deskripsi tersedia.";
+    }
+
+    if (modalProductShopeeLink) {
+      modalProductShopeeLink.onclick = function (e) {
+        e.preventDefault();
+        openAffiliateLink(produk);
+      };
+    }
+
+    // Tampilkan modal dengan animasi halus
+    modalBackdrop.classList.remove("hidden");
+    productDetailModal.classList.remove("hidden");
+    // Trigger reflow untuk animasi transition css
+    void productDetailModal.offsetWidth;
+    modalBackdrop.classList.add("open");
+    productDetailModal.classList.add("open");
+
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeProductDetailModal() {
+    if (!productDetailModal || !modalBackdrop) return;
+
+    modalBackdrop.classList.remove("open");
+    productDetailModal.classList.remove("open");
+
+    setTimeout(function () {
+      modalBackdrop.classList.add("hidden");
+      productDetailModal.classList.add("hidden");
+    }, 250);
+
+    document.body.style.overflow = "";
+  }
+
+  if (modalCloseBtn) {
+    modalCloseBtn.addEventListener("click", closeProductDetailModal);
+  }
+
+  if (modalBackdrop) {
+    modalBackdrop.addEventListener("click", closeProductDetailModal);
+  }
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      closeProductDetailModal();
+    }
+  });
+
+  // ---------- 16. INISIALISASI HALAMAN AWAL ----------
 
   renderCategories();
   renderSampleCarousel();

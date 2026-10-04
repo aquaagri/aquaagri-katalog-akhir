@@ -790,6 +790,7 @@ body.dark-mode .sample-price {
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 2px 8px rgba(24, 146, 127, 0.25);
+  text-align: center;
 }
 
 .sample-card-btn:hover {
@@ -1101,6 +1102,18 @@ body.dark-mode .back-btn:hover {
   font-weight: 500;
 }
 
+.category-header-desc {
+  font-size: 0.84rem;
+  color: var(--brand-agri);
+  margin: 3px 0 0;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+body.dark-mode .category-header-desc {
+  color: #38d9b8;
+}
+
 .filter-bar {
   display: flex;
   flex-direction: column;
@@ -1207,12 +1220,31 @@ body.dark-mode .back-btn:hover {
   line-height: 1.35;
 }
 
+/* Tampilan deskripsi produk lebih ringkas agar tidak menghalangi tampilan produk */
 .product-desc {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
   margin: 0;
-  flex: 1;
-  line-height: 1.5;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 2.85em;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.product-desc:hover {
+  color: var(--brand-agri);
+}
+
+.product-desc.expanded {
+  -webkit-line-clamp: unset;
+  display: block;
+  overflow: visible;
+  min-height: auto;
 }
 
 .product-price-row {
@@ -1253,6 +1285,7 @@ body.dark-mode .product-price {
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
   box-shadow: 0 2px 8px rgba(24, 146, 127, 0.25);
+  text-align: center;
 }
 
 .product-btn:hover {
@@ -1318,6 +1351,264 @@ body.dark-mode .product-price {
 }
 
 /* ============================================================
+   MODAL DETAIL PRODUK (DESKRIPSI LENGKAP & SPESIFIKASI)
+   Hanya tampil saat produk diklik
+   ============================================================ */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 24, 21, 0.7);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+
+.modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.product-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.94);
+  width: 540px;
+  max-width: 92vw;
+  max-height: 88vh;
+  background: var(--surface-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  overflow: hidden;
+}
+
+.product-modal.open {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.product-modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface-topbar);
+}
+
+.product-modal-tag-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.product-modal-tag {
+  background: var(--brand-agri-light);
+  color: var(--brand-agri-dark);
+  border: 1px solid rgba(24, 146, 127, 0.3);
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+body.dark-mode .product-modal-tag {
+  background: rgba(24, 146, 127, 0.2);
+  color: #38d9b8;
+  border-color: #2da892;
+}
+
+.product-modal-disc {
+  background: var(--shopee-orange);
+  color: #ffffff;
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(238, 77, 45, 0.35);
+}
+
+.product-modal-close-btn {
+  background: var(--surface-muted);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.product-modal-close-btn:hover {
+  background: var(--shopee-light);
+  color: var(--shopee-orange);
+  border-color: var(--shopee-orange);
+}
+
+.product-modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.product-modal-img-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  max-height: 240px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-modal-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-modal-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.product-modal-title {
+  font-size: 1.18rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--text-main);
+  line-height: 1.35;
+}
+
+.product-modal-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.product-modal-price {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--brand-agri-dark);
+}
+
+body.dark-mode .product-modal-price {
+  color: #38d9b8;
+}
+
+.product-modal-price-coret {
+  font-size: 0.88rem;
+  color: var(--text-subtle);
+  text-decoration: line-through;
+}
+
+.product-modal-desc-box {
+  background: var(--surface-muted);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+}
+
+.product-modal-desc-heading {
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--brand-agri);
+  margin: 0 0 6px;
+}
+
+body.dark-mode .product-modal-desc-heading {
+  color: #38b6d3;
+}
+
+.product-modal-desc-text {
+  font-size: 0.9rem;
+  color: var(--text-main);
+  margin: 0;
+  line-height: 1.65;
+  white-space: pre-line;
+}
+
+.product-modal-shopee-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.product-modal-shopee-note {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.product-modal-buy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ee4d2d 0%, #d83d1e 100%);
+  color: #ffffff;
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 0.94rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(238, 77, 45, 0.35);
+  text-align: center;
+}
+
+.product-modal-buy-btn:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(238, 77, 45, 0.45);
+}
+
+/* Dukungan Mode Malam untuk Modal Produk */
+body.dark-mode .product-modal {
+  background: var(--surface-card);
+  border-color: var(--border-color);
+}
+
+body.dark-mode .product-modal-header {
+  background: var(--surface-topbar);
+  border-color: var(--border-color);
+}
+
+body.dark-mode .product-modal-desc-box {
+  background: #0d211c;
+  border-color: var(--border-color);
+}
+
+body.dark-mode .product-modal-close-btn {
+  background: #17332c;
+  border-color: var(--border-color);
+  color: var(--text-main);
+}
+
+/* ============================================================
    RESPONSIVITAS MOBILE & DESKTOP (OPTIMASI HP)
    ============================================================ */
 
@@ -1378,6 +1669,23 @@ body.dark-mode .product-price {
 
   .theme-text {
     display: none;
+  }
+
+  .product-desc {
+    font-size: 0.76rem;
+    line-height: 1.35;
+    -webkit-line-clamp: 2;
+    min-height: 2.7em;
+  }
+
+  .product-modal {
+    width: 95vw;
+    max-height: 90vh;
+  }
+
+  .product-modal-body {
+    padding: 14px;
+    gap: 12px;
   }
 
   .category-card {
