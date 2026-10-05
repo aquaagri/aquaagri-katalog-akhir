@@ -770,7 +770,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!sampleCarouselViewport) return;
 
     function stepScroll(direction = 1) {
-      const scrollStep = 270;
+      const firstCard = sampleCarouselTrack ? sampleCarouselTrack.querySelector(".sample-card") : null;
+      const scrollStep = firstCard ? (firstCard.offsetWidth + 16) : 260;
       const maxScroll = sampleCarouselViewport.scrollWidth - sampleCarouselViewport.clientWidth;
       
       if (direction === 1) {
@@ -794,7 +795,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!isSamplePaused) {
           stepScroll(1);
         }
-      }, 3400);
+      }, 3000); // Berganti setiap 3 detik pas
     }
 
     function stopAutoScroll() {
@@ -1305,6 +1306,39 @@ document.addEventListener("DOMContentLoaded", function () {
       closeProductDetailModal();
     }
   });
+
+  // ============================================================
+  // FITUR NAVIGASI CEPAT: CARA PESAN (4 LANGKAH MUDAH BELANJA)
+  // ============================================================
+
+  function scrollToCaraPesan() {
+    // Jika sedang berada di halaman kategori, kembali ke beranda
+    if (categoryView && !categoryView.classList.contains("hidden")) {
+      goHome();
+    }
+    const section = document.getElementById("panduanBelanja");
+    if (section) {
+      setTimeout(function () {
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+        section.classList.remove("highlight-pulse");
+        void section.offsetWidth;
+        section.classList.add("highlight-pulse");
+        setTimeout(function () {
+          section.classList.remove("highlight-pulse");
+        }, 1800);
+      }, 60);
+    }
+  }
+
+  const caraPesanNavBtn = document.getElementById("caraPesanNavBtn");
+  if (caraPesanNavBtn) {
+    caraPesanNavBtn.addEventListener("click", scrollToCaraPesan);
+  }
+
+  const heroCaraPesanBtn = document.getElementById("heroCaraPesanBtn");
+  if (heroCaraPesanBtn) {
+    heroCaraPesanBtn.addEventListener("click", scrollToCaraPesan);
+  }
 
   // ---------- 16. INISIALISASI HALAMAN AWAL ----------
 
