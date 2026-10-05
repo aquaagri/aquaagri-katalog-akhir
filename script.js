@@ -288,7 +288,7 @@ const products = [
 
   // --- Kategori: Ikan & Seafood Segar ---
   {
-    id: 12,
+    id: 1,
     nama: "Kepala Ikan Kakap Merah Segar 1kg",
     harga: "Rp44.000",
     hargaCoret: "Rp55.000",
@@ -486,30 +486,30 @@ const categories = [
   { 
     id: "produk-olahan-ikan", 
     nama: "Produk Olahan Ikan", 
-    ikon: "🍥🐠", 
+    ikon: "🍥", 
     deskripsi: "Abon, kerupuk, sambal roa & aneka olahan",
-    bg: "cat-olahan-ikan.jpg"
+    bg: "cat-olahan-real.jpg"
   },
   { 
     id: "ikan-seafood-segar", 
-    nama: "Ikan & Seafood Segar", 
-    ikon: "🦐🐟", 
+    nama: "Ikan & Seafood", 
+    ikon: "🦐", 
     deskripsi: "Kakap, salmon, udang, kepiting & tuna segar",
-    bg: "cat-seafood-segar.jpg"
+    bg: "cat-seafood-real.jpg"
   },
   { 
     id: "pancing-umpan", 
     nama: "Pancing & Umpan", 
-    ikon: "🎣🌊", 
+    ikon: "🎣", 
     deskripsi: "Joran carbon, umpan pelet & essen oplosan",
-    bg: "cat-pancing-umpan.jpg"
+    bg: "cat-pancing-real.jpg"
   },
   { 
     id: "Benih-Pakan-Budidaya", 
     nama: "Benih, Pakan & Budidaya", 
-    ikon: "🌱🧰", 
+    ikon: "🌱", 
     deskripsi: "Aerator hemat listrik, jaring waring & sarana kolam",
-    bg: "cat-budidaya.jpg"
+    bg: "cat-budidaya-real.jpg"
   }
 ];
 
@@ -598,45 +598,39 @@ document.addEventListener("DOMContentLoaded", function () {
     categoryGrid.innerHTML = "";
     categories.forEach(function (cat) {
       const card = document.createElement("div");
-      card.className = "category-card";
+      card.className = "category-card-clean";
       card.setAttribute("role", "button");
       card.setAttribute("tabindex", "0");
       card.setAttribute("aria-label", "Buka kategori " + cat.nama);
 
-      // Lapisan background foto kategori
-      const bgLayer = document.createElement("div");
-      bgLayer.className = "category-card-bg-wrap";
-      bgLayer.style.backgroundImage = "url('" + cat.bg + "')";
+      // Foto kategori realistis
+      const bgImg = document.createElement("img");
+      bgImg.className = "cat-clean-bg";
+      bgImg.src = cat.bg;
+      bgImg.alt = cat.nama;
+      bgImg.loading = "lazy";
 
-      // Lapisan overlay transparan cerdas
+      // Overlay gradien halus
       const overlay = document.createElement("div");
-      overlay.className = "category-card-overlay";
+      overlay.className = "cat-clean-overlay";
 
-      // Isi teks kartu
+      // Konten teks & tombol bulat panah teal
       const content = document.createElement("div");
-      content.className = "category-card-content";
+      content.className = "cat-clean-content";
 
-      const icon = document.createElement("span");
-      icon.className = "category-icon";
-      icon.textContent = cat.ikon;
-
-      const name = document.createElement("span");
-      name.className = "category-name";
+      const name = document.createElement("h3");
+      name.className = "cat-clean-name";
       name.textContent = cat.nama;
 
-      // Badge dengan animasi panah komputer kecil (mouse cursor)
-      const badge = document.createElement("span");
-      badge.className = "category-badge";
-      badge.innerHTML = '<span>Lihat Produk</span>' +
-        '<svg class="mouse-pointer-anim" width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
-        '<path d="M4 2L18 10L11.5 12.5L9 19L4 2Z" fill="#38d9b8" stroke="#ffffff" stroke-width="1.8" stroke-linejoin="round"/>' +
-        '</svg>';
+      const arrowBtn = document.createElement("span");
+      arrowBtn.className = "cat-clean-arrow";
+      arrowBtn.setAttribute("aria-hidden", "true");
+      arrowBtn.textContent = "→";
 
-      content.appendChild(icon);
       content.appendChild(name);
-      content.appendChild(badge);
+      content.appendChild(arrowBtn);
 
-      card.appendChild(bgLayer);
+      card.appendChild(bgImg);
       card.appendChild(overlay);
       card.appendChild(content);
 
@@ -654,106 +648,96 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ---------- 7. CAROUSEL OTOMATIS: SAMPEL PRODUK DI BAWAH 4 KATEGORI ----------
-
-  function getCategoryShortLabel(catId) {
-    switch (catId) {
-      case "produk-olahan-ikan": return "Olahan Ikan";
-      case "ikan-seafood-segar": return "Seafood Segar";
-      case "pancing-umpan": return "Pancing & Umpan";
-      case "Benih-Pakan-Budidaya": return "Sarana Budidaya";
-      default: return "Produk aquaagri.";
-    }
-  }
+  // ---------- 7. CAROUSEL PRODUK UNGGULAN (PILIHAN TERBAIK UNTUK ANDA) ----------
 
   function renderSampleCarousel() {
     if (!sampleCarouselTrack) return;
     sampleCarouselTrack.innerHTML = "";
 
-    // Ambil sampel representatif dari masing-masing 4 kategori
+    // Ambil produk-produk pilihan terbaik dari masing-masing kategori
     const samples = [];
     categories.forEach(function (cat) {
       const prodsInCat = products.filter(function (p) {
         return p.kategori === cat.id;
       });
-      samples.push(...prodsInCat.slice(0, 3));
+      samples.push(...prodsInCat.slice(0, 2));
     });
 
     samples.forEach(function (prod) {
       const card = document.createElement("div");
-      card.className = "sample-card";
+      card.className = "featured-clean-card";
+      card.setAttribute("role", "button");
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("aria-label", "Detail " + prod.nama);
 
       const imgBox = document.createElement("div");
-      imgBox.className = "sample-img-box";
+      imgBox.className = "featured-clean-img-box";
+
+      if (prod.diskon) {
+        const disc = document.createElement("span");
+        disc.className = "featured-clean-disc";
+        disc.textContent = "-" + prod.diskon;
+        imgBox.appendChild(disc);
+      }
 
       const img = document.createElement("img");
-      img.className = "sample-img";
+      img.className = "featured-clean-img";
       img.src = prod.gambar || PLACEHOLDER_IMG;
       img.alt = prod.nama;
       img.loading = "lazy";
       img.addEventListener("error", function () {
         img.src = PLACEHOLDER_IMG;
       });
-
-      const catBadge = document.createElement("span");
-      catBadge.className = "sample-badge-category";
-      catBadge.textContent = getCategoryShortLabel(prod.kategori);
-
       imgBox.appendChild(img);
-      imgBox.appendChild(catBadge);
-
-      if (prod.diskon) {
-        const disc = document.createElement("span");
-        disc.className = "sample-discount-tag";
-        disc.textContent = "-" + prod.diskon;
-        imgBox.appendChild(disc);
-      }
 
       const body = document.createElement("div");
-      body.className = "sample-card-body";
+      body.className = "featured-clean-body";
 
-      const name = document.createElement("h3");
-      name.className = "sample-card-name";
+      const name = document.createElement("h4");
+      name.className = "featured-clean-name";
       name.textContent = prod.nama;
       name.title = prod.nama;
 
-      const priceWrap = document.createElement("div");
-      priceWrap.className = "sample-price-wrap";
+      const priceRow = document.createElement("div");
+      priceRow.className = "featured-clean-price-row";
 
       const price = document.createElement("span");
-      price.className = "sample-price";
+      price.className = "featured-clean-price";
       price.textContent = prod.harga;
-      priceWrap.appendChild(price);
+      priceRow.appendChild(price);
 
       if (prod.hargaCoret) {
         const coret = document.createElement("span");
-        coret.className = "sample-price-coret";
+        coret.className = "featured-clean-price-coret";
         coret.textContent = prod.hargaCoret;
-        priceWrap.appendChild(coret);
+        priceRow.appendChild(coret);
       }
 
       const btn = document.createElement("button");
-      btn.className = "sample-card-btn";
+      btn.className = "featured-clean-btn";
       btn.type = "button";
-      btn.textContent = "Lihat Produk";
+      btn.innerHTML = '<span>Lihat Produk</span> <span aria-hidden="true">→</span>';
       btn.addEventListener("click", function (e) {
         e.stopPropagation();
         openAffiliateLink(prod);
       });
 
       body.appendChild(name);
-      body.appendChild(priceWrap);
+      body.appendChild(priceRow);
       body.appendChild(btn);
 
       card.appendChild(imgBox);
       card.appendChild(body);
 
-      // Klik kartu membuka kategori terkait
+      // Klik kartu membuka modal detail produk
       card.addEventListener("click", function () {
-        const catObj = categories.find(function (c) {
-          return c.id === prod.kategori;
-        });
-        openCategory(prod.kategori, catObj ? catObj.nama : "Katalog Produk");
+        openProductDetailModal(prod);
+      });
+      card.addEventListener("keydown", function (e) {
+        if ((e.key === "Enter" || e.key === " ") && e.target === card) {
+          e.preventDefault();
+          openProductDetailModal(prod);
+        }
       });
 
       sampleCarouselTrack.appendChild(card);
@@ -762,7 +746,7 @@ document.addEventListener("DOMContentLoaded", function () {
     initSampleAutoScroll();
   }
 
-  // Kontrol Auto-Scroll Carousel Sampel
+  // Kontrol Auto-Scroll Carousel Produk Unggulan (3 Detik Berganti)
   let sampleScrollTimer = null;
   let isSamplePaused = false;
 
@@ -770,18 +754,18 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!sampleCarouselViewport) return;
 
     function stepScroll(direction = 1) {
-      const firstCard = sampleCarouselTrack ? sampleCarouselTrack.querySelector(".sample-card") : null;
-      const scrollStep = firstCard ? (firstCard.offsetWidth + 16) : 260;
+      const firstCard = sampleCarouselTrack ? sampleCarouselTrack.querySelector(".featured-clean-card") : null;
+      const scrollStep = firstCard ? (firstCard.offsetWidth + 12) : 197;
       const maxScroll = sampleCarouselViewport.scrollWidth - sampleCarouselViewport.clientWidth;
       
       if (direction === 1) {
-        if (sampleCarouselViewport.scrollLeft >= maxScroll - 15) {
+        if (sampleCarouselViewport.scrollLeft >= maxScroll - 10) {
           sampleCarouselViewport.scrollTo({ left: 0, behavior: "smooth" });
         } else {
           sampleCarouselViewport.scrollBy({ left: scrollStep, behavior: "smooth" });
         }
       } else {
-        if (sampleCarouselViewport.scrollLeft <= 15) {
+        if (sampleCarouselViewport.scrollLeft <= 10) {
           sampleCarouselViewport.scrollTo({ left: maxScroll, behavior: "smooth" });
         } else {
           sampleCarouselViewport.scrollBy({ left: -scrollStep, behavior: "smooth" });
@@ -795,7 +779,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!isSamplePaused) {
           stepScroll(1);
         }
-      }, 3000); // Berganti setiap 3 detik pas
+      }, 3000); // Tepat 3 detik berganti secara otomatis
     }
 
     function stopAutoScroll() {
@@ -1338,6 +1322,28 @@ document.addEventListener("DOMContentLoaded", function () {
   const heroCaraPesanBtn = document.getElementById("heroCaraPesanBtn");
   if (heroCaraPesanBtn) {
     heroCaraPesanBtn.addEventListener("click", scrollToCaraPesan);
+  }
+
+  const heroJelajahiBtn = document.getElementById("heroJelajahiBtn");
+  if (heroJelajahiBtn) {
+    heroJelajahiBtn.addEventListener("click", function () {
+      const catSec = document.querySelector(".categories-clean");
+      if (catSec) {
+        catSec.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  }
+
+  const viewAllProdsBtn = document.getElementById("viewAllProdsBtn");
+  if (viewAllProdsBtn) {
+    viewAllProdsBtn.addEventListener("click", function () {
+      openCategory("semua", "Semua Produk");
+    });
+  }
+
+  const aboutAquaAgriBtn = document.getElementById("aboutAquaAgriBtn");
+  if (aboutAquaAgriBtn) {
+    aboutAquaAgriBtn.addEventListener("click", scrollToCaraPesan);
   }
 
   // ---------- 16. INISIALISASI HALAMAN AWAL ----------

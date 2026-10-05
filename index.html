@@ -13,25 +13,34 @@
 <body>
 
   <!-- ============================================================
-       TOPBAR / NAVIGASI DENGAN TOGGLE MODE GELAP
+       TOPBAR / HEADER MINIMALIS DENGAN SHOPEE, CARA PESAN & TEMA
        ============================================================ -->
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand" id="brandLogo" role="button" tabindex="0" aria-label="Beranda aquaagri.id">
-        <img src="nama-brand.png" alt="aquaagri.id" class="brand-logo-img">
+        <span class="brand-text-teal">aquaagri</span><span class="brand-text-dark">.id</span>
       </div>
       <div class="topbar-actions">
-        <div class="topbar-partner">
-          <span class="partner-text">Bermitra Resmi dengan</span>
-          <span class="partner-shopee">Shopee</span>
-        </div>
-        <button id="caraPesanNavBtn" class="cara-pesan-nav-btn" type="button" aria-label="Lihat Cara Pemesanan & 4 Langkah Belanja">
-          <span class="cara-pesan-icon">📋</span>
-          <span class="cara-pesan-text">Cara Pesan</span>
+        <a href="https://shopee.co.id" target="_blank" rel="noopener noreferrer" class="topbar-shopee-pill" aria-label="Mitra Resmi Shopee">
+          <svg class="shopee-bag-icon" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+            <path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12zm-7-8c-1.66 0-3-1.34-3-3H7c0 2.76 2.24 5 5 5s5-2.24 5-5h-2c0 1.66-1.34 3-3 3z"/>
+          </svg>
+          <span class="shopee-pill-text">Shopee</span>
+        </a>
+        <button id="caraPesanNavBtn" class="topbar-cara-pesan-pill" type="button" aria-label="Lihat Cara Pemesanan & 4 Langkah Belanja">
+          <svg class="cara-pesan-doc-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="5" y="3" width="14" height="18" rx="2"/>
+            <line x1="9" y1="8" x2="15" y2="8"/>
+            <line x1="9" y1="12" x2="15" y2="12"/>
+            <line x1="9" y1="16" x2="13" y2="16"/>
+          </svg>
+          <span>Cara Pesan</span>
         </button>
         <button id="themeToggleBtn" class="theme-toggle-btn" type="button" aria-label="Ganti mode tampilan terang atau malam" title="Mode Malam/Terang">
-          <span class="theme-icon" id="themeIcon">🌙</span>
-          <span class="theme-text" id="themeText">Malam</span>
+          <svg class="moon-icon" id="themeMoonIcon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <span class="theme-text hidden" id="themeText">Malam</span>
         </button>
       </div>
     </div>
@@ -47,75 +56,110 @@
          ------------------------------------------------------------ -->
     <section id="homeView" class="view">
       
-      <!-- HERO BANNER (Background Foto Keramba Cerah & Deskripsi aquaagri.id) -->
-      <section class="hero">
-        <div class="hero-overlay"></div>
-        <div class="hero-card">
-          <div class="hero-badge">
-            <span class="badge-dot"></span>
-            Ekosistem Maritim & Agribisnis Terpercaya
+      <!-- HERO CARD (CLEAN, MODERN, PREMIUM 4:5 MOBILE FRIENDLY) -->
+      <section class="hero-clean-section">
+        <div class="hero-clean-card">
+          <div class="hero-clean-body">
+            <div class="hero-clean-content">
+              <span class="hero-clean-label">A Q U A A G R I . I D</span>
+              <h1 class="hero-clean-title">Solusi Terpadu Dunia Perikanan & Bahari Nusantara</h1>
+              <p class="hero-clean-desc">
+                Dari hasil laut segar hingga perlengkapan budidaya dan mancing, semua ada di sini.
+              </p>
+              <div class="hero-clean-actions">
+                <button id="heroJelajahiBtn" class="hero-btn-primary" type="button">
+                  <span>Jelajahi Produk</span>
+                  <span class="btn-arrow" aria-hidden="true">→</span>
+                </button>
+                <button id="heroCaraPesanBtn" class="hero-btn-secondary" type="button">
+                  Cara Pesan
+                </button>
+              </div>
+            </div>
+            <div class="hero-clean-visual">
+              <img src="hero-kapal-laut.jpg" alt="Kapal Nelayan Bahari Nusantara aquaagri.id" class="hero-clean-img" loading="eager">
+            </div>
           </div>
-          <h1>Solusi Terpadu Dunia Perikanan & Bahari Nusantara</h1>
-          <p class="hero-desc">
-            aquaagri.id hadir sebagai platform terintegrasi yang menghubungkan para petambak, pembudidaya, pehobi mancing, serta masyarakat dengan hasil laut segar dan produk perikanan terbaik nusantara.
-          </p>
-          <div class="hero-tags">
-            <span class="hero-tag-item">🌊 Hasil Laut Segar</span>
-            <span class="hero-tag-item">🌱 Budidaya Modern</span>
-            <span class="hero-tag-item">🎣 Perlengkapan Mancing</span>
-            <span class="hero-tag-item">🍥 Olahan Ikan Higienis</span>
+
+          <!-- STRIP FITUR HORIZONTAL -->
+          <div class="hero-features-strip">
+            <div class="hero-feature-item">
+              <svg class="feature-strip-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+              <span>Hasil Laut Segar</span>
+            </div>
+            <span class="feature-divider" aria-hidden="true">|</span>
+            <div class="hero-feature-item">
+              <svg class="feature-strip-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 12s3-4 6-4 6 4 6 4 3-4 6-4"/>
+                <path d="M2 17s3-4 6-4 6 4 6 4 3-4 6-4"/>
+              </svg>
+              <span>Budidaya Modern</span>
+            </div>
+            <span class="feature-divider" aria-hidden="true">|</span>
+            <div class="hero-feature-item">
+              <svg class="feature-strip-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 4l-4 4-2-2 4-4a2.828 2.828 0 0 1 4 4z"/>
+                <path d="M14 6L4 16v4h4l10-10"/>
+              </svg>
+              <span>Perlengkapan Mancing</span>
+            </div>
           </div>
-          <div class="hero-guide-cta">
-            <button id="heroCaraPesanBtn" class="hero-guide-btn" type="button">
-              <span class="guide-btn-badge">Panduan Cepat</span>
-              <span>4 Langkah Mudah Belanja di aquaagri.id</span>
-              <span class="guide-btn-arrow" aria-hidden="true">↓</span>
+        </div>
+      </section>
+
+      <!-- PENCARIAN REAL-TIME MINIMALIS -->
+      <section class="search-bar-clean">
+        <div class="search-input-pill">
+          <svg class="search-pill-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="searchInput" placeholder="Cari produk perikanan..." aria-label="Cari produk perikanan">
+        </div>
+      </section>
+
+      <!-- 4 KATEGORI PRODUK UTAMA DENGAN FOTO REALISTIS -->
+      <section class="categories-clean" aria-label="Kategori Produk Utama">
+        <div class="category-grid-clean" id="categoryGrid">
+          <!-- Kartu kategori di-render dinamis lewat script.js dengan foto realistis & tombol bulat teal -->
+        </div>
+      </section>
+
+      <!-- PRODUK UNGGULAN (PILIHAN TERBAIK UNTUK ANDA) -->
+      <section class="featured-section-clean" aria-label="Produk Unggulan">
+        <div class="featured-header-clean">
+          <div>
+            <span class="featured-tag-clean">PRODUK UNGGULAN</span>
+            <h2 class="featured-title-clean">Pilihan Terbaik untuk Anda</h2>
+          </div>
+          <button id="viewAllProdsBtn" class="view-all-link" type="button">
+            <span>Lihat Semua</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <div class="featured-carousel-viewport" id="sampleCarouselViewport">
+          <div class="featured-carousel-track" id="sampleCarouselTrack">
+            <!-- Kartu produk unggulan bersih di-render lewat script.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- BANNER BRAND BERTEMA BAHARI (DARI PERAIRAN UNTUK KEHIDUPAN) -->
+      <section class="commitment-banner" id="commitmentBanner">
+        <div class="commitment-card">
+          <img src="banner-bahari-real.jpg" alt="Dari Perairan untuk Kehidupan aquaagri.id" class="commitment-bg" loading="lazy">
+          <div class="commitment-overlay"></div>
+          <div class="commitment-content">
+            <span class="commitment-tag">KOMITMEN KAMI</span>
+            <h3 class="commitment-title">Dari Perairan<br>untuk Kehidupan</h3>
+            <p class="commitment-desc">Menghubungkan hasil perikanan, pembudidaya, pemancing, dan kebutuhan bahari Indonesia.</p>
+            <button id="aboutAquaAgriBtn" class="commitment-btn" type="button">
+              <span>Tentang AquaAgri</span>
+              <span aria-hidden="true">→</span>
             </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- PENCARIAN REAL-TIME -->
-      <section class="search-bar">
-        <div class="search-input-wrap">
-          <span class="search-icon" aria-hidden="true">🔍</span>
-          <input type="text" id="searchInput" placeholder="Cari kebutuhan perikanan: salmon, pelet, joran, abon, udang..." aria-label="Cari produk perikanan">
-        </div>
-      </section>
-
-      <!-- 4 KATEGORI PRODUK UTAMA -->
-      <section class="categories">
-        <div class="section-header">
-          <div>
-            <span class="section-tag">KATEGORI UTAMA</span>
-            <h2 class="section-title">Pilihan Kebutuhan Perikanan</h2>
-          </div>
-          <p class="section-desc">Pilih kategori untuk menjelajahi katalog lengkap dengan penawaran diskon spesial mitra Shopee.</p>
-        </div>
-        <div class="category-grid" id="categoryGrid">
-          <!-- Kartu kategori di-render dinamis lewat script.js dengan foto background & animasi panah kursor -->
-        </div>
-      </section>
-
-      <!-- ============================================================
-           CAROUSEL OTOMATIS: KOLEKSI UNGGULAN 4 KATEGORI (CUPLIKAN PRODUK)
-           ============================================================ -->
-      <section class="sample-carousel-section" aria-label="Koleksi Unggulan Tiap Kategori">
-        <div class="section-header-carousel">
-          <div>
-            <span class="section-tag">KOLEKSI UNGGULAN 4 KATEGORI</span>
-            <h2 class="section-title">Produk Unggulan Pilihan aquaagri.</h2>
-            <p class="section-desc">Cuplikan produk terbaik dari masing-masing kategori: olahan ikan, seafood segar, alat pancing, dan budidaya modern.</p>
-          </div>
-          <div class="carousel-nav-btns">
-            <button id="samplePrevBtn" class="carousel-btn" aria-label="Geser ke kiri" type="button">‹</button>
-            <button id="sampleNextBtn" class="carousel-btn" aria-label="Geser ke kanan" type="button">›</button>
-          </div>
-        </div>
-
-        <div class="sample-carousel-viewport" id="sampleCarouselViewport">
-          <div class="sample-carousel-track" id="sampleCarouselTrack">
-            <!-- Kartu sampel produk di-render lewat script.js -->
           </div>
         </div>
       </section>
