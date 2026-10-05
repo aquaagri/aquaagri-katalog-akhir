@@ -487,28 +487,28 @@ const categories = [
     id: "produk-olahan-ikan", 
     nama: "Produk Olahan Ikan", 
     ikon: "🍥", 
-    deskripsi: "Abon, kerupuk, sambal roa & aneka olahan",
+    deskripsi: "Abon, kerupuk, pempek & aneka olahan gurih",
     bg: "cat-olahan-real.jpg"
   },
   { 
     id: "ikan-seafood-segar", 
     nama: "Ikan & Seafood", 
     ikon: "🦐", 
-    deskripsi: "Kakap, salmon, udang, kepiting & tuna segar",
+    deskripsi: "Kakap merah, udang vaname & hasil laut segar",
     bg: "cat-seafood-real.jpg"
   },
   { 
     id: "pancing-umpan", 
     nama: "Pancing & Umpan", 
     ikon: "🎣", 
-    deskripsi: "Joran carbon, umpan pelet & essen oplosan",
+    deskripsi: "Joran carbon, reel presisi & piranti mancing",
     bg: "cat-pancing-real.jpg"
   },
   { 
     id: "Benih-Pakan-Budidaya", 
     nama: "Benih, Pakan & Budidaya", 
     ikon: "🌱", 
-    deskripsi: "Aerator hemat listrik, jaring waring & sarana kolam",
+    deskripsi: "Pakan bernutrisi, aerator & sarana tambak",
     bg: "cat-budidaya-real.jpg"
   }
 ];
@@ -603,36 +603,62 @@ document.addEventListener("DOMContentLoaded", function () {
       card.setAttribute("tabindex", "0");
       card.setAttribute("aria-label", "Buka kategori " + cat.nama);
 
-      // Foto kategori realistis
+      // 1. Foto kategori realistis & berkualitas tinggi
       const bgImg = document.createElement("img");
       bgImg.className = "cat-clean-bg";
       bgImg.src = cat.bg;
       bgImg.alt = cat.nama;
       bgImg.loading = "lazy";
 
-      // Overlay gradien halus
+      // 2. Lapisan gradasi gelap transparan agar tulisan sangat nyaman dibaca
       const overlay = document.createElement("div");
       overlay.className = "cat-clean-overlay";
 
-      // Konten teks & tombol bulat panah teal
-      const content = document.createElement("div");
-      content.className = "cat-clean-content";
+      // 3. Efek kilauan animasi modern saat disorot (hover sheen)
+      const sheen = document.createElement("div");
+      sheen.className = "cat-clean-sheen";
+      sheen.setAttribute("aria-hidden", "true");
 
-      const name = document.createElement("h3");
-      name.className = "cat-clean-name";
-      name.textContent = cat.nama;
+      // 4. Ikon kategori melayang di pojok kiri atas
+      const iconPill = document.createElement("div");
+      iconPill.className = "cat-clean-icon-pill";
+      iconPill.textContent = cat.ikon;
+      iconPill.setAttribute("aria-hidden", "true");
 
-      const arrowBtn = document.createElement("span");
-      arrowBtn.className = "cat-clean-arrow";
+      // 5. Animasi panah komputer kecil di pojok kanan atas (tidak mengganggu layar)
+      const arrowBtn = document.createElement("div");
+      arrowBtn.className = "cat-arrow-small";
       arrowBtn.setAttribute("aria-hidden", "true");
-      arrowBtn.textContent = "→";
+      arrowBtn.setAttribute("title", "Kunjungi " + cat.nama);
+      arrowBtn.innerHTML = `
+        <svg class="cat-arrow-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      `;
 
-      content.appendChild(name);
-      content.appendChild(arrowBtn);
+      // 6. Kontainer teks di bagian bawah: Nama kategori & Deskripsi ringkas
+      const infoBox = document.createElement("div");
+      infoBox.className = "cat-clean-info";
 
+      const title = document.createElement("h3");
+      title.className = "cat-clean-name";
+      title.textContent = cat.nama;
+
+      const desc = document.createElement("p");
+      desc.className = "cat-clean-desc";
+      desc.textContent = cat.deskripsi;
+
+      infoBox.appendChild(title);
+      infoBox.appendChild(desc);
+
+      // Gabungkan seluruh elemen ke dalam kartu
       card.appendChild(bgImg);
       card.appendChild(overlay);
-      card.appendChild(content);
+      card.appendChild(sheen);
+      card.appendChild(iconPill);
+      card.appendChild(arrowBtn);
+      card.appendChild(infoBox);
 
       card.addEventListener("click", function () {
         openCategory(cat.id, cat.nama);
