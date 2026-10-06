@@ -364,20 +364,21 @@ body.dark-mode .theme-toggle-btn:hover {
 }
 
 /* ============================================================
-   1. HERO CARD MODERN & ELEGAN (PERSIS SEPERTI REFERENSI)
+   1. HERO CARD MODERN & ELEGAN (UKURAN KOMPAK 15% LEBIH KECIL, FOTO VIBRANT & KONTRAS TAJAM)
    ============================================================ */
 
 .hero-clean-section {
-  margin: 12px 0 20px;
+  margin: 10px 0 16px;
 }
 
 .hero-clean-card {
   background: linear-gradient(135deg, #e4f4f2 0%, #daf0eb 45%, #c8e7e1 100%);
-  border: 1px solid rgba(15, 118, 110, 0.14);
+  border: 1px solid rgba(15, 118, 110, 0.16);
   border-radius: var(--radius-xl);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   position: relative;
+  transition: box-shadow 0.3s ease;
 }
 
 body.dark-mode .hero-clean-card {
@@ -389,21 +390,21 @@ body.dark-mode .hero-clean-card {
   display: flex;
   align-items: stretch;
   position: relative;
-  min-height: 240px;
+  min-height: 204px; /* Dikurangi 15% dari 240px agar tidak mendominasi layar */
 }
 
 .hero-clean-content {
-  flex: 1.1;
-  padding: 22px 16px 20px 20px;
+  flex: 1.15;
+  padding: 17px 14px 15px 17px;
   z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
   background: linear-gradient(
     90deg,
-    rgba(228, 244, 242, 0.98) 0%,
-    rgba(228, 244, 242, 0.94) 60%,
-    rgba(228, 244, 242, 0.45) 85%,
+    rgba(228, 244, 242, 0.99) 0%,
+    rgba(228, 244, 242, 0.96) 62%,
+    rgba(228, 244, 242, 0.65) 86%,
     transparent 100%
   );
 }
@@ -411,19 +412,19 @@ body.dark-mode .hero-clean-card {
 body.dark-mode .hero-clean-content {
   background: linear-gradient(
     90deg,
-    rgba(14, 43, 37, 0.98) 0%,
-    rgba(14, 43, 37, 0.94) 60%,
-    rgba(14, 43, 37, 0.45) 85%,
+    rgba(14, 43, 37, 0.99) 0%,
+    rgba(14, 43, 37, 0.96) 62%,
+    rgba(14, 43, 37, 0.65) 86%,
     transparent 100%
   );
 }
 
 .hero-clean-label {
-  font-size: 0.68rem;
+  font-size: 0.64rem;
   font-weight: 800;
-  letter-spacing: 2px;
-  color: #0f766e;
-  margin-bottom: 8px;
+  letter-spacing: 1.8px;
+  color: #0b675e;
+  margin-bottom: 6px;
   text-transform: uppercase;
 }
 
@@ -432,12 +433,12 @@ body.dark-mode .hero-clean-label {
 }
 
 .hero-clean-title {
-  font-size: 1.45rem;
+  font-size: 1.25rem;
   font-weight: 800;
   line-height: 1.22;
-  color: #0a2c27;
-  margin: 0 0 10px;
-  letter-spacing: -0.4px;
+  color: #072722;
+  margin: 0 0 8px;
+  letter-spacing: -0.35px;
 }
 
 body.dark-mode .hero-clean-title {
@@ -445,44 +446,46 @@ body.dark-mode .hero-clean-title {
 }
 
 .hero-clean-desc {
-  font-size: 0.82rem;
-  color: #475569;
-  margin: 0 0 16px;
-  line-height: 1.45;
-  max-width: 310px;
+  font-size: 0.77rem;
+  color: #0f2e28; /* Kontras sangat jelas & tegas terhadap latar belakang */
+  font-weight: 500;
+  margin: 0 0 13px;
+  line-height: 1.42;
+  max-width: 295px;
+  letter-spacing: -0.1px;
 }
 
 body.dark-mode .hero-clean-desc {
-  color: #94a3b8;
+  color: #e2e8f0;
 }
 
 .hero-clean-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   flex-wrap: wrap;
 }
 
 .hero-btn-primary {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background: #0f766e;
   color: #ffffff;
   border: none;
-  padding: 9px 16px;
+  padding: 7px 14px;
   border-radius: var(--radius-pill);
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 3px 10px rgba(15, 118, 110, 0.25);
+  box-shadow: 0 3px 8px rgba(15, 118, 110, 0.25);
 }
 
 .hero-btn-primary:hover {
   background: #0d5e56;
   transform: translateY(-1px);
-  box-shadow: 0 5px 14px rgba(15, 118, 110, 0.35);
+  box-shadow: 0 5px 12px rgba(15, 118, 110, 0.35);
 }
 
 .btn-arrow {
@@ -499,9 +502,9 @@ body.dark-mode .hero-clean-desc {
   background: #ffffff;
   color: #0f766e;
   border: 1px solid rgba(15, 118, 110, 0.3);
-  padding: 8px 15px;
+  padding: 6px 13px;
   border-radius: var(--radius-pill);
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -519,7 +522,7 @@ body.dark-mode .hero-btn-secondary {
   color: #2dd4bf;
 }
 
-/* Visual Foto Kapal Laut di Kanan dengan Masking Halus */
+/* Visual Foto Kapal Laut di Kanan (Warna Menarik, Hidup, dan Transisi Kontras Rapi) */
 .hero-clean-visual {
   position: absolute;
   top: 0;
@@ -528,8 +531,8 @@ body.dark-mode .hero-btn-secondary {
   width: 48%;
   z-index: 1;
   overflow: hidden;
-  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 18%, rgba(0, 0, 0, 1) 45%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 18%, rgba(0, 0, 0, 1) 45%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.45) 15%, rgba(0, 0, 0, 1) 40%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.45) 15%, rgba(0, 0, 0, 1) 40%);
 }
 
 .hero-clean-img {
@@ -537,19 +540,27 @@ body.dark-mode .hero-btn-secondary {
   height: 100%;
   object-fit: cover;
   object-position: center;
+  /* Warna foto bahari dibuat lebih hidup, segar, kaya warna, dan kontras menarik */
+  filter: saturate(1.22) contrast(1.1) brightness(1.03);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease;
+}
+
+.hero-clean-card:hover .hero-clean-img {
+  transform: scale(1.03);
+  filter: saturate(1.28) contrast(1.12) brightness(1.04);
 }
 
 /* Strip Fitur Bawah Hero (Grid 2x2 rapi di HP, 1 Baris di Layar Lebih Lebar) */
 .hero-features-strip {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px 12px;
-  padding: 10px 14px;
+  gap: 6px 10px;
+  padding: 8px 12px;
   background: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-top: 1px solid rgba(15, 118, 110, 0.12);
-  font-size: 0.74rem;
+  font-size: 0.71rem;
   font-weight: 600;
   color: #0f766e;
 }
@@ -563,7 +574,7 @@ body.dark-mode .hero-features-strip {
 .hero-feature-item {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   white-space: nowrap;
 }
 
@@ -581,8 +592,8 @@ body.dark-mode .hero-features-strip {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    padding: 12px 20px;
-    font-size: 0.8rem;
+    padding: 10px 18px;
+    font-size: 0.77rem;
   }
   .feature-divider {
     display: inline-block;
@@ -593,56 +604,56 @@ body.dark-mode .hero-features-strip {
 
 @media (min-width: 768px) {
   .hero-clean-section {
-    margin: 16px 0 28px;
+    margin: 14px 0 22px;
   }
   .hero-clean-body {
     display: grid;
     grid-template-columns: 1.18fr 0.82fr;
-    min-height: 290px;
+    min-height: 246px; /* Dikurangi 15% dari 290px */
     align-items: stretch;
   }
   .hero-clean-content {
-    padding: 34px 28px 28px 34px;
+    padding: 26px 22px 22px 26px;
   }
   .hero-clean-title {
-    font-size: 1.85rem;
-    line-height: 1.24;
-    margin-bottom: 12px;
+    font-size: 1.58rem;
+    line-height: 1.23;
+    margin-bottom: 10px;
   }
   .hero-clean-desc {
-    font-size: 0.92rem;
-    max-width: 480px;
-    line-height: 1.6;
-    margin-bottom: 22px;
+    font-size: 0.84rem;
+    max-width: 440px;
+    line-height: 1.52;
+    margin-bottom: 18px;
   }
   .hero-clean-visual {
     position: relative;
     width: 100%;
     height: 100%;
-    min-height: 290px;
-    mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 10%, rgba(0, 0, 0, 1) 32%);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 10%, rgba(0, 0, 0, 1) 32%);
+    min-height: 246px;
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.45) 8%, rgba(0, 0, 0, 1) 28%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.45) 8%, rgba(0, 0, 0, 1) 28%);
   }
   .hero-features-strip {
-    padding: 12px 24px;
-    font-size: 0.82rem;
+    padding: 10px 20px;
+    font-size: 0.78rem;
   }
 }
 
 @media (min-width: 1024px) {
   .hero-clean-body {
     grid-template-columns: 1.25fr 0.75fr;
-    min-height: 330px;
+    min-height: 280px; /* Dikurangi 15% dari 330px */
   }
   .hero-clean-content {
-    padding: 42px 36px 36px 42px;
+    padding: 30px 28px 26px 32px;
   }
   .hero-clean-title {
-    font-size: 2.15rem;
+    font-size: 1.82rem;
   }
   .hero-clean-desc {
-    font-size: 0.98rem;
-    max-width: 530px;
+    font-size: 0.88rem;
+    max-width: 490px;
   }
 }
 
@@ -1011,28 +1022,28 @@ body.dark-mode .category-card-clean:hover .cat-arrow-small {
 }
 
 /* ============================================================
-   4. PRODUK UNGGULAN (PILIHAN TERBAIK UNTUK ANDA)
+   4. PRODUK UNGGULAN (PILIHAN TERBAIK UNTUK ANDA — UKURAN 20% LEBIH KECIL)
    ============================================================ */
 
 .featured-section-clean {
-  margin: 0 0 28px;
+  margin: 0 0 24px;
 }
 
 .featured-header-clean {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .featured-tag-clean {
   display: block;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 1.2px;
   color: #0f766e;
   text-transform: uppercase;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
 }
 
 body.dark-mode .featured-tag-clean {
@@ -1040,7 +1051,7 @@ body.dark-mode .featured-tag-clean {
 }
 
 .featured-title-clean {
-  font-size: 1.25rem;
+  font-size: 1.16rem;
   font-weight: 800;
   color: var(--text-primary);
   margin: 0;
@@ -1054,7 +1065,7 @@ body.dark-mode .featured-tag-clean {
   background: transparent;
   border: none;
   color: #0f766e;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;
   padding: 4px 0;
@@ -1075,7 +1086,7 @@ body.dark-mode .view-all-link {
   overflow-x: auto;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  padding: 4px 2px 14px;
+  padding: 4px 2px 10px;
   scrollbar-width: none;
 }
 
@@ -1085,15 +1096,15 @@ body.dark-mode .view-all-link {
 
 .featured-carousel-track {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
-/* Kartu Produk Unggulan Bersih */
+/* Kartu Produk Unggulan Bersih (Ukuran dikurangi 20% dari ukuran awal: 185px -> 148px) */
 .featured-clean-card {
-  flex: 0 0 185px;
+  flex: 0 0 148px; /* 185px - 20% = 148px */
   background: var(--surface-card);
   border: 1px solid var(--border-card);
-  border-radius: 16px;
+  border-radius: 13px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -1104,7 +1115,7 @@ body.dark-mode .view-all-link {
 
 @media (min-width: 640px) {
   .featured-clean-card {
-    flex: 0 0 205px;
+    flex: 0 0 164px; /* 205px - 20% = 164px */
   }
 }
 
@@ -1136,32 +1147,32 @@ body.dark-mode .view-all-link {
 /* Tag Diskon Coral Tunggal */
 .featured-clean-disc {
   position: absolute;
-  top: 8px;
-  left: 8px;
+  top: 6px;
+  left: 6px;
   background: var(--accent-coral);
   color: #ffffff;
-  font-size: 0.7rem;
+  font-size: 0.64rem;
   font-weight: 800;
-  padding: 3px 6px;
-  border-radius: 6px;
+  padding: 2px 5px;
+  border-radius: 5px;
   letter-spacing: 0.2px;
   box-shadow: 0 2px 6px rgba(238, 77, 45, 0.35);
   z-index: 2;
 }
 
 .featured-clean-body {
-  padding: 12px;
+  padding: 9px 10px;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 
 .featured-clean-name {
-  font-size: 0.84rem;
+  font-size: 0.76rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 6px;
-  line-height: 1.35;
+  margin: 0 0 4px;
+  line-height: 1.32;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -1173,15 +1184,15 @@ body.dark-mode .view-all-link {
 .featured-clean-price-row {
   display: flex;
   align-items: baseline;
-  gap: 6px;
+  gap: 4px;
   flex-wrap: wrap;
   margin-top: auto;
-  padding-top: 6px;
-  min-height: 1.8em;
+  padding-top: 4px;
+  min-height: 1.6em;
 }
 
 .featured-clean-price {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 800;
   color: #0f766e;
 }
@@ -1191,21 +1202,21 @@ body.dark-mode .featured-clean-price {
 }
 
 .featured-clean-price-coret {
-  font-size: 0.72rem;
+  font-size: 0.64rem;
   color: var(--text-subtle);
   text-decoration: line-through;
   font-weight: 500;
 }
 
 .featured-clean-btn {
-  margin-top: 8px;
+  margin-top: 6px;
   width: 100%;
   border: none;
   background: #0f766e;
   color: #ffffff;
-  padding: 8px 10px;
-  border-radius: var(--radius-sm);
-  font-size: 0.78rem;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 0.71rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1213,7 +1224,7 @@ body.dark-mode .featured-clean-price {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 3px;
 }
 
 .featured-clean-btn:hover {

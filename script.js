@@ -781,7 +781,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function stepScroll(direction = 1) {
       const firstCard = sampleCarouselTrack ? sampleCarouselTrack.querySelector(".featured-clean-card") : null;
-      const scrollStep = firstCard ? (firstCard.offsetWidth + 12) : 197;
+      const scrollStep = firstCard ? (firstCard.offsetWidth + 10) : 158;
       const maxScroll = sampleCarouselViewport.scrollWidth - sampleCarouselViewport.clientWidth;
       
       if (direction === 1) {
