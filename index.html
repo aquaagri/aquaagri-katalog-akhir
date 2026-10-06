@@ -347,13 +347,12 @@
             </svg>
             <span>Kembali ke Beranda</span>
           </button>
-          <span class="category-partner-badge">Mitra Resmi Shopee</span>
         </div>
         <div class="category-banner-content">
           <span class="category-banner-tag" id="categoryBannerTag">KATALOG PRODUK</span>
           <h2 id="categoryTitle" class="category-banner-title">Semua Produk</h2>
           <p id="categoryHeaderDesc" class="category-banner-desc">
-            Pusat terpercaya ekosistem bahari nusantara: hasil laut segar harian, aneka olahan ikan bernutrisi, piranti pancing andalan, hingga sarana budidaya modern siap kirim terpercaya.
+            Pusat hasil laut segar, olahan higienis, piranti pancing, dan sarana budidaya bahari.
           </p>
           <div class="category-banner-footer">
             <span class="category-count-badge" id="categoryCount">48 Produk Tersedia</span>
@@ -419,32 +418,39 @@
         </button>
 
         <div class="search-mega-box">
-          <input type="text" id="searchInterfaceInput" placeholder=" aquaagri.id" autocomplete="off" spellcheck="false" aria-label="Ketik pencarian produk">
+          <svg class="search-pill-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="searchInterfaceInput" placeholder="Cari di aquaagri.id..." autocomplete="off" spellcheck="false" aria-label="Ketik pencarian produk">
           <button id="searchClearBtn" class="search-clear-cross hidden" type="button" aria-label="Hapus kata kunci">✕</button>
           
-          <button id="searchCameraBtn" class="search-icon-btn search-camera-btn" type="button" title="Pencarian Kamera / Foto" aria-label="Pencarian Kamera">
-            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-              <circle cx="12" cy="13" r="4"/>
-            </svg>
-          </button>
-          <input type="file" id="cameraFileInput" accept="image/*" capture="environment" class="hidden">
+          <div class="search-actions-group">
+            <button id="searchCameraBtn" class="search-icon-btn search-camera-btn" type="button" title="Pencarian Kamera / Foto" aria-label="Pencarian Kamera">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                <circle cx="12" cy="13" r="4"/>
+              </svg>
+            </button>
+            <input type="file" id="cameraFileInput" accept="image/*" capture="environment" class="hidden">
 
-          <button id="searchMicBtn" class="search-icon-btn search-mic-btn" type="button" title="Pencarian Suara" aria-label="Pencarian Suara">
-            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-              <line x1="12" y1="19" x2="12" y2="23"/>
-              <line x1="8" y1="23" x2="16" y2="23"/>
-            </svg>
-          </button>
+            <button id="searchMicBtn" class="search-icon-btn search-mic-btn" type="button" title="Pencarian Suara" aria-label="Pencarian Suara">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                <line x1="12" y1="19" x2="12" y2="23"/>
+                <line x1="8" y1="23" x2="16" y2="23"/>
+              </svg>
+            </button>
 
-          <button id="searchSubmitBtn" class="search-mega-submit-btn" type="button" aria-label="Cari Produk">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"/>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-            </svg>
-          </button>
+            <button id="searchSubmitBtn" class="search-mega-submit-btn" type="button" aria-label="Cari Produk">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <span class="search-submit-text">Cari</span>
+            </button>
+          </div>
         </div>
       </div>
 

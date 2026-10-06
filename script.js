@@ -519,31 +519,31 @@ const categoryBanners = {
     bg: "banner-bahari-real.jpg",
     tag: "KATALOG LENGKAP BAHARI",
     title: "Semua Produk aquaagri.id",
-    deskripsi: "Pusat terpercaya ekosistem bahari nusantara: hasil laut segar harian, aneka olahan ikan bernutrisi, piranti pancing andalan, hingga sarana budidaya modern siap kirim terpercaya."
+    deskripsi: "Pusat hasil laut segar, olahan higienis, piranti pancing, dan sarana budidaya bahari."
   },
   "produk-olahan-ikan": {
     bg: "cat-olahan-real.jpg",
     tag: "KATEGORI OLAHAN HIGIENIS",
     title: "Produk Olahan Ikan",
-    deskripsi: "Ragam olahan ikan higienis bernutrisi tinggi: abon tuna, kerupuk tenggiri, sambal roa asap khas Manado, siomay, hingga baso ikan siap saji."
+    deskripsi: "Aneka olahan ikan higienis, lezat, bernutrisi, dan siap saji untuk keluarga."
   },
   "ikan-seafood-segar": {
     bg: "cat-seafood-real.jpg",
     tag: "KATEGORI SEAFOOD SEGAR",
     title: "Ikan & Seafood Segar",
-    deskripsi: "Tangkapan laut dan perairan segar kualitas cold-chain higienis: fillet salmon trout, udang vaname, kepiting bakau, hingga kakap merah segar."
+    deskripsi: "Tangkapan laut dan seafood segar harian dengan standar cold-chain higienis."
   },
   "pancing-umpan": {
     bg: "cat-pancing-real.jpg",
     tag: "KATEGORI SPORTFISHING",
     title: "Pancing & Umpan",
-    deskripsi: "Dukungan piranti sportfishing terlengkap: joran carbon lentur prima, senar tangguh, reel presisi, umpan tiruan, serta essen aroma pikat teruji."
+    deskripsi: "Perlengkapan mancing terlengkap: joran carbon, reel presisi, dan aneka umpan."
   },
   "Benih-Pakan-Budidaya": {
     bg: "cat-budidaya-real.jpg",
     tag: "KATEGORI BUDIDAYA MODERN",
     title: "Benih, Pakan & Budidaya",
-    deskripsi: "Sarana budidaya dan keramba modern: pakan apung kaya protein, benih sehat, aerator hemat daya, dan perlengkapan budidaya berkualitas."
+    deskripsi: "Solusi budidaya modern: pakan bernutrisi, benih unggul, dan sarana tambak."
   }
 };
 

@@ -1682,14 +1682,15 @@ body.dark-mode .story-dot.active {
 
 /* ============================================================
    8. HERO BANNER KATEGORI & SISTEM NAVIGASI KATEGORI
+   (Dipangkas 15% Lebih Ringkas, Background Foto Terang & Elegan)
    ============================================================ */
 
 .category-banner-card {
   position: relative;
   border-radius: var(--radius-xl);
   overflow: hidden;
-  margin-bottom: 16px;
-  min-height: 195px;
+  margin-bottom: 14px;
+  min-height: 165px; /* Pangkas 15% dari 195px agar lega di layar HP */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1705,7 +1706,8 @@ body.dark-mode .story-dot.active {
   height: 100%;
   object-fit: cover;
   object-position: center;
-  filter: saturate(1.18) contrast(1.08) brightness(0.92);
+  /* Dibuat terang, hidup, segar, dan tidak gelap */
+  filter: saturate(1.15) contrast(1.04) brightness(1.02);
   transition: transform 0.4s ease;
   z-index: 1;
 }
@@ -1717,11 +1719,12 @@ body.dark-mode .story-dot.active {
 .category-banner-overlay {
   position: absolute;
   inset: 0;
+  /* Gradasi bahari transparan lembut: foto tetap terang & teks kontras jelas */
   background: linear-gradient(
     180deg,
-    rgba(8, 28, 24, 0.55) 0%,
-    rgba(8, 28, 24, 0.72) 45%,
-    rgba(6, 22, 19, 0.94) 100%
+    rgba(10, 42, 48, 0.18) 0%,
+    rgba(8, 34, 38, 0.40) 45%,
+    rgba(6, 26, 30, 0.68) 100%
   );
   z-index: 2;
   pointer-events: none;
@@ -1733,25 +1736,25 @@ body.dark-mode .story-dot.active {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 14px;
+  padding: 10px 12px;
 }
 
 .category-back-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.55);
   border-radius: var(--radius-pill);
-  padding: 6px 14px;
-  font-size: 0.78rem;
+  padding: 5px 12px;
+  font-size: 0.74rem;
   font-weight: 700;
   color: #0f766e;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.18);
 }
 
 .category-back-btn:hover {
@@ -1770,75 +1773,64 @@ body.dark-mode .category-back-btn {
   flex-shrink: 0;
 }
 
-.category-partner-badge {
-  background: var(--accent-coral);
-  color: #ffffff;
-  font-size: 0.68rem;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: var(--radius-pill);
-  box-shadow: 0 2px 8px rgba(238, 77, 45, 0.35);
-  letter-spacing: 0.2px;
-}
-
 .category-banner-content {
   position: relative;
   z-index: 3;
-  padding: 10px 16px 16px;
+  padding: 6px 14px 12px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 3px;
 }
 
 .category-banner-tag {
-  font-size: 0.64rem;
+  font-size: 0.62rem;
   font-weight: 800;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.4px;
   color: #2dd4bf;
   text-transform: uppercase;
 }
 
 .category-banner-title {
-  font-size: 1.35rem;
+  font-size: 1.18rem;
   font-weight: 800;
   color: #ffffff;
   margin: 0;
   line-height: 1.22;
-  letter-spacing: -0.3px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  letter-spacing: -0.25px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 
 .category-banner-desc {
-  font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.92);
-  margin: 0 0 6px;
-  line-height: 1.42;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
-  max-width: 600px;
+  font-size: 0.73rem;
+  color: rgba(255, 255, 255, 0.96);
+  margin: 0 0 4px;
+  line-height: 1.34;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+  max-width: 580px;
 }
 
 .category-banner-footer {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   flex-wrap: wrap;
 }
 
 .category-count-badge {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.22);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   color: #ffffff;
-  font-size: 0.7rem;
+  font-size: 0.67rem;
   font-weight: 700;
-  padding: 3px 9px;
+  padding: 2px 8px;
   border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.28);
 }
 
 .category-quality-badge {
   color: #fef08a;
-  font-size: 0.7rem;
+  font-size: 0.67rem;
   font-weight: 700;
 }
 
@@ -1947,27 +1939,27 @@ body.dark-mode .cat-chip-btn.active {
 }
 
 /* ============================================================
-   GRID PRODUK LEBIH RINGKAS (TURUN 15%)
+   GRID PRODUK LEBIH RINGKAS (TURUN 5% TAMBAHAN)
    ============================================================ */
 
 .product-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px; /* Diturunkan 15% dari 12px */
+  gap: 8px 9px; /* Diturunkan 5% tambahan agar sangat proporsional di HP */
   width: 100%;
 }
 
 @media (min-width: 640px) {
   .product-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
+    gap: 12px;
   }
 }
 
 @media (min-width: 1024px) {
   .product-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 16px;
+    gap: 14px;
   }
 }
 
@@ -1975,7 +1967,7 @@ body.dark-mode .cat-chip-btn.active {
   min-width: 0;
   background: var(--surface-card);
   border: 1px solid var(--border-card);
-  border-radius: 13px; /* Turun 15% dari 16px */
+  border-radius: 11px; /* Turun 5% lebih sleek */
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -2012,20 +2004,20 @@ body.dark-mode .cat-chip-btn.active {
 
 .product-discount-badge {
   position: absolute;
-  top: 6px;
-  left: 6px;
+  top: 5px;
+  left: 5px;
   background: var(--accent-coral);
   color: #ffffff;
-  font-size: 0.62rem;
+  font-size: 0.60rem;
   font-weight: 800;
-  padding: 2px 5px;
-  border-radius: 5px;
-  box-shadow: 0 2px 6px rgba(238, 77, 45, 0.35);
+  padding: 2px 4px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(238, 77, 45, 0.3);
   letter-spacing: 0.2px;
 }
 
 .product-body {
-  padding: 9px 10px; /* Turun dari 12px (ringkas 15-20%) */
+  padding: 8px 9px; /* Turun 5% dari 9px 10px */
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -2033,29 +2025,29 @@ body.dark-mode .cat-chip-btn.active {
 
 .product-name {
   font-weight: 700;
-  font-size: 0.77rem; /* Turun dari 0.86rem */
-  margin: 0 0 3px;
+  font-size: 0.74rem; /* Turun 5% dari 0.77rem */
+  margin: 0 0 2px;
   color: var(--text-primary);
-  line-height: 1.26;
+  line-height: 1.25;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height: 2.5em;
+  min-height: 2.3em;
 }
 
 .product-desc {
-  font-size: 0.68rem; /* Turun dari 0.76rem */
+  font-size: 0.65rem; /* Turun 5% dari 0.68rem */
   color: var(--text-secondary);
-  margin: 0 0 4px;
-  line-height: 1.32;
+  margin: 0 0 3px;
+  line-height: 1.30;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height: 2.6em;
+  min-height: 2.4em;
   cursor: pointer;
   transition: color 0.2s ease;
 }
@@ -2077,14 +2069,14 @@ body.dark-mode .cat-chip-btn.active {
   gap: 4px;
   flex-wrap: wrap;
   margin-top: auto;
-  padding-top: 4px;
-  min-height: 1.5em;
+  padding-top: 3px;
+  min-height: 1.4em;
 }
 
 .product-price {
   font-weight: 800;
   color: #0f766e;
-  font-size: 0.86rem; /* Turun dari 0.98rem */
+  font-size: 0.82rem; /* Turun 5% dari 0.86rem */
 }
 
 body.dark-mode .product-price {
@@ -2092,21 +2084,21 @@ body.dark-mode .product-price {
 }
 
 .product-price-coret {
-  font-size: 0.64rem;
+  font-size: 0.60rem;
   color: var(--text-subtle);
   text-decoration: line-through;
   font-weight: 500;
 }
 
 .product-btn {
-  margin-top: 6px;
+  margin-top: 5px;
   width: 100%;
   border: none;
   background: #0f766e;
   color: #ffffff;
-  padding: 6px 9px; /* Turun dari 8px 12px */
-  border-radius: 6px;
-  font-size: 0.73rem; /* Turun dari 0.8rem */
+  padding: 5px 8px; /* Turun 5% dari 6px 9px */
+  border-radius: 5px;
+  font-size: 0.70rem; /* Turun 5% dari 0.73rem */
   font-weight: 700;
   font-family: inherit;
   cursor: pointer;
@@ -2122,67 +2114,98 @@ body.dark-mode .product-price {
 .empty-state {
   text-align: center;
   color: var(--text-muted);
-  padding: 30px 14px;
-  font-size: 0.84rem;
+  padding: 28px 14px;
+  font-size: 0.82rem;
   background: var(--surface-card);
   border: 1px dashed var(--border-light);
-  border-radius: 14px;
+  border-radius: 12px;
   margin-top: 14px;
 }
 
 /* ============================================================
-   MOBILE SEARCH INTERFACE (TERINSPIRASI LAYOUT GAMBAR REFERENSI)
+   MOBILE SEARCH INTERFACE (FORMAT SAMA DENGAN BERANDA + KAMERA, MIC, SEARCH)
+   Nuansa kombinasi warna brand aquaagri.id dominan biru muda gradasi hijau muda
    ============================================================ */
 
 .search-mega-header {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   position: sticky;
   top: 54px;
   z-index: 95;
   background: var(--surface-topbar);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  padding: 6px 0;
+  padding: 8px 0;
 }
 
 .search-mega-back-btn {
   background: transparent;
   border: none;
-  color: #ee4d2d; /* Aksen coral khas gambar referensi */
+  color: #0f766e; /* Brand aqua-teal perikanan */
   cursor: pointer;
-  padding: 4px;
+  padding: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
   flex-shrink: 0;
 }
 
 .search-mega-back-btn:hover {
+  background: rgba(15, 118, 110, 0.08);
+  color: #2e98b0;
   transform: translateX(-2px);
 }
 
+body.dark-mode .search-mega-back-btn {
+  color: #2dd4bf;
+}
+
+body.dark-mode .search-mega-back-btn:hover {
+  background: rgba(45, 212, 191, 0.12);
+}
+
+/* Format Kotak Pencarian Persis Seperti Beranda (.search-input-pill) */
 .search-mega-box {
   flex: 1;
   display: flex;
   align-items: center;
+  gap: 8px;
   background: var(--surface-card);
-  border: 1.5px solid #ee4d2d; /* Border coral khas mobile e-commerce */
+  border: 1px solid var(--border-light);
   border-radius: var(--radius-pill);
-  padding: 3px 5px 3px 12px;
-  box-shadow: 0 2px 8px rgba(238, 77, 45, 0.12);
+  padding: 5px 6px 5px 13px;
+  box-shadow: var(--shadow-xs);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   min-width: 0;
 }
 
+.search-mega-box:focus-within {
+  border-color: #2e98b0;
+  box-shadow: 0 0 0 3px rgba(46, 152, 176, 0.14);
+}
+
 body.dark-mode .search-mega-box {
   background: #0f241f;
-  border-color: #ee4d2d;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  border-color: var(--border-light);
+}
+
+body.dark-mode .search-mega-box:focus-within {
+  border-color: #2dd4bf;
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.15);
+}
+
+.search-mega-box .search-pill-icon {
+  color: #0f766e;
+  flex-shrink: 0;
+}
+
+body.dark-mode .search-mega-box .search-pill-icon {
+  color: #2dd4bf;
 }
 
 .search-mega-box input {
@@ -2191,7 +2214,6 @@ body.dark-mode .search-mega-box {
   background: transparent;
   color: var(--text-primary);
   font-size: 0.86rem;
-  font-weight: 600;
   font-family: inherit;
   outline: none;
   min-width: 0;
@@ -2199,8 +2221,8 @@ body.dark-mode .search-mega-box {
 }
 
 .search-mega-box input::placeholder {
-  color: #94a3b8;
-  font-weight: 500;
+  color: var(--text-subtle);
+  font-weight: 400;
 }
 
 .search-clear-cross {
@@ -2212,55 +2234,93 @@ body.dark-mode .search-mega-box {
   padding: 2px 4px;
 }
 
+.search-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
 .search-icon-btn {
   background: transparent;
   border: none;
-  color: #64748b;
+  color: #557a75;
   cursor: pointer;
-  padding: 4px;
+  padding: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease, background 0.2s ease;
   flex-shrink: 0;
 }
 
 .search-icon-btn:hover {
-  color: #ee4d2d;
-  transform: scale(1.1);
+  color: #0f766e;
+  background: rgba(15, 118, 110, 0.08);
+  transform: scale(1.08);
 }
 
 body.dark-mode .search-icon-btn {
-  color: #cbd5e1;
+  color: #94a3b8;
 }
 
 body.dark-mode .search-icon-btn:hover {
-  color: #ee4d2d;
+  color: #2dd4bf;
+  background: rgba(45, 212, 191, 0.12);
 }
 
+/* Tombol Cari Brand aquaagri.id: Dominan Biru Muda Gradasi Hijau Muda */
 .search-mega-submit-btn {
-  background: linear-gradient(135deg, #ee4d2d 0%, #ff5e3a 100%);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, #2e98b0 0%, #18927f 100%);
   border: none;
   color: #ffffff;
+  padding: 5px 11px;
   border-radius: var(--radius-pill);
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 0.74rem;
+  font-weight: 700;
+  font-family: inherit;
   cursor: pointer;
   flex-shrink: 0;
   margin-left: 2px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 2px 6px rgba(238, 77, 45, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  box-shadow: 0 2px 7px rgba(24, 146, 127, 0.28);
 }
 
 .search-mega-submit-btn:hover {
-  transform: scale(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(24, 146, 127, 0.38);
+  filter: brightness(1.05);
 }
 
-/* CHIPS BAR DI SEARCH INTERFACE */
+.search-submit-text {
+  font-size: 0.74rem;
+  letter-spacing: 0.1px;
+}
+
+@media (max-width: 380px) {
+  .search-mega-box {
+    padding: 4px 5px 4px 10px;
+    gap: 6px;
+  }
+  .search-actions-group {
+    gap: 1px;
+  }
+  .search-icon-btn {
+    padding: 4px;
+  }
+  .search-mega-submit-btn {
+    padding: 5px 8px;
+  }
+  .search-submit-text {
+    font-size: 0.70rem;
+  }
+}
+
+/* CHIPS BAR DI SEARCH INTERFACE (NUANSA BAHARI PERIKANAN) */
 .search-chips-bar {
   margin-bottom: 12px;
 }
@@ -2280,11 +2340,11 @@ body.dark-mode .search-icon-btn:hover {
 
 .search-chip {
   flex-shrink: 0;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  color: #334155;
+  background: #f0fbf9;
+  border: 1px solid rgba(46, 152, 176, 0.22);
+  color: #0b675e;
   border-radius: var(--radius-pill);
-  padding: 5px 11px;
+  padding: 5px 12px;
   font-size: 0.73rem;
   font-weight: 600;
   cursor: pointer;
@@ -2293,36 +2353,36 @@ body.dark-mode .search-icon-btn:hover {
 }
 
 .search-chip:hover {
-  background: #e2e8f0;
-  color: #0f172a;
+  background: #e0f6f2;
+  border-color: #2e98b0;
+  color: #07463f;
 }
 
 .search-chip.active {
-  background: var(--brand-teal-light);
-  border-color: #0f766e;
-  color: #0f766e;
+  background: linear-gradient(135deg, #2e98b0 0%, #18927f 100%);
+  border-color: transparent;
+  color: #ffffff;
   font-weight: 700;
-  box-shadow: 0 1px 4px rgba(15, 118, 110, 0.15);
+  box-shadow: 0 2px 7px rgba(24, 146, 127, 0.25);
 }
 
 body.dark-mode .search-chip {
-  background: #0f241f;
-  border-color: #1a3c33;
+  background: #0f2824;
+  border-color: rgba(45, 212, 191, 0.25);
   color: #cbd5e1;
 }
 
 body.dark-mode .search-chip:hover {
-  background: #14352d;
+  background: #153832;
   color: #f1fbf8;
 }
 
 body.dark-mode .search-chip.active {
-  background: rgba(20, 184, 166, 0.2);
-  border-color: #2dd4bf;
-  color: #2dd4bf;
+  background: linear-gradient(135deg, #2e98b0 0%, #18927f 100%);
+  color: #ffffff;
 }
 
-/* HEADING PENCARIAN PILIHAN (PERSIS GAMBAR REFERENSI) */
+/* HEADING PENCARIAN PILIHAN */
 .search-heading-row {
   display: flex;
   align-items: center;
@@ -2331,7 +2391,7 @@ body.dark-mode .search-chip.active {
 }
 
 .search-heading-text {
-  font-size: 0.96rem;
+  font-size: 0.94rem;
   font-weight: 800;
   color: var(--text-primary);
   margin: 0;
@@ -2339,7 +2399,7 @@ body.dark-mode .search-chip.active {
 }
 
 .search-heading-count {
-  font-size: 0.72rem;
+  font-size: 0.71rem;
   font-weight: 700;
   color: #0f766e;
   background: var(--brand-teal-light);
