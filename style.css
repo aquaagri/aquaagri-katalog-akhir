@@ -364,11 +364,11 @@ body.dark-mode .theme-toggle-btn:hover {
 }
 
 /* ============================================================
-   1. HERO CARD MODERN & ELEGAN (UKURAN KOMPAK 15% LEBIH KECIL, FOTO VIBRANT & KONTRAS TAJAM)
+   1. HERO CARD MODERN & ELEGAN (UKURAN LEBIH RINGKAS TURUN 7%, FOTO VIBRANT & KONTRAS TAJAM)
    ============================================================ */
 
 .hero-clean-section {
-  margin: 10px 0 16px;
+  margin: 8px 0 14px;
 }
 
 .hero-clean-card {
@@ -390,12 +390,12 @@ body.dark-mode .hero-clean-card {
   display: flex;
   align-items: stretch;
   position: relative;
-  min-height: 204px; /* Dikurangi 15% dari 240px agar tidak mendominasi layar */
+  min-height: 190px; /* Dikurangi 7% lebih ringkas (dari 204px) */
 }
 
 .hero-clean-content {
   flex: 1.15;
-  padding: 17px 14px 15px 17px;
+  padding: 15px 13px 13px 16px;
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -420,11 +420,11 @@ body.dark-mode .hero-clean-content {
 }
 
 .hero-clean-label {
-  font-size: 0.64rem;
+  font-size: 0.62rem;
   font-weight: 800;
   letter-spacing: 1.8px;
   color: #0b675e;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
   text-transform: uppercase;
 }
 
@@ -433,11 +433,11 @@ body.dark-mode .hero-clean-label {
 }
 
 .hero-clean-title {
-  font-size: 1.25rem;
+  font-size: 1.20rem;
   font-weight: 800;
   line-height: 1.22;
   color: #072722;
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   letter-spacing: -0.35px;
 }
 
@@ -446,12 +446,12 @@ body.dark-mode .hero-clean-title {
 }
 
 .hero-clean-desc {
-  font-size: 0.77rem;
+  font-size: 0.76rem;
   color: #0f2e28; /* Kontras sangat jelas & tegas terhadap latar belakang */
   font-weight: 500;
-  margin: 0 0 13px;
-  line-height: 1.42;
-  max-width: 295px;
+  margin: 0 0 11px;
+  line-height: 1.4;
+  max-width: 290px;
   letter-spacing: -0.1px;
 }
 
@@ -462,7 +462,7 @@ body.dark-mode .hero-clean-desc {
 .hero-clean-actions {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
@@ -473,9 +473,9 @@ body.dark-mode .hero-clean-desc {
   background: #0f766e;
   color: #ffffff;
   border: none;
-  padding: 7px 14px;
+  padding: 6px 13px;
   border-radius: var(--radius-pill);
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -502,9 +502,9 @@ body.dark-mode .hero-clean-desc {
   background: #ffffff;
   color: #0f766e;
   border: 1px solid rgba(15, 118, 110, 0.3);
-  padding: 6px 13px;
+  padding: 5px 12px;
   border-radius: var(--radius-pill);
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -554,13 +554,13 @@ body.dark-mode .hero-btn-secondary {
 .hero-features-strip {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 6px 10px;
-  padding: 8px 12px;
+  gap: 5px 8px;
+  padding: 7px 10px;
   background: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-top: 1px solid rgba(15, 118, 110, 0.12);
-  font-size: 0.71rem;
+  font-size: 0.69rem;
   font-weight: 600;
   color: #0f766e;
 }
@@ -604,56 +604,56 @@ body.dark-mode .hero-features-strip {
 
 @media (min-width: 768px) {
   .hero-clean-section {
-    margin: 14px 0 22px;
+    margin: 12px 0 18px;
   }
   .hero-clean-body {
     display: grid;
     grid-template-columns: 1.18fr 0.82fr;
-    min-height: 246px; /* Dikurangi 15% dari 290px */
+    min-height: 228px; /* Dikurangi 7% lebih ringkas (dari 246px) */
     align-items: stretch;
   }
   .hero-clean-content {
-    padding: 26px 22px 22px 26px;
+    padding: 22px 20px 18px 24px;
   }
   .hero-clean-title {
-    font-size: 1.58rem;
-    line-height: 1.23;
-    margin-bottom: 10px;
+    font-size: 1.48rem;
+    line-height: 1.22;
+    margin-bottom: 8px;
   }
   .hero-clean-desc {
-    font-size: 0.84rem;
-    max-width: 440px;
-    line-height: 1.52;
-    margin-bottom: 18px;
+    font-size: 0.82rem;
+    max-width: 420px;
+    line-height: 1.48;
+    margin-bottom: 14px;
   }
   .hero-clean-visual {
     position: relative;
     width: 100%;
     height: 100%;
-    min-height: 246px;
+    min-height: 228px;
     mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.45) 8%, rgba(0, 0, 0, 1) 28%);
     -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.45) 8%, rgba(0, 0, 0, 1) 28%);
   }
   .hero-features-strip {
-    padding: 10px 20px;
-    font-size: 0.78rem;
+    padding: 8px 18px;
+    font-size: 0.75rem;
   }
 }
 
 @media (min-width: 1024px) {
   .hero-clean-body {
     grid-template-columns: 1.25fr 0.75fr;
-    min-height: 280px; /* Dikurangi 15% dari 330px */
+    min-height: 260px; /* Dikurangi 7% lebih ringkas (dari 280px) */
   }
   .hero-clean-content {
-    padding: 30px 28px 26px 32px;
+    padding: 26px 24px 20px 28px;
   }
   .hero-clean-title {
-    font-size: 1.82rem;
+    font-size: 1.70rem;
   }
   .hero-clean-desc {
-    font-size: 0.88rem;
-    max-width: 490px;
+    font-size: 0.85rem;
+    max-width: 460px;
   }
 }
 
