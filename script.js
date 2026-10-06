@@ -299,7 +299,7 @@ const products = [
     linkAffiliate: "https://s.shopee.co.id/3LR8wC3aMw"
   },
   {
-    id: 13,
+    id: 2,
     nama: "Udang Vaname Segar Fresh 500gr",
     harga: "Rp45.000",
     hargaCoret: "Rp55.000",
@@ -310,7 +310,7 @@ const products = [
     linkAffiliate: "https://s.shopee.co.id/9zy2stK622"
   },
   {
-    id: 14,
+    id: 3,
     nama: "Ikan Cakalang Bersih Segar Beku 1kg",
     harga: "Rp46.000",
     hargaCoret: "Rp56.000",
@@ -321,7 +321,7 @@ const products = [
     linkAffiliate: "https://s.shopee.co.id/2LYgLoyWyK"
   },
   {
-    id: 15,
+    id: 4,
     nama: "Kepiting Bakau Jumbo Fresh Frozen",
     harga: "Rp126.000",
     hargaCoret: "Rp150.000",
@@ -332,7 +332,7 @@ const products = [
     linkAffiliate: "https://s.shopee.co.id/9pehIBhlZN"
   },
   {
-    id: 16,
+    id: 5,
     nama: "Steak Tuna Merah 500gr (Tanpa Tulang)",
     harga: "Rp55.000",
     hargaCoret: "Rp68.000",
@@ -343,7 +343,7 @@ const products = [
     linkAffiliate: "https://s.shopee.co.id/4B0KYIPg9P"
   },
   {
-    id: 17,
+    id: 6,
     nama: "Ikan Gabus Segar Pilihan 1kg",
     harga: "Rp50.000",
     hargaCoret: "Rp62.000",
@@ -354,7 +354,7 @@ const products = [
     linkAffiliate: "https://s.shopee.co.id/1gIzZxNVa3"
   },
   {
-    id: 18,
+    id: 7,
     nama: "Ikan Kembung Banjar Segar 1kg",
     harga: "Rp29.000",
     hargaCoret: "Rp36.000",
@@ -365,7 +365,7 @@ const products = [
     linkAffiliate: "https://s.shopee.co.id/2qUwyTjnab"
   },
   {
-    id: 19,
+    id: 8,
     nama: "Ikan Salmon Trout Fillet Segar 200gr",
     harga: "Rp58.000",
     hargaCoret: "Rp72.000",
@@ -374,6 +374,94 @@ const products = [
     deskripsi: "Fillet salmon trout segar dengan guratan marbling cantik dan warna oranye alami. Dikemas higienis vakum kedap udara, sangat cocok untuk pan-sear, sushi, dan MPASI.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/AUuO71vp7Q"
+  },
+   {
+    id: 9,
+    nama: "Lobster Laut Segar 325gr",
+    harga: "Rp177.000",
+    hargaCoret: "Rp200.000",
+    diskon: "11%",
+    gambar: "assets/products/Lobster-Laut.jpg",
+    deskripsi: "Lobster laut segar dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/7ptoCEEyoF"
+  },
+   {
+    id: 10,
+    nama: "LOBSTER TAWAR COOK 1KG 20-40 PCS",
+    harga: "Rp62.000",
+    hargaCoret: "Rp80.000",
+    diskon: "22%",
+    gambar: "assets/products/Lobster-Tawar.jpg",
+    deskripsi: "Lobster tawar cook 1kg 20-40 pcs dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/8fSvBzo9Jd"
+  },
+   {
+    id: 11,
+    nama: "Udang Kupas IQF Premium 250gr",
+    harga: "Rp57.000",
+    hargaCoret: "Rp72.000",
+    diskon: "21%",
+    gambar: "assets/products/Udang-Kupas.jpg",
+    deskripsi: "Udang kupas IQF premium 250gr dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/9APBll7Ud9"
+  },
+   {
+    id: 12,
+    nama: "Cumi Besar Segar 1kg",
+    harga: "Rp29.000",
+    hargaCoret: "Rp50.000",
+    diskon: "42%",
+    gambar: "assets/products/Cumi-Besar.jpg",
+    deskripsi: "Cumi besar segar 1kg dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/3g4FFYb8XA"
+  },
+  {
+    id: 13,
+    nama: "Kerang Dara Frozen Fresh 1kg",
+    harga: "Rp45.000",
+    hargaCoret: "Rp60.000",
+    diskon: "25%",
+    gambar: "assets/products/Kerang-Dara.jpg",
+    deskripsi: "Kerang dara frozen fresh dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/2VsHrq9UwA"
+  },
+  {
+    id: 14,
+    nama: " Kerang Tahu Premium Fresh 500gr",
+    harga: "Rp17.000",
+    hargaCoret: "Rp25.000",
+    diskon: "32%",
+    gambar: "assets/products/Kerang-Tahu.jpg",
+    deskripsi: "Kerang tahu premium fresh 500gr dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/70KhEUyxsA"
+  },
+   {
+    id: 15,
+    nama: "Kerang Remis haremis 1kg",
+    harga: "Rp45.000",
+    hargaCoret: "Rp60.000",
+    diskon: "25%",
+    gambar: "assets/products/Kerang-Remis.jpg",
+    deskripsi: "Remis Laya pensi haremis 1kg dengan daging lembut dan gurih.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/1AwuK7tqA"
+  },
+   {
+    id: 16,
+    nama: "Kerang hijau segar 1kg",
+    harga: "Rp12.000",
+    hargaCoret: "Rp17.000",
+    diskon: "29%",
+    gambar: "assets/products/Kerang-Hijau.jpg",
+    deskripsi: "Kerang hijau segar 1kg dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/5VVtScExyD"
   },
 
   // --- Kategori: Pancing & Umpan ---
