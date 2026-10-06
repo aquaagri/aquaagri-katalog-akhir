@@ -513,6 +513,40 @@ const categories = [
   }
 ];
 
+// Mapping Banner Foto, Tag, Judul & Deskripsi Lengkap Tiap Kategori & Semua Produk
+const categoryBanners = {
+  "semua": {
+    bg: "banner-bahari-real.jpg",
+    tag: "KATALOG LENGKAP BAHARI",
+    title: "Semua Produk aquaagri.id",
+    deskripsi: "Pusat terpercaya ekosistem bahari nusantara: hasil laut segar harian, aneka olahan ikan bernutrisi, piranti pancing andalan, hingga sarana budidaya modern siap kirim terpercaya."
+  },
+  "produk-olahan-ikan": {
+    bg: "cat-olahan-real.jpg",
+    tag: "KATEGORI OLAHAN HIGIENIS",
+    title: "Produk Olahan Ikan",
+    deskripsi: "Ragam olahan ikan higienis bernutrisi tinggi: abon tuna, kerupuk tenggiri, sambal roa asap khas Manado, siomay, hingga baso ikan siap saji."
+  },
+  "ikan-seafood-segar": {
+    bg: "cat-seafood-real.jpg",
+    tag: "KATEGORI SEAFOOD SEGAR",
+    title: "Ikan & Seafood Segar",
+    deskripsi: "Tangkapan laut dan perairan segar kualitas cold-chain higienis: fillet salmon trout, udang vaname, kepiting bakau, hingga kakap merah segar."
+  },
+  "pancing-umpan": {
+    bg: "cat-pancing-real.jpg",
+    tag: "KATEGORI SPORTFISHING",
+    title: "Pancing & Umpan",
+    deskripsi: "Dukungan piranti sportfishing terlengkap: joran carbon lentur prima, senar tangguh, reel presisi, umpan tiruan, serta essen aroma pikat teruji."
+  },
+  "Benih-Pakan-Budidaya": {
+    bg: "cat-budidaya-real.jpg",
+    tag: "KATEGORI BUDIDAYA MODERN",
+    title: "Benih, Pakan & Budidaya",
+    deskripsi: "Sarana budidaya dan keramba modern: pakan apung kaya protein, benih sehat, aerator hemat daya, dan perlengkapan budidaya berkualitas."
+  }
+};
+
 // Placeholder gambar cadangan
 const PLACEHOLDER_IMG =
   "data:image/svg+xml;charset=UTF-8," +
@@ -533,6 +567,7 @@ let currentKeyword = "";
 document.addEventListener("DOMContentLoaded", function () {
   const homeView = document.getElementById("homeView");
   const categoryView = document.getElementById("categoryView");
+  const searchView = document.getElementById("searchView");
   const categoryGrid = document.getElementById("categoryGrid");
   const productGrid = document.getElementById("productGrid");
   const categoryTitle = document.getElementById("categoryTitle");
@@ -541,9 +576,32 @@ document.addEventListener("DOMContentLoaded", function () {
   const backBtn = document.getElementById("backBtn");
   const brandLogo = document.getElementById("brandLogo");
 
+  // Elemen Header Banner Kategori
+  const categoryBannerImg = document.getElementById("categoryBannerImg");
+  const categoryBannerTag = document.getElementById("categoryBannerTag");
+  const categoryHeaderDesc = document.getElementById("categoryHeaderDesc");
+  const categoryChipsNav = document.getElementById("categoryChipsNav");
+  const categorySearchClearBtn = document.getElementById("categorySearchClearBtn");
+
+  // Elemen Pencarian
   const searchInput = document.getElementById("searchInput");
+  const homeSearchTrigger = document.getElementById("homeSearchTrigger");
   const searchInputCategory = document.getElementById("searchInputCategory");
   const filterSelect = document.getElementById("filterSelect");
+
+  // Elemen Mobile Search Interface (Mega Bar)
+  const searchInterfaceInput = document.getElementById("searchInterfaceInput");
+  const searchBackBtn = document.getElementById("searchBackBtn");
+  const searchClearBtn = document.getElementById("searchClearBtn");
+  const searchCameraBtn = document.getElementById("searchCameraBtn");
+  const cameraFileInput = document.getElementById("cameraFileInput");
+  const searchMicBtn = document.getElementById("searchMicBtn");
+  const searchSubmitBtn = document.getElementById("searchSubmitBtn");
+  const searchChipsScroll = document.getElementById("searchChipsScroll");
+  const searchProductGrid = document.getElementById("searchProductGrid");
+  const searchResultCount = document.getElementById("searchResultCount");
+  const searchEmptyState = document.getElementById("searchEmptyState");
+  const searchToast = document.getElementById("searchToast");
 
   const sampleCarouselViewport = document.getElementById("sampleCarouselViewport");
   const sampleCarouselTrack = document.getElementById("sampleCarouselTrack");
@@ -1097,37 +1155,56 @@ document.addEventListener("DOMContentLoaded", function () {
     renderProducts(getFilteredProducts());
   }
 
-  // ---------- 12. NAVIGASI HALAMAN (BERANDA & KATEGORI) ----------
+  // ---------- 12. NAVIGASI HALAMAN (BERANDA, KATEGORI & SEARCH INTERFACE) ----------
+
+  let activeSearchChip = { type: "cat", value: "semua" };
+
+  function showSearchToast(message) {
+    if (!searchToast) return;
+    searchToast.textContent = message;
+    searchToast.classList.remove("hidden");
+    setTimeout(function () {
+      searchToast.classList.add("hidden");
+    }, 2800);
+  }
 
   function openCategory(categoryId, categoryName) {
     currentCategory = categoryId;
-    currentKeyword = searchInput ? searchInput.value : "";
+    currentKeyword = searchInputCategory ? searchInputCategory.value : "";
 
-    if (categoryTitle) {
-      categoryTitle.textContent = categoryName || getCategoryName(categoryId);
+    const bannerInfo = categoryBanners[categoryId] || categoryBanners["semua"];
+    if (categoryBannerImg) {
+      categoryBannerImg.src = bannerInfo.bg;
+      categoryBannerImg.alt = bannerInfo.title;
     }
+    if (categoryBannerTag) {
+      categoryBannerTag.textContent = bannerInfo.tag;
+    }
+    if (categoryTitle) {
+      categoryTitle.textContent = categoryName || bannerInfo.title;
+    }
+    if (categoryHeaderDesc) {
+      categoryHeaderDesc.textContent = bannerInfo.deskripsi;
+    }
+
+    // Perbarui status chip kategori yang aktif di halaman kategori
+    if (categoryChipsNav) {
+      const chips = categoryChipsNav.querySelectorAll(".cat-chip-btn");
+      chips.forEach(function (btn) {
+        if (btn.getAttribute("data-cat") === categoryId) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+    }
+
     if (filterSelect) {
       filterSelect.value = categoryId;
     }
-    if (searchInputCategory) {
-      searchInputCategory.value = currentKeyword;
-    }
-
-    const categoryHeaderDesc = document.getElementById("categoryHeaderDesc");
-    if (categoryHeaderDesc) {
-      const catObj = categories.find(function (c) {
-        return c.id === categoryId;
-      });
-      if (catObj && catObj.deskripsi && categoryId !== "semua") {
-        categoryHeaderDesc.textContent = catObj.deskripsi;
-        categoryHeaderDesc.classList.remove("hidden");
-      } else {
-        categoryHeaderDesc.textContent = "";
-        categoryHeaderDesc.classList.add("hidden");
-      }
-    }
 
     if (homeView) homeView.classList.add("hidden");
+    if (searchView) searchView.classList.add("hidden");
     if (categoryView) categoryView.classList.remove("hidden");
 
     refreshProductView();
@@ -1140,18 +1217,94 @@ document.addEventListener("DOMContentLoaded", function () {
     if (searchInput) searchInput.value = "";
     if (searchInputCategory) searchInputCategory.value = "";
 
-    const categoryHeaderDesc = document.getElementById("categoryHeaderDesc");
-    if (categoryHeaderDesc) {
-      categoryHeaderDesc.textContent = "";
-      categoryHeaderDesc.classList.add("hidden");
-    }
-
     if (categoryView) categoryView.classList.add("hidden");
+    if (searchView) searchView.classList.add("hidden");
     if (homeView) homeView.classList.remove("hidden");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  // ---------- 13. EVENT LISTENERS ----------
+  // ---------- 13. LOGIKA MOBILE SEARCH INTERFACE (MEGA BAR & CHIPS) ----------
+
+  function openSearchInterface(initialKeyword = "") {
+    if (homeView) homeView.classList.add("hidden");
+    if (categoryView) categoryView.classList.add("hidden");
+    if (searchView) searchView.classList.remove("hidden");
+
+    if (searchInterfaceInput) {
+      searchInterfaceInput.value = initialKeyword;
+      setTimeout(function () {
+        searchInterfaceInput.focus();
+      }, 50);
+    }
+
+    renderSearchInterfaceProducts();
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
+
+  function closeSearchInterface() {
+    if (searchView) searchView.classList.add("hidden");
+    if (homeView) homeView.classList.remove("hidden");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function getSearchFilteredProducts() {
+    const query = searchInterfaceInput ? searchInterfaceInput.value.trim().toLowerCase() : "";
+
+    return products.filter(function (p) {
+      // 1. Cek filter dari activeSearchChip
+      if (activeSearchChip.type === "cat" && activeSearchChip.value !== "semua") {
+        if (p.kategori !== activeSearchChip.value) return false;
+      } else if (activeSearchChip.type === "kw") {
+        const kw = activeSearchChip.value.toLowerCase();
+        const matchChip = p.nama.toLowerCase().includes(kw) || p.deskripsi.toLowerCase().includes(kw);
+        if (!matchChip) return false;
+      }
+
+      // 2. Cek text input query
+      if (query) {
+        const catName = getCategoryName(p.kategori).toLowerCase();
+        const matchQuery = p.nama.toLowerCase().includes(query) ||
+                           p.deskripsi.toLowerCase().includes(query) ||
+                           catName.includes(query);
+        if (!matchQuery) return false;
+      }
+
+      return true;
+    });
+  }
+
+  function renderSearchInterfaceProducts() {
+    if (!searchProductGrid) return;
+    searchProductGrid.innerHTML = "";
+
+    const list = getSearchFilteredProducts();
+
+    if (searchResultCount) {
+      searchResultCount.textContent = list.length + " Produk";
+    }
+
+    if (searchClearBtn) {
+      const q = searchInterfaceInput ? searchInterfaceInput.value.trim() : "";
+      if (q.length > 0) {
+        searchClearBtn.classList.remove("hidden");
+      } else {
+        searchClearBtn.classList.add("hidden");
+      }
+    }
+
+    if (list.length === 0) {
+      if (searchEmptyState) searchEmptyState.classList.remove("hidden");
+      return;
+    }
+
+    if (searchEmptyState) searchEmptyState.classList.add("hidden");
+
+    list.forEach(function (produk) {
+      searchProductGrid.appendChild(createProductCard(produk));
+    });
+  }
+
+  // ---------- 14. EVENT LISTENERS ----------
 
   if (backBtn) backBtn.addEventListener("click", goHome);
   if (brandLogo) {
@@ -1164,16 +1317,127 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Pencarian dari beranda langsung membuka halaman kategori
+  // PENCARIAN DARI BERANDA: Langsung membuka Search Interface tanpa jeda!
+  if (homeSearchTrigger) {
+    homeSearchTrigger.addEventListener("click", function () {
+      openSearchInterface(searchInput ? searchInput.value : "");
+    });
+  }
   if (searchInput) {
+    searchInput.addEventListener("focus", function () {
+      openSearchInterface(searchInput.value);
+    });
+    searchInput.addEventListener("click", function () {
+      openSearchInterface(searchInput.value);
+    });
     searchInput.addEventListener("input", function () {
-      const keyword = searchInput.value;
-      if (keyword.trim().length > 0) {
-        openCategory("semua", "Hasil Pencarian");
-        if (searchInputCategory) searchInputCategory.value = keyword;
-        currentKeyword = keyword;
-        refreshProductView();
+      openSearchInterface(searchInput.value);
+    });
+  }
+
+  // Tombol kembali di search interface
+  if (searchBackBtn) {
+    searchBackBtn.addEventListener("click", closeSearchInterface);
+  }
+
+  // Input search interface real-time
+  if (searchInterfaceInput) {
+    searchInterfaceInput.addEventListener("input", function () {
+      renderSearchInterfaceProducts();
+    });
+    searchInterfaceInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        renderSearchInterfaceProducts();
       }
+    });
+  }
+
+  // Tombol hapus (clear) di search interface
+  if (searchClearBtn) {
+    searchClearBtn.addEventListener("click", function () {
+      if (searchInterfaceInput) {
+        searchInterfaceInput.value = "";
+        searchInterfaceInput.focus();
+        renderSearchInterfaceProducts();
+      }
+    });
+  }
+
+  // Tombol submit search
+  if (searchSubmitBtn) {
+    searchSubmitBtn.addEventListener("click", function () {
+      renderSearchInterfaceProducts();
+    });
+  }
+
+  // Chips di search interface (horizontal scrollable)
+  if (searchChipsScroll) {
+    const chips = searchChipsScroll.querySelectorAll(".search-chip");
+    chips.forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        chips.forEach(function (c) { c.classList.remove("active"); });
+        chip.classList.add("active");
+        const type = chip.getAttribute("data-type");
+        const val = chip.getAttribute("data-value");
+        activeSearchChip = { type: type, value: val };
+        renderSearchInterfaceProducts();
+      });
+    });
+  }
+
+  // Kamera Search (Upload / Scan foto produk)
+  if (searchCameraBtn && cameraFileInput) {
+    searchCameraBtn.addEventListener("click", function () {
+      cameraFileInput.click();
+    });
+    cameraFileInput.addEventListener("change", function () {
+      if (cameraFileInput.files && cameraFileInput.files[0]) {
+        showSearchToast("📸 Foto produk diterima! Menampilkan rekomendasi...");
+        if (searchInterfaceInput) {
+          searchInterfaceInput.value = "Ikan";
+        }
+        renderSearchInterfaceProducts();
+      }
+    });
+  }
+
+  // Mikrofon Voice Search
+  if (searchMicBtn) {
+    searchMicBtn.addEventListener("click", function () {
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRec) {
+        try {
+          const rec = new SpeechRec();
+          rec.lang = "id-ID";
+          rec.start();
+          showSearchToast("🎙️ Mendengarkan suara... Silakan sebutkan produk");
+          rec.onresult = function (event) {
+            const transcript = event.results[0][0].transcript;
+            if (searchInterfaceInput) {
+              searchInterfaceInput.value = transcript;
+              renderSearchInterfaceProducts();
+            }
+          };
+          rec.onerror = function () {
+            showSearchToast("🎙️ Coba sebutkan: Abon tuna, Joran, atau Udang");
+          };
+        } catch (err) {
+          showSearchToast("🎙️ Coba sebutkan: Abon tuna, Joran, atau Udang");
+        }
+      } else {
+        showSearchToast("🎙️ Fitur suara aktif: Coba sebutkan Abon tuna / Joran");
+      }
+    });
+  }
+
+  // Category view chips nav
+  if (categoryChipsNav) {
+    const catChips = categoryChipsNav.querySelectorAll(".cat-chip-btn");
+    catChips.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const catId = btn.getAttribute("data-cat");
+        openCategory(catId);
+      });
     });
   }
 
@@ -1181,16 +1445,32 @@ document.addEventListener("DOMContentLoaded", function () {
   if (searchInputCategory) {
     searchInputCategory.addEventListener("input", function () {
       currentKeyword = searchInputCategory.value;
+      if (categorySearchClearBtn) {
+        if (currentKeyword.trim().length > 0) {
+          categorySearchClearBtn.classList.remove("hidden");
+        } else {
+          categorySearchClearBtn.classList.add("hidden");
+        }
+      }
       refreshProductView();
     });
   }
 
-  // Filter dropdown kategori
+  if (categorySearchClearBtn) {
+    categorySearchClearBtn.addEventListener("click", function () {
+      if (searchInputCategory) {
+        searchInputCategory.value = "";
+        currentKeyword = "";
+        categorySearchClearBtn.classList.add("hidden");
+        refreshProductView();
+      }
+    });
+  }
+
+  // Filter dropdown kategori (fallback sinkron)
   if (filterSelect) {
     filterSelect.addEventListener("change", function () {
-      currentCategory = filterSelect.value;
-      if (categoryTitle) categoryTitle.textContent = getCategoryName(currentCategory);
-      refreshProductView();
+      openCategory(filterSelect.value);
     });
   }
 

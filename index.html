@@ -117,14 +117,14 @@
         </div>
       </section>
 
-      <!-- PENCARIAN REAL-TIME MINIMALIS -->
+      <!-- PENCARIAN REAL-TIME MINIMALIS (KLIK LANGSUNG MENUJU SEARCH INTERFACE) -->
       <section class="search-bar-clean">
-        <div class="search-input-pill">
+        <div class="search-input-pill" id="homeSearchTrigger" role="button" tabindex="0" aria-label="Buka pencarian produk aquaagri.id">
           <svg class="search-pill-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
             <circle cx="11" cy="11" r="8"/>
             <line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
-          <input type="text" id="searchInput" placeholder="Cari produk perikanan..." aria-label="Cari produk perikanan">
+          <input type="text" id="searchInput" placeholder="Cari di aquaagri.id (salmon, joran, abon, udang...)" aria-label="Cari produk perikanan">
         </div>
       </section>
 
@@ -142,9 +142,9 @@
             <span class="featured-tag-clean">PRODUK UNGGULAN</span>
             <h2 class="featured-title-clean">Pilihan Terbaik untuk Anda</h2>
           </div>
-          <button id="viewAllProdsBtn" class="view-all-link" type="button">
-            <span>Lihat Semua</span>
-            <span aria-hidden="true">→</span>
+          <button id="viewAllProdsBtn" class="view-all-link" type="button" aria-label="Lihat Semua Produk">
+            <span>Lihat Semua Produk</span>
+            <span class="view-all-arrow" aria-hidden="true">→</span>
           </button>
         </div>
 
@@ -334,25 +334,57 @@
     <!-- ------------------------------------------------------------
          2. HALAMAN KATALOG PRODUK PER KATEGORI (CATEGORY VIEW)
          ------------------------------------------------------------ -->
-    <section id="categoryView" class="view hidden">
-      <div class="category-header">
-        <button id="backBtn" class="back-btn" type="button">
-          <span aria-hidden="true">←</span> Kembali ke Beranda
-        </button>
-        <div class="category-header-text">
-          <h2 id="categoryTitle">Semua Produk</h2>
-          <span class="category-count" id="categoryCount">Menampilkan katalog produk</span>
-          <p id="categoryHeaderDesc" class="category-header-desc hidden"></p>
+    <section id="categoryView" class="view hidden" aria-label="Katalog Kategori Produk">
+      
+      <!-- HERO BANNER KATEGORI DENGAN FOTO, NAVIGASI KEMBALI & DESKRIPSI -->
+      <div class="category-banner-card" id="categoryBannerCard">
+        <img id="categoryBannerImg" src="banner-bahari-real.jpg" alt="Banner Kategori aquaagri.id" class="category-banner-bg" loading="eager">
+        <div class="category-banner-overlay"></div>
+        <div class="category-banner-nav">
+          <button id="backBtn" class="category-back-btn" type="button" aria-label="Kembali ke Beranda">
+            <svg class="back-arrow-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <span>Kembali ke Beranda</span>
+          </button>
+          <span class="category-partner-badge">Mitra Resmi Shopee</span>
+        </div>
+        <div class="category-banner-content">
+          <span class="category-banner-tag" id="categoryBannerTag">KATALOG PRODUK</span>
+          <h2 id="categoryTitle" class="category-banner-title">Semua Produk</h2>
+          <p id="categoryHeaderDesc" class="category-banner-desc">
+            Pusat terpercaya ekosistem bahari nusantara: hasil laut segar harian, aneka olahan ikan bernutrisi, piranti pancing andalan, hingga sarana budidaya modern siap kirim terpercaya.
+          </p>
+          <div class="category-banner-footer">
+            <span class="category-count-badge" id="categoryCount">48 Produk Tersedia</span>
+            <span class="category-quality-badge">★ Kualitas Terjamin & Higienis</span>
+          </div>
         </div>
       </div>
 
       <!-- FILTER & PENCARIAN DI HALAMAN KATEGORI -->
-      <section class="filter-bar">
-        <div class="search-input-wrap search-input-wrap-cat">
-          <span class="search-icon" aria-hidden="true">🔍</span>
-          <input type="text" id="searchInputCategory" placeholder="Cari dalam kategori ini..." aria-label="Cari produk dalam kategori">
+      <section class="category-filter-section">
+        <div class="category-search-row">
+          <div class="category-search-pill">
+            <svg class="search-pill-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" id="searchInputCategory" placeholder="Cari dalam kategori ini..." aria-label="Cari produk dalam kategori">
+            <button id="categorySearchClearBtn" class="category-clear-btn hidden" type="button" aria-label="Hapus kata kunci">✕</button>
+          </div>
         </div>
-        <select id="filterSelect" aria-label="Filter kategori produk">
+
+        <!-- QUICK CHIPS SWITCHER KATEGORI -->
+        <div class="category-chips-nav" id="categoryChipsNav">
+          <button class="cat-chip-btn active" data-cat="semua" type="button">Semua</button>
+          <button class="cat-chip-btn" data-cat="produk-olahan-ikan" type="button">Olahan Ikan 🍥</button>
+          <button class="cat-chip-btn" data-cat="ikan-seafood-segar" type="button">Ikan Segar 🦐</button>
+          <button class="cat-chip-btn" data-cat="pancing-umpan" type="button">Pancing 🎣</button>
+          <button class="cat-chip-btn" data-cat="Benih-Pakan-Budidaya" type="button">Budidaya 🌱</button>
+        </div>
+
+        <select id="filterSelect" class="hidden" aria-label="Filter kategori produk">
           <option value="semua">Semua Kategori (Semua Produk)</option>
           <option value="produk-olahan-ikan">Produk Olahan Ikan</option>
           <option value="ikan-seafood-segar">Ikan & Seafood Segar</option>
@@ -361,7 +393,7 @@
         </select>
       </section>
 
-      <!-- GRID PRODUK DENGAN SENTUHAN DISKON -->
+      <!-- GRID PRODUK DENGAN UKURAN LEBIH RINGKAS (TURUN 15%) -->
       <div class="product-grid" id="productGrid">
         <!-- Kartu produk di-render secara dinamis lewat script.js -->
       </div>
@@ -371,6 +403,88 @@
         Produk tidak ditemukan. Coba gunakan kata kunci atau pilihan kategori lain ya.
       </p>
     </section>
+
+    <!-- ------------------------------------------------------------
+         3. MOBILE SEARCH INTERFACE (TERINSPIRASI GAMBAR REFERENSI)
+         Gaya simple, modern, clean, profesional khas aquaagri.id
+         ------------------------------------------------------------ -->
+    <section id="searchView" class="view hidden" aria-label="Antarmuka Pencarian Produk">
+      
+      <!-- HEADER SEARCH BAR BESAR DENGAN TOMBOL KEMBALI, KAMERA, MIC & CARI -->
+      <div class="search-mega-header">
+        <button id="searchBackBtn" class="search-mega-back-btn" type="button" aria-label="Kembali ke Beranda">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+        </button>
+
+        <div class="search-mega-box">
+          <input type="text" id="searchInterfaceInput" placeholder=" aquaagri.id" autocomplete="off" spellcheck="false" aria-label="Ketik pencarian produk">
+          <button id="searchClearBtn" class="search-clear-cross hidden" type="button" aria-label="Hapus kata kunci">✕</button>
+          
+          <button id="searchCameraBtn" class="search-icon-btn search-camera-btn" type="button" title="Pencarian Kamera / Foto" aria-label="Pencarian Kamera">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+          </button>
+          <input type="file" id="cameraFileInput" accept="image/*" capture="environment" class="hidden">
+
+          <button id="searchMicBtn" class="search-icon-btn search-mic-btn" type="button" title="Pencarian Suara" aria-label="Pencarian Suara">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <line x1="12" y1="19" x2="12" y2="23"/>
+              <line x1="8" y1="23" x2="16" y2="23"/>
+            </svg>
+          </button>
+
+          <button id="searchSubmitBtn" class="search-mega-submit-btn" type="button" aria-label="Cari Produk">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- CHIP KATEGORI & KATA KUNCI POPULER (HORIZONTAL SCROLLING) -->
+      <div class="search-chips-bar">
+        <div class="search-chips-scroll" id="searchChipsScroll">
+          <button class="search-chip active" data-type="cat" data-value="semua" type="button">Semua Kategori</button>
+          <button class="search-chip" data-type="cat" data-value="produk-olahan-ikan" type="button">Olahan Ikan 🍥</button>
+          <button class="search-chip" data-type="cat" data-value="ikan-seafood-segar" type="button">Ikan Segar 🦐</button>
+          <button class="search-chip" data-type="cat" data-value="pancing-umpan" type="button">Pancing & Umpan 🎣</button>
+          <button class="search-chip" data-type="cat" data-value="Benih-Pakan-Budidaya" type="button">Benih & Budidaya 🌱</button>
+          <button class="search-chip" data-type="kw" data-value="Sambal Roa" type="button">Sambal Roa 🌶️</button>
+          <button class="search-chip" data-type="kw" data-value="Abon Tuna" type="button">Abon Tuna</button>
+          <button class="search-chip" data-type="kw" data-value="Udang Vaname" type="button">Udang Vaname</button>
+          <button class="search-chip" data-type="kw" data-value="Joran Carbon" type="button">Joran Carbon</button>
+          <button class="search-chip" data-type="kw" data-value="Pelet Ikan" type="button">Pelet Apung</button>
+          <button class="search-chip" data-type="kw" data-value="Kerupuk Tenggiri" type="button">Kerupuk Tenggiri</button>
+        </div>
+      </div>
+
+      <!-- HEADING: PENCARIAN PILIHAN (PERSIS SEPERTI GAMBAR REFERENSI) -->
+      <div class="search-heading-row">
+        <h3 class="search-heading-text">Pencarian Pilihan</h3>
+        <span class="search-heading-count" id="searchResultCount">48 Produk</span>
+      </div>
+
+      <!-- GRID PRODUK 2 KOLOM RAPI & COMPACT -->
+      <div class="product-grid search-product-grid" id="searchProductGrid">
+        <!-- Kartu produk hasil pencarian di-render dinamis -->
+      </div>
+
+      <!-- EMPTY STATE JIKA PENCARIAN KOSONG -->
+      <p class="empty-state hidden" id="searchEmptyState">
+        Produk tidak ditemukan. Coba gunakan kata kunci lain atau pilih chip kategori di atas.
+      </p>
+
+    </section>
+
+    <!-- TOAST NOTIFIKASI INTERAKTIF (UNTUK KAMERA & SUARA) -->
+    <div id="searchToast" class="search-toast hidden" role="status" aria-live="polite"></div>
 
   </main>
 
