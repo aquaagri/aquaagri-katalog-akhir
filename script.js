@@ -283,6 +283,17 @@ const products = [
     kategori: "produk-olahan-ikan",
     linkAffiliate: "https://s.shopee.co.id/6fhnfxX7RM"
   },
+   {
+    id: 26,
+    nama: "Ikan Pindang Bandeng Presto 200gr",
+    harga: "Rp20.000",
+    hargaCoret: "Rp25.000",
+    diskon: "20%",
+    gambar: "assets/products/Ikan-Pindang-Bandeng.jpg",
+    deskripsi: "Ikan pindang bandeng presto 200gr dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    kategori: "produk-olahan-ikan",
+    linkAffiliate: "https://s.shopee.co.id/8AWfo4h1jw"
+  },
 
 
 
@@ -462,6 +473,160 @@ const products = [
     deskripsi: "Kerang hijau segar 1kg dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/5VVtScExyD"
+  },
+    {
+    id: 17,
+    nama: "Ikan Dory Fillet Fresh 1kg",
+    harga: "Rp48.000",
+    hargaCoret: "Rp60.000",
+    diskon: "20%",
+    gambar: "assets/products/Ikan-Dory.jpg",
+    deskripsi: "Ikan Dory fillet fresh 1kg dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/AAHkAyyvAV"
+  },
+    {
+    id: 18,
+    nama: "Rahang Tuna Beku Segar |200 -1000 Gram/Pcs",
+    harga: "Rp20.000",
+    hargaCoret: "Rp28.000",
+    diskon: "29%",
+    gambar: "assets/products/Rahang-Tuna.jpg",
+    deskripsi: "Rahang tuna beku segar 200-1000 gram per pcs dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/8fSwOYLmYP"
+  },
+    {
+    id: 19,
+    nama: "Ikan Baby Tuna Frozen Fresh 1kg",
+    harga: "Rp31.000",
+    hargaCoret: "Rp40.000",
+    diskon: "22%",
+    gambar: "assets/products/Ikan-Baby-Tuna.jpg",
+    deskripsi: "Ikan baby tuna beku segar 1kg dengan daging lembut dan gurih.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/8fSwPOHgjS"
+  },
+    {
+    id: 20,
+    nama: "Ikan Gurame Frozen Fresh 1kg Sudah Dibersihkan",
+    harga: "Rp68.000",
+    hargaCoret: "Rp80.000",
+    diskon: "15%",
+    gambar: "assets/products/Ikan-Gurame.jpg",
+    deskripsi: "Ikan gurame beku segar 1kg dengan daging lembut dan gurih.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/50Ze3C9wFQ"
+  },
+    {
+    id: 21,
+    nama: "Ikan Barakuda Fresh 1kg",
+    harga: "Rp31.000",
+    hargaCoret: "Rp40.000",
+    diskon: "22%",
+    gambar: "assets/products/Ikan-Barakuda.jpg",
+    deskripsi: "Ikan barakuda fresh 1kg dengan daging lembut dan gurih.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/3B7zs80NH6"
+  },
+    {
+    id: 22,
+    nama: "Ikan Bawal Air Tawar Segar 500gr",
+    harga: "Rp25.000",
+    hargaCoret: "Rp40.000",
+    diskon: "37%",
+    gambar: "assets/products/Ikan-Bawal.jpg",
+    deskripsi: "Ikan bawal air tawar segar 500gr dengan daging lembut dan gurih.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/4LJxGRmKkS"
+  },
+    {
+    id: 23,
+    nama: "Baby Octopus Gurita Segar 1kg",
+    harga: "Rp45.000",
+    hargaCoret: "Rp55.000",
+    diskon: "20%",
+    gambar: "assets/products/Baby-Octopus.jpg",
+    deskripsi: "Baby octopus gurita segar 1kg dengan daging lembut dan gurih.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/9fLTcWlYrQ"
+  },
+    {
+    id: 24,
+    nama: "Ikan Bawal Putih Bawal Laut segar 500gr",
+    harga: "Rp35.000",
+    hargaCoret: "Rp47.000",
+    diskon: "25%",
+    gambar: "assets/products/Ikan-Bawal-Putih.jpg",
+    deskripsi: "Ikan bawal putih bawal laut segar 500gr dengan daging lembut dan gurih.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/2BFShSOat8"
+  },
+    {
+    id: 25,
+    nama: "Ikan Patin Segar 1kg",
+    harga: "Rp44.000",
+    hargaCoret: "Rp50.000",
+    diskon: "12%",
+    gambar: "assets/products/Ikan-Patin.jpg",
+    deskripsi: "Ikan patin segar 1kg dengan daging lembut dan gurih.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/AKbAS1xQPH"
+  },
+    {
+    id: 26,
+    nama: "Ikan Kuwe Segar 300gr",
+    harga: "Rp65.000",
+    hargaCoret: "Rp77.000",
+    diskon: "15%",
+    gambar: "assets/products/Ikan-Kuwe.jpg",
+    deskripsi: "Ikan kuwe segar 300gr dengan daging lembut dan gurih.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/60SBGzffo5"
+  },
+    {
+    id: 27,
+    nama: "Ikan Layang 1kg",
+    harga: "Rp16.000",
+    hargaCoret: "Rp30.000",
+    diskon: "47%",
+    gambar: "assets/products/Ikan-Layang.jpg",
+    deskripsi: "Ikan layang 1kg dengan daging lembut dan gurih.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/4qGDuPFwBW"
+  },
+    {
+    id: 28,
+    nama: "Kerang Tiram/Oyster laut fresh",
+    harga: "Rp21.000",
+    hargaCoret: "Rp32.000",
+    diskon: "34%",
+    gambar: "assets/products/Kerang-Tiram.jpg",
+    deskripsi: "Kerang tiram/oyster laut fresh dengan daging lembut dan gurih.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/5At4JFTV26"
+  },
+    {
+    id: 29,
+    nama: "Ikan Ayam Ayam Premium Segar 750gr",
+    harga: "Rp37.000",
+    hargaCoret: "Rp45.000",
+    diskon: "18%",
+    gambar: "assets/products/Ikan-Ayam.jpg",
+    deskripsi: "Ikan ayam ayam premium segar 750gr dengan daging lembut dan gurih.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/8fSwSUFGkr"
+  },
+    {
+    id: 30,
+    nama: "Ikan Baronang Segar 100gr",
+    harga: "Rp42.000",
+    hargaCoret: "Rp55.000",
+    diskon: "24%",
+    gambar: "assets/products/Ikan-Baronang.jpg",
+    deskripsi: "Ikan baronang segar 100gr dengan daging lembut dan gurih.",
+    kategori: "ikan-seafood-segar",
+    linkAffiliate: "https://s.shopee.co.id/1LgLifLLvz"
   },
 
   // --- Kategori: Pancing & Umpan ---
