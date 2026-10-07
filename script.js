@@ -1886,9 +1886,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const heroJelajahiBtn = document.getElementById("heroJelajahiBtn");
   if (heroJelajahiBtn) {
     heroJelajahiBtn.addEventListener("click", function () {
-      const catSec = document.querySelector(".categories-clean");
-      if (catSec) {
-        catSec.scrollIntoView({ behavior: "smooth", block: "start" });
+      const targetSec = document.querySelector(".search-bar-clean");
+      if (targetSec) {
+        const topbar = document.querySelector(".topbar");
+        const offset = (topbar ? topbar.offsetHeight : 54) + 6;
+        const targetPos = targetSec.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top: targetPos, behavior: "smooth" });
       }
     });
   }
