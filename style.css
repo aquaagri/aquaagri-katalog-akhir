@@ -467,27 +467,18 @@ body.dark-mode .hero-clean-title {
 
 .hero-clean-desc {
   font-size: 0.74rem;
-  color: #062822;
+  color: #0a2d26;
   font-weight: 600;
   margin: 0 0 8px;
   line-height: 1.38;
   max-width: 290px;
   letter-spacing: -0.1px;
-  /* Blur tipis frosted glass agar deskripsi tidak menyatu dengan background foto */
-  padding: 5px 9px;
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 8px;
-  border-left: 2.5px solid rgba(15, 118, 110, 0.4);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
 }
 
 body.dark-mode .hero-clean-desc {
   color: #f1fbf8;
-  background: rgba(8, 28, 23, 0.65);
-  border-left-color: rgba(45, 212, 191, 0.45);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
 }
 
 .hero-clean-actions {
@@ -1837,15 +1828,7 @@ body.dark-mode .category-back-btn {
   margin: 0 0 6px;
   line-height: 1.35;
   max-width: 580px;
-  /* Blur tipis frosted glass agar deskripsi kategori sangat jelas & tidak menyatu dengan background */
-  padding: 5px 10px;
-  background: rgba(6, 26, 22, 0.45);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 8px;
-  border-left: 2.5px solid rgba(45, 212, 191, 0.5);
-  display: inline-block;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.65);
 }
 
 .category-banner-footer {
@@ -1873,33 +1856,105 @@ body.dark-mode .category-back-btn {
   font-weight: 700;
 }
 
-/* FILTER & QUICK CHIPS PADA HALAMAN KATEGORI */
-.category-filter-section {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 18px;
+/* ============================================================
+   FITUR SEARCH DI SEMUA KATEGORI (FIXED NEMPEL DI BAWAH HEADER)
+   Harus tetap di posisi yang sama pada saat digulir layarnya
+   ============================================================ */
+
+#categoryView {
+  padding-top: 54px;
 }
 
-.category-search-row {
+@media (min-width: 768px) {
+  #categoryView {
+    padding-top: 60px;
+  }
+}
+
+@media (min-width: 1024px) {
+  #categoryView {
+    padding-top: 64px;
+  }
+}
+
+.category-search-sticky-bar {
+  position: fixed;
+  top: 52px;
+  left: 0;
+  right: 0;
   width: 100%;
+  z-index: 990;
+  background: var(--surface-topbar);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+  padding: 8px 0;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+@media (min-width: 768px) {
+  .category-search-sticky-bar {
+    top: 58px;
+    padding: 10px 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .category-search-sticky-bar {
+    top: 62px;
+    padding: 11px 0;
+  }
+}
+
+.category-search-sticky-inner {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .category-search-sticky-inner {
+    max-width: 920px;
+    padding: 0 24px;
+    gap: 12px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .category-search-sticky-inner {
+    max-width: 1140px;
+    padding: 0 28px;
+  }
 }
 
 .category-search-pill {
+  flex: 1;
   display: flex;
   align-items: center;
   gap: 8px;
   background: var(--surface-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-pill);
-  padding: 8px 14px;
+  padding: 6px 14px;
   box-shadow: var(--shadow-xs);
   transition: all 0.2s ease;
+  min-width: 0;
 }
 
 .category-search-pill:focus-within {
   border-color: #0f766e;
   box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
+}
+
+body.dark-mode .category-search-pill {
+  background: #0f241f;
+  border-color: var(--border-light);
 }
 
 body.dark-mode .category-search-pill:focus-within {
@@ -1915,6 +1970,8 @@ body.dark-mode .category-search-pill:focus-within {
   font-size: 0.82rem;
   font-family: inherit;
   outline: none;
+  padding: 4px 0;
+  min-width: 0;
 }
 
 .category-clear-btn {
@@ -1922,8 +1979,17 @@ body.dark-mode .category-search-pill:focus-within {
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 0.82rem;
+  font-size: 0.80rem;
   padding: 0 4px;
+  line-height: 1;
+}
+
+/* FILTER & QUICK CHIPS PADA HALAMAN KATEGORI */
+.category-filter-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 18px;
 }
 
 .category-chips-nav {
@@ -1984,21 +2050,21 @@ body.dark-mode .cat-chip-btn.active {
 .product-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px 9px; /* Diturunkan 5% tambahan agar sangat proporsional di HP */
+  gap: 7.5px 8px; /* Dipangkas 5% lebih ringkas & proporsional */
   width: 100%;
 }
 
 @media (min-width: 640px) {
   .product-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
+    gap: 11px;
   }
 }
 
 @media (min-width: 1024px) {
   .product-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 14px;
+    gap: 13px;
   }
 }
 
@@ -2006,7 +2072,7 @@ body.dark-mode .cat-chip-btn.active {
   min-width: 0;
   background: var(--surface-card);
   border: 1px solid var(--border-card);
-  border-radius: 11px; /* Turun 5% lebih sleek */
+  border-radius: 10px; /* Dipangkas 5% */
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -2043,11 +2109,11 @@ body.dark-mode .cat-chip-btn.active {
 
 .product-discount-badge {
   position: absolute;
-  top: 5px;
-  left: 5px;
+  top: 4px;
+  left: 4px;
   background: var(--accent-coral);
   color: #ffffff;
-  font-size: 0.60rem;
+  font-size: 0.58rem;
   font-weight: 800;
   padding: 2px 4px;
   border-radius: 4px;
@@ -2056,7 +2122,7 @@ body.dark-mode .cat-chip-btn.active {
 }
 
 .product-body {
-  padding: 8px 9px; /* Turun 5% dari 9px 10px */
+  padding: 7px 8px; /* Dipangkas 5% dari 8px 9px */
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -2064,7 +2130,7 @@ body.dark-mode .cat-chip-btn.active {
 
 .product-name {
   font-weight: 700;
-  font-size: 0.74rem; /* Turun 5% dari 0.77rem */
+  font-size: 0.70rem; /* Dipangkas 5% dari 0.74rem */
   margin: 0 0 2px;
   color: var(--text-primary);
   line-height: 1.25;
@@ -2073,20 +2139,20 @@ body.dark-mode .cat-chip-btn.active {
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height: 2.3em;
+  min-height: 2.2em;
 }
 
 .product-desc {
-  font-size: 0.65rem; /* Turun 5% dari 0.68rem */
+  font-size: 0.62rem; /* Dipangkas 5% dari 0.65rem */
   color: var(--text-secondary);
   margin: 0 0 3px;
-  line-height: 1.30;
+  line-height: 1.28;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height: 2.4em;
+  min-height: 2.3em;
   cursor: pointer;
   transition: color 0.2s ease;
 }
@@ -2108,14 +2174,14 @@ body.dark-mode .cat-chip-btn.active {
   gap: 4px;
   flex-wrap: wrap;
   margin-top: auto;
-  padding-top: 3px;
-  min-height: 1.4em;
+  padding-top: 2px;
+  min-height: 1.35em;
 }
 
 .product-price {
   font-weight: 800;
   color: #0f766e;
-  font-size: 0.82rem; /* Turun 5% dari 0.86rem */
+  font-size: 0.78rem; /* Dipangkas 5% dari 0.82rem */
 }
 
 body.dark-mode .product-price {
@@ -2123,21 +2189,21 @@ body.dark-mode .product-price {
 }
 
 .product-price-coret {
-  font-size: 0.60rem;
+  font-size: 0.57rem;
   color: var(--text-subtle);
   text-decoration: line-through;
   font-weight: 500;
 }
 
 .product-btn {
-  margin-top: 5px;
+  margin-top: 4px;
   width: 100%;
   border: none;
   background: #0f766e;
   color: #ffffff;
-  padding: 5px 8px; /* Turun 5% dari 6px 9px */
+  padding: 4.5px 7px; /* Dipangkas 5% dari 5px 8px */
   border-radius: 5px;
-  font-size: 0.70rem; /* Turun 5% dari 0.73rem */
+  font-size: 0.67rem; /* Dipangkas 5% dari 0.70rem */
   font-weight: 700;
   font-family: inherit;
   cursor: pointer;
@@ -2166,29 +2232,75 @@ body.dark-mode .product-price {
    Nuansa kombinasi warna brand aquaagri.id dominan biru muda gradasi hijau muda
    ============================================================ */
 
+#searchView {
+  padding-top: 54px;
+}
+
+@media (min-width: 768px) {
+  #searchView {
+    padding-top: 60px;
+  }
+}
+
+@media (min-width: 1024px) {
+  #searchView {
+    padding-top: 64px;
+  }
+}
+
 .search-mega-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-  position: sticky;
+  position: fixed;
   top: 52px;
-  z-index: 95;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 995;
   background: var(--surface-topbar);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
   padding: 8px 0;
+  transition: background 0.25s ease, border-color 0.25s ease;
 }
 
 @media (min-width: 768px) {
   .search-mega-header {
     top: 58px;
+    padding: 10px 0;
   }
 }
 
 @media (min-width: 1024px) {
   .search-mega-header {
     top: 62px;
+    padding: 11px 0;
+  }
+}
+
+.search-mega-header-inner {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .search-mega-header-inner {
+    max-width: 920px;
+    padding: 0 24px;
+    gap: 12px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .search-mega-header-inner {
+    max-width: 1140px;
+    padding: 0 28px;
   }
 }
 
@@ -2225,11 +2337,11 @@ body.dark-mode .search-mega-back-btn:hover {
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   background: var(--surface-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-pill);
-  padding: 5px 6px 5px 13px;
+  padding: 4px 5px 4px 11px;
   box-shadow: var(--shadow-xs);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   min-width: 0;
@@ -2264,11 +2376,11 @@ body.dark-mode .search-mega-box .search-pill-icon {
   border: none;
   background: transparent;
   color: var(--text-primary);
-  font-size: 0.86rem;
+  font-size: 0.82rem;
   font-family: inherit;
   outline: none;
   min-width: 0;
-  padding: 4px 0;
+  padding: 5px 0;
 }
 
 .search-mega-box input::placeholder {
@@ -2281,8 +2393,10 @@ body.dark-mode .search-mega-box .search-pill-icon {
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   padding: 2px 4px;
+  line-height: 1;
+  flex-shrink: 0;
 }
 
 .search-actions-group {
@@ -2297,7 +2411,9 @@ body.dark-mode .search-mega-box .search-pill-icon {
   border: none;
   color: #557a75;
   cursor: pointer;
-  padding: 5px;
+  padding: 4px;
+  width: 27px;
+  height: 27px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2309,7 +2425,7 @@ body.dark-mode .search-mega-box .search-pill-icon {
 .search-icon-btn:hover {
   color: #0f766e;
   background: rgba(15, 118, 110, 0.08);
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 body.dark-mode .search-icon-btn {
@@ -2325,49 +2441,45 @@ body.dark-mode .search-icon-btn:hover {
 .search-mega-submit-btn {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  gap: 3px;
   background: linear-gradient(135deg, #2e98b0 0%, #18927f 100%);
   border: none;
   color: #ffffff;
-  padding: 5px 11px;
+  padding: 4px 9px;
+  height: 27px;
   border-radius: var(--radius-pill);
-  font-size: 0.74rem;
+  font-size: 0.70rem;
   font-weight: 700;
   font-family: inherit;
   cursor: pointer;
   flex-shrink: 0;
-  margin-left: 2px;
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
-  box-shadow: 0 2px 7px rgba(24, 146, 127, 0.28);
+  box-shadow: 0 2px 6px rgba(24, 146, 127, 0.25);
 }
 
 .search-mega-submit-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(24, 146, 127, 0.38);
+  box-shadow: 0 3px 9px rgba(24, 146, 127, 0.35);
   filter: brightness(1.05);
 }
 
 .search-submit-text {
-  font-size: 0.74rem;
+  font-size: 0.70rem;
   letter-spacing: 0.1px;
 }
 
 @media (max-width: 380px) {
   .search-mega-box {
-    padding: 4px 5px 4px 10px;
-    gap: 6px;
-  }
-  .search-actions-group {
-    gap: 1px;
-  }
-  .search-icon-btn {
-    padding: 4px;
-  }
-  .search-mega-submit-btn {
-    padding: 5px 8px;
+    padding: 3px 4px 3px 9px;
+    gap: 5px;
   }
   .search-submit-text {
-    font-size: 0.70rem;
+    display: none; /* di layar HP sempit, hanya tampilkan icon search agar input tetap lega */
+  }
+  .search-mega-submit-btn {
+    width: 27px;
+    padding: 0;
   }
 }
 
@@ -2465,7 +2577,7 @@ body.dark-mode .search-heading-count {
 
 /* GRID PRODUK SEARCH INTERFACE: SAMA PERSIS DENGAN PRODUK SETIAP KATEGORI */
 .search-product-grid {
-  gap: 8px 9px;
+  gap: 7.5px 8px;
   margin-top: 4px;
 }
 

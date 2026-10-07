@@ -835,6 +835,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const categoryHeaderDesc = document.getElementById("categoryHeaderDesc");
   const categoryChipsNav = document.getElementById("categoryChipsNav");
   const categorySearchClearBtn = document.getElementById("categorySearchClearBtn");
+  const categoryBackNavBtn = document.getElementById("categoryBackNavBtn");
 
   // Elemen Pencarian
   const searchInput = document.getElementById("searchInput");
@@ -1604,6 +1605,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // ---------- 14. EVENT LISTENERS ----------
 
   if (backBtn) backBtn.addEventListener("click", goHome);
+  if (categoryBackNavBtn) categoryBackNavBtn.addEventListener("click", goHome);
   if (brandLogo) {
     brandLogo.addEventListener("click", goHome);
     brandLogo.addEventListener("keydown", function (e) {
@@ -1640,6 +1642,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // Input search interface real-time
   if (searchInterfaceInput) {
     searchInterfaceInput.addEventListener("input", function () {
+      if (activeSearchChip.type === "kw" && searchChipsScroll) {
+        const chips = searchChipsScroll.querySelectorAll(".search-chip");
+        chips.forEach(function (c) { c.classList.remove("active"); });
+        const allChip = searchChipsScroll.querySelector('.search-chip[data-value="semua"]');
+        if (allChip) allChip.classList.add("active");
+        activeSearchChip = { type: "cat", value: "semua" };
+      }
       renderSearchInterfaceProducts();
     });
     searchInterfaceInput.addEventListener("keydown", function (e) {
