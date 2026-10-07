@@ -828,6 +828,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const emptyState = document.getElementById("emptyState");
   const backBtn = document.getElementById("backBtn");
   const brandLogo = document.getElementById("brandLogo");
+  const mainHeader = document.getElementById("mainHeader");
+  const topbarSearchInterfaceRow = document.getElementById("topbarSearchInterfaceRow");
+  const topbarCategorySearchRow = document.getElementById("topbarCategorySearchRow");
+
+  function updateHeaderOffset() {
+    if (mainHeader) {
+      document.body.style.paddingTop = mainHeader.offsetHeight + "px";
+    }
+  }
 
   // Elemen Header Banner Kategori
   const categoryBannerImg = document.getElementById("categoryBannerImg");
@@ -1505,6 +1514,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if (searchView) searchView.classList.add("hidden");
     if (categoryView) categoryView.classList.remove("hidden");
 
+    if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.add("hidden");
+    if (topbarCategorySearchRow) topbarCategorySearchRow.classList.remove("hidden");
+    updateHeaderOffset();
+
     refreshProductView();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -1518,6 +1531,11 @@ document.addEventListener("DOMContentLoaded", function () {
     if (categoryView) categoryView.classList.add("hidden");
     if (searchView) searchView.classList.add("hidden");
     if (homeView) homeView.classList.remove("hidden");
+
+    if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.add("hidden");
+    if (topbarCategorySearchRow) topbarCategorySearchRow.classList.add("hidden");
+    updateHeaderOffset();
+
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -1527,6 +1545,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if (homeView) homeView.classList.add("hidden");
     if (categoryView) categoryView.classList.add("hidden");
     if (searchView) searchView.classList.remove("hidden");
+
+    if (topbarCategorySearchRow) topbarCategorySearchRow.classList.add("hidden");
+    if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.remove("hidden");
+    updateHeaderOffset();
 
     if (searchInterfaceInput) {
       searchInterfaceInput.value = initialKeyword;
@@ -1542,6 +1564,11 @@ document.addEventListener("DOMContentLoaded", function () {
   function closeSearchInterface() {
     if (searchView) searchView.classList.add("hidden");
     if (homeView) homeView.classList.remove("hidden");
+
+    if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.add("hidden");
+    if (topbarCategorySearchRow) topbarCategorySearchRow.classList.add("hidden");
+    updateHeaderOffset();
+
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -1969,6 +1996,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ---------- 16. INISIALISASI HALAMAN AWAL ----------
+
+  updateHeaderOffset();
+  window.addEventListener("resize", updateHeaderOffset);
 
   renderCategories();
   renderSampleCarousel();
