@@ -821,6 +821,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const homeView = document.getElementById("homeView");
   const categoryView = document.getElementById("categoryView");
   const searchView = document.getElementById("searchView");
+  const aboutView = document.getElementById("aboutView");
+  const aboutBackBtn = document.getElementById("aboutBackBtn");
+  const aboutBottomBackBtn = document.getElementById("aboutBottomBackBtn");
+  const aboutExploreBtn = document.getElementById("aboutExploreBtn");
   const categoryGrid = document.getElementById("categoryGrid");
   const productGrid = document.getElementById("productGrid");
   const categoryTitle = document.getElementById("categoryTitle");
@@ -993,6 +997,60 @@ document.addEventListener("DOMContentLoaded", function () {
 
       categoryGrid.appendChild(card);
     });
+
+    initCategorySpotlightCycle();
+  }
+
+  // ---------- SISTEM SPOTLIGHT ANIMASI 4 KATEGORI (2,5 DETIK BERGANTIAN) ----------
+  let categorySpotlightTimer = null;
+  let activeSpotlightIndex = 0;
+  let isSpotlightHovered = false;
+
+  function initCategorySpotlightCycle() {
+    if (!categoryGrid) return;
+    const cards = categoryGrid.querySelectorAll(".category-card-clean");
+    if (!cards || cards.length === 0) return;
+
+    if (categorySpotlightTimer) {
+      clearInterval(categorySpotlightTimer);
+      categorySpotlightTimer = null;
+    }
+
+    // Kategori pertama langsung aktif (sesuai contoh gambar terlampir)
+    activeSpotlightIndex = 0;
+    cards.forEach(function (c, idx) {
+      if (idx === 0) {
+        c.classList.add("category-card-spotlight");
+      } else {
+        c.classList.remove("category-card-spotlight");
+      }
+    });
+
+    // Jalankan pergantian spotlight setiap kategori durasi 2,5 detik (2500ms)
+    categorySpotlightTimer = setInterval(function () {
+      if (isSpotlightHovered) return;
+      const allCards = categoryGrid.querySelectorAll(".category-card-clean");
+      if (!allCards || allCards.length === 0) return;
+
+      allCards[activeSpotlightIndex].classList.remove("category-card-spotlight");
+      activeSpotlightIndex = (activeSpotlightIndex + 1) % allCards.length;
+      allCards[activeSpotlightIndex].classList.add("category-card-spotlight");
+    }, 2500);
+
+    categoryGrid.addEventListener("mouseenter", function () {
+      isSpotlightHovered = true;
+    });
+    categoryGrid.addEventListener("mouseleave", function () {
+      isSpotlightHovered = false;
+    });
+    categoryGrid.addEventListener("touchstart", function () {
+      isSpotlightHovered = true;
+    }, { passive: true });
+    categoryGrid.addEventListener("touchend", function () {
+      setTimeout(function () {
+        isSpotlightHovered = false;
+      }, 1500);
+    }, { passive: true });
   }
 
   // ---------- 7. CAROUSEL PRODUK UNGGULAN (20 PRODUK PALING SERING DI-KLIK) ----------
@@ -1512,6 +1570,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (homeView) homeView.classList.add("hidden");
     if (searchView) searchView.classList.add("hidden");
+    if (aboutView) aboutView.classList.add("hidden");
     if (categoryView) categoryView.classList.remove("hidden");
 
     if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.add("hidden");
@@ -1530,7 +1589,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (categoryView) categoryView.classList.add("hidden");
     if (searchView) searchView.classList.add("hidden");
+    if (aboutView) aboutView.classList.add("hidden");
     if (homeView) homeView.classList.remove("hidden");
+
+    if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.add("hidden");
+    if (topbarCategorySearchRow) topbarCategorySearchRow.classList.add("hidden");
+    updateHeaderOffset();
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function openAboutView() {
+    if (homeView) homeView.classList.add("hidden");
+    if (categoryView) categoryView.classList.add("hidden");
+    if (searchView) searchView.classList.add("hidden");
+    if (aboutView) aboutView.classList.remove("hidden");
 
     if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.add("hidden");
     if (topbarCategorySearchRow) topbarCategorySearchRow.classList.add("hidden");
@@ -1544,6 +1617,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function openSearchInterface(initialKeyword = "") {
     if (homeView) homeView.classList.add("hidden");
     if (categoryView) categoryView.classList.add("hidden");
+    if (aboutView) aboutView.classList.add("hidden");
     if (searchView) searchView.classList.remove("hidden");
 
     if (topbarCategorySearchRow) topbarCategorySearchRow.classList.add("hidden");
@@ -1563,6 +1637,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function closeSearchInterface() {
     if (searchView) searchView.classList.add("hidden");
+    if (aboutView) aboutView.classList.add("hidden");
     if (homeView) homeView.classList.remove("hidden");
 
     if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.add("hidden");
@@ -1990,9 +2065,24 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Tombol Tentang AquaAgri mengarahkan ke halaman baru Komitmen Kami (aboutView)
   const aboutAquaAgriBtn = document.getElementById("aboutAquaAgriBtn");
   if (aboutAquaAgriBtn) {
-    aboutAquaAgriBtn.addEventListener("click", scrollToCaraPesan);
+    aboutAquaAgriBtn.addEventListener("click", openAboutView);
+  }
+
+  if (aboutBackBtn) {
+    aboutBackBtn.addEventListener("click", goHome);
+  }
+
+  if (aboutBottomBackBtn) {
+    aboutBottomBackBtn.addEventListener("click", goHome);
+  }
+
+  if (aboutExploreBtn) {
+    aboutExploreBtn.addEventListener("click", function () {
+      openCategory("semua", "Semua Produk");
+    });
   }
 
   // ---------- 16. INISIALISASI HALAMAN AWAL ----------
