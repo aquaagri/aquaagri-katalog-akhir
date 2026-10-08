@@ -410,18 +410,18 @@ body.dark-mode .theme-toggle-btn:hover {
 }
 
 .hero-clean-card {
-  background: linear-gradient(135deg, #f7f9fa 0%, #edf1f3 50%, #e2e8ea 100%);
-  border: 1px solid rgba(15, 118, 110, 0.12);
+  background: linear-gradient(135deg, #f0fdfa 0%, #e6f9f6 45%, #daf2ef 100%);
+  border: 1px solid rgba(15, 118, 110, 0.14);
   border-radius: var(--radius-xl);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 18px rgba(15, 118, 110, 0.08);
   position: relative;
   transition: box-shadow 0.3s ease;
 }
 
 body.dark-mode .hero-clean-card {
-  background: linear-gradient(135deg, #091816 0%, #061210 60%, #040d0b 100%);
-  border-color: rgba(45, 212, 191, 0.14);
+  background: linear-gradient(135deg, #091a17 0%, #061311 60%, #030d0c 100%);
+  border-color: rgba(45, 212, 191, 0.16);
 }
 
 .hero-clean-body {
@@ -438,12 +438,12 @@ body.dark-mode .hero-clean-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* Polet warna tenang, tidak terlalu jenuh/tebal, berpadu halus ke foto */
+  /* Polet warna fresh bahari, transparan & tidak tebal agar gambar kapal terlihat jelas */
   background: linear-gradient(
     90deg,
-    rgba(247, 249, 250, 0.98) 0%,
-    rgba(247, 249, 250, 0.86) 46%,
-    rgba(247, 249, 250, 0.16) 78%,
+    rgba(240, 253, 250, 0.94) 0%,
+    rgba(240, 253, 250, 0.76) 42%,
+    rgba(240, 253, 250, 0.12) 75%,
     transparent 100%
   );
 }
@@ -451,9 +451,9 @@ body.dark-mode .hero-clean-card {
 body.dark-mode .hero-clean-content {
   background: linear-gradient(
     90deg,
-    rgba(9, 24, 22, 0.98) 0%,
-    rgba(9, 24, 22, 0.86) 46%,
-    rgba(9, 24, 22, 0.16) 78%,
+    rgba(9, 26, 23, 0.95) 0%,
+    rgba(9, 26, 23, 0.80) 44%,
+    rgba(9, 26, 23, 0.14) 76%,
     transparent 100%
   );
 }
@@ -462,7 +462,7 @@ body.dark-mode .hero-clean-content {
   font-size: 0.65rem;
   font-weight: 800;
   letter-spacing: 1.2px;
-  color: #0b675e;
+  color: #0d9488;
   margin-bottom: 4px;
   text-transform: lowercase; /* Huruf kecil semua sesuai permintaan */
 }
@@ -475,10 +475,10 @@ body.dark-mode .hero-clean-label {
   font-size: 1.14rem;
   font-weight: 800;
   line-height: 1.22;
-  color: #062621;
+  color: #072f28;
   margin: 0 0 5px;
   letter-spacing: -0.35px;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6); /* Tulisan tetap kontras tajam */
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);
 }
 
 body.dark-mode .hero-clean-title {
@@ -488,13 +488,12 @@ body.dark-mode .hero-clean-title {
 
 .hero-clean-desc {
   font-size: 0.74rem;
-  color: #0a2d26;
+  color: #0b453c;
   font-weight: 600;
   margin: 0 0 8px;
   line-height: 1.38;
   max-width: 290px;
   letter-spacing: -0.1px;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
 }
 
 body.dark-mode .hero-clean-desc {
@@ -565,29 +564,29 @@ body.dark-mode .hero-btn-secondary {
   color: #2dd4bf;
 }
 
-/* Visual Foto Kapal Laut di Kanan dengan Overlay Tipis Hitam */
+/* Visual Foto Kapal Laut di Kanan (Gambar Lebih Luas & Terlihat Jelas) */
 .hero-clean-visual {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
-  width: 50%;
+  width: 55%;
   z-index: 1;
   overflow: hidden;
-  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.35) 8%, rgba(0, 0, 0, 1) 22%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.35) 8%, rgba(0, 0, 0, 1) 22%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.25) 5%, rgba(0, 0, 1) 16%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.25) 5%, rgba(0, 0, 1) 16%);
 }
 
-/* Paduan overlay tipis hitam yang elegan agar foto tidak terlalu jenuh dan teks tetap kontras */
+/* Paduan overlay tipis natural yang pas (tidak tebal/gelap), gambar kapal & laut tetap jelas */
 .hero-clean-visual::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(0, 0, 0, 0.08) 0%,
-    rgba(0, 0, 0, 0.16) 50%,
-    rgba(0, 0, 0, 0.22) 100%
+    rgba(0, 0, 0, 0.02) 0%,
+    rgba(0, 0, 0, 0.05) 50%,
+    rgba(0, 0, 0, 0.10) 100%
   );
   pointer-events: none;
   z-index: 2;
@@ -596,8 +595,8 @@ body.dark-mode .hero-btn-secondary {
 body.dark-mode .hero-clean-visual::after {
   background: linear-gradient(
     135deg,
-    rgba(0, 0, 0, 0.16) 0%,
-    rgba(0, 0, 0, 0.30) 100%
+    rgba(0, 0, 0, 0.10) 0%,
+    rgba(0, 0, 0, 0.22) 100%
   );
 }
 
@@ -605,15 +604,15 @@ body.dark-mode .hero-clean-visual::after {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
-  /* Palet warna tenang, saturasi diturunkan agar tidak jenuh, kontras seimbang */
-  filter: saturate(0.90) contrast(1.02) brightness(0.97);
+  object-position: 68% center; /* Memastikan kapal laut tepat berada di viewport */
+  /* Warna fresh, jernih, tajam & tidak kusam/jenuh */
+  filter: saturate(1.02) contrast(1.03) brightness(1.02);
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease;
 }
 
 .hero-clean-card:hover .hero-clean-img {
-  transform: scale(1.02);
-  filter: saturate(0.94) contrast(1.04) brightness(0.98);
+  transform: scale(1.03);
+  filter: saturate(1.05) contrast(1.04) brightness(1.03);
 }
 
 /* Strip Fitur Bawah Hero (Grid 2x2 rapi di HP, 1 Baris di Layar Lebih Lebar) */
@@ -3145,4 +3144,156 @@ body.dark-mode .about-stat-divider {
   gap: 8px;
   flex-wrap: wrap;
 }
+
+/* ============================================================
+   SLIDER FOTO OTOMATIS: DOKUMENTASI DI HALAMAN KOMITMEN KAMI
+   ============================================================ */
+
+.about-slider-section {
+  margin-bottom: 20px;
+}
+
+.about-slider-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.about-slider-nav-btns {
+  display: flex;
+  gap: 6px;
+}
+
+.about-slider-card {
+  position: relative;
+  background: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.about-slider-track {
+  position: relative;
+  width: 100%;
+  min-height: 250px;
+}
+
+@media (min-width: 640px) {
+  .about-slider-track {
+    min-height: 285px;
+  }
+}
+
+.about-slide {
+  display: none;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.about-slide.active {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+}
+
+.about-slide-img-box {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  background: #0d2b27;
+}
+
+@media (min-width: 640px) {
+  .about-slide-img-box {
+    height: 215px;
+  }
+}
+
+.about-slide-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.6s ease;
+}
+
+.about-slider-card:hover .about-slide.active .about-slide-img {
+  transform: scale(1.03);
+}
+
+.about-slide-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(15, 118, 110, 0.90);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  z-index: 2;
+}
+
+body.dark-mode .about-slide-badge {
+  background: rgba(20, 184, 166, 0.90);
+  color: #061814;
+}
+
+.about-slide-body {
+  padding: 12px 14px 10px;
+  background: var(--surface-card);
+}
+
+.about-slide-title {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 3px;
+  line-height: 1.25;
+}
+
+.about-slide-desc {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.40;
+}
+
+.about-slider-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 0 12px;
+  background: var(--surface-card);
+}
+
+.about-slide-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: none;
+  background: var(--border-medium);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.25s ease;
+}
+
+.about-slide-dot.active {
+  width: 20px;
+  border-radius: 4px;
+  background: #0f766e;
+}
+
+body.dark-mode .about-slide-dot.active {
+  background: #2dd4bf;
+}
+
 

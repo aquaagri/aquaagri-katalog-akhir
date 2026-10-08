@@ -1573,6 +1573,11 @@ document.addEventListener("DOMContentLoaded", function () {
     if (aboutView) aboutView.classList.add("hidden");
     if (categoryView) categoryView.classList.remove("hidden");
 
+    if (aboutSlideTimer) {
+      clearInterval(aboutSlideTimer);
+      aboutSlideTimer = null;
+    }
+
     if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.add("hidden");
     if (topbarCategorySearchRow) topbarCategorySearchRow.classList.remove("hidden");
     updateHeaderOffset();
@@ -1592,6 +1597,11 @@ document.addEventListener("DOMContentLoaded", function () {
     if (aboutView) aboutView.classList.add("hidden");
     if (homeView) homeView.classList.remove("hidden");
 
+    if (aboutSlideTimer) {
+      clearInterval(aboutSlideTimer);
+      aboutSlideTimer = null;
+    }
+
     if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.add("hidden");
     if (topbarCategorySearchRow) topbarCategorySearchRow.classList.add("hidden");
     updateHeaderOffset();
@@ -1609,7 +1619,120 @@ document.addEventListener("DOMContentLoaded", function () {
     if (topbarCategorySearchRow) topbarCategorySearchRow.classList.add("hidden");
     updateHeaderOffset();
 
+    initAboutSlider();
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // ---------- SISTEM SLIDE FOTO OTOMATIS: HALAMAN KOMITMEN KAMI ----------
+  let aboutSlideIndex = 0;
+  let aboutSlideTimer = null;
+  let isAboutSlidePaused = false;
+  let isAboutSliderBound = false;
+
+  function initAboutSlider() {
+    const sliderBox = document.getElementById("aboutSliderBox");
+    const track = document.getElementById("aboutSliderTrack");
+    const dotsWrap = document.getElementById("aboutSliderDots");
+    const prevBtn = document.getElementById("aboutSlidePrevBtn");
+    const nextBtn = document.getElementById("aboutSlideNextBtn");
+
+    if (!sliderBox || !track) return;
+
+    const slides = track.querySelectorAll(".about-slide");
+    const totalSlides = slides.length;
+    if (totalSlides === 0) return;
+
+    function showAboutSlide(index) {
+      if (index >= totalSlides) index = 0;
+      if (index < 0) index = totalSlides - 1;
+      aboutSlideIndex = index;
+
+      slides.forEach(function (slide, i) {
+        if (i === aboutSlideIndex) {
+          slide.classList.add("active");
+        } else {
+          slide.classList.remove("active");
+        }
+      });
+
+      if (dotsWrap) {
+        const dots = dotsWrap.querySelectorAll(".about-slide-dot");
+        dots.forEach(function (dot, i) {
+          if (i === aboutSlideIndex) {
+            dot.classList.add("active");
+          } else {
+            dot.classList.remove("active");
+          }
+        });
+      }
+    }
+
+    function nextAboutSlide() {
+      showAboutSlide(aboutSlideIndex + 1);
+    }
+
+    function prevAboutSlide() {
+      showAboutSlide(aboutSlideIndex - 1);
+    }
+
+    function startAboutSlideTimer() {
+      if (aboutSlideTimer) clearInterval(aboutSlideTimer);
+      aboutSlideTimer = setInterval(function () {
+        if (!isAboutSlidePaused) {
+          nextAboutSlide();
+        }
+      }, 2500); // Bergeser otomatis setiap 2,5 detik
+    }
+
+    if (!isAboutSliderBound) {
+      if (prevBtn) {
+        prevBtn.addEventListener("click", function () {
+          prevAboutSlide();
+          startAboutSlideTimer();
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener("click", function () {
+          nextAboutSlide();
+          startAboutSlideTimer();
+        });
+      }
+
+      if (dotsWrap) {
+        const dots = dotsWrap.querySelectorAll(".about-slide-dot");
+        dots.forEach(function (dot, i) {
+          dot.addEventListener("click", function () {
+            showAboutSlide(i);
+            startAboutSlideTimer();
+          });
+        });
+      }
+
+      sliderBox.addEventListener("mouseenter", function () { isAboutSlidePaused = true; });
+      sliderBox.addEventListener("mouseleave", function () { isAboutSlidePaused = false; });
+
+      let touchStartX = 0;
+      sliderBox.addEventListener("touchstart", function (e) {
+        touchStartX = e.touches[0].clientX;
+        isAboutSlidePaused = true;
+      }, { passive: true });
+
+      sliderBox.addEventListener("touchend", function (e) {
+        const diffX = e.changedTouches[0].clientX - touchStartX;
+        if (diffX > 40) {
+          prevAboutSlide();
+        } else if (diffX < -40) {
+          nextAboutSlide();
+        }
+        setTimeout(function () { isAboutSlidePaused = false; }, 2000);
+      }, { passive: true });
+
+      isAboutSliderBound = true;
+    }
+
+    showAboutSlide(aboutSlideIndex);
+    startAboutSlideTimer();
   }
 
   // ---------- 13. LOGIKA MOBILE SEARCH INTERFACE (MEGA BAR & CHIPS) ----------
@@ -1619,6 +1742,11 @@ document.addEventListener("DOMContentLoaded", function () {
     if (categoryView) categoryView.classList.add("hidden");
     if (aboutView) aboutView.classList.add("hidden");
     if (searchView) searchView.classList.remove("hidden");
+
+    if (aboutSlideTimer) {
+      clearInterval(aboutSlideTimer);
+      aboutSlideTimer = null;
+    }
 
     if (topbarCategorySearchRow) topbarCategorySearchRow.classList.add("hidden");
     if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.remove("hidden");
