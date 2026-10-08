@@ -631,29 +631,84 @@ const products = [
 
   // --- Kategori: Pancing & Umpan ---
   {
-    id: 20,
-    nama: "Joran Pancing Carbon Solid 200cm",
-    harga: "Rp174.000",
+    id: 1,
+    nama: "Umpan kucur paket 500 gram + free STIK",
+    harga: "Rp30.000",
+    hargaCoret: "Rp50.000",
+    diskon: "40%",
+    gambar: "assets/products/umpan-kucur.jpg",
+    deskripsi: "Umpan kucur paket 500 gram + free STIK",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/AKbCKkvGOG"
+  },
+  {
+    id: 2,
+    nama: "Reel Pancing VX1000-7000",
+    harga: "Rp158.000",
+    hargaCoret: "Rp170.000",
+    diskon: "7%",
+    gambar: "assets/products/reel-pancing.jpg",
+    deskripsi: "Reel pancing VX1000-7000 dengan desain ergonomis dan performa tinggi.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/1gJE18BiJL"
+  },
+   {
+    id: 3,
+    nama: "Kail Hook Pancing Chinu 1053 Hitam Black Nickel 1",
+    harga: "Rp11.000",
+    hargaCoret: "Rp20.000",
+    diskon: "45%",
+    gambar: "assets/products/kail-hook.jpg",
+    deskripsi: "Kail hook pancing Chinu 1053 hitam black nickel 1 dengan desain ergonomis dan performa tinggi.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/60SDBOVOQ3"
+  },
+   {
+    id: 4,
+    nama: "Essen PERTAMAX TURBO + Murni",
+    harga: "Rp193.000",
     hargaCoret: "Rp210.000",
-    diskon: "17%",
-    gambar: "assets/products/joran-pancing-carbon.jpg",
-    deskripsi: "Joran pancing berbahan high-modulus carbon yang sangat ringan, kuat, dan lentur presisi. Sensitivitas tinggi untuk mendeteksi getaran sambaran ikan.",
+    diskon: "8%",
+    gambar: "assets/products/essen-pertamax.jpg",
+    deskripsi: "Essen PERTAMAX TURBO + Murni dengan kualitas terbaik untuk memancing.",
     kategori: "pancing-umpan",
-    linkAffiliate: "https://s.shopee.co.id/1qcLKGwOZz"
+    linkAffiliate: "https://s.shopee.co.id/4qGFnQo9sX"
   },
-  {
-    id: 21,
-    nama: "Umpan Mancing Ikan Mas & Nila 30g",
-    harga: "Rp14.000",
-    hargaCoret: "Rp18.000",
+   {
+    id: 5,
+    nama: "Siraman Serangga (SIRANGGA)",
+    harga: "Rp67.000",
+    hargaCoret: "Rp80.000",
+    diskon: "16%",
+    gambar: "assets/products/siraman-serangga.jpg",
+    deskripsi: "Siraman serangga (SIRANGGA) dengan kualitas terbaik untuk memancing.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/4VdPOvGq5n"
+  },
+   {
+    id: 6,
+    nama: "Joran Tegek kaku limited & super leader",
+    harga: "Rp140.000",
+    hargaCoret: "Rp170.000",
+    diskon: "18%",
+    gambar: "assets/products/joran-tegek.jpg",
+    deskripsi: "Joran tegek kaku limited & super leader dengan desain ergonomis dan performa tinggi.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/1VznpXLrl3"
+  },
+   {
+    id: 7,
+    nama: "Paket Timah Pancing Komplit Lengkap 130pcs",
+    harga: "Rp41.000",
+    hargaCoret: "Rp50.000",
     diskon: "22%",
-    gambar: "assets/products/umpan-mancing-ikan-mas.jpg",
-    deskripsi: "Formula pelet umpan aroma wangi perangsang nafsu makan ikan air tawar. Mudah dibentuk, merekat kuat di kail, dan cepat menarik perhatian ikan di kolam pancing.",
+    gambar: "assets/products/paket-timah.jpg",
+    deskripsi: "Paket timah pancing komplit lengkap 130pcs dengan kualitas terbaik untuk memancing.",
     kategori: "pancing-umpan",
-    linkAffiliate: "https://s.shopee.co.id/20vlXdm0ow"
+    linkAffiliate: "https://s.shopee.co.id/5fpMnJCFbV"
   },
   {
-    id: 22,
+    id: 8,
     nama: " Essen Garut Id",
     harga: "Rp34.000",
     hargaCoret: "Rp58.000",
@@ -664,7 +719,7 @@ const products = [
     linkAffiliate: "https://s.shopee.co.id/5VVmqQLy0T"
   },
   {
-    id: 23,
+    id: 9,
     nama: " Biang Varian Aroma BUAH 10ml",
     harga: "Rp17.000",
     hargaCoret: "Rp18.000",
@@ -675,7 +730,7 @@ const products = [
     linkAffiliate: "https://s.shopee.co.id/AUuT1SwZlV"
   },
   {
-    id: 24,
+    id: 10,
     nama: "Essen Oplosan Super Ikan NILA 30ml",
     harga: "Rp120.000",
     hargaCoret: "Rp145.000",
@@ -686,7 +741,7 @@ const products = [
     linkAffiliate: "https://s.shopee.co.id/5LCKobxOA1"
   },
   {
-    id: 25,
+    id: 11,
     nama: "257 PCS Umpan Pancing Ikan Set",
     harga: "Rp168.000",
     hargaCoret: "Rp200.000",
@@ -697,7 +752,7 @@ const products = [
     linkAffiliate: "https://s.shopee.co.id/9KiVdtyA5p"
   },
   {
-    id: 24,
+    id: 12,
     nama: "AQUASEA Tali Pancing Germany200m",
     harga: "Rp21.000",
     hargaCoret: "Rp50.000",
@@ -707,21 +762,308 @@ const products = [
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/3g48uACWxh"
   },
+   {
+    id: 13,
+    nama: "Tali Pancing Sensor Bright 200m",
+    harga: "Rp58.000",
+    hargaCoret: "Rp66.000",
+    diskon: "12%",
+    gambar: "assets/products/Tali-Pancing-Sensor-Bright.jpg",
+    deskripsi: "Tali pancing berkualitas tinggi dari Germany dengan panjang 200 meter, cocok untuk memancing ikan di berbagai jenis air.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/5fpMnk4dz2"
+  },
+   {
+    id: 14,
+    nama: "JELLYFISH UMPAN PENGGANTI LUMUT",
+    harga: "Rp25.000",
+    hargaCoret: "Rp37.000",
+    diskon: "32%",
+    gambar: "assets/products/JELLYFISH-Umpan-Pengganti-Lumut.jpg",
+    deskripsi: "Umpan pengganti lumut berkualitas tinggi untuk memancing ikan di berbagai jenis air.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/7AeAaa0h8i"
+  },
+  {
+    id: 15,
+    nama: "Siraman Cacing (SIRACING )",
+    harga: "Rp62.000",
+    hargaCoret: "Rp76.000",
+    diskon: "18%",
+    gambar: "assets/products/Siraman-Cacing.jpg",
+    deskripsi: "Umpan pengganti lumut berkualitas tinggi untuk memancing ikan di berbagai jenis air.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/gQgsJszeX"
+  },
+  {
+    id: 16,
+    nama: "Umpan pancing Olahan SAWIT GURIH WANGI",
+    harga: "Rp25.000",
+    hargaCoret: "Rp37.000",
+    diskon: "32%",
+    gambar: "assets/products/Umpan-Pancing-Olahan-SAWIT-GURIH-WANGI.jpg",
+    deskripsi: "Umpan pengganti lumut berkualitas tinggi untuk memancing ikan di berbagai jenis air.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/8V9YCukvhb"
+  },
+  {
+    id: 17,
+    nama: "Tas Pancing Joran Anti Air Waterproof",
+    harga: "Rp95.000",
+    hargaCoret: "Rp120.000",
+    diskon: "21%",
+    gambar: "assets/products/Tas-Pancing-Joran-Anti-Air-Waterproof.jpg",
+    deskripsi: "Umpan pengganti lumut berkualitas tinggi untuk memancing ikan di berbagai jenis air.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/5fpMpreXv9"
+  },
+  {
+    id: 18,
+    nama: "Stopper Pancing premium Kaca Transparan 100pcs",
+    harga: "Rp25.000",
+    hargaCoret: "Rp37.000",
+    diskon: "32%",
+    gambar: "assets/products/Stopper-Pancing-premium.jpg",
+    deskripsi: "Stopper pancing kualitas premium berbahan kaca transparan yang dirancang untuk penggunaan lebih halus",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/30obfIVpnI"
+  },
+  {
+    id: 19,
+    nama: " Booster Attractant Essen Ikan Laut Premium Original 100ml",
+    harga: "Rp78.000",
+    hargaCoret: "Rp95.000",
+    diskon: "18%",
+    gambar: "assets/products/Booster-Attractant-Essen-Ikan-Laut.jpg",
+    deskripsi: "Booster Attractant Terbaik untuk Memancing Ikan Liar di Laut",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/1B05x4Znq"
+  },
+  {
+    id: 20,
+    nama: "Tali Pancing TARANTULA 500m",
+    harga: "Rp44.000",
+    hargaCoret: "Rp60.000",
+    diskon: "27%",
+    gambar: "assets/products/Tali-Pancing-TARANTULA-500m.jpg",
+    deskripsi: "Tali pancing berkualitas tinggi untuk memancing ikan di berbagai jenis air.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/9V25PViy1Y"
+  },
+   {
+    id: 21,
+    nama: "Box Umpan Pancing 40CM",
+    harga: "Rp128.000",
+    hargaCoret: "Rp140.000",
+    diskon: "15%",
+    gambar: "assets/products/Box-Umpan-Pancing-40CM.jpg",
+    deskripsi: "Box umpan pancing 40cm untuk menyimpan dan mengangkut umpan pancing.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/7ptrRGmvcB"
+  },
+   {
+    id: 22,
+    nama: "Umpan Pancing Popper Big Bait 12.5cm 40g",
+    harga: "Rp25.000",
+    hargaCoret: "Rp40.000",
+    diskon: "38%",
+    gambar: "assets/products/umpan-pancing-popper-big-bait.jpg",
+    deskripsi: "Umpan pancing popper big bait 12.5cm 40g",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/40h8rgkk1o"
+  },
+   {
+    id: 23,
+    nama: "ESSEN SPESIALIS GALATAMA LELE",
+    harga: "Rp100.000",
+    hargaCoret: "Rp120.000",
+    diskon: "17%",
+    gambar: "assets/products/ESSEN SPESIALIS-GALATAMA-LELE.jpg",
+    deskripsi: "essen corragio sabun blue mix adalah essen yang sudah teruji di kolam galatama dengan semua jenis air dan cuaca.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/8Kq82bR6XI"
+  },
+    {
+    id: 24,
+    nama: "Umpan Pancing Casting Lure",
+    harga: "Rp51.000",
+    hargaCoret: "Rp65.000",
+    diskon: "22%",
+    gambar: "assets/products/Umpan-Pancing-Casting-Lure.jpg",
+    deskripsi: "Umpan pancing casting lure untuk memancing ikan di berbagai jenis air.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/W7GiPysya"
+  },
+    {
+    id: 25,
+    nama: "PELET MASYAI SIAP PAKAI SPECIAL MANCING GALATAMA",
+    harga: "Rp18.000",
+    hargaCoret: "Rp30.000",
+    diskon: "40%",
+    gambar: "assets/products/PELET MASYAI SIAP PAKAI SPECIAL MANCING GALATAMA.jpg",
+    deskripsi: "special buat anda pemancing ikan galatama membutuhkan pelet praktis TANPA ESSEN tambahan bisa memakai pelet yang satu ini.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/8pmOdsthli"
+  },
+    {
+    id: 26,
+    nama: "JERSEY MANCING CUSTOM SATUAN",
+    harga: "Rp127.000",
+    hargaCoret: "Rp140.000",
+    diskon: "10%",
+    gambar: "assets/products/JERSEY-MANCING-CUSTOM-SATUAN.jpg",
+    deskripsi: "UMPAN MANCING GALATAMA LELE PATIN MAS",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/qk77zjHNP"
+  },
+    {
+    id: 27,
+    nama: "SeaHunter Starfall Power Handle Spinning Fishing Reel",
+    harga: "Rp375.000",
+    hargaCoret: "Rp400.000",
+    diskon: "6%",
+    gambar: "assets/products/SeaHunter-Starfall-Power-Handle-Spinning-Fishing-Reel.jpg",
+    deskripsi: "Max Drag 20 kg: 3 set bantalan rem komposit (3 besi + 3 serat karbon) untuk pengereman halus",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/1qceK72Vdo"
+  },
+    {
+    id: 28,
+    nama: "SeaHunter Black Arrow Senar PE X8",
+    harga: "Rp94.000",
+    hargaCoret: "Rp120.000",
+    diskon: "22%",
+    gambar: "assets/products/SeaHunter-Black-Arrow-Senar-PE-X8.jpg",
+    deskripsi: "Bahan berkualitas tinggi yang diimpor dari Jepang, dengan teknologi tenun kompresi kepadatan tinggi.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/4LJzIqPqsc"
+  },
+    {
+    id: 29,
+    nama: "Topi Gunung Outdoor Pria Wanita",
+    harga: "Rp26.000",
+    hargaCoret: "Rp39.000",
+    diskon: "33%",
+    gambar: "assets/products/Topi-Gunung-Outdoor-Pria-Wanita.jpg",
+    deskripsi: "Topi gunung outdoor yang nyaman dan tahan lama, cocok untuk aktivitas di luar ruangan.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/8pmOfMo1lU"
+  },
+    {
+    id: 30,
+    nama: "TrailTop Topi Mancing",
+    harga: "Rp29.000",
+    hargaCoret: "Rp40.000",
+    diskon: "28%",
+    gambar: "assets/products/TrailTop-Topi-Mancing.jpg",
+    deskripsi: "Topi gunung outdoor yang nyaman dan tahan lama, cocok untuk aktivitas di luar ruangan.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/30obkZbmiT"
+  },
+    {
+    id: 31,
+    nama: "Athleisure Topi Mancing anti UV Masker Jepang",
+    harga: "Rp121.000",
+    hargaCoret: "Rp150.000",
+    diskon: "20%",
+    gambar: "assets/products/Topi-Mancing-anti-UV-Masker-Jepang.jpg",
+    deskripsi: "Topi gunung outdoor yang nyaman dan tahan lama, cocok untuk aktivitas di luar ruangan.",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/6fhu7d5IWV"
+  },
+    {
+    id: 32,
+    nama: "AGA Essen MICRO CACING Premium",
+    harga: "Rp45.000",
+    hargaCoret: "Rp60.000",
+    diskon: "25%",
+    gambar: "assets/products/AGA-Essen-MICRO-CACING-Premium.jpg",
+    deskripsi: "Campuran Umpan Pancing Ikan Khusus Media Cacing 15ml",
+    kategori: "pancing-umpan",
+    linkAffiliate: "https://s.shopee.co.id/8pmOhtMYs8"
+  },
+  
 
   // --- Kategori: Benih, Pakan & Budidaya ---
   {
     id: 25,
-    nama: "Aerator Aquarium & Kolam Ikan Koi 4 Cabang",
-    harga: "Rp150.000",
-    hargaCoret: "Rp185.000",
-    diskon: "19%",
-    gambar: "assets/products/aerator-4-lubang.jpg",
+    nama: "Pelet Makanan Ikan Koi 1kg",
+    harga: "Rp49.000",
+    hargaCoret: "Rp60.000",
+    diskon: "25%",
+    gambar: "assets/products/Pelet-Makanan-Ikan-Koi-1kg.jpg",
     deskripsi: "Mesin pompa aerasi 4 cabang bertenaga stabil dengan suara halus (silent operation) dan hemat daya listrik. Menjaga suplai oksigen terlarut kolam tetap prima.",
     kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/1BMeZfH9oP"
+    linkAffiliate: "https://s.shopee.co.id/4qGFxpHusZ"
+  },
+   {
+    id: 26,
+    nama: "Takari Pakan Ikan mix 1 mm- 100 gr",
+    harga: "Rp5.000",
+    hargaCoret: "Rp12.000",
+    diskon: "58%",
+    gambar: "assets/products/Takari-Pakan-Ikan-mix-1-mm-100-gr.jpg",
+    deskripsi: "Makanan Ikan Pelet Ikan Makanan Pakan Ikan Hias",
+    kategori: "Benih-Pakan-Budidaya",
+    linkAffiliate: "https://s.shopee.co.id/40h8yqcyfI"
+  },
+   {
+    id: 27,
+    nama: "FFC 15 Mesin Penepung Disk Mill",
+    harga: "Rp975.000",
+    hargaCoret: "Rp1.200.000",
+    diskon: "20%",
+    gambar: "assets/products/FFC-15-Mesin-Penepung-Disk-Mill.jpg",
+    deskripsi: " Alat Serbaguna Kompak Kapasitas 50-60 kg/jam Berat 18 kg",
+    kategori: "Benih-Pakan-Budidaya",
+    linkAffiliate: "https://s.shopee.co.id/6q1KMKUKWk"
+  },
+   {
+    id: 28,
+    nama: "Paket Bundling Mediatech pH Meter & TDS/EC Automatic Calibration",
+    harga: "Rp149.000",
+    hargaCoret: "Rp160.000",
+    diskon: "7%",
+    gambar: "assets/products/Paket-Bundling-Mediatech-pH-Meter.jpg",
+    deskripsi: "Alat ukur pH meter dan TDS/EC otomatis dengan kalibrasi otomatis untuk memantau kualitas air kolam ikan.",
+    kategori: "Benih-Pakan-Budidaya",
+    linkAffiliate: "https://s.shopee.co.id/5LCWZwD05e"
+  },
+   {
+    id: 29,
+    nama: "PH METER TDS TEMPERATUR 3 IN 1 WATERPROOF EZ 9901",
+    harga: "Rp360.000",
+    hargaCoret: "Rp400.000",
+    diskon: "10%",
+    gambar: "assets/products/PH-METER-TDS-TEMPERATUR-3-IN-1-WATERPROOF-EZ-9901.jpg",
+    deskripsi: "Alat ukur pH meter, TDS, dan temperatur 3 in 1 waterproof EZ 9901 untuk memantau kualitas air kolam ikan.",
+    kategori: "Benih-Pakan-Budidaya",
+    linkAffiliate: "https://s.shopee.co.id/3g4IbAFr4j"
+  },
+   {
+    id: 30,
+    nama: "Water Meter 5 in 1",
+    harga: "Rp8.380.000",
+    hargaCoret: "Rp9.000.000",
+    diskon: "7%",
+    gambar: "assets/products/Water-Meter-5-in-1.jpg",
+    deskripsi: "Alat ukur kualitas air 5 in 1 untuk memantau pH, TDS, EC, DO, dan temperatur air kolam",
+    kategori: "Benih-Pakan-Budidaya",
+    linkAffiliate: "https://s.shopee.co.id/7ptrZ8aS7U"
+  },
+   {
+    id: 31,
+    nama: "Kolam Bulat Tanpa Rangka 2 meter Tinggi 90 cm",
+    harga: "Rp176.000",
+    hargaCoret: "Rp200.000",
+    diskon: "12%",
+    gambar: "assets/products/Kolam-Bulat-Tanpa-Rangka.jpg",
+    deskripsi: "Kolam bulat tanpa rangka 2 meter tinggi 90 cm untuk budidaya ikan, terbuat dari bahan berkualitas tinggi yang tahan lama dan mudah dipasang.",
+    kategori: "Benih-Pakan-Budidaya",
+    linkAffiliate: "https://s.shopee.co.id/5LCWb08Xp3"
   },
   {
-    id: 26,
+    id: 32,
     nama: "Jaring Waring Pembatas Kolam 100M x 120CM",
     harga: "Rp279.000",
     hargaCoret: "Rp330.000",
@@ -731,6 +1073,7 @@ const products = [
     kategori: "Benih-Pakan-Budidaya",
     linkAffiliate: "https://s.shopee.co.id/60RwflhpFa"
   }
+  
 ];
 
 // ---------- 2. DAFTAR KATEGORI DENGAN BACKGROUND FOTO ----------
