@@ -410,95 +410,69 @@ body.dark-mode .theme-toggle-btn:hover {
 }
 
 .hero-clean-card {
-  background: linear-gradient(135deg, #f0fdfa 0%, #e6f9f6 45%, #daf2ef 100%);
-  border: 1px solid rgba(15, 118, 110, 0.14);
+  position: relative;
   border-radius: var(--radius-xl);
   overflow: hidden;
-  box-shadow: 0 4px 18px rgba(15, 118, 110, 0.08);
-  position: relative;
-  transition: box-shadow 0.3s ease;
+  box-shadow: 0 4px 20px rgba(5, 23, 28, 0.16);
+  border: 1px solid rgba(45, 212, 191, 0.25);
+  background: #071e22; /* Fallback tone */
 }
 
 body.dark-mode .hero-clean-card {
-  background: linear-gradient(135deg, #091a17 0%, #061311 60%, #030d0c 100%);
-  border-color: rgba(45, 212, 191, 0.16);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+  border-color: rgba(45, 212, 191, 0.30);
 }
 
 .hero-clean-body {
   display: flex;
   align-items: stretch;
   position: relative;
-  min-height: 176px; /* Pangkas 7% dari ukuran awal (190px -> 176px) */
+  min-height: 180px;
 }
 
+/* KONTEN HERO: Palet warna dihapus seutuhnya, teks langsung di atas foto kapal dengan proteksi kontras */
 .hero-clean-content {
-  flex: 1.15;
-  padding: 13px 12px 11px 15px;
-  z-index: 2;
+  position: relative;
+  z-index: 3;
+  padding: 18px 16px 14px 18px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* Polet warna fresh bahari, transparan & tidak tebal agar gambar kapal terlihat jelas */
-  background: linear-gradient(
-    90deg,
-    rgba(240, 253, 250, 0.94) 0%,
-    rgba(240, 253, 250, 0.76) 42%,
-    rgba(240, 253, 250, 0.12) 75%,
-    transparent 100%
-  );
-}
-
-body.dark-mode .hero-clean-content {
-  background: linear-gradient(
-    90deg,
-    rgba(9, 26, 23, 0.95) 0%,
-    rgba(9, 26, 23, 0.80) 44%,
-    rgba(9, 26, 23, 0.14) 76%,
-    transparent 100%
-  );
+  background: transparent !important; /* Hapus palet warna tipis */
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  max-width: 330px; /* Teks rapi di kiri, kapal laut di kanan terlihat jelas */
 }
 
 .hero-clean-label {
   font-size: 0.65rem;
   font-weight: 800;
-  letter-spacing: 1.2px;
-  color: #0d9488;
-  margin-bottom: 4px;
-  text-transform: lowercase; /* Huruf kecil semua sesuai permintaan */
-}
-
-body.dark-mode .hero-clean-label {
-  color: #2dd4bf;
+  letter-spacing: 1.4px;
+  color: #2dd4bf; /* Mint cerah bercahaya khas perikanan & bahari */
+  margin-bottom: 5px;
+  text-transform: lowercase;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .hero-clean-title {
-  font-size: 1.14rem;
-  font-weight: 800;
+  font-size: 1.15rem;
+  font-weight: 850;
   line-height: 1.22;
-  color: #072f28;
+  color: #ffffff; /* Putih ultra-kontras & tegas */
   margin: 0 0 5px;
-  letter-spacing: -0.35px;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);
-}
-
-body.dark-mode .hero-clean-title {
-  color: #f1fbf8;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  letter-spacing: -0.3px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.75);
 }
 
 .hero-clean-desc {
   font-size: 0.74rem;
-  color: #0b453c;
-  font-weight: 600;
-  margin: 0 0 8px;
+  color: #e2f4f2; /* Putih mint lembut, mudah dibaca & tidak silau */
+  font-weight: 500;
+  margin: 0 0 10px;
   line-height: 1.38;
   max-width: 290px;
   letter-spacing: -0.1px;
-}
-
-body.dark-mode .hero-clean-desc {
-  color: #f1fbf8;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.75);
 }
 
 .hero-clean-actions {
@@ -512,22 +486,22 @@ body.dark-mode .hero-clean-desc {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: #0f766e;
+  background: linear-gradient(135deg, #0d9488 0%, #0284c7 100%); /* Tosca ke biru laut khas aquaagri */
   color: #ffffff;
   border: none;
-  padding: 6px 13px;
+  padding: 7px 15px;
   border-radius: var(--radius-pill);
   font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 3px 8px rgba(15, 118, 110, 0.25);
+  box-shadow: 0 3px 12px rgba(13, 148, 136, 0.45);
 }
 
 .hero-btn-primary:hover {
-  background: #0d5e56;
+  background: linear-gradient(135deg, #0f766e 0%, #0369a1 100%);
   transform: translateY(-1px);
-  box-shadow: 0 5px 12px rgba(15, 118, 110, 0.35);
+  box-shadow: 0 5px 16px rgba(13, 148, 136, 0.6);
 }
 
 .btn-arrow {
@@ -538,55 +512,27 @@ body.dark-mode .hero-clean-desc {
   transform: translateX(3px);
 }
 
-.hero-btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  background: #ffffff;
-  color: #0f766e;
-  border: 1px solid rgba(15, 118, 110, 0.3);
-  padding: 5px 12px;
-  border-radius: var(--radius-pill);
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.hero-btn-secondary:hover {
-  background: #f0fdfa;
-  border-color: #0f766e;
-  transform: translateY(-1px);
-}
-
-body.dark-mode .hero-btn-secondary {
-  background: rgba(15, 36, 31, 0.8);
-  border-color: rgba(45, 212, 191, 0.4);
-  color: #2dd4bf;
-}
-
-/* Visual Foto Kapal Laut di Kanan (Gambar Lebih Luas & Terlihat Jelas) */
+/* FOTO BACKGROUND KAPAL LAUT: Terlihat penuh 100% membentang di seluruh kartu */
 .hero-clean-visual {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 55%;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1;
   overflow: hidden;
-  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.25) 5%, rgba(0, 0, 1) 16%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.25) 5%, rgba(0, 0, 1) 16%);
 }
 
-/* Paduan overlay tipis natural yang pas (tidak tebal/gelap), gambar kapal & laut tetap jelas */
+/* Overlay gelap tipis natural di sisi kiri agar teks kontras, sisi kanan kapal 100% jernih */
 .hero-clean-visual::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 0.02) 0%,
-    rgba(0, 0, 0, 0.05) 50%,
-    rgba(0, 0, 0, 0.10) 100%
+    90deg,
+    rgba(5, 23, 28, 0.76) 0%,
+    rgba(5, 23, 28, 0.54) 46%,
+    rgba(5, 23, 28, 0.16) 75%,
+    rgba(0, 0, 0, 0.04) 100%
   );
   pointer-events: none;
   z-index: 2;
@@ -594,9 +540,11 @@ body.dark-mode .hero-btn-secondary {
 
 body.dark-mode .hero-clean-visual::after {
   background: linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 0.10) 0%,
-    rgba(0, 0, 0, 0.22) 100%
+    90deg,
+    rgba(3, 16, 20, 0.82) 0%,
+    rgba(3, 16, 20, 0.60) 46%,
+    rgba(3, 16, 20, 0.20) 75%,
+    rgba(0, 0, 0, 0.10) 100%
   );
 }
 
@@ -604,35 +552,35 @@ body.dark-mode .hero-clean-visual::after {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 68% center; /* Memastikan kapal laut tepat berada di viewport */
-  /* Warna fresh, jernih, tajam & tidak kusam/jenuh */
-  filter: saturate(1.02) contrast(1.03) brightness(1.02);
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease;
+  object-position: right center; /* Memastikan kapal laut di sisi kanan terlihat jelas */
+  filter: saturate(1.06) contrast(1.05) brightness(1.01);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .hero-clean-card:hover .hero-clean-img {
-  transform: scale(1.03);
-  filter: saturate(1.05) contrast(1.04) brightness(1.03);
+  transform: scale(1.02);
 }
 
-/* Strip Fitur Bawah Hero (Grid 2x2 rapi di HP, 1 Baris di Layar Lebih Lebar) */
+/* Strip Fitur Bawah Hero (Transparan gelap tipis natural) */
 .hero-features-strip {
+  position: relative;
+  z-index: 3;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 5px 8px;
-  padding: 7px 10px;
-  background: rgba(255, 255, 255, 0.65);
+  padding: 8px 12px;
+  background: rgba(3, 18, 22, 0.72);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border-top: 1px solid rgba(15, 118, 110, 0.12);
+  border-top: 1px solid rgba(45, 212, 191, 0.22);
   font-size: 0.69rem;
   font-weight: 600;
-  color: #0f766e;
+  color: #5eead4;
 }
 
 body.dark-mode .hero-features-strip {
-  background: rgba(10, 28, 24, 0.75);
-  border-top-color: rgba(45, 212, 191, 0.15);
+  background: rgba(2, 12, 15, 0.82);
+  border-top-color: rgba(45, 212, 191, 0.25);
   color: #2dd4bf;
 }
 
@@ -1306,17 +1254,17 @@ body.dark-mode .view-all-link:hover {
 }
 
 .featured-clean-name {
-  font-size: 0.74rem; /* Seragam 0.74rem */
-  font-weight: 700;
+  font-size: 0.79rem; /* Dinaikkan proporsional agar lebih jelas & tegas */
+  font-weight: 750;
   color: var(--text-primary);
   margin: 0 0 2px;
-  line-height: 1.25;
+  line-height: 1.28;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height: 2.3em;
+  min-height: 2.4em;
 }
 
 .featured-clean-price-row {
@@ -2152,17 +2100,17 @@ body.dark-mode .cat-chip-btn.active {
 }
 
 .product-name {
-  font-weight: 700;
-  font-size: 0.77rem; /* Ditingkatkan agar lebih jelas & terbaca (dari 0.70rem) */
+  font-weight: 750;
+  font-size: 0.83rem; /* Dinaikkan sedikit agar lebih jelas & tegas terbaca (dari 0.77rem) */
   margin: 0 0 3px;
   color: var(--text-primary);
-  line-height: 1.25;
+  line-height: 1.28;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height: 2.2em;
+  min-height: 2.4em;
 }
 
 /* Hilangkan deskripsi tampilan awal di kartu produk (tetap tampil lengkap di modal) */
@@ -3150,7 +3098,8 @@ body.dark-mode .about-stat-divider {
    ============================================================ */
 
 .about-slider-section {
-  margin-bottom: 20px;
+  max-width: 720px;
+  margin: 0 auto 24px;
 }
 
 .about-slider-header {
@@ -3177,12 +3126,12 @@ body.dark-mode .about-stat-divider {
 .about-slider-track {
   position: relative;
   width: 100%;
-  min-height: 250px;
+  min-height: 350px; /* Naik 10% dari 320px agar tampilan lebih megah & proporsional */
 }
 
 @media (min-width: 640px) {
   .about-slider-track {
-    min-height: 285px;
+    min-height: 405px; /* Naik 10% dari 365px */
   }
 }
 
@@ -3202,14 +3151,14 @@ body.dark-mode .about-stat-divider {
 .about-slide-img-box {
   position: relative;
   width: 100%;
-  height: 180px;
+  height: 255px; /* Naik 10% dari 232px untuk HP */
   overflow: hidden;
-  background: #0d2b27;
+  background: #08221f;
 }
 
 @media (min-width: 640px) {
   .about-slide-img-box {
-    height: 215px;
+    height: 310px; /* Naik 10%+ dari 280px untuk Komputer/Desktop */
   }
 }
 
@@ -3218,7 +3167,7 @@ body.dark-mode .about-stat-divider {
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transition: transform 0.6s ease;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .about-slider-card:hover .about-slide.active .about-slide-img {
