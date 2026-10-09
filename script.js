@@ -2140,7 +2140,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!isHeroPaused) {
           nextHeroSlide();
         }
-      }, 4200);
+      }, 7000);
     }
 
     function stopHeroTimer() {
@@ -2989,12 +2989,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const heroJelajahiBtn = document.getElementById("heroJelajahiBtn");
   if (heroJelajahiBtn) {
     heroJelajahiBtn.addEventListener("click", function () {
-      const targetSec = document.querySelector(".categories-clean") || document.querySelector(".search-bar-clean");
-      if (targetSec) {
-        const topbar = document.querySelector(".topbar");
-        const offset = (topbar ? topbar.offsetHeight : 54) + 8;
-        const targetPos = targetSec.getBoundingClientRect().top + window.pageYOffset - offset;
-        window.scrollTo({ top: targetPos, behavior: "smooth" });
+      const searchSec = document.querySelector(".search-bar-clean");
+      if (searchSec) {
+        const topbar = document.getElementById("mainHeader") || document.querySelector(".topbar");
+        const headerHeight = topbar ? Math.ceil(topbar.getBoundingClientRect().height) : 54;
+        // Jarak aman presisi (10px) agar search bar pas tepat di bawah header dan tidak kepotong sama head
+        const clearOffset = headerHeight + 10;
+        const targetPos = searchSec.getBoundingClientRect().top + window.pageYOffset - clearOffset;
+        window.scrollTo({
+          top: Math.max(0, Math.round(targetPos)),
+          behavior: "smooth"
+        });
       }
     });
   }
