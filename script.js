@@ -1517,6 +1517,58 @@ const categoryBanners = {
   }
 };
 
+// Kelompok Produk Khusus Kategori Budidaya Modern
+const BUDIDAYA_GROUPS = [
+  {
+    id: "pakan",
+    nama: "Pakan Ikan & Nutrisi",
+    label: "Pakan 🌾",
+    icon: "🌾",
+    deskripsi: "Pelet protein tinggi, pakan alami & pemacu pertumbuhan ikan"
+  },
+  {
+    id: "benih",
+    nama: "Benih & Bibit Ikan",
+    label: "Benih 🐟",
+    icon: "🐟",
+    deskripsi: "Bibit lele unggul, gurame sehat & benih air tawar berkualitas"
+  },
+  {
+    id: "alat-aksesoris",
+    nama: "Alat & Aksesoris Budidaya",
+    label: "Alat & Aksesoris ⚙️",
+    icon: "⚙️",
+    deskripsi: "Kolam terpal, drum, aerasi, filter gantung, pompa celup & aquascape"
+  },
+  {
+    id: "suplemen",
+    nama: "Suplemen & Probiotik",
+    label: "Suplemen 🧪",
+    icon: "🧪",
+    deskripsi: "Probiotik pengurai, starter bakteri, enzim & molase murni"
+  }
+];
+
+function getBudidayaSubcategory(produk) {
+  if (produk.subkategori) return produk.subkategori;
+  const id = Number(produk.id);
+  // Pakan: 1, 2, 38, 39, 40, 41
+  if ([1, 2, 38, 39, 40, 41].includes(id)) return "pakan";
+  // Benih: 34, 35, 37
+  if ([34, 35, 37].includes(id)) return "benih";
+  // Suplemen: 20, 27, 29, 30, 32, 33
+  if ([20, 27, 29, 30, 32, 33].includes(id)) return "suplemen";
+  // Alat & Aksesoris: lainnya
+  return "alat-aksesoris";
+}
+
+// Inisialisasi subkategori otomatis pada produk budidaya
+products.forEach(function (p) {
+  if (p.kategori === "Benih-Pakan-Budidaya") {
+    p.subkategori = getBudidayaSubcategory(p);
+  }
+});
+
 // Placeholder gambar cadangan
 const PLACEHOLDER_IMG =
   "data:image/svg+xml;charset=UTF-8," +
@@ -1564,6 +1616,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const categoryBannerTag = document.getElementById("categoryBannerTag");
   const categoryHeaderDesc = document.getElementById("categoryHeaderDesc");
   const categoryChipsNav = document.getElementById("categoryChipsNav");
+  const budidayaSubchipsNav = document.getElementById("budidayaSubchipsNav");
+  let currentBudidayaSub = "semua";
   const categorySearchClearBtn = document.getElementById("categorySearchClearBtn");
   const categoryBackNavBtn = document.getElementById("categoryBackNavBtn");
 
@@ -2286,10 +2340,102 @@ document.addEventListener("DOMContentLoaded", function () {
     if (list.length === 0) {
       if (emptyState) emptyState.classList.remove("hidden");
       if (categoryCount) categoryCount.textContent = "0 produk ditemukan";
+      productGrid.classList.remove("product-grid-grouped");
       return;
     }
     if (emptyState) emptyState.classList.add("hidden");
 
+    // JIKA KATEGORI BUDIDAYA MODERN: KELOMPOKKAN MENJADI BEBERAPA KELOMPOK
+    // (Pakan, Benih, Alat & Aksesoris, Suplemen)
+    if (currentCategory === "Benih-Pakan-Budidaya") {
+      productGrid.classList.add("product-grid-grouped");
+
+      // Filter grup yang akan dirender (jika pengguna memilih sub-chip tertentu)
+      const targetGroups = BUDIDAYA_GROUPS.filter(function (g) {
+        return currentBudidayaSub === "semua" || g.id === currentBudidayaSub;
+      });
+
+      let totalGroupedRendered = 0;
+
+      targetGroups.forEach(function (group) {
+        const groupProducts = list.filter(function (p) {
+          return getBudidayaSubcategory(p) === group.id;
+        });
+
+        if (groupProducts.length > 0) {
+          totalGroupedRendered += groupProducts.length;
+
+          // Kontainer pembungkus kelompok produk
+          const section = document.createElement("div");
+          section.className = "budidaya-group-section";
+          section.setAttribute("data-sub-group", group.id);
+
+          // Header kelompok: ikon, judul, deskripsi & badge jumlah
+          const header = document.createElement("div");
+          header.className = "budidaya-group-header";
+
+          const titleWrap = document.createElement("div");
+          titleWrap.className = "budidaya-group-title-wrap";
+
+          const icon = document.createElement("span");
+          icon.className = "budidaya-group-icon";
+          icon.textContent = group.icon;
+
+          const textWrap = document.createElement("div");
+          textWrap.className = "budidaya-group-text";
+
+          const title = document.createElement("h3");
+          title.className = "budidaya-group-title";
+          title.textContent = group.nama;
+
+          const desc = document.createElement("p");
+          desc.className = "budidaya-group-desc";
+          desc.textContent = group.deskripsi;
+
+          textWrap.appendChild(title);
+          textWrap.appendChild(desc);
+
+          titleWrap.appendChild(icon);
+          titleWrap.appendChild(textWrap);
+
+          const badge = document.createElement("span");
+          badge.className = "budidaya-group-badge";
+          badge.textContent = groupProducts.length + " Produk";
+
+          header.appendChild(titleWrap);
+          header.appendChild(badge);
+
+          // Grid kartu produk kelompok (menggunakan ukuran ringkas & rapih standar)
+          const innerGrid = document.createElement("div");
+          innerGrid.className = "product-grid";
+
+          groupProducts.forEach(function (produk) {
+            innerGrid.appendChild(createProductCard(produk));
+          });
+
+          section.appendChild(header);
+          section.appendChild(innerGrid);
+          productGrid.appendChild(section);
+        }
+      });
+
+      if (categoryCount) {
+        if (currentBudidayaSub !== "semua") {
+          const activeG = BUDIDAYA_GROUPS.find(function (g) { return g.id === currentBudidayaSub; });
+          categoryCount.textContent = "Menampilkan " + totalGroupedRendered + " produk (" + (activeG ? activeG.nama : "") + ")";
+        } else {
+          categoryCount.textContent = "Menampilkan " + totalGroupedRendered + " produk dalam 4 kelompok";
+        }
+      }
+
+      if (totalGroupedRendered === 0 && emptyState) {
+        emptyState.classList.remove("hidden");
+      }
+      return;
+    }
+
+    // KATEGORI LAIN: RENDER GRID BIASA (TETAP AMAN & DIPERTAHANKAN)
+    productGrid.classList.remove("product-grid-grouped");
     if (categoryCount) {
       categoryCount.textContent = "Menampilkan " + list.length + " produk pilihan";
     }
@@ -2365,16 +2511,43 @@ document.addEventListener("DOMContentLoaded", function () {
       categoryHeaderDesc.textContent = bannerInfo.deskripsi;
     }
 
-    // Perbarui status chip kategori yang aktif di halaman kategori
-    if (categoryChipsNav) {
-      const chips = categoryChipsNav.querySelectorAll(".cat-chip-btn");
-      chips.forEach(function (btn) {
-        if (btn.getAttribute("data-cat") === categoryId) {
-          btn.classList.add("active");
-        } else {
-          btn.classList.remove("active");
-        }
-      });
+    // Di halaman kategori:
+    // Jika Kategori Budidaya Modern (Benih-Pakan-Budidaya):
+    // Sembunyikan categoryChipsNav (Semua, Olahan Ikan, Ikan Segar, Pancing, Budidaya)
+    // dan tampilkan hanya budidayaSubchipsNav (Semua, Pakan, Benih, Alat & Aksesoris, Suplemen)
+    if (categoryId === "Benih-Pakan-Budidaya") {
+      if (categoryChipsNav) {
+        categoryChipsNav.classList.add("hidden");
+      }
+      if (budidayaSubchipsNav) {
+        budidayaSubchipsNav.classList.remove("hidden");
+        currentBudidayaSub = "semua";
+        const budiChips = budidayaSubchipsNav.querySelectorAll(".budi-chip-btn");
+        budiChips.forEach(function (btn) {
+          if (btn.getAttribute("data-sub") === "semua") {
+            btn.classList.add("active");
+          } else {
+            btn.classList.remove("active");
+          }
+        });
+      }
+    } else {
+      // Kategori lainnya: tampilkan chips kategori utama & sembunyikan sub-chips budidaya
+      if (categoryChipsNav) {
+        categoryChipsNav.classList.remove("hidden");
+        const chips = categoryChipsNav.querySelectorAll(".cat-chip-btn");
+        chips.forEach(function (btn) {
+          if (btn.getAttribute("data-cat") === categoryId) {
+            btn.classList.add("active");
+          } else {
+            btn.classList.remove("active");
+          }
+        });
+      }
+      if (budidayaSubchipsNav) {
+        budidayaSubchipsNav.classList.add("hidden");
+        currentBudidayaSub = "semua";
+      }
     }
 
     if (filterSelect) {
@@ -2402,6 +2575,13 @@ document.addEventListener("DOMContentLoaded", function () {
   function goHome() {
     currentCategory = "semua";
     currentKeyword = "";
+    currentBudidayaSub = "semua";
+    if (categoryChipsNav) {
+      categoryChipsNav.classList.remove("hidden");
+    }
+    if (budidayaSubchipsNav) {
+      budidayaSubchipsNav.classList.add("hidden");
+    }
     if (searchInput) searchInput.value = "";
     if (searchInputCategory) searchInputCategory.value = "";
 
@@ -2786,6 +2966,21 @@ document.addEventListener("DOMContentLoaded", function () {
       btn.addEventListener("click", function () {
         const catId = btn.getAttribute("data-cat");
         openCategory(catId);
+      });
+    });
+  }
+
+  // Sub-kategori chips khusus budidaya modern (Pakan, Benih, Alat & Aksesoris, Suplemen)
+  if (budidayaSubchipsNav) {
+    const budiChips = budidayaSubchipsNav.querySelectorAll(".budi-chip-btn");
+    budiChips.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        currentBudidayaSub = btn.getAttribute("data-sub");
+        budiChips.forEach(function (b) {
+          b.classList.remove("active");
+        });
+        btn.classList.add("active");
+        refreshProductView();
       });
     });
   }
