@@ -555,20 +555,20 @@ body.dark-mode .hero-clean-card {
   height: 100%;
   object-fit: cover;
   object-position: center;
-  filter: saturate(1.08) contrast(1.05) brightness(1.02);
+  filter: saturate(1.08) contrast(1.03) brightness(1.04);
 }
 
-/* Gradasi pelindung teks di kiri, foto di kanan 100% jernih */
+/* Gradasi pelindung teks di kiri, foto di kanan lebih terang, jernih & premium */
 .hero-clean-visual::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
     90deg,
-    rgba(5, 23, 28, 0.82) 0%,
-    rgba(5, 23, 28, 0.58) 44%,
-    rgba(5, 23, 28, 0.16) 72%,
-    rgba(0, 0, 0, 0.04) 100%
+    rgba(5, 23, 28, 0.62) 0%,
+    rgba(5, 23, 28, 0.38) 45%,
+    rgba(5, 23, 28, 0.08) 75%,
+    transparent 100%
   );
   pointer-events: none;
   z-index: 3;
@@ -578,9 +578,9 @@ body.dark-mode .hero-clean-card {
   .hero-clean-visual::after {
     background: linear-gradient(
       180deg,
-      rgba(5, 23, 28, 0.84) 0%,
-      rgba(5, 23, 28, 0.60) 48%,
-      rgba(5, 23, 28, 0.20) 100%
+      rgba(5, 23, 28, 0.64) 0%,
+      rgba(5, 23, 28, 0.36) 50%,
+      rgba(5, 23, 28, 0.06) 100%
     );
   }
 }
@@ -588,10 +588,10 @@ body.dark-mode .hero-clean-card {
 body.dark-mode .hero-clean-visual::after {
   background: linear-gradient(
     90deg,
-    rgba(3, 16, 20, 0.86) 0%,
-    rgba(3, 16, 20, 0.62) 44%,
-    rgba(3, 16, 20, 0.22) 72%,
-    rgba(0, 0, 0, 0.08) 100%
+    rgba(3, 16, 20, 0.68) 0%,
+    rgba(3, 16, 20, 0.42) 45%,
+    rgba(3, 16, 20, 0.10) 75%,
+    transparent 100%
   );
 }
 
@@ -599,9 +599,9 @@ body.dark-mode .hero-clean-visual::after {
   body.dark-mode .hero-clean-visual::after {
     background: linear-gradient(
       180deg,
-      rgba(3, 16, 20, 0.88) 0%,
-      rgba(3, 16, 20, 0.64) 48%,
-      rgba(3, 16, 20, 0.25) 100%
+      rgba(3, 16, 20, 0.70) 0%,
+      rgba(3, 16, 20, 0.40) 50%,
+      rgba(3, 16, 20, 0.08) 100%
     );
   }
 }
