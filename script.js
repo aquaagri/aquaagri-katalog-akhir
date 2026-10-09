@@ -1456,28 +1456,28 @@ const categories = [
   { 
     id: "produk-olahan-ikan", 
     nama: "Produk Olahan Ikan", 
-    ikon: "🍥", 
+    svg: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>', 
     deskripsi: "Abon, kerupuk, pempek & aneka olahan gurih",
     bg: "cat-olahan-real.jpg"
   },
   { 
     id: "ikan-seafood-segar", 
     nama: "Ikan & Seafood", 
-    ikon: "🦐", 
+    svg: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16s3-2 6-2c4 0 6 2 9 2s5-2 5-2"/><path d="M2 12s3-4 6-4 6 4 6 4 3-4 6-4"/></svg>', 
     deskripsi: "Kakap merah, udang vaname & hasil laut segar",
     bg: "cat-seafood-real.jpg"
   },
   { 
     id: "pancing-umpan", 
     nama: "Pancing & Umpan", 
-    ikon: "🎣", 
+    svg: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="4.5" r="2"/><path d="M15 6.5v7.5a6 6 0 0 1-12 0v-5"/><path d="M3 11l2.5 2"/></svg>', 
     deskripsi: "Joran carbon, reel presisi & piranti mancing",
     bg: "cat-pancing-real.jpg"
   },
   { 
     id: "Benih-Pakan-Budidaya", 
     nama: "Benih, Pakan & Budidaya", 
-    ikon: "🌱", 
+    svg: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-9"/><path d="M12 13a5 5 0 0 1 5-5c2 0 3 1 3 1s0 2-1 3-3 1-7 1"/><path d="M12 13a5 5 0 0 0-5-5c-2 0-3 1-3 1s0 2 1 3 3 1 7 1"/></svg>', 
     deskripsi: "Pakan bernutrisi, aerator & sarana tambak",
     bg: "cat-budidaya-real.jpg"
   }
@@ -1639,7 +1639,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const sampleNextBtn = document.getElementById("sampleNextBtn");
 
   const themeToggleBtn = document.getElementById("themeToggleBtn");
-  const themeIcon = document.getElementById("themeIcon");
+  const themeMoonIcon = document.getElementById("themeMoonIcon");
   const themeText = document.getElementById("themeText");
 
   // ---------- 5. SISTEM MODE TAMPILAN (DEFAULT TIDAK OTOMATIS MODE MALAM) ----------
@@ -1658,13 +1658,17 @@ document.addEventListener("DOMContentLoaded", function () {
     if (isDark) {
       document.body.classList.add("dark-mode");
       document.body.classList.remove("light-mode");
-      if (themeIcon) themeIcon.textContent = "☀️";
+      if (themeMoonIcon) {
+        themeMoonIcon.innerHTML = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+      }
       if (themeText) themeText.textContent = "Terang";
       if (savePreference) localStorage.setItem("aquaagri_theme", "dark");
     } else {
       document.body.classList.remove("dark-mode");
       document.body.classList.add("light-mode");
-      if (themeIcon) themeIcon.textContent = "🌙";
+      if (themeMoonIcon) {
+        themeMoonIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+      }
       if (themeText) themeText.textContent = "Malam";
       if (savePreference) localStorage.setItem("aquaagri_theme", "light");
     }
@@ -1710,7 +1714,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // 4. Ikon kategori melayang di pojok kiri atas
       const iconPill = document.createElement("div");
       iconPill.className = "cat-clean-icon-pill";
-      iconPill.textContent = cat.ikon;
+      iconPill.innerHTML = cat.svg || "";
       iconPill.setAttribute("aria-hidden", "true");
 
       // 5. Animasi panah komputer kecil di pojok kanan atas (tidak mengganggu layar)
@@ -2881,7 +2885,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     cameraFileInput.addEventListener("change", function () {
       if (cameraFileInput.files && cameraFileInput.files[0]) {
-        showSearchToast("📸 Foto produk diterima! Menampilkan rekomendasi...");
+        showSearchToast("Foto produk diterima. Menampilkan rekomendasi...");
         if (searchInterfaceInput) {
           searchInterfaceInput.value = "Ikan";
         }
@@ -2899,7 +2903,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const rec = new SpeechRec();
           rec.lang = "id-ID";
           rec.start();
-          showSearchToast("🎙️ Mendengarkan suara... Silakan sebutkan produk");
+          showSearchToast("Mendengarkan suara... Silakan sebutkan produk");
           rec.onresult = function (event) {
             const transcript = event.results[0][0].transcript;
             if (searchInterfaceInput) {
@@ -2908,13 +2912,13 @@ document.addEventListener("DOMContentLoaded", function () {
             }
           };
           rec.onerror = function () {
-            showSearchToast("🎙️ Coba sebutkan: Abon tuna, Joran, atau Udang");
+            showSearchToast("Coba sebutkan: Abon tuna, Joran, atau Udang");
           };
         } catch (err) {
-          showSearchToast("🎙️ Coba sebutkan: Abon tuna, Joran, atau Udang");
+          showSearchToast("Coba sebutkan: Abon tuna, Joran, atau Udang");
         }
       } else {
-        showSearchToast("🎙️ Fitur suara aktif: Coba sebutkan Abon tuna / Joran");
+        showSearchToast("Fitur suara aktif: Coba sebutkan Abon tuna atau Joran");
       }
     });
   }
