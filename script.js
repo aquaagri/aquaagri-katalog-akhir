@@ -2087,6 +2087,102 @@ document.addEventListener("DOMContentLoaded", function () {
     startStoryTimer();
   }
 
+  // ---------- 8B. SLIDER FOTO OTOMATIS HERO BANNER ----------
+  function initHeroSlider() {
+    const heroCard = document.querySelector(".hero-clean-card");
+    const visualSlider = document.getElementById("heroVisualSlider");
+    if (!visualSlider) return;
+
+    const slides = visualSlider.querySelectorAll(".hero-slide-item");
+    const dotsWrap = document.getElementById("heroSlideDots");
+    if (slides.length <= 1) return;
+
+    let currentHeroSlide = 0;
+    let heroTimer = null;
+    let isHeroPaused = false;
+
+    function showHeroSlide(index) {
+      if (index >= slides.length) currentHeroSlide = 0;
+      else if (index < 0) currentHeroSlide = slides.length - 1;
+      else currentHeroSlide = index;
+
+      slides.forEach(function (slide, i) {
+        if (i === currentHeroSlide) {
+          slide.classList.add("active");
+        } else {
+          slide.classList.remove("active");
+        }
+      });
+
+      if (dotsWrap) {
+        const dots = dotsWrap.querySelectorAll(".hero-dot");
+        dots.forEach(function (dot, i) {
+          if (i === currentHeroSlide) {
+            dot.classList.add("active");
+          } else {
+            dot.classList.remove("active");
+          }
+        });
+      }
+    }
+
+    function nextHeroSlide() {
+      showHeroSlide(currentHeroSlide + 1);
+    }
+
+    function prevHeroSlide() {
+      showHeroSlide(currentHeroSlide - 1);
+    }
+
+    function startHeroTimer() {
+      stopHeroTimer();
+      heroTimer = setInterval(function () {
+        if (!isHeroPaused) {
+          nextHeroSlide();
+        }
+      }, 4200);
+    }
+
+    function stopHeroTimer() {
+      if (heroTimer) clearInterval(heroTimer);
+    }
+
+    if (dotsWrap) {
+      const dots = dotsWrap.querySelectorAll(".hero-dot");
+      dots.forEach(function (dot, i) {
+        dot.addEventListener("click", function (e) {
+          e.stopPropagation();
+          showHeroSlide(i);
+          startHeroTimer();
+        });
+      });
+    }
+
+    if (heroCard) {
+      heroCard.addEventListener("mouseenter", function () { isHeroPaused = true; });
+      heroCard.addEventListener("mouseleave", function () { isHeroPaused = false; });
+
+      // Swipe touch gesture untuk layar sentuh ponsel
+      let touchStartX = 0;
+      heroCard.addEventListener("touchstart", function (e) {
+        touchStartX = e.touches[0].clientX;
+        isHeroPaused = true;
+      }, { passive: true });
+
+      heroCard.addEventListener("touchend", function (e) {
+        const diffX = e.changedTouches[0].clientX - touchStartX;
+        if (diffX > 40) {
+          prevHeroSlide();
+        } else if (diffX < -40) {
+          nextHeroSlide();
+        }
+        setTimeout(function () { isHeroPaused = false; }, 2000);
+      }, { passive: true });
+    }
+
+    startHeroTimer();
+  }
+
   // ---------- 9. PEMBUATAN KARTU PRODUK KATALOG ----------
 
   function createProductCard(produk) {
@@ -2893,10 +2989,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const heroJelajahiBtn = document.getElementById("heroJelajahiBtn");
   if (heroJelajahiBtn) {
     heroJelajahiBtn.addEventListener("click", function () {
-      const targetSec = document.querySelector(".search-bar-clean");
+      const targetSec = document.querySelector(".categories-clean") || document.querySelector(".search-bar-clean");
       if (targetSec) {
         const topbar = document.querySelector(".topbar");
-        const offset = (topbar ? topbar.offsetHeight : 54) + 6;
+        const offset = (topbar ? topbar.offsetHeight : 54) + 8;
         const targetPos = targetSec.getBoundingClientRect().top + window.pageYOffset - offset;
         window.scrollTo({ top: targetPos, behavior: "smooth" });
       }
@@ -2938,4 +3034,5 @@ document.addEventListener("DOMContentLoaded", function () {
   renderCategories();
   renderSampleCarousel();
   initStoryCarousel();
+  initHeroSlider();
 });

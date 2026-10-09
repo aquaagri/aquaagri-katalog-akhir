@@ -152,22 +152,22 @@ button {
    ============================================================ */
 
 main {
-  max-width: 580px;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 16px 14px 60px;
+  padding: 6px 12px 42px;
 }
 
 @media (min-width: 768px) {
   main {
-    max-width: 920px;
-    padding: 24px 24px 70px;
+    max-width: 940px;
+    padding: 10px 18px 50px;
   }
 }
 
 @media (min-width: 1024px) {
   main {
-    max-width: 1140px;
-    padding: 28px 28px 80px;
+    max-width: 1160px;
+    padding: 12px 20px 60px;
   }
 }
 
@@ -406,7 +406,7 @@ body.dark-mode .theme-toggle-btn:hover {
    ============================================================ */
 
 .hero-clean-section {
-  margin: 8px 0 14px;
+  margin: 2px 0 10px;
 }
 
 .hero-clean-card {
@@ -427,30 +427,30 @@ body.dark-mode .hero-clean-card {
   display: flex;
   align-items: stretch;
   position: relative;
-  min-height: 180px;
+  min-height: 195px;
 }
 
-/* KONTEN HERO: Palet warna dihapus seutuhnya, teks langsung di atas foto kapal dengan proteksi kontras */
+/* KONTEN HERO: Teks ringkas di kiri, foto dominan membentang jelas di kanan */
 .hero-clean-content {
   position: relative;
-  z-index: 3;
-  padding: 18px 16px 14px 18px;
+  z-index: 4;
+  padding: 16px 16px 12px 18px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: transparent !important; /* Hapus palet warna tipis */
+  background: transparent !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  max-width: 330px; /* Teks rapi di kiri, kapal laut di kanan terlihat jelas */
+  max-width: 330px;
 }
 
 .hero-clean-label {
-  font-size: 0.65rem;
+  font-size: 0.64rem;
   font-weight: 800;
   letter-spacing: 1.4px;
   color: #2dd4bf; /* Mint cerah bercahaya khas perikanan & bahari */
-  margin-bottom: 5px;
-  text-transform: lowercase;
+  margin-bottom: 4px;
+  text-transform: uppercase;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
@@ -458,7 +458,7 @@ body.dark-mode .hero-clean-card {
   font-size: 1.15rem;
   font-weight: 850;
   line-height: 1.22;
-  color: #ffffff; /* Putih ultra-kontras & tegas */
+  color: #ffffff;
   margin: 0 0 5px;
   letter-spacing: -0.3px;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.75);
@@ -466,11 +466,11 @@ body.dark-mode .hero-clean-card {
 
 .hero-clean-desc {
   font-size: 0.74rem;
-  color: #e2f4f2; /* Putih mint lembut, mudah dibaca & tidak silau */
+  color: #e2f4f2;
   font-weight: 500;
-  margin: 0 0 10px;
+  margin: 0 0 11px;
   line-height: 1.38;
-  max-width: 290px;
+  max-width: 295px;
   letter-spacing: -0.1px;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.75);
 }
@@ -482,37 +482,46 @@ body.dark-mode .hero-clean-card {
   flex-wrap: wrap;
 }
 
+/* CTA UTAMA: Lebih jelas, kontras tegas, glow lembut dan panah interaktif */
 .hero-btn-primary {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  background: linear-gradient(135deg, #0d9488 0%, #0284c7 100%); /* Tosca ke biru laut khas aquaagri */
+  gap: 7px;
+  background: linear-gradient(135deg, #0d9488 0%, #0284c7 100%);
   color: #ffffff;
-  border: none;
-  padding: 7px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  padding: 8px 18px;
   border-radius: var(--radius-pill);
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.79rem;
+  font-weight: 750;
+  letter-spacing: -0.1px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 3px 12px rgba(13, 148, 136, 0.45);
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(13, 148, 136, 0.48);
 }
 
 .hero-btn-primary:hover {
   background: linear-gradient(135deg, #0f766e 0%, #0369a1 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 5px 16px rgba(13, 148, 136, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.65);
+}
+
+.hero-btn-primary:active {
+  transform: translateY(0);
 }
 
 .btn-arrow {
+  display: inline-block;
+  font-size: 0.95rem;
+  font-weight: 800;
   transition: transform 0.2s ease;
 }
 
 .hero-btn-primary:hover .btn-arrow {
-  transform: translateX(3px);
+  transform: translateX(4px);
 }
 
-/* FOTO BACKGROUND KAPAL LAUT: Terlihat penuh 100% membentang di seluruh kartu */
+/* VISUAL SLIDER HERO: Foto dominan, slide otomatis halus */
 .hero-clean-visual {
   position: absolute;
   inset: 0;
@@ -522,58 +531,128 @@ body.dark-mode .hero-clean-card {
   overflow: hidden;
 }
 
-/* Overlay gelap tipis natural di sisi kiri agar teks kontras, sisi kanan kapal 100% jernih */
-.hero-clean-visual::after {
-  content: "";
+.hero-slide-item {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(5, 23, 28, 0.76) 0%,
-    rgba(5, 23, 28, 0.54) 46%,
-    rgba(5, 23, 28, 0.16) 75%,
-    rgba(0, 0, 0, 0.04) 100%
-  );
-  pointer-events: none;
-  z-index: 2;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s ease-out;
+  transform: scale(1.04);
+  z-index: 1;
 }
 
-body.dark-mode .hero-clean-visual::after {
-  background: linear-gradient(
-    90deg,
-    rgba(3, 16, 20, 0.82) 0%,
-    rgba(3, 16, 20, 0.60) 46%,
-    rgba(3, 16, 20, 0.20) 75%,
-    rgba(0, 0, 0, 0.10) 100%
-  );
+.hero-slide-item.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  z-index: 2;
 }
 
 .hero-clean-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: right center; /* Memastikan kapal laut di sisi kanan terlihat jelas */
-  filter: saturate(1.06) contrast(1.05) brightness(1.01);
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  object-position: center;
+  filter: saturate(1.08) contrast(1.05) brightness(1.02);
 }
 
-.hero-clean-card:hover .hero-clean-img {
-  transform: scale(1.02);
+/* Gradasi pelindung teks di kiri, foto di kanan 100% jernih */
+.hero-clean-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(5, 23, 28, 0.82) 0%,
+    rgba(5, 23, 28, 0.58) 44%,
+    rgba(5, 23, 28, 0.16) 72%,
+    rgba(0, 0, 0, 0.04) 100%
+  );
+  pointer-events: none;
+  z-index: 3;
 }
 
-/* Strip Fitur Bawah Hero (Transparan gelap tipis natural) */
+@media (max-width: 639px) {
+  .hero-clean-visual::after {
+    background: linear-gradient(
+      180deg,
+      rgba(5, 23, 28, 0.84) 0%,
+      rgba(5, 23, 28, 0.60) 48%,
+      rgba(5, 23, 28, 0.20) 100%
+    );
+  }
+}
+
+body.dark-mode .hero-clean-visual::after {
+  background: linear-gradient(
+    90deg,
+    rgba(3, 16, 20, 0.86) 0%,
+    rgba(3, 16, 20, 0.62) 44%,
+    rgba(3, 16, 20, 0.22) 72%,
+    rgba(0, 0, 0, 0.08) 100%
+  );
+}
+
+@media (max-width: 639px) {
+  body.dark-mode .hero-clean-visual::after {
+    background: linear-gradient(
+      180deg,
+      rgba(3, 16, 20, 0.88) 0%,
+      rgba(3, 16, 20, 0.64) 48%,
+      rgba(3, 16, 20, 0.25) 100%
+    );
+  }
+}
+
+/* Indikator dots sederhana & modern */
+.hero-slide-indicators {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  z-index: 5;
+  background: rgba(2, 14, 18, 0.50);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 3px 7px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.hero-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.45);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.hero-dot.active {
+  width: 16px;
+  background: #2dd4bf;
+  box-shadow: 0 0 8px rgba(45, 212, 191, 0.75);
+}
+
+/* Strip Fitur Bawah Hero (Ringkas & Proporsional) */
 .hero-features-strip {
   position: relative;
-  z-index: 3;
+  z-index: 4;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 5px 8px;
-  padding: 8px 12px;
+  gap: 4px 8px;
+  padding: 6px 12px;
   background: rgba(3, 18, 22, 0.72);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-top: 1px solid rgba(45, 212, 191, 0.22);
-  font-size: 0.69rem;
+  font-size: 0.67rem;
   font-weight: 600;
   color: #5eead4;
 }
@@ -605,8 +684,8 @@ body.dark-mode .hero-features-strip {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    padding: 10px 18px;
-    font-size: 0.77rem;
+    padding: 8px 18px;
+    font-size: 0.75rem;
   }
   .feature-divider {
     display: inline-block;
@@ -617,12 +696,12 @@ body.dark-mode .hero-features-strip {
 
 @media (min-width: 768px) {
   .hero-clean-section {
-    margin: 12px 0 18px;
+    margin: 4px 0 12px;
   }
   .hero-clean-body {
     display: grid;
-    grid-template-columns: 1.18fr 0.82fr;
-    min-height: 212px; /* Pangkas 7% lebih ringkas (dari 228px) */
+    grid-template-columns: 1.05fr 0.95fr;
+    min-height: 230px;
     align-items: stretch;
   }
   .hero-clean-content {
@@ -631,38 +710,34 @@ body.dark-mode .hero-features-strip {
   .hero-clean-title {
     font-size: 1.48rem;
     line-height: 1.22;
-    margin-bottom: 8px;
+    margin-bottom: 7px;
   }
   .hero-clean-desc {
     font-size: 0.82rem;
     max-width: 420px;
-    line-height: 1.48;
-    margin-bottom: 14px;
+    line-height: 1.46;
+    margin-bottom: 13px;
   }
   .hero-clean-visual {
     position: relative;
     width: 100%;
     height: 100%;
-    min-height: 212px;
+    min-height: 230px;
     mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.35) 6%, rgba(0, 0, 0, 1) 20%);
     -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.35) 6%, rgba(0, 0, 0, 1) 20%);
-  }
-  .hero-features-strip {
-    padding: 8px 18px;
-    font-size: 0.75rem;
   }
 }
 
 @media (min-width: 1024px) {
   .hero-clean-body {
-    grid-template-columns: 1.25fr 0.75fr;
-    min-height: 242px; /* Pangkas 7% lebih ringkas (dari 260px) */
+    grid-template-columns: 1.08fr 0.92fr;
+    min-height: 255px;
   }
   .hero-clean-content {
-    padding: 26px 24px 20px 28px;
+    padding: 24px 22px 18px 26px;
   }
   .hero-clean-title {
-    font-size: 1.70rem;
+    font-size: 1.68rem;
   }
   .hero-clean-desc {
     font-size: 0.85rem;
@@ -675,17 +750,17 @@ body.dark-mode .hero-features-strip {
    ============================================================ */
 
 .search-bar-clean {
-  margin: 0 0 16px;
+  margin: 0 0 10px;
 }
 
 .search-input-pill {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   background: var(--surface-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-pill);
-  padding: 8.5px 14px; /* Dipangkas 5% lebih ringkas (dari 10px 16px) */
+  padding: 7.5px 14px;
   box-shadow: var(--shadow-xs);
   transition: all 0.2s ease;
 }
@@ -731,34 +806,34 @@ body.dark-mode .search-pill-icon {
    ============================================================ */
 
 .categories-clean {
-  margin: 0 0 28px;
+  margin: 0 0 14px;
 }
 
 .category-grid-clean {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 8px;
   width: 100%;
 }
 
 @media (min-width: 640px) {
   .category-grid-clean {
-    gap: 14px;
+    gap: 12px;
   }
 }
 
 @media (min-width: 1024px) {
   .category-grid-clean {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 18px;
+    gap: 14px;
   }
 }
 
 .category-card-clean {
   position: relative;
-  border-radius: 18px;
+  border-radius: 16px;
   overflow: hidden;
-  aspect-ratio: 15 / 11;
+  aspect-ratio: 16 / 11;
   cursor: pointer;
   border: 1.5px solid rgba(15, 118, 110, 0.14);
   box-shadow: 0 3px 12px rgba(15, 23, 42, 0.05);
@@ -1092,14 +1167,14 @@ body.dark-mode .category-card-clean:hover .cat-arrow-small {
    ============================================================ */
 
 .featured-section-clean {
-  margin: 0 0 24px;
+  margin: 0 0 16px;
 }
 
 .featured-header-clean {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .featured-tag-clean {
@@ -1172,7 +1247,7 @@ body.dark-mode .view-all-link:hover {
   overflow-x: auto;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  padding: 4px 2px 10px;
+  padding: 2px 2px 6px;
   scrollbar-width: none;
 }
 
@@ -1323,14 +1398,14 @@ body.dark-mode .featured-clean-price {
    ============================================================ */
 
 .commitment-banner {
-  margin: 0 0 32px;
+  margin: 0 0 18px;
 }
 
 .commitment-card {
   position: relative;
   border-radius: 18px;
   overflow: hidden;
-  min-height: 185px;
+  min-height: 160px;
   display: flex;
   align-items: center;
   box-shadow: var(--shadow-sm);
@@ -1436,14 +1511,14 @@ body.dark-mode .featured-clean-price {
    ============================================================ */
 
 .story-carousel-section {
-  margin-bottom: 34px;
+  margin-bottom: 18px;
 }
 
 .section-header-carousel {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .section-tag {
@@ -1618,30 +1693,30 @@ body.dark-mode .story-dot.active {
    ============================================================ */
 
 .payment-guide-section {
-  margin: 0 0 34px;
+  margin: 0 0 20px;
 }
 
 .section-header {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .payment-steps-full {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .steps-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 8px;
   width: 100%;
 }
 
 @media (min-width: 768px) {
   .steps-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 14px;
+    gap: 12px;
   }
 }
 
@@ -1755,8 +1830,8 @@ body.dark-mode .story-dot.active {
   position: relative;
   border-radius: var(--radius-xl);
   overflow: hidden;
-  margin-bottom: 14px;
-  min-height: 165px; /* Pangkas 15% dari 195px agar lega di layar HP */
+  margin-bottom: 10px;
+  min-height: 145px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1960,7 +2035,7 @@ body.dark-mode .category-search-pill:focus-within {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
 }
 
 .category-chips-nav {

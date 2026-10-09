@@ -121,25 +121,53 @@
          ------------------------------------------------------------ -->
     <section id="homeView" class="view">
       
-      <!-- HERO CARD (CLEAN, MODERN, PREMIUM — FLEKSIBEL DESKTOP & MOBILE) -->
+      <!-- HERO CARD (CLEAN, MODERN, PREMIUM — ELEGAN & SLIDE OTOMATIS) -->
       <section class="hero-clean-section">
         <div class="hero-clean-card">
           <div class="hero-clean-body">
             <div class="hero-clean-content">
-              <span class="hero-clean-label">aquaagri.id</span>
-              <h1 class="hero-clean-title">Solusi Terpadu Dunia Perikanan & Bahari Nusantara</h1>
+              <span class="hero-clean-label">ekosistem bahari terpadu</span>
+              <h1 class="hero-clean-title">Solusi Terpadu Perikanan & Bahari Nusantara</h1>
               <p class="hero-clean-desc">
-                Solusi bahari & perikanan nusantara terpadu. Temukan aneka produk pilihan terbaik kami.
+                Hasil laut segar, olahan higienis, sarana budidaya modern, dan piranti mancing terpercaya.
               </p>
               <div class="hero-clean-actions">
-                <button id="heroJelajahiBtn" class="hero-btn-primary" type="button">
+                <button id="heroJelajahiBtn" class="hero-btn-primary" type="button" aria-label="Jelajahi Produk aquaagri.id">
                   <span>Jelajahi Produk</span>
                   <span class="btn-arrow" aria-hidden="true">→</span>
                 </button>
               </div>
             </div>
-            <div class="hero-clean-visual">
-              <img src="hero-kapal-laut.jpg" alt="Kapal Laut Bahari Nusantara aquaagri.id" class="hero-clean-img" loading="eager">
+            <div class="hero-clean-visual" id="heroVisualSlider" aria-hidden="true">
+              <!-- Slide 1: Kapal Bahari & Perikanan Nusantara -->
+              <div class="hero-slide-item active">
+                <img src="hero-kapal-laut.jpg" alt="Solusi Perikanan & Bahari Nusantara" class="hero-clean-img" loading="eager">
+              </div>
+              <!-- Slide 2: Ikan & Hasil Laut Segar Pilihan -->
+              <div class="hero-slide-item">
+                <img src="ikan-segar.jpg" alt="Hasil Laut & Tangkapan Ikan Segar Pilihan" class="hero-clean-img" loading="lazy">
+              </div>
+              <!-- Slide 3: Sarana Budidaya & Keramba Jaring Apung Modern -->
+              <div class="hero-slide-item">
+                <img src="poto-petambak.jpg" alt="Sarana Budidaya & Keramba Jaring Apung Modern" class="hero-clean-img" loading="lazy">
+              </div>
+              <!-- Slide 4: Produk Olahan Ikan Higienis & Bergizi -->
+              <div class="hero-slide-item">
+                <img src="produk-olahan-ikan.jpg" alt="Ragam Produk Olahan Ikan Higienis & Bergizi" class="hero-clean-img" loading="lazy">
+              </div>
+              <!-- Slide 5: Piranti & Komunitas Mancing Bahari -->
+              <div class="hero-slide-item">
+                <img src="poto-pemancing-1.jpg" alt="Perlengkapan Pancing & Hasil Tangkapan Bahari" class="hero-clean-img" loading="lazy">
+              </div>
+
+              <!-- Indikator Slide Hero Simple & Modern -->
+              <div class="hero-slide-indicators" id="heroSlideDots" aria-label="Indikator slide banner">
+                <button type="button" class="hero-dot active" data-slide="0" aria-label="Slide 1"></button>
+                <button type="button" class="hero-dot" data-slide="1" aria-label="Slide 2"></button>
+                <button type="button" class="hero-dot" data-slide="2" aria-label="Slide 3"></button>
+                <button type="button" class="hero-dot" data-slide="3" aria-label="Slide 4"></button>
+                <button type="button" class="hero-dot" data-slide="4" aria-label="Slide 5"></button>
+              </div>
             </div>
           </div>
 
