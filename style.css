@@ -2097,7 +2097,7 @@ body.dark-mode .cat-chip-btn.active {
   overflow-x: auto;
   scrollbar-width: none;
   padding: 2px 2px 4px;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -2111,7 +2111,7 @@ body.dark-mode .cat-chip-btn.active {
   border: 1px solid var(--border-light);
   color: var(--text-secondary);
   border-radius: var(--radius-pill);
-  padding: 5px 13px;
+  padding: 5px 14px;
   font-size: 0.74rem;
   font-weight: 600;
   cursor: pointer;
@@ -2127,11 +2127,11 @@ body.dark-mode .cat-chip-btn.active {
 }
 
 .budi-chip-btn.active {
-  background: linear-gradient(135deg, #0f766e 0%, #0d5e56 100%);
-  border-color: transparent;
+  background: #0f766e;
+  border-color: #0f766e;
   color: #ffffff;
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(15, 118, 110, 0.28);
+  box-shadow: 0 2px 7px rgba(15, 118, 110, 0.24);
 }
 
 body.dark-mode .budi-chip-btn {
@@ -2147,8 +2147,8 @@ body.dark-mode .budi-chip-btn:hover {
 }
 
 body.dark-mode .budi-chip-btn.active {
-  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-  border-color: transparent;
+  background: #14b8a6;
+  border-color: #14b8a6;
   color: #061814;
   font-weight: 750;
 }
@@ -2307,13 +2307,13 @@ body.dark-mode .product-price {
 }
 
 /* ============================================================
-   PENGELOMPOKAN PRODUK BUDIDAYA MODERN (BERSIH, MODERN & PROFESIONAL)
+   SUB-KATEGORI HEADER PRODUK BUDIDAYA MODERN (CLEAN & PROFESIONAL)
    ============================================================ */
 
 .product-grid.product-grid-grouped {
   display: flex !important;
   flex-direction: column !important;
-  gap: 16px !important;
+  gap: 12px !important;
   width: 100% !important;
 }
 
@@ -2328,69 +2328,24 @@ body.dark-mode .product-price {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
-  background: var(--surface-card);
-  border: 1px solid var(--border-light);
-  border-left: 3.5px solid #0f766e;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  transition: all 0.2s ease;
-}
-
-body.dark-mode .budidaya-group-header {
-  background: #0d221e;
-  border-color: #1a3c33;
-  border-left-color: #2dd4bf;
-}
-
-.budidaya-group-title-wrap {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  min-width: 0;
-}
-
-.budidaya-group-icon {
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  background: rgba(15, 118, 110, 0.08);
-  border-radius: 7px;
-  flex-shrink: 0;
-}
-
-body.dark-mode .budidaya-group-icon {
-  background: rgba(45, 212, 191, 0.12);
-}
-
-.budidaya-group-text {
-  min-width: 0;
+  padding: 4px 2px 8px;
+  margin-bottom: 2px;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .budidaya-group-title {
-  font-size: 0.88rem;
+  font-size: 0.90rem;
   font-weight: 800;
   color: var(--text-primary);
   margin: 0;
   letter-spacing: -0.2px;
 }
 
-.budidaya-group-desc {
-  font-size: 0.67rem;
-  color: var(--text-subtle);
-  margin: 1.5px 0 0;
-  line-height: 1.25;
-}
-
 .budidaya-group-badge {
-  font-size: 0.67rem;
+  font-size: 0.68rem;
   font-weight: 700;
   color: #0f766e;
-  background: rgba(15, 118, 110, 0.10);
-  border: 1px solid rgba(15, 118, 110, 0.18);
+  background: var(--brand-teal-light);
   padding: 2.5px 8.5px;
   border-radius: var(--radius-pill);
   white-space: nowrap;
@@ -2399,8 +2354,7 @@ body.dark-mode .budidaya-group-icon {
 
 body.dark-mode .budidaya-group-badge {
   color: #2dd4bf;
-  background: rgba(45, 212, 191, 0.15);
-  border-color: rgba(45, 212, 191, 0.25);
+  background: rgba(20, 184, 166, 0.18);
 }
 
 .empty-state {

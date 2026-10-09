@@ -1522,30 +1522,22 @@ const BUDIDAYA_GROUPS = [
   {
     id: "pakan",
     nama: "Pakan Ikan & Nutrisi",
-    label: "Pakan 🌾",
-    icon: "🌾",
-    deskripsi: "Pelet protein tinggi, pakan alami & pemacu pertumbuhan ikan"
+    label: "Pakan"
   },
   {
     id: "benih",
     nama: "Benih & Bibit Ikan",
-    label: "Benih 🐟",
-    icon: "🐟",
-    deskripsi: "Bibit lele unggul, gurame sehat & benih air tawar berkualitas"
+    label: "Benih"
   },
   {
     id: "alat-aksesoris",
-    nama: "Alat & Aksesoris Budidaya",
-    label: "Alat & Aksesoris ⚙️",
-    icon: "⚙️",
-    deskripsi: "Kolam terpal, drum, aerasi, filter gantung, pompa celup & aquascape"
+    nama: "Alat & Perlengkapan Budidaya",
+    label: "Alat & Aksesoris"
   },
   {
     id: "suplemen",
-    nama: "Suplemen & Probiotik",
-    label: "Suplemen 🧪",
-    icon: "🧪",
-    deskripsi: "Probiotik pengurai, starter bakteri, enzim & molase murni"
+    nama: "Suplemen & Probiotik Air",
+    label: "Suplemen"
   }
 ];
 
@@ -2345,97 +2337,65 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     if (emptyState) emptyState.classList.add("hidden");
 
-    // JIKA KATEGORI BUDIDAYA MODERN: KELOMPOKKAN MENJADI BEBERAPA KELOMPOK
-    // (Pakan, Benih, Alat & Aksesoris, Suplemen)
-    if (currentCategory === "Benih-Pakan-Budidaya") {
-      productGrid.classList.add("product-grid-grouped");
-
-      // Filter grup yang akan dirender (jika pengguna memilih sub-chip tertentu)
-      const targetGroups = BUDIDAYA_GROUPS.filter(function (g) {
-        return currentBudidayaSub === "semua" || g.id === currentBudidayaSub;
+    // JIKA KATEGORI BUDIDAYA MODERN & MEMILIH SUB-FILTER TERTENTU (Pakan, Benih, Alat & Aksesoris, Suplemen):
+    // Tampilkan produk dari sub-kategori terpilih dengan header minimalis & profesional
+    if (currentCategory === "Benih-Pakan-Budidaya" && currentBudidayaSub !== "semua") {
+      const activeGroup = BUDIDAYA_GROUPS.find(function (g) {
+        return g.id === currentBudidayaSub;
       });
 
-      let totalGroupedRendered = 0;
-
-      targetGroups.forEach(function (group) {
-        const groupProducts = list.filter(function (p) {
-          return getBudidayaSubcategory(p) === group.id;
-        });
-
-        if (groupProducts.length > 0) {
-          totalGroupedRendered += groupProducts.length;
-
-          // Kontainer pembungkus kelompok produk
-          const section = document.createElement("div");
-          section.className = "budidaya-group-section";
-          section.setAttribute("data-sub-group", group.id);
-
-          // Header kelompok: ikon, judul, deskripsi & badge jumlah
-          const header = document.createElement("div");
-          header.className = "budidaya-group-header";
-
-          const titleWrap = document.createElement("div");
-          titleWrap.className = "budidaya-group-title-wrap";
-
-          const icon = document.createElement("span");
-          icon.className = "budidaya-group-icon";
-          icon.textContent = group.icon;
-
-          const textWrap = document.createElement("div");
-          textWrap.className = "budidaya-group-text";
-
-          const title = document.createElement("h3");
-          title.className = "budidaya-group-title";
-          title.textContent = group.nama;
-
-          const desc = document.createElement("p");
-          desc.className = "budidaya-group-desc";
-          desc.textContent = group.deskripsi;
-
-          textWrap.appendChild(title);
-          textWrap.appendChild(desc);
-
-          titleWrap.appendChild(icon);
-          titleWrap.appendChild(textWrap);
-
-          const badge = document.createElement("span");
-          badge.className = "budidaya-group-badge";
-          badge.textContent = groupProducts.length + " Produk";
-
-          header.appendChild(titleWrap);
-          header.appendChild(badge);
-
-          // Grid kartu produk kelompok (menggunakan ukuran ringkas & rapih standar)
-          const innerGrid = document.createElement("div");
-          innerGrid.className = "product-grid";
-
-          groupProducts.forEach(function (produk) {
-            innerGrid.appendChild(createProductCard(produk));
-          });
-
-          section.appendChild(header);
-          section.appendChild(innerGrid);
-          productGrid.appendChild(section);
-        }
+      const subProducts = list.filter(function (p) {
+        return getBudidayaSubcategory(p) === currentBudidayaSub;
       });
 
-      if (categoryCount) {
-        if (currentBudidayaSub !== "semua") {
-          const activeG = BUDIDAYA_GROUPS.find(function (g) { return g.id === currentBudidayaSub; });
-          categoryCount.textContent = "Menampilkan " + totalGroupedRendered + " produk (" + (activeG ? activeG.nama : "") + ")";
-        } else {
-          categoryCount.textContent = "Menampilkan " + totalGroupedRendered + " produk dalam 4 kelompok";
-        }
+      if (subProducts.length === 0) {
+        if (emptyState) emptyState.classList.remove("hidden");
+        if (categoryCount) categoryCount.textContent = "0 produk ditemukan";
+        productGrid.classList.remove("product-grid-grouped");
+        return;
       }
 
-      if (totalGroupedRendered === 0 && emptyState) {
-        emptyState.classList.remove("hidden");
+      productGrid.classList.add("product-grid-grouped");
+
+      const section = document.createElement("div");
+      section.className = "budidaya-group-section";
+      section.setAttribute("data-sub-group", currentBudidayaSub);
+
+      const header = document.createElement("div");
+      header.className = "budidaya-group-header";
+
+      const title = document.createElement("h3");
+      title.className = "budidaya-group-title";
+      title.textContent = activeGroup ? activeGroup.nama : "Kategori Produk";
+
+      const badge = document.createElement("span");
+      badge.className = "budidaya-group-badge";
+      badge.textContent = subProducts.length + " Produk";
+
+      header.appendChild(title);
+      header.appendChild(badge);
+
+      const innerGrid = document.createElement("div");
+      innerGrid.className = "product-grid";
+
+      subProducts.forEach(function (produk) {
+        innerGrid.appendChild(createProductCard(produk));
+      });
+
+      section.appendChild(header);
+      section.appendChild(innerGrid);
+      productGrid.appendChild(section);
+
+      if (categoryCount) {
+        categoryCount.textContent = "Menampilkan " + subProducts.length + " produk pilihan (" + (activeGroup ? activeGroup.label : "") + ")";
       }
       return;
     }
 
-    // KATEGORI LAIN: RENDER GRID BIASA (TETAP AMAN & DIPERTAHANKAN)
+    // KASUS DEFAULT / 'SEMUA' DI BUDIDAYA MODERN & KATEGORI LAIN:
+    // Tampilkan KESELURUHAN PRODUK TANPA PENGELOMPOKAN dalam satu grid mengalir alami
     productGrid.classList.remove("product-grid-grouped");
+
     if (categoryCount) {
       categoryCount.textContent = "Menampilkan " + list.length + " produk pilihan";
     }
