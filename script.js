@@ -58,7 +58,7 @@ const products = [
     harga: "Rp46.000",
     hargaCoret: "Rp55.000",
     diskon: "16%",
-    gambar: "assets/products/Kerupuk-Kulit-Ikan-Patin .jpg",
+    gambar: "assets/products/kerupuk-kulit-ikan-patin.jpg",
     deskripsi: "Kerupuk kulit ikan patin pilihan yang diolah bersih dan digoreng garing renyah. Tidak berbau amis, gurih alami, dan merupakan camilan berprotein tinggi.",
     kategori: "produk-olahan-ikan",
     linkAffiliate: "https://s.shopee.co.id/LnZwHBJCs"
@@ -348,7 +348,7 @@ const products = [
     harga: "Rp55.000",
     hargaCoret: "Rp68.000",
     diskon: "19%",
-    gambar: "assets/products/Steak-Tuna-Merah .jpg",
+    gambar: "assets/products/steak-tuna-merah.jpg",
     deskripsi: "Potongan steak daging ikan tuna merah murni tanpa duri dan kulit. Tekstur lembut bernutrisi tinggi kaya asam lemak Omega-3 untuk kesehatan jantung.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/4B0KYIPg9P"
@@ -735,7 +735,7 @@ const products = [
     harga: "Rp120.000",
     hargaCoret: "Rp145.000",
     diskon: "17%",
-    gambar: "assets/products/AGA-Essen -uper Ikan-NILA.jpg",
+    gambar: "assets/products/aga-essen-uper-ikan-nila.jpg",
     deskripsi: "Essen konsentrat premium dengan aroma khas kuat yang dirancang khusus untuk memikat ikan nila babon di berbagai kondisi air kolam maupun waduk liar.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/5LCKobxOA1"
@@ -878,7 +878,7 @@ const products = [
     harga: "Rp100.000",
     hargaCoret: "Rp120.000",
     diskon: "17%",
-    gambar: "assets/products/ESSEN SPESIALIS-GALATAMA-LELE.jpg",
+    gambar: "assets/products/essen-spesialis-galatama-lele.jpg",
     deskripsi: "essen corragio sabun blue mix adalah essen yang sudah teruji di kolam galatama dengan semua jenis air dan cuaca.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/8Kq82bR6XI"
@@ -900,7 +900,7 @@ const products = [
     harga: "Rp18.000",
     hargaCoret: "Rp30.000",
     diskon: "40%",
-    gambar: "assets/products/PELET MASYAI SIAP PAKAI SPECIAL MANCING GALATAMA.jpg",
+    gambar: "assets/products/pelet-masyai-siap-pakai-special-mancing-galatama.jpg",
     deskripsi: "special buat anda pemancing ikan galatama membutuhkan pelet praktis TANPA ESSEN tambahan bisa memakai pelet yang satu ini.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/8pmOdsthli"
@@ -1552,7 +1552,7 @@ const products = [
     harga: "Rp18.000",
     hargaCoret: "Rp25.000",
     diskon: "28%",
-    gambar: "assets/products/Tetes-Tebu-Molase-Asli-Murni-100%.jpg",
+    gambar: "assets/products/tetes-tebu-molase-asli-murni-100.jpg",
     deskripsi: "Tetes Tebu/Molase Asli Murni 100% untuk menjaga kesehatan ikan dan kualitas air akuarium.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "suplemen",
