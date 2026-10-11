@@ -984,7 +984,22 @@ const products = [
   },
   
 
-  // --- Kategori: Benih, Pakan & Budidaya ---
+  // =========================================================================
+  // --- Kategori: Benih, Pakan & Budidaya (KATEGORI BUDIDAYA MODERN) ---
+  // =========================================================================
+  // PANDUAN MUDAH TAMBAH / EDIT PRODUK BUDIDAYA MODERN:
+  // Produk di bawah telah dikelompokkan menjadi 4 bagian:
+  //   1. kelompok: "pakan"          (Pakan Ikan & Nutrisi)
+  //   2. kelompok: "benih"          (Benih & Bibit Ikan)
+  //   3. kelompok: "alat-aksesoris" (Alat & Aksesoris Budidaya)
+  //   4. kelompok: "suplemen"       (Suplemen & Probiotik Air)
+  // Untuk menambah produk baru, cukup copy-paste blok produk pada kelompok
+  // yang diinginkan, lalu sesuaikan data produknya.
+  // =========================================================================
+
+  // -------------------------------------------------------------------------
+  // KELOMPOK 1: PAKAN (kelompok: "pakan")
+  // -------------------------------------------------------------------------
   {
     id: 1,
     nama: "Pelet Makanan Ikan Koi 1kg",
@@ -994,9 +1009,10 @@ const products = [
     gambar: "assets/products/Pelet-Makanan-Ikan-Koi-1kg.jpg",
     deskripsi: "Mesin pompa aerasi 4 cabang bertenaga stabil dengan suara halus (silent operation) dan hemat daya listrik. Menjaga suplai oksigen terlarut kolam tetap prima.",
     kategori: "Benih-Pakan-Budidaya",
+    kelompok: "pakan",
     linkAffiliate: "https://s.shopee.co.id/4qGFxpHusZ"
   },
-   {
+  {
     id: 2,
     nama: "Takari Pakan Ikan mix 1 mm- 100 gr",
     harga: "Rp5.000",
@@ -1005,395 +1021,11 @@ const products = [
     gambar: "assets/products/Takari-Pakan-Ikan-mix-1-mm-100-gr.jpg",
     deskripsi: "Makanan Ikan Pelet Ikan Makanan Pakan Ikan Hias",
     kategori: "Benih-Pakan-Budidaya",
+    kelompok: "pakan",
     linkAffiliate: "https://s.shopee.co.id/40h8yqcyfI"
   },
-   {
+  {
     id: 3,
-    nama: "FFC 15 Mesin Penepung Disk Mill",
-    harga: "Rp975.000",
-    hargaCoret: "Rp1.200.000",
-    diskon: "20%",
-    gambar: "assets/products/FFC-15-Mesin-Penepung-Disk-Mill.jpg",
-    deskripsi: " Alat Serbaguna Kompak Kapasitas 50-60 kg/jam Berat 18 kg",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/6q1KMKUKWk"
-  },
-   {
-    id: 4,
-    nama: "Paket Bundling Mediatech pH Meter & TDS/EC Automatic Calibration",
-    harga: "Rp149.000",
-    hargaCoret: "Rp160.000",
-    diskon: "7%",
-    gambar: "assets/products/Paket-Bundling-Mediatech-pH-Meter.jpg",
-    deskripsi: "Alat ukur pH meter dan TDS/EC otomatis dengan kalibrasi otomatis untuk memantau kualitas air kolam ikan.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/5LCWZwD05e"
-  },
-   {
-    id: 5,
-    nama: "PH METER TDS TEMPERATUR 3 IN 1 WATERPROOF EZ 9901",
-    harga: "Rp360.000",
-    hargaCoret: "Rp400.000",
-    diskon: "10%",
-    gambar: "assets/products/PH-METER-TDS-TEMPERATUR-3-IN-1-WATERPROOF-EZ-9901.jpg",
-    deskripsi: "Alat ukur pH meter, TDS, dan temperatur 3 in 1 waterproof EZ 9901 untuk memantau kualitas air kolam ikan.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/3g4IbAFr4j"
-  },
-   {
-    id: 6,
-    nama: "Water Meter 5 in 1",
-    harga: "Rp8.380.000",
-    hargaCoret: "Rp9.000.000",
-    diskon: "7%",
-    gambar: "assets/products/Water-Meter-5-in-1.jpg",
-    deskripsi: "Alat ukur kualitas air 5 in 1 untuk memantau pH, TDS, EC, DO, dan temperatur air kolam",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/7ptrZ8aS7U"
-  },
-   {
-    id: 7,
-    nama: "Kolam Bulat Tanpa Rangka 2 meter Tinggi 90 cm",
-    harga: "Rp176.000",
-    hargaCoret: "Rp200.000",
-    diskon: "12%",
-    gambar: "assets/products/Kolam-Bulat-Tanpa-Rangka.jpg",
-    deskripsi: "Kolam bulat tanpa rangka 2 meter tinggi 90 cm untuk budidaya ikan, terbuat dari bahan berkualitas tinggi yang tahan lama dan mudah dipasang.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/5LCWb08Xp3"
-  },
-    {
-    id: 8,
-    nama: "AERATOR MESIN UDARA 2 LUBANG AQUARIUM",
-    harga: "Rp50.000",
-    hargaCoret: "Rp70.000",
-    diskon: "29%",
-    gambar: "assets/products/Aerator-Mesin-Udara-2-Lubang-Aquarium.jpg",
-    deskripsi: "Aerator mesin udara 2 lubang untuk akuarium, membantu meningkatkan oksigen dalam air dan menjaga kesehatan ikan.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/60SE57ryYk"
-  },
-    {
-    id: 9,
-    nama: "Pompa Udara Aerator Air LP60",
-    harga: "Rp1.600.000",
-    hargaCoret: "Rp1.800.000",
-    diskon: "11%",
-    gambar: "assets/products/Pompa-Udara-Aerator-Air-LP60.jpg",
-    deskripsi: "Pompa udara aerator air LP60 untuk akuarium, membantu meningkatkan oksigen dalam air dan menjaga kesehatan ikan.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/1B0wLq4GZ"
-  },
-    {
-    id: 10,
-    nama: "Batu Aerator Nano Oxygen Bubble",
-    harga: "Rp33.000",
-    hargaCoret: "Rp50.000",
-    diskon: "34%",
-    gambar: "assets/products/Batu-Aerator-Nano-Oxygen-Bubble.jpg",
-    deskripsi: "Batu aerator nano oxygen bubble untuk akuarium, membantu meningkatkan oksigen dalam air dan menjaga kesehatan ikan.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/7KxbfvUWgS"
-  },
-    {
-    id: 11,
-    nama: "Aerator silent aquarium oxygen air pump",
-    harga: "Rp47.000",
-    hargaCoret: "Rp60.000",
-    diskon: "22%",
-    gambar: "assets/products/Aerator-silent-aquarium-oxygen-air-pump.jpg",
-    deskripsi: "Aerator silent aquarium oxygen air pump untuk akuarium, membantu meningkatkan oksigen dalam air dan menjaga kesehatan ikan.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/5At763o2Wf"
-  },
-    {
-    id: 12,
-    nama: "CLEANER PUMP SIPON ALAT PENGURAS",
-    harga: "Rp15.000",
-    hargaCoret: "Rp25.000",
-    diskon: "40%",
-    gambar: "assets/products/CLEANER-PUMP-SIPON-ALAT-PENGURAS.jpg",
-    deskripsi: "Cleaner pump sipon alat penguras untuk akuarium, membantu membersihkan kotoran dan sisa makanan ikan.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/1LgOXHL3Vo"
-  },
-    {
-    id: 13,
-    nama: "Sipon Alat Penguras Kuras Penyedot Sedot Akuarium",
-    harga: "Rp36.000",
-    hargaCoret: "Rp47.000",
-    diskon: "23%",
-    gambar: "assets/products/Sipon-Alat-Penguras-Kuras-Penyedot-Sedot-Akuarium.jpg",
-    deskripsi: "Sipon alat penguras kuras penyedot sedot akuarium untuk membersihkan kotoran dan sisa makanan ikan.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/5At76QPpae"
-  },
-    {
-    id: 14,
-    nama: "1 Set aquarium akrilik",
-    harga: "Rp99.000",
-    hargaCoret: "Rp120.000",
-    diskon: "18%",
-    gambar: "assets/products/1-Set-aquarium-akrilik.jpg",
-    deskripsi: "1 set aquarium akrilik 2 meter tinggi 90 cm untuk budidaya ikan, terbuat dari bahan berkualitas tinggi yang tahan lama dan mudah dipasang.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/113Y928ygk"
-  },
-    {
-    id: 15,
-    nama: "Orcarium Lobe Series Akuarium SOLITER",
-    harga: "Rp110.000",
-    hargaCoret: "Rp140.000",
-    diskon: "21%",
-    gambar: "assets/products/Orcarium-Lobe-Series-Akuarium-SOLITER.jpg",
-    deskripsi: "Orcarium Lobe Series Akuarium SOLITER untuk budidaya ikan, terbuat dari bahan berkualitas tinggi yang tahan lama dan mudah dipasang.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/3qNjWMivha"
-  },
-    {
-    id: 16,
-    nama: "bonsai aquascape sintetis (hiasan/dekorasi akuarium)",
-    harga: "Rp40.000",
-    hargaCoret: "Rp50.000",
-    diskon: "20%",
-    gambar: "assets/products/bonsai-aquascape-sintetis-hiasan-dekorasi-akuarium.jpg",
-    deskripsi: "Bonsai aquascape sintetis untuk hiasan dan dekorasi akuarium, memberikan tampilan yang menarik dan alami.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/5fpNhx0KQN"
-  },
-    {
-    id: 17,
-    nama: "LAMPU CELUP 20 CM",
-    harga: "Rp20.000",
-    hargaCoret: "Rp30.000",
-    diskon: "33%",
-    gambar: "assets/products/LAMPU-CELUP-20-CM.jpg",
-    deskripsi: "LAMPU CELUP 20 CM untuk penerangan akuarium, memberikan cahaya yang optimal untuk tumbuhan dan ikan.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/2BFVbXAkzi"
-  },
-    {
-    id: 18,
-    nama: "Hiasan Aquascape Aksesoris",
-    harga: "Rp29.000",
-    hargaCoret: "Rp36.000",
-    diskon: "19%",
-    gambar: "assets/products/Hiasan-Aquascape-Aksesoris.jpg",
-    deskripsi: "Hiasan aquascape aksesoris untuk dekorasi akuarium, memberikan tampilan yang menarik dan alami.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/1VzooWGZHP"
-  },
-     {
-    id: 19,
-    nama: "Lampu Gantung Aquarium Aquascape",
-    harga: "Rp49.000",
-    hargaCoret: "Rp55.000",
-    diskon: "12%",
-    gambar: "assets/products/Lampu-Gantung-Aquarium-Aquascape.jpg",
-    deskripsi: "Lampu gantung aquarium aquascape untuk penerangan akuarium, memberikan cahaya yang optimal untuk tumbuhan dan ikan.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/5VVxZxTZK7"
-  },
-     {
-    id: 20,
-    nama: "Bakteri Starter Untuk Koi",
-    harga: "Rp123.000",
-    hargaCoret: "Rp140.000",
-    diskon: "12%",
-    gambar: "assets/products/Bakteri-Starter-Untuk-Koi.jpg",
-    deskripsi: "Bakteri starter untuk koi untuk menjaga kesehatan ikan dan menjaga kualitas air.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/7ptsMYD0jf"
-  },
-     {
-    id: 21,
-    nama: "FILTER GANTUNG AKUARIUM AQUASCAPE",
-    harga: "Rp54.000",
-    hargaCoret: "Rp60.000",
-    diskon: "10%",
-    gambar: "assets/products/FILTER-GANTUNG-AKUARIUM-AQUASCAPE.jpg",
-    deskripsi: "Filter gantung akuarium aquascape untuk menjaga kebersihan air akuarium, memberikan lingkungan yang sehat bagi ikan.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/3B82nqpC8I"
-  },
-     {
-    id: 22,
-    nama: "Akar Kayu Rasamala Size S Aquascape",
-    harga: "Rp12.000",
-    hargaCoret: "Rp20.000",
-    diskon: "12%",
-    gambar: "assets/products/Akar-Kayu-Rasamala-Size-S-Aquascape.jpg",
-    deskripsi: "Akar kayu rasamala size S untuk aquascape, memberikan tampilan yang menarik dan alami.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/2qVCPVSxZo"
-  },
-     {
-    id: 23,
-    nama: "akar Kayu Santigi Asli Beragam ukuran untuk hiasan akuarium",
-    harga: "Rp500.000",
-    hargaCoret: "Rp600.000",
-    diskon: "17%",
-    gambar: "assets/products/Akar-Kayu-Santigi-Asli-Beragam-ukuran-untuk-hiasan-akuarium.jpg",
-    deskripsi: "Akar kayu santigi asli beragam ukuran untuk hiasan akuarium, memberikan tampilan yang menarik dan alami.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/9zyMwroIyp"
-  },
-     {
-    id: 24,
-    nama: "Hiasan akuarium Bonsai tema beringin aquascape",
-    harga: "Rp60.000",
-    hargaCoret: "Rp80.000",
-    diskon: "25%",
-    gambar: "assets/products/Hiasan-Akuarium-Bonsai-Tema-Beringin-Aquascape.jpg",
-    deskripsi: "Hiasan akuarium berbentuk bonsai tema beringin untuk aquascape, memberikan tampilan yang menarik dan alami.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/4LK0Cb0wsu"
-  },
-     {
-    id: 25,
-    nama: "Pompa Air Celup Aquarium 25w",
-    harga: "Rp79.000",
-    hargaCoret: "Rp100.000",
-    diskon: "21%",
-    gambar: "assets/products/Pompa-Air-Celup-Aquarium-25w.jpg",
-    deskripsi: "Pompa air celup aquarium 25w untuk menjaga aliran air dan oksigenasi dalam akuarium.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/W7HdiFyGC"
-  },
-     {
-    id: 26,
-    nama: "paket 10 pot 10 jenis tanaman aquascape",
-    harga: "Rp8.000",
-    hargaCoret: "Rp14.000",
-    diskon: "43%",
-    gambar: "assets/products/Paket-10-Pot-10-Jenis-Tanaman-Aquascape.jpg",
-    deskripsi: "Paket 10 pot berisi 10 jenis tanaman aquascape untuk hiasan akuarium.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/3qNjc36D8S"
-  },
-     {
-    id: 27,
-    nama: "BOSTER AQUAENZYM (100 Gram)",
-    harga: "Rp25.000",
-    hargaCoret: "Rp40.000",
-    diskon: "38%",
-    gambar: "assets/products/BOSTER-AQUAENZYM-100-Gram.jpg",
-    deskripsi: "BOSTER AQUAENZYM (100 Gram) untuk menjaga kesehatan ikan dan kualitas air akuarium.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/1qcfEjfeEd"
-  },
-      {
-    id: 28,
-    nama: "kolam Terpal Bulat Fullset Diameter 3 tinggi 1,2 Merk orchid ",
-    harga: "Rp1.459.000",
-    hargaCoret: "Rp1.600.000",
-    diskon: "9%",
-    gambar: "assets/products/kolam-terpal-bulat-fullset-orchid.jpg",
-    deskripsi: "kolam Terpal Bulat Fullset Diameter 3 tinggi 1,2 Merk orchid",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/9zyMydrVnc"
-  },
-      {
-    id: 29,
-    nama: "Nitrobacter Original Probiotik",
-    harga: "Rp12.000",
-    hargaCoret: "Rp20.000",
-    diskon: "40%",
-    gambar: "assets/products/Nitrobacter-Original-Probiotik.jpg",
-    deskripsi: "Nitrobacter Original Probiotik untuk menjaga kesehatan ikan dan kualitas air akuarium.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/3qNjdRsvcQ"
-  },
-      {
-    id: 30,
-    nama: "AQUAPROENZYM 100g",
-    harga: "Rp30.000",
-    hargaCoret: "Rp40.000",
-    diskon: "25%",
-    gambar: "assets/products/AQUAPROENZYM-100g.jpg",
-    deskripsi: "AQUAPROENZYM 100g untuk menjaga kesehatan ikan dan kualitas air akuarium.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/5At7E36yKh"
-  },
-      {
-    id: 31,
-    nama: "Diffuser Aerasi Gelembung Halus Grade B Import",
-    harga: "Rp102.000",
-    hargaCoret: "Rp130.000",
-    diskon: "22%",
-    gambar: "assets/products/Diffuser-Aerasi-Gelembung-Halus-Grade-B-Import.jpg",
-    deskripsi: "Diffuser Aerasi Gelembung Halus Grade B Import untuk menjaga kesehatan ikan dan kualitas air akuarium.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/2qVCRs0eYQ"
-  },
-      {
-    id: 32,
-    nama: "Tetes Tebu/Molase Asli Murni 100%",
-    harga: "Rp18.000",
-    hargaCoret: "Rp25.000",
-    diskon: "28%",
-    gambar: "assets/products/Tetes-Tebu-Molase-Asli-Murni-100%.jpg",
-    deskripsi: "Tetes Tebu/Molase Asli Murni 100% untuk menjaga kesehatan ikan dan kualitas air akuarium.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/2gBmFvejE2"
-  },
-      {
-    id: 33,
-    nama: "molase tetes tebu murni 5kg",
-    harga: "Rp39.000",
-    hargaCoret: "Rp45.000",
-    diskon: "13%",
-    gambar: "assets/products/molase-tetes-tebu-murni-5kg.jpg",
-    deskripsi: "molase tetes tebu murni 5kg untuk menjaga kesehatan ikan dan kualitas air akuarium.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/qk84fa9Kb"
-  },
-      {
-    id: 34,
-    nama: "Bibit Ikan Lele per 100 ekor",
-    harga: "Rp78.000",
-    hargaCoret: "Rp90.000",
-    diskon: "14%",
-    gambar: "assets/products/Bibit-Ikan_Lele-per-100-ekor.jpg",
-    deskripsi: "Bibit Ikan Lele per 100 ekor untuk menjaga kesehatan ikan dan kualitas air akuarium.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/30ocevlQrn"
-  },
-      {
-    id: 35,
-    nama: "gurame soang size 3 jari ikan air tawar",
-    harga: "Rp7.000",
-    hargaCoret: "Rp10.000",
-    diskon: "30%",
-    gambar: "assets/products/gurame-soang-size-3-jari-ikan-air-tawar.jpg",
-    deskripsi: "gurame soang size 3 jari ikan air tawar untuk menjaga kesehatan ikan dan kualitas air akuarium.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/5LCXRLU1aO"
-  },
-      {
-    id: 36,
-    nama: "Drum budidaya ikan 200L",
-    harga: "Rp349.000",
-    hargaCoret: "Rp400.000",
-    diskon: "13%",
-    gambar: "assets/products/Drum-budidaya-ikan-200L.jpg",
-    deskripsi: "Drum budidaya ikan 200L untuk menjaga kesehatan ikan dan kualitas air akuarium.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/1VzosSAwtQ"
-  },
-      {
-    id: 37,
-    nama: "Benih bibit ikan lele Sangkuriang ukuran 2-3 cm per 100 ekor",
-    harga: "Rp20.000",
-    hargaCoret: "Rp30.000",
-    diskon: "33%",
-    gambar: "assets/products/Benih-2-3-cm-per-100-ekor.jpg",
-    deskripsi: "Benih bibit ikan lele Sangkuriang ukuran 2-3 cm per 100 ekor untuk menjaga kesehatan ikan dan kualitas air akuarium.",
-    kategori: "Benih-Pakan-Budidaya",
-    linkAffiliate: "https://s.shopee.co.id/4qGGqmbCdF"
-  },
-      {
-    id: 38,
     nama: "Makanan Pelet Ikan Predator Carnivore 300gr",
     harga: "Rp95.000",
     hargaCoret: "Rp110.000",
@@ -1401,10 +1033,11 @@ const products = [
     gambar: "assets/products/Makanan-Pelet-Ikan-Predator-Carnivore-300gr.jpg",
     deskripsi: "Makanan pelet ikan predator carnivore 300gr untuk menjaga kesehatan ikan dan kualitas air akuarium.",
     kategori: "Benih-Pakan-Budidaya",
+    kelompok: "pakan",
     linkAffiliate: "https://s.shopee.co.id/9KigDD2lRV"
   },
-      {
-    id: 39,
+  {
+    id: 4,
     nama: "Pakan Ikan Cacing Sutera/Sutra Kering Tubifex",
     harga: "Rp25.000",
     hargaCoret: "Rp30.000",
@@ -1412,10 +1045,11 @@ const products = [
     gambar: "assets/products/Pakan-Ikan-Cacing-Sutera-Sutra-Kering-Tubifex.jpg",
     deskripsi: "Pakan ikan cacing sutera/sutra kering tubifex untuk menjaga kesehatan ikan dan kualitas air akuarium.",
     kategori: "Benih-Pakan-Budidaya",
+    kelompok: "pakan",
     linkAffiliate: "https://s.shopee.co.id/BURIT7bt9"
   },
-      {
-    id: 40,
+  {
+    id: 5,
     nama: "Pelet Ikan Koi Color Booster Mix Maggot BSFL (c) 850gr",
     harga: "Rp25.000",
     hargaCoret: "Rp40.000",
@@ -1423,10 +1057,11 @@ const products = [
     gambar: "assets/products/Pelet-Ikan-Koi-850gr.jpg",
     deskripsi: "Pelet ikan koi color booster mix maggot BSFL (c) 850gr untuk menjaga kesehatan ikan dan kualitas air akuarium.",
     kategori: "Benih-Pakan-Budidaya",
+    kelompok: "pakan",
     linkAffiliate: "https://s.shopee.co.id/3B82sAEIJn"
   },
-      {
-    id: 41,
+  {
+    id: 6,
     nama: "Red Maggot with Beta-carotene",
     harga: "Rp89.000",
     hargaCoret: "Rp100.000",
@@ -1434,10 +1069,371 @@ const products = [
     gambar: "assets/products/Red-Maggot-with-Beta-carotene.jpg",
     deskripsi: "Red Maggot with Beta-carotene untuk menjaga kesehatan ikan dan kualitas air akuarium.",
     kategori: "Benih-Pakan-Budidaya",
+    kelompok: "pakan",
     linkAffiliate: "https://s.shopee.co.id/6L54eB24Bp"
   },
+  // -> Tambahkan produk PAKAN baru di atas baris ini (gunakan kelompok: "pakan")
+
+
+  // -------------------------------------------------------------------------
+  // KELOMPOK 2: BENIH (kelompok: "benih")
+  // -------------------------------------------------------------------------
   {
-    id: 42,
+    id: 1,
+    nama: "Bibit Ikan Lele per 100 ekor",
+    harga: "Rp78.000",
+    hargaCoret: "Rp90.000",
+    diskon: "14%",
+    gambar: "assets/products/Bibit-Ikan_Lele-per-100-ekor.jpg",
+    deskripsi: "Bibit Ikan Lele per 100 ekor untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "benih",
+    linkAffiliate: "https://s.shopee.co.id/30ocevlQrn"
+  },
+  {
+    id: 2,
+    nama: "gurame soang size 3 jari ikan air tawar",
+    harga: "Rp7.000",
+    hargaCoret: "Rp10.000",
+    diskon: "30%",
+    gambar: "assets/products/gurame-soang-size-3-jari-ikan-air-tawar.jpg",
+    deskripsi: "gurame soang size 3 jari ikan air tawar untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "benih",
+    linkAffiliate: "https://s.shopee.co.id/5LCXRLU1aO"
+  },
+  {
+    id: 3,
+    nama: "Benih bibit ikan lele Sangkuriang ukuran 2-3 cm per 100 ekor",
+    harga: "Rp20.000",
+    hargaCoret: "Rp30.000",
+    diskon: "33%",
+    gambar: "assets/products/Benih-2-3-cm-per-100-ekor.jpg",
+    deskripsi: "Benih bibit ikan lele Sangkuriang ukuran 2-3 cm per 100 ekor untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "benih",
+    linkAffiliate: "https://s.shopee.co.id/4qGGqmbCdF"
+  },
+  // -> Tambahkan produk BENIH baru di atas baris ini (gunakan kelompok: "benih")
+
+
+  // -------------------------------------------------------------------------
+  // KELOMPOK 3: ALAT & AKSESORIS (kelompok: "alat-aksesoris")
+  // -------------------------------------------------------------------------
+  {
+    id: 1,
+    nama: "FFC 15 Mesin Penepung Disk Mill",
+    harga: "Rp975.000",
+    hargaCoret: "Rp1.200.000",
+    diskon: "20%",
+    gambar: "assets/products/FFC-15-Mesin-Penepung-Disk-Mill.jpg",
+    deskripsi: " Alat Serbaguna Kompak Kapasitas 50-60 kg/jam Berat 18 kg",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/6q1KMKUKWk"
+  },
+  {
+    id: 2,
+    nama: "Paket Bundling Mediatech pH Meter & TDS/EC Automatic Calibration",
+    harga: "Rp149.000",
+    hargaCoret: "Rp160.000",
+    diskon: "7%",
+    gambar: "assets/products/Paket-Bundling-Mediatech-pH-Meter.jpg",
+    deskripsi: "Alat ukur pH meter dan TDS/EC otomatis dengan kalibrasi otomatis untuk memantau kualitas air kolam ikan.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/5LCWZwD05e"
+  },
+  {
+    id: 3,
+    nama: "PH METER TDS TEMPERATUR 3 IN 1 WATERPROOF EZ 9901",
+    harga: "Rp360.000",
+    hargaCoret: "Rp400.000",
+    diskon: "10%",
+    gambar: "assets/products/PH-METER-TDS-TEMPERATUR-3-IN-1-WATERPROOF-EZ-9901.jpg",
+    deskripsi: "Alat ukur pH meter, TDS, dan temperatur 3 in 1 waterproof EZ 9901 untuk memantau kualitas air kolam ikan.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/3g4IbAFr4j"
+  },
+  {
+    id: 4,
+    nama: "Water Meter 5 in 1",
+    harga: "Rp8.380.000",
+    hargaCoret: "Rp9.000.000",
+    diskon: "7%",
+    gambar: "assets/products/Water-Meter-5-in-1.jpg",
+    deskripsi: "Alat ukur kualitas air 5 in 1 untuk memantau pH, TDS, EC, DO, dan temperatur air kolam",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/7ptrZ8aS7U"
+  },
+  {
+    id: 5,
+    nama: "Kolam Bulat Tanpa Rangka 2 meter Tinggi 90 cm",
+    harga: "Rp176.000",
+    hargaCoret: "Rp200.000",
+    diskon: "12%",
+    gambar: "assets/products/Kolam-Bulat-Tanpa-Rangka.jpg",
+    deskripsi: "Kolam bulat tanpa rangka 2 meter tinggi 90 cm untuk budidaya ikan, terbuat dari bahan berkualitas tinggi yang tahan lama dan mudah dipasang.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/5LCWb08Xp3"
+  },
+  {
+    id: 6,
+    nama: "AERATOR MESIN UDARA 2 LUBANG AQUARIUM",
+    harga: "Rp50.000",
+    hargaCoret: "Rp70.000",
+    diskon: "29%",
+    gambar: "assets/products/Aerator-Mesin-Udara-2-Lubang-Aquarium.jpg",
+    deskripsi: "Aerator mesin udara 2 lubang untuk akuarium, membantu meningkatkan oksigen dalam air dan menjaga kesehatan ikan.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/60SE57ryYk"
+  },
+  {
+    id: 7,
+    nama: "Pompa Udara Aerator Air LP60",
+    harga: "Rp1.600.000",
+    hargaCoret: "Rp1.800.000",
+    diskon: "11%",
+    gambar: "assets/products/Pompa-Udara-Aerator-Air-LP60.jpg",
+    deskripsi: "Pompa udara aerator air LP60 untuk akuarium, membantu meningkatkan oksigen dalam air dan menjaga kesehatan ikan.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/1B0wLq4GZ"
+  },
+  {
+    id: 8,
+    nama: "Batu Aerator Nano Oxygen Bubble",
+    harga: "Rp33.000",
+    hargaCoret: "Rp50.000",
+    diskon: "34%",
+    gambar: "assets/products/Batu-Aerator-Nano-Oxygen-Bubble.jpg",
+    deskripsi: "Batu aerator nano oxygen bubble untuk akuarium, membantu meningkatkan oksigen dalam air dan menjaga kesehatan ikan.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/7KxbfvUWgS"
+  },
+  {
+    id: 9,
+    nama: "Aerator silent aquarium oxygen air pump",
+    harga: "Rp47.000",
+    hargaCoret: "Rp60.000",
+    diskon: "22%",
+    gambar: "assets/products/Aerator-silent-aquarium-oxygen-air-pump.jpg",
+    deskripsi: "Aerator silent aquarium oxygen air pump untuk akuarium, membantu meningkatkan oksigen dalam air dan menjaga kesehatan ikan.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/5At763o2Wf"
+  },
+  {
+    id: 10,
+    nama: "CLEANER PUMP SIPON ALAT PENGURAS",
+    harga: "Rp15.000",
+    hargaCoret: "Rp25.000",
+    diskon: "40%",
+    gambar: "assets/products/CLEANER-PUMP-SIPON-ALAT-PENGURAS.jpg",
+    deskripsi: "Cleaner pump sipon alat penguras untuk akuarium, membantu membersihkan kotoran dan sisa makanan ikan.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/1LgOXHL3Vo"
+  },
+  {
+    id: 11,
+    nama: "Sipon Alat Penguras Kuras Penyedot Sedot Akuarium",
+    harga: "Rp36.000",
+    hargaCoret: "Rp47.000",
+    diskon: "23%",
+    gambar: "assets/products/Sipon-Alat-Penguras-Kuras-Penyedot-Sedot-Akuarium.jpg",
+    deskripsi: "Sipon alat penguras kuras penyedot sedot akuarium untuk membersihkan kotoran dan sisa makanan ikan.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/5At76QPpae"
+  },
+  {
+    id: 12,
+    nama: "1 Set aquarium akrilik",
+    harga: "Rp99.000",
+    hargaCoret: "Rp120.000",
+    diskon: "18%",
+    gambar: "assets/products/1-Set-aquarium-akrilik.jpg",
+    deskripsi: "1 set aquarium akrilik 2 meter tinggi 90 cm untuk budidaya ikan, terbuat dari bahan berkualitas tinggi yang tahan lama dan mudah dipasang.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/113Y928ygk"
+  },
+  {
+    id: 13,
+    nama: "Orcarium Lobe Series Akuarium SOLITER",
+    harga: "Rp110.000",
+    hargaCoret: "Rp140.000",
+    diskon: "21%",
+    gambar: "assets/products/Orcarium-Lobe-Series-Akuarium-SOLITER.jpg",
+    deskripsi: "Orcarium Lobe Series Akuarium SOLITER untuk budidaya ikan, terbuat dari bahan berkualitas tinggi yang tahan lama dan mudah dipasang.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/3qNjWMivha"
+  },
+  {
+    id: 14,
+    nama: "bonsai aquascape sintetis (hiasan/dekorasi akuarium)",
+    harga: "Rp40.000",
+    hargaCoret: "Rp50.000",
+    diskon: "20%",
+    gambar: "assets/products/bonsai-aquascape-sintetis-hiasan-dekorasi-akuarium.jpg",
+    deskripsi: "Bonsai aquascape sintetis untuk hiasan dan dekorasi akuarium, memberikan tampilan yang menarik dan alami.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/5fpNhx0KQN"
+  },
+  {
+    id: 15,
+    nama: "LAMPU CELUP 20 CM",
+    harga: "Rp20.000",
+    hargaCoret: "Rp30.000",
+    diskon: "33%",
+    gambar: "assets/products/LAMPU-CELUP-20-CM.jpg",
+    deskripsi: "LAMPU CELUP 20 CM untuk penerangan akuarium, memberikan cahaya yang optimal untuk tumbuhan dan ikan.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/2BFVbXAkzi"
+  },
+  {
+    id: 16,
+    nama: "Hiasan Aquascape Aksesoris",
+    harga: "Rp29.000",
+    hargaCoret: "Rp36.000",
+    diskon: "19%",
+    gambar: "assets/products/Hiasan-Aquascape-Aksesoris.jpg",
+    deskripsi: "Hiasan aquascape aksesoris untuk dekorasi akuarium, memberikan tampilan yang menarik dan alami.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/1VzooWGZHP"
+  },
+  {
+    id: 17,
+    nama: "Lampu Gantung Aquarium Aquascape",
+    harga: "Rp49.000",
+    hargaCoret: "Rp55.000",
+    diskon: "12%",
+    gambar: "assets/products/Lampu-Gantung-Aquarium-Aquascape.jpg",
+    deskripsi: "Lampu gantung aquarium aquascape untuk penerangan akuarium, memberikan cahaya yang optimal untuk tumbuhan dan ikan.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/5VVxZxTZK7"
+  },
+  {
+    id: 18,
+    nama: "FILTER GANTUNG AKUARIUM AQUASCAPE",
+    harga: "Rp54.000",
+    hargaCoret: "Rp60.000",
+    diskon: "10%",
+    gambar: "assets/products/FILTER-GANTUNG-AKUARIUM-AQUASCAPE.jpg",
+    deskripsi: "Filter gantung akuarium aquascape untuk menjaga kebersihan air akuarium, memberikan lingkungan yang sehat bagi ikan.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/3B82nqpC8I"
+  },
+  {
+    id: 19,
+    nama: "Akar Kayu Rasamala Size S Aquascape",
+    harga: "Rp12.000",
+    hargaCoret: "Rp20.000",
+    diskon: "12%",
+    gambar: "assets/products/Akar-Kayu-Rasamala-Size-S-Aquascape.jpg",
+    deskripsi: "Akar kayu rasamala size S untuk aquascape, memberikan tampilan yang menarik dan alami.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/2qVCPVSxZo"
+  },
+  {
+    id: 20,
+    nama: "akar Kayu Santigi Asli Beragam ukuran untuk hiasan akuarium",
+    harga: "Rp500.000",
+    hargaCoret: "Rp600.000",
+    diskon: "17%",
+    gambar: "assets/products/Akar-Kayu-Santigi-Asli-Beragam-ukuran-untuk-hiasan-akuarium.jpg",
+    deskripsi: "Akar kayu santigi asli beragam ukuran untuk hiasan akuarium, memberikan tampilan yang menarik dan alami.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/9zyMwroIyp"
+  },
+  {
+    id: 21,
+    nama: "Hiasan akuarium Bonsai tema beringin aquascape",
+    harga: "Rp60.000",
+    hargaCoret: "Rp80.000",
+    diskon: "25%",
+    gambar: "assets/products/Hiasan-Akuarium-Bonsai-Tema-Beringin-Aquascape.jpg",
+    deskripsi: "Hiasan akuarium berbentuk bonsai tema beringin untuk aquascape, memberikan tampilan yang menarik dan alami.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/4LK0Cb0wsu"
+  },
+  {
+    id: 22,
+    nama: "Pompa Air Celup Aquarium 25w",
+    harga: "Rp79.000",
+    hargaCoret: "Rp100.000",
+    diskon: "21%",
+    gambar: "assets/products/Pompa-Air-Celup-Aquarium-25w.jpg",
+    deskripsi: "Pompa air celup aquarium 25w untuk menjaga aliran air dan oksigenasi dalam akuarium.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/W7HdiFyGC"
+  },
+  {
+    id: 23,
+    nama: "paket 10 pot 10 jenis tanaman aquascape",
+    harga: "Rp8.000",
+    hargaCoret: "Rp14.000",
+    diskon: "43%",
+    gambar: "assets/products/Paket-10-Pot-10-Jenis-Tanaman-Aquascape.jpg",
+    deskripsi: "Paket 10 pot berisi 10 jenis tanaman aquascape untuk hiasan akuarium.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/3qNjc36D8S"
+  },
+  {
+    id: 24,
+    nama: "kolam Terpal Bulat Fullset Diameter 3 tinggi 1,2 Merk orchid ",
+    harga: "Rp1.459.000",
+    hargaCoret: "Rp1.600.000",
+    diskon: "9%",
+    gambar: "assets/products/kolam-terpal-bulat-fullset-orchid.jpg",
+    deskripsi: "kolam Terpal Bulat Fullset Diameter 3 tinggi 1,2 Merk orchid",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/9zyMydrVnc"
+  },
+  {
+    id: 25,
+    nama: "Diffuser Aerasi Gelembung Halus Grade B Import",
+    harga: "Rp102.000",
+    hargaCoret: "Rp130.000",
+    diskon: "22%",
+    gambar: "assets/products/Diffuser-Aerasi-Gelembung-Halus-Grade-B-Import.jpg",
+    deskripsi: "Diffuser Aerasi Gelembung Halus Grade B Import untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/2qVCRs0eYQ"
+  },
+  {
+    id: 26,
+    nama: "Drum budidaya ikan 200L",
+    harga: "Rp349.000",
+    hargaCoret: "Rp400.000",
+    diskon: "13%",
+    gambar: "assets/products/Drum-budidaya-ikan-200L.jpg",
+    deskripsi: "Drum budidaya ikan 200L untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/1VzosSAwtQ"
+  },
+  {
+    id: 27,
     nama: "Jaring Waring Pembatas Kolam 100M x 120CM",
     harga: "Rp279.000",
     hargaCoret: "Rp330.000",
@@ -1445,9 +1441,137 @@ const products = [
     gambar: "assets/products/Jaring-Waring-Ukuran.jpg",
     deskripsi: "Waring hitam rajutan kuat anti geser untuk pembatas, peneduh, atau pagar kolam ikan. Tahan terhadap cuaca panas ekstrem dan tidak mudah rapuh.",
     kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
     linkAffiliate: "https://s.shopee.co.id/60RwflhpFa"
+  },
+   {
+    id: 28,
+    nama: "Serok ikan lipat 80cm",
+    harga: "Rp137.000",
+    hargaCoret: "Rp150.000",
+    diskon: "9%",
+    gambar: "assets/products/Serok-ikan-lipat-80cm.jpg",
+    deskripsi: "Serok ikan lipat 80cm untuk memudahkan penangkapan ikan di kolam atau akuarium.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/50Zir3PDts"
+  },
+   {
+    id: 29,
+    nama: "baskom sortir ikan",
+    harga: "Rp29.000",
+    hargaCoret: "Rp38.000",
+    diskon: "24%",
+    gambar: "assets/products/Baskom-Sortir-Ikan.jpg",
+    deskripsi: "Baskom sortir ikan untuk memudahkan pemisahan ikan berdasarkan ukuran atau jenis.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/7ptuEvo7br"
+  },
+  {
+    id: 30,
+    nama: "Box container serbaguna tipe rabbit (untuk kolam ikan hias)",
+    harga: "Rp115.000",
+    hargaCoret: "Rp130.000",
+    diskon: "12%",
+    gambar: "assets/products/Box-Container-Serbaguna-Tipe-Rabbit.jpg",
+    deskripsi: "Box container serbaguna tipe rabbit (untuk kolam ikan hias) untuk berbagai keperluan di kolam ikan hias. Tahan terhadap cuaca panas ekstrem dan tidak mudah rapuh.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/5LCZGVObUx"
+  },
+  {
+    id: 27,
+    nama: "Baskom Plastik Besar Kotak",
+    harga: "Rp74.000",
+    hargaCoret: "Rp100.000",
+    diskon: "26%",
+    gambar: "assets/products/Baskom-Plastik-Besar-Kotak.jpg",
+    deskripsi: "Baskom plastik besar kotak untuk berbagai keperluan di kolam ikan hias. Tahan terhadap cuaca panas ekstrem dan tidak mudah rapuh.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "alat-aksesoris",
+    linkAffiliate: "https://s.shopee.co.id/1gJGtJXEjb"
+  },
+  // -> Tambahkan produk ALAT & AKSESORIS baru di atas baris ini (gunakan kelompok: "alat-aksesoris")
+
+
+  // -------------------------------------------------------------------------
+  // KELOMPOK 4: SUPLEMEN (kelompok: "suplemen")
+  // -------------------------------------------------------------------------
+  {
+    id: 1,
+    nama: "Bakteri Starter Untuk Koi",
+    harga: "Rp123.000",
+    hargaCoret: "Rp140.000",
+    diskon: "12%",
+    gambar: "assets/products/Bakteri-Starter-Untuk-Koi.jpg",
+    deskripsi: "Bakteri starter untuk koi untuk menjaga kesehatan ikan dan menjaga kualitas air.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "suplemen",
+    linkAffiliate: "https://s.shopee.co.id/7ptsMYD0jf"
+  },
+  {
+    id: 2,
+    nama: "BOSTER AQUAENZYM (100 Gram)",
+    harga: "Rp25.000",
+    hargaCoret: "Rp40.000",
+    diskon: "38%",
+    gambar: "assets/products/BOSTER-AQUAENZYM-100-Gram.jpg",
+    deskripsi: "BOSTER AQUAENZYM (100 Gram) untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "suplemen",
+    linkAffiliate: "https://s.shopee.co.id/1qcfEjfeEd"
+  },
+  {
+    id: 3,
+    nama: "Nitrobacter Original Probiotik",
+    harga: "Rp12.000",
+    hargaCoret: "Rp20.000",
+    diskon: "40%",
+    gambar: "assets/products/Nitrobacter-Original-Probiotik.jpg",
+    deskripsi: "Nitrobacter Original Probiotik untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "suplemen",
+    linkAffiliate: "https://s.shopee.co.id/3qNjdRsvcQ"
+  },
+  {
+    id: 4,
+    nama: "AQUAPROENZYM 100g",
+    harga: "Rp30.000",
+    hargaCoret: "Rp40.000",
+    diskon: "25%",
+    gambar: "assets/products/AQUAPROENZYM-100g.jpg",
+    deskripsi: "AQUAPROENZYM 100g untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "suplemen",
+    linkAffiliate: "https://s.shopee.co.id/5At7E36yKh"
+  },
+  {
+    id: 5,
+    nama: "Tetes Tebu/Molase Asli Murni 100%",
+    harga: "Rp18.000",
+    hargaCoret: "Rp25.000",
+    diskon: "28%",
+    gambar: "assets/products/Tetes-Tebu-Molase-Asli-Murni-100%.jpg",
+    deskripsi: "Tetes Tebu/Molase Asli Murni 100% untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "suplemen",
+    linkAffiliate: "https://s.shopee.co.id/2gBmFvejE2"
+  },
+  {
+    id: 6,
+    nama: "molase tetes tebu murni 5kg",
+    harga: "Rp39.000",
+    hargaCoret: "Rp45.000",
+    diskon: "13%",
+    gambar: "assets/products/molase-tetes-tebu-murni-5kg.jpg",
+    deskripsi: "molase tetes tebu murni 5kg untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "suplemen",
+    linkAffiliate: "https://s.shopee.co.id/qk84fa9Kb"
   }
-  
+  // -> Tambahkan produk SUPLEMEN baru di atas baris ini (gunakan kelompok: "suplemen")
+
 ];
 
 // ---------- 2. DAFTAR KATEGORI DENGAN BACKGROUND FOTO ----------
@@ -1541,23 +1665,37 @@ const BUDIDAYA_GROUPS = [
   }
 ];
 
+// Normalisasi nama kelompok/subkategori agar fleksibel saat diedit (mendukung huruf besar/kecil & variasi penulisan)
+function normalizeBudidayaSubcategory(rawVal) {
+  if (!rawVal) return "";
+  const val = String(rawVal).trim().toLowerCase();
+  if (val === "pakan" || val.includes("pakan")) return "pakan";
+  if (val === "benih" || val === "bibit" || val.includes("benih") || val.includes("bibit")) return "benih";
+  if (val === "suplemen" || val === "suplement" || val.includes("suplemen") || val.includes("probiotik")) return "suplemen";
+  if (val === "alat-aksesoris" || val === "alat" || val === "aksesoris" || val.includes("alat") || val.includes("aksesoris")) return "alat-aksesoris";
+  return val;
+}
+
 function getBudidayaSubcategory(produk) {
-  if (produk.subkategori) return produk.subkategori;
-  const id = Number(produk.id);
-  // Pakan: 1, 2, 38, 39, 40, 41
-  if ([1, 2, 38, 39, 40, 41].includes(id)) return "pakan";
-  // Benih: 34, 35, 37
-  if ([34, 35, 37].includes(id)) return "benih";
-  // Suplemen: 20, 27, 29, 30, 32, 33
-  if ([20, 27, 29, 30, 32, 33].includes(id)) return "suplemen";
-  // Alat & Aksesoris: lainnya
+  // 1. Prioritaskan properti `kelompok` atau `subkategori` yang ditulis langsung pada produk
+  const explicitGroup = normalizeBudidayaSubcategory(produk.kelompok || produk.subkategori);
+  if (explicitGroup) return explicitGroup;
+
+  // 2. Fallback otomatis berdasarkan kata kunci nama/deskripsi jika lupa menulis `kelompok`
+  const teks = ((produk.nama || "") + " " + (produk.deskripsi || "")).toLowerCase();
+  if (/\b(pelet|pakan|maggot|cacing|tubifex|makanan ikan)\b/.test(teks)) return "pakan";
+  if (/\b(benih|bibit|anakan|larva)\b/.test(teks)) return "benih";
+  if (/\b(probiotik|bakteri|starter|molase|tetes tebu|enzym|aquaenzym|aquaproenzym|boster|vitamin|suplemen|obat)\b/.test(teks)) return "suplemen";
+
   return "alat-aksesoris";
 }
 
-// Inisialisasi subkategori otomatis pada produk budidaya
+// Inisialisasi properti kelompok/subkategori pada produk budidaya
 products.forEach(function (p) {
   if (p.kategori === "Benih-Pakan-Budidaya") {
-    p.subkategori = getBudidayaSubcategory(p);
+    const resolved = getBudidayaSubcategory(p);
+    p.kelompok = resolved;
+    p.subkategori = resolved;
   }
 });
 
