@@ -2336,7 +2336,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ---------- 8B. SLIDER FOTO OTOMATIS HERO BANNER ----------
+  let activeHeroTimer = null;
   function initHeroSlider() {
+    if (activeHeroTimer) {
+      clearInterval(activeHeroTimer);
+      activeHeroTimer = null;
+    }
     const heroCard = document.querySelector(".hero-clean-card");
     const visualSlider = document.getElementById("heroVisualSlider");
     if (!visualSlider) return;
@@ -2346,7 +2351,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (slides.length <= 1) return;
 
     let currentHeroSlide = 0;
-    let heroTimer = null;
     let isHeroPaused = false;
 
     function showHeroSlide(index) {
@@ -2384,7 +2388,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function startHeroTimer() {
       stopHeroTimer();
-      heroTimer = setInterval(function () {
+      activeHeroTimer = setInterval(function () {
         if (!isHeroPaused) {
           nextHeroSlide();
         }
@@ -2392,7 +2396,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function stopHeroTimer() {
-      if (heroTimer) clearInterval(heroTimer);
+      if (activeHeroTimer) {
+        clearInterval(activeHeroTimer);
+        activeHeroTimer = null;
+      }
     }
 
     if (dotsWrap) {
@@ -3389,7 +3396,161 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ---------- 16. INISIALISASI HALAMAN AWAL ----------
+  // ---------- 16. INISIALISASI HALAMAN AWAL & SINKRONISASI SUPABASE ----------
+
+  function rebuildCategoryChipsAndSelect() {
+    if (categoryChipsNav) {
+      categoryChipsNav.innerHTML = "";
+      const allBtn = document.createElement("button");
+      allBtn.className = "cat-chip-btn" + (currentCategory === "semua" ? " active" : "");
+      allBtn.setAttribute("data-cat", "semua");
+      allBtn.type = "button";
+      allBtn.textContent = "Semua";
+      allBtn.addEventListener("click", function () {
+        openCategory("semua");
+      });
+      categoryChipsNav.appendChild(allBtn);
+
+      categories.forEach(function (cat) {
+        const btn = document.createElement("button");
+        btn.className = "cat-chip-btn" + (currentCategory === cat.id ? " active" : "");
+        btn.setAttribute("data-cat", cat.id);
+        btn.type = "button";
+        btn.textContent = cat.nama;
+        btn.addEventListener("click", function () {
+          openCategory(cat.id, cat.nama);
+        });
+        categoryChipsNav.appendChild(btn);
+      });
+    }
+
+    if (filterSelect) {
+      filterSelect.innerHTML = '<option value="semua">Semua Kategori (Semua Produk)</option>';
+      categories.forEach(function (cat) {
+        const opt = document.createElement("option");
+        opt.value = cat.id;
+        opt.textContent = cat.nama;
+        filterSelect.appendChild(opt);
+      });
+      filterSelect.value = currentCategory;
+    }
+  }
+
+  function renderDynamicHeroBanners(bannerRows) {
+    const visualSlider = document.getElementById("heroVisualSlider");
+    if (!visualSlider || !Array.isArray(bannerRows) || bannerRows.length === 0) return;
+
+    const activeBanners = bannerRows.filter(function (b) {
+      return b.aktif !== false && b.gambar;
+    });
+    if (activeBanners.length === 0) return;
+
+    visualSlider.innerHTML = "";
+
+    activeBanners.forEach(function (ban, idx) {
+      const slideDiv = document.createElement("div");
+      slideDiv.className = "hero-slide-item" + (idx === 0 ? " active" : "");
+      const img = document.createElement("img");
+      img.src = ban.gambar;
+      img.alt = ban.judul || "Banner AquaAgri.id";
+      img.className = "hero-clean-img";
+      img.loading = idx === 0 ? "eager" : "lazy";
+      slideDiv.appendChild(img);
+      visualSlider.appendChild(slideDiv);
+    });
+
+    const dotsWrap = document.createElement("div");
+    dotsWrap.className = "hero-slide-indicators";
+    dotsWrap.id = "heroSlideDots";
+    dotsWrap.setAttribute("aria-label", "Indikator slide banner");
+
+    activeBanners.forEach(function (_, idx) {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = "hero-dot" + (idx === 0 ? " active" : "");
+      dot.setAttribute("data-slide", String(idx));
+      dot.setAttribute("aria-label", "Slide " + (idx + 1));
+      dotsWrap.appendChild(dot);
+    });
+
+    visualSlider.appendChild(dotsWrap);
+    initHeroSlider();
+  }
+
+  async function syncCatalogFromSupabase() {
+    if (typeof window.getAquaAgriSupabaseClient !== "function") return;
+    const sb = window.getAquaAgriSupabaseClient();
+    if (!sb) return;
+
+    try {
+      const [catRes, prodRes, banRes] = await Promise.all([
+        sb.from("categories").select("*").order("urutan", { ascending: true }),
+        sb.from("products").select("*").eq("aktif", true).order("urutan", { ascending: true }).order("id", { ascending: true }),
+        sb.from("banners").select("*").eq("aktif", true).order("urutan", { ascending: true }).order("id", { ascending: true })
+      ]);
+
+      // 1. Perbarui daftar kategori & banner kategori jika tersedia di database
+      if (!catRes.error && Array.isArray(catRes.data) && catRes.data.length > 0) {
+        categories.length = 0;
+        catRes.data.forEach(function (row) {
+          categories.push({
+            id: row.id,
+            nama: row.nama,
+            svg: row.svg || "",
+            deskripsi: row.deskripsi || "",
+            bg: row.bg || "cat-olahan-real.jpg"
+          });
+          categoryBanners[row.id] = {
+            bg: row.bg || "banner-bahari-real.jpg",
+            tag: row.banner_tag || "KATALOG PRODUK",
+            title: row.banner_title || row.nama,
+            deskripsi: row.banner_deskripsi || row.deskripsi || ""
+          };
+        });
+        rebuildCategoryChipsAndSelect();
+        renderCategories();
+      }
+
+      // 2. Perbarui daftar produk jika tersedia di database
+      if (!prodRes.error && Array.isArray(prodRes.data) && prodRes.data.length > 0) {
+        products.length = 0;
+        prodRes.data.forEach(function (row) {
+          const item = {
+            id: row.id,
+            nama: row.nama || "",
+            harga: row.harga || "Rp0",
+            hargaCoret: row.harga_coret || "",
+            diskon: row.diskon || "",
+            gambar: row.gambar || "",
+            deskripsi: row.deskripsi || "",
+            kategori: row.kategori || "produk-olahan-ikan",
+            kelompok: row.kelompok || "",
+            linkAffiliate: row.link_affiliate || ""
+          };
+          if (item.kategori === "Benih-Pakan-Budidaya") {
+            const resolved = getBudidayaSubcategory(item);
+            item.kelompok = resolved;
+            item.subkategori = resolved;
+          }
+          products.push(item);
+        });
+
+        renderSampleCarousel();
+        refreshProductView();
+        renderSearchInterfaceProducts();
+      }
+
+      // 3. Perbarui slide Hero Banner beranda jika tersedia di database
+      if (!banRes.error && Array.isArray(banRes.data) && banRes.data.length > 0) {
+        renderDynamicHeroBanners(banRes.data);
+      }
+
+      updateAboutStats();
+    } catch (err) {
+      // Tetap gunakan data bawaan jika jaringan sedang offline
+      console.warn("Menggunakan data katalog bawaan:", err);
+    }
+  }
 
   updateHeaderOffset();
   window.addEventListener("resize", updateHeaderOffset);
@@ -3399,4 +3560,8 @@ document.addEventListener("DOMContentLoaded", function () {
   renderSampleCarousel();
   initStoryCarousel();
   initHeroSlider();
+
+  // Sinkronisasi otomatis dengan database Supabase
+  syncCatalogFromSupabase();
 });
+

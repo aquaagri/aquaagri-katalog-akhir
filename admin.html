@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin — aquaagri.id</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       1. LAYAR LOGIN & PENGATURAN KONEKSI SUPABASE
+       ======================================================================== -->
+  <div id="loginScreen" class="auth-screen">
+    <div class="auth-card">
+      <div class="auth-brand-header">
+        <div class="auth-logo-mark">
+          <span class="brand-aqua">aqua</span><span class="brand-agri">agri</span><span class="brand-dot">.id</span>
+        </div>
+        <span class="auth-badge">Panel Admin Resmi</span>
+      </div>
+
+      <h1 class="auth-title">Masuk ke Dashboard Admin</h1>
+      <p class="auth-subtitle">Kelola katalog produk, kategori, banner beranda, dan tautan affiliate Shopee secara real-time.</p>
+
+      <!-- Status Koneksi Supabase -->
+      <div id="connStatusBanner" class="conn-banner conn-banner-warn">
+        <div class="conn-banner-left">
+          <span id="connStatusDot" class="conn-dot"></span>
+          <div>
+            <strong id="connStatusTitle">Mengecek koneksi database...</strong>
+            <p id="connStatusDesc">Pastikan Project URL dan Anon Key Supabase sudah diisi.</p>
+          </div>
+        </div>
+        <button type="button" id="toggleConfigBtn" class="btn-outline-sm">Atur Koneksi</button>
+      </div>
+
+      <!-- Panel Pengaturan Koneksi Supabase (Ramah Pemula) -->
+      <div id="supabaseSetupPanel" class="setup-panel hidden">
+        <div class="setup-panel-header">
+          <h3>Pengaturan Koneksi Supabase</h3>
+          <p>Ambil dari <strong>Supabase Dashboard &rarr; Project Settings &rarr; API</strong>.</p>
+        </div>
+        <div class="form-group">
+          <label for="setupSbUrl">Project URL Supabase</label>
+          <input type="url" id="setupSbUrl" placeholder="https://xxxxxxxxxxxx.supabase.co" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="setupSbKey">Anon Public Key (Kunci Publik)</label>
+          <input type="text" id="setupSbKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." autocomplete="off">
+          <small class="form-hint">Aman digunakan. Jangan pernah memasukkan kunci <code>service_role</code> di sini.</small>
+        </div>
+        <div class="setup-actions">
+          <button type="button" id="saveSetupBtn" class="btn-primary">Simpan &amp; Hubungkan</button>
+          <button type="button" id="copyConfigCodeBtn" class="btn-secondary" title="Salin kode untuk ditempel ke file supabase-config.js">Salin Kode supabase-config.js</button>
+        </div>
+      </div>
+
+      <!-- Notifikasi Error/Sukses Login -->
+      <div id="loginAlert" class="alert-box hidden" role="alert"></div>
+
+      <!-- Form Login Admin -->
+      <form id="loginForm" class="auth-form" novalidate>
+        <div class="form-group">
+          <label for="loginEmail">Email Admin</label>
+          <input type="email" id="loginEmail" placeholder="admin@aquaagri.id" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <div class="password-input-wrap">
+            <input type="password" id="loginPassword" placeholder="Masukkan password admin" required autocomplete="current-password">
+            <button type="button" id="togglePassBtn" class="pass-toggle-btn" aria-label="Tampilkan password">Lihat</button>
+          </div>
+        </div>
+        <button type="submit" id="loginSubmitBtn" class="btn-primary btn-full">
+          <span>Masuk ke Dashboard</span>
+          <span aria-hidden="true">&rarr;</span>
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        <a href="index.html" class="back-public-link">&larr; Kembali ke Website Katalog Publik</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       2. LAYAR UTAMA DASHBOARD ADMIN (HANYA TAMPIL JIKA SUDAH LOGIN)
+       ======================================================================== -->
+  <div id="dashboardScreen" class="admin-layout hidden">
+
+    <!-- SIDEBAR NAVIGASI -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-brand">
+          <div>
+            <span class="brand-aqua">aqua</span><span class="brand-agri">agri</span><span class="brand-dot">.id</span>
+          </div>
+          <span class="sidebar-tag">ADMIN PANEL</span>
+        </div>
+        <button type="button" id="closeSidebarMobileBtn" class="sidebar-close-mobile" aria-label="Tutup menu">&times;</button>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Menu Utama Admin">
+        <button type="button" class="nav-item active" data-tab="overview">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+            <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+            <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+            <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+          </svg>
+          <span>Ringkasan</span>
+        </button>
+
+        <button type="button" class="nav-item" data-tab="products">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+            <line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+          <span>Produk Katalog</span>
+          <span id="navBadgeProducts" class="nav-badge">0</span>
+        </button>
+
+        <button type="button" class="nav-item" data-tab="categories">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+            <line x1="7" y1="7" x2="7.01" y2="7"/>
+          </svg>
+          <span>Kategori</span>
+          <span id="navBadgeCategories" class="nav-badge">0</span>
+        </button>
+
+        <button type="button" class="nav-item" data-tab="banners">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+          <span>Banner Beranda</span>
+          <span id="navBadgeBanners" class="nav-badge">0</span>
+        </button>
+
+        <button type="button" class="nav-item" data-tab="shopee">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span>Tautan Shopee</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <a href="index.html" target="_blank" rel="noopener" class="sidebar-public-btn">
+          <span>Lihat Website Publik</span>
+          <span aria-hidden="true">&#8599;</span>
+        </a>
+        <div class="admin-user-box">
+          <div class="admin-user-avatar" id="adminUserInitial">A</div>
+          <div class="admin-user-info">
+            <span class="admin-user-label">Login sebagai:</span>
+            <strong id="adminUserEmail">admin@aquaagri.id</strong>
+          </div>
+        </div>
+        <button type="button" id="logoutBtn" class="btn-logout">Keluar (Logout)</button>
+      </div>
+    </aside>
+
+    <!-- OVERLAY MOBILE SIDEBAR -->
+    <div id="sidebarBackdrop" class="sidebar-backdrop hidden"></div>
+
+    <!-- KONTEN UTAMA -->
+    <div class="admin-main">
+
+      <!-- TOPBAR ADMIN -->
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <button type="button" id="openSidebarMobileBtn" class="mobile-menu-btn" aria-label="Buka menu navigasi">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+          <div>
+            <h2 id="pageHeaderTitle" class="topbar-title">Ringkasan Dashboard</h2>
+            <p id="pageHeaderSubtitle" class="topbar-subtitle">Pantau dan kelola seluruh isi katalog aquaagri.id</p>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <button type="button" id="refreshDataBtn" class="btn-secondary btn-sm" title="Muat ulang data dari database">
+            &#8635; Segarkan Data
+          </button>
+          <button type="button" id="quickAddProductBtn" class="btn-primary btn-sm">
+            + Tambah Produk
+          </button>
+        </div>
+      </header>
+
+      <!-- AREA ISI TAB -->
+      <main class="admin-content">
+
+        <!-- ==================================================================
+             TAB 1: RINGKASAN DASHBOARD (OVERVIEW)
+             ================================================================== -->
+        <section id="tab-overview" class="tab-panel active">
+          
+          <!-- Banner Import 1-Klik jika database masih kosong -->
+          <div id="emptyDbBanner" class="onboarding-card hidden">
+            <div class="onboarding-content">
+              <span class="onboarding-badge">Langkah Awal Database</span>
+              <h3>Database Supabase Anda Masih Kosong</h3>
+              <p>Klik tombol di samping untuk memasukkan seluruh <strong>138 produk, 4 kategori utama, dan 5 banner beranda</strong> dari katalog lama Anda ke dalam database Supabase secara otomatis!</p>
+            </div>
+            <button type="button" id="seedInitialDataBtn" class="btn-primary">
+              Import 138 Produk Awal Sekarang
+            </button>
+          </div>
+
+          <!-- 4 Kartu Statistik Utama -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon stat-icon-teal">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-label">Total Produk Katalog</span>
+                <strong id="statTotalProducts" class="stat-value">0</strong>
+                <span id="statActiveProducts" class="stat-note">0 produk ditampilkan</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon stat-icon-ocean">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+                  <line x1="7" y1="7" x2="7.01" y2="7"/>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-label">Kategori Utama</span>
+                <strong id="statTotalCategories" class="stat-value">0</strong>
+                <span class="stat-note">+ 4 sub-kelompok budidaya</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon stat-icon-sky">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                  <polyline points="21 15 16 10 5 21"/>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-label">Banner Beranda</span>
+                <strong id="statTotalBanners" class="stat-value">0</strong>
+                <span id="statActiveBanners" class="stat-note">0 slide aktif</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon stat-icon-coral">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                  <line x1="3" y1="6" x2="21" y2="6"/>
+                  <path d="M16 10a4 4 0 0 1-8 0"/>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-label">Tautan Shopee Valid</span>
+                <strong id="statValidShopee" class="stat-value">0</strong>
+                <span id="statInvalidShopee" class="stat-note">Semua link valid</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ringkasan Distribusi Kategori & Aksi Cepat -->
+          <div class="overview-columns">
+            <div class="panel-card">
+              <div class="panel-header">
+                <div>
+                  <h3>Distribusi Produk per Kategori</h3>
+                  <p>Jumlah produk aktif di masing-masing kategori katalog</p>
+                </div>
+              </div>
+              <div id="categoryBreakdownList" class="breakdown-list">
+                <!-- Diisi dinamis oleh admin.js -->
+              </div>
+            </div>
+
+            <div class="panel-card">
+              <div class="panel-header">
+                <div>
+                  <h3>Pintasan Cepat Admin</h3>
+                  <p>Aksi yang paling sering dilakukan untuk mengelola website</p>
+                </div>
+              </div>
+              <div class="quick-actions-list">
+                <button type="button" class="quick-action-item" id="qaAddProduct">
+                  <div class="qa-icon">+</div>
+                  <div>
+                    <strong>Tambah Produk Baru</strong>
+                    <span>Upload foto, harga, diskon, dan link Shopee</span>
+                  </div>
+                </button>
+                <button type="button" class="quick-action-item" id="qaManageBanners">
+                  <div class="qa-icon">&#9733;</div>
+                  <div>
+                    <strong>Kelola Slide Banner Homepage</strong>
+                    <span>Ubah gambar slider utama di halaman beranda</span>
+                  </div>
+                </button>
+                <button type="button" class="quick-action-item" id="qaManageShopee">
+                  <div class="qa-icon">&#128279;</div>
+                  <div>
+                    <strong>Cek &amp; Edit Cepat Link Shopee</strong>
+                    <span>Pastikan seluruh tombol beli mengarah ke toko yang benar</span>
+                  </div>
+                </button>
+                <button type="button" class="quick-action-item" id="qaSyncInitial">
+                  <div class="qa-icon">&#8635;</div>
+                  <div>
+                    <strong>Muat / Pulihkan Data Bawaan (138 Produk)</strong>
+                    <span>Import data katalog awal jika ada produk bawaan yang belum masuk</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             TAB 2: KELOLA PRODUK (CRUD PRODUK)
+             ================================================================== -->
+        <section id="tab-products" class="tab-panel hidden">
+          <div class="panel-card">
+            <div class="toolbar-row">
+              <div class="search-box-admin">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="text" id="adminProductSearch" placeholder="Cari nama produk atau deskripsi...">
+              </div>
+
+              <div class="filter-group">
+                <select id="adminProductCatFilter" aria-label="Filter Kategori">
+                  <option value="semua">Semua Kategori</option>
+                </select>
+
+                <select id="adminProductSubFilter" aria-label="Filter Subkategori Budidaya">
+                  <option value="semua">Semua Kelompok Budidaya</option>
+                  <option value="pakan">Pakan Ikan &amp; Nutrisi</option>
+                  <option value="benih">Benih &amp; Bibit Ikan</option>
+                  <option value="alat-aksesoris">Alat &amp; Aksesoris</option>
+                  <option value="suplemen">Suplemen &amp; Probiotik</option>
+                </select>
+
+                <button type="button" id="addProductMainBtn" class="btn-primary">
+                  + Tambah Produk
+                </button>
+              </div>
+            </div>
+
+            <div class="table-meta-bar">
+              <span id="productTableCount">Menampilkan 0 produk</span>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th style="width: 64px;">Foto</th>
+                    <th>Nama Produk &amp; Deskripsi</th>
+                    <th>Kategori</th>
+                    <th>Harga &amp; Diskon</th>
+                    <th>Tautan Shopee</th>
+                    <th>Status</th>
+                    <th style="text-align: right;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="productsTableBody">
+                  <!-- Diisi dinamis oleh admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             TAB 3: KELOLA KATEGORI (CRUD KATEGORI)
+             ================================================================== -->
+        <section id="tab-categories" class="tab-panel hidden">
+          <div class="panel-card">
+            <div class="panel-header-with-btn">
+              <div>
+                <h3>Daftar Kategori Katalog</h3>
+                <p>Kelola 4 kategori utama beserta foto kartu dan teks banner di halaman kategori.</p>
+              </div>
+              <button type="button" id="addCategoryBtn" class="btn-primary">+ Tambah Kategori</button>
+            </div>
+
+            <div id="categoriesAdminGrid" class="categories-admin-grid">
+              <!-- Diisi dinamis oleh admin.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             TAB 4: KELOLA BANNER HOMEPAGE (CRUD BANNER)
+             ================================================================== -->
+        <section id="tab-banners" class="tab-panel hidden">
+          <div class="panel-card">
+            <div class="panel-header-with-btn">
+              <div>
+                <h3>Slide Banner Beranda (Hero Slider)</h3>
+                <p>Foto-foto di bawah ini tampil bergantian secara otomatis pada bagian paling atas website publik.</p>
+              </div>
+              <button type="button" id="addBannerBtn" class="btn-primary">+ Tambah Slide Banner</button>
+            </div>
+
+            <div id="bannersAdminGrid" class="banners-admin-grid">
+              <!-- Diisi dinamis oleh admin.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             TAB 5: KELOLA TAUTAN SHOPEE (AUDIT & QUICK EDIT)
+             ================================================================== -->
+        <section id="tab-shopee" class="tab-panel hidden">
+          <div class="panel-card">
+            <div class="panel-header-with-btn">
+              <div>
+                <h3>Manajemen Cepat Tautan Affiliate Shopee</h3>
+                <p>Ubah tautan Shopee langsung di baris produk lalu klik <strong>Simpan</strong> tanpa perlu membuka formulir satu per satu.</p>
+              </div>
+            </div>
+
+            <div class="toolbar-row">
+              <div class="search-box-admin">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="text" id="shopeeSearchInput" placeholder="Cari produk atau link Shopee...">
+              </div>
+              <div class="filter-group">
+                <select id="shopeeStatusFilter" aria-label="Filter Status Link">
+                  <option value="semua">Semua Status Link</option>
+                  <option value="valid">Link Shopee Valid</option>
+                  <option value="invalid">Link Kosong / Perlu Dicek</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th style="width: 52px;">Foto</th>
+                    <th style="width: 240px;">Produk</th>
+                    <th style="width: 130px;">Status</th>
+                    <th>URL Affiliate Shopee (<code>https://s.shopee.co.id/...</code>)</th>
+                    <th style="width: 190px; text-align: right;">Aksi Cepat</th>
+                  </tr>
+                </thead>
+                <tbody id="shopeeTableBody">
+                  <!-- Diisi dinamis oleh admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       3. MODAL TAMBAH / EDIT PRODUK
+       ======================================================================== -->
+  <div id="productModalBackdrop" class="modal-overlay hidden">
+    <div class="modal-dialog modal-lg" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
+      <div class="modal-header">
+        <h3 id="productModalTitle">Tambah Produk Baru</h3>
+        <button type="button" id="closeProductModalBtn" class="modal-close-btn" aria-label="Tutup">&times;</button>
+      </div>
+
+      <form id="productForm" class="modal-body" novalidate>
+        <input type="hidden" id="prodId">
+
+        <div id="productFormAlert" class="alert-box hidden"></div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="prodNama">Nama Produk <span class="req">*</span></label>
+            <input type="text" id="prodNama" placeholder="Contoh: Abon Ikan Tuna Pedas 100gr" required maxlength="160">
+          </div>
+
+          <div class="form-group">
+            <label for="prodKategori">Kategori Utama <span class="req">*</span></label>
+            <select id="prodKategori" required></select>
+          </div>
+        </div>
+
+        <!-- Muncul otomatis jika kategori = Benih-Pakan-Budidaya -->
+        <div id="prodKelompokWrap" class="form-group hidden">
+          <label for="prodKelompok">Kelompok Subkategori Budidaya <span class="req">*</span></label>
+          <select id="prodKelompok">
+            <option value="pakan">Pakan Ikan &amp; Nutrisi (pakan)</option>
+            <option value="benih">Benih &amp; Bibit Ikan (benih)</option>
+            <option value="alat-aksesoris">Alat &amp; Perlengkapan Budidaya (alat-aksesoris)</option>
+            <option value="suplemen">Suplemen &amp; Probiotik Air (suplemen)</option>
+          </select>
+          <small class="form-hint">Menentukan posisi produk pada tab filter Pakan, Benih, Alat &amp; Aksesoris, atau Suplemen.</small>
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label for="prodHarga">Harga Jual <span class="req">*</span></label>
+            <input type="text" id="prodHarga" placeholder="Rp34.000" required>
+            <small class="form-hint">Contoh: Rp34.000</small>
+          </div>
+
+          <div class="form-group">
+            <label for="prodHargaCoret">Harga Coret (Asli)</label>
+            <input type="text" id="prodHargaCoret" placeholder="Rp42.000">
+            <small class="form-hint">Kosongkan jika tanpa diskon</small>
+          </div>
+
+          <div class="form-group">
+            <label for="prodDiskon">Diskon (%)</label>
+            <input type="text" id="prodDiskon" placeholder="19%">
+            <small class="form-hint">Terisi otomatis dari harga</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="prodLinkAffiliate">Tautan Affiliate Shopee <span class="req">*</span></label>
+          <input type="url" id="prodLinkAffiliate" placeholder="https://s.shopee.co.id/..." required>
+          <small class="form-hint">Gunakan link resmi Shopee (<code>https://s.shopee.co.id/...</code> atau <code>https://shopee.co.id/...</code>).</small>
+        </div>
+
+        <!-- Upload Gambar & Path Gambar -->
+        <div class="form-group">
+          <label>Foto Produk <span class="req">*</span></label>
+          <div class="image-upload-box">
+            <div class="image-preview-wrap">
+              <img id="prodImagePreview" src="" alt="Pratinjau foto produk">
+            </div>
+            <div class="image-upload-controls">
+              <label for="prodImageFile" class="btn-secondary btn-sm upload-btn-label">
+                &#128247; Pilih &amp; Upload Foto dari Perangkat
+              </label>
+              <input type="file" id="prodImageFile" accept="image/jpeg,image/png,image/webp" class="hidden">
+              <span id="prodUploadStatus" class="upload-status-text">Maksimal 2 MB (JPG, PNG, WebP)</span>
+              <input type="text" id="prodGambar" placeholder="Atau ketik path/URL gambar: assets/products/nama-foto.jpg" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="prodDeskripsi">Deskripsi Produk <span class="req">*</span></label>
+          <textarea id="prodDeskripsi" rows="3" placeholder="Tulis keunggulan, spesifikasi, dan manfaat produk..." required></textarea>
+        </div>
+
+        <div class="form-group form-checkbox-row">
+          <input type="checkbox" id="prodAktif" checked>
+          <label for="prodAktif">Tampilkan produk ini di website katalog publik</label>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="cancelProductModalBtn" class="btn-secondary">Batal</button>
+          <button type="submit" id="saveProductBtn" class="btn-primary">Simpan Produk</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       4. MODAL TAMBAH / EDIT KATEGORI
+       ======================================================================== -->
+  <div id="categoryModalBackdrop" class="modal-overlay hidden">
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="categoryModalTitle">
+      <div class="modal-header">
+        <h3 id="categoryModalTitle">Edit Kategori</h3>
+        <button type="button" id="closeCategoryModalBtn" class="modal-close-btn" aria-label="Tutup">&times;</button>
+      </div>
+
+      <form id="categoryForm" class="modal-body" novalidate>
+        <div id="categoryFormAlert" class="alert-box hidden"></div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="catId">ID / Kode Kategori <span class="req">*</span></label>
+            <input type="text" id="catId" placeholder="contoh: produk-olahan-ikan" required>
+            <small class="form-hint">Gunakan huruf/angka dan tanda hubung (-)</small>
+          </div>
+          <div class="form-group">
+            <label for="catUrutan">Urutan Tampil</label>
+            <input type="number" id="catUrutan" value="1" min="1" max="99">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="catNama">Nama Kategori (Tampil di Beranda) <span class="req">*</span></label>
+          <input type="text" id="catNama" placeholder="Contoh: Produk Olahan Ikan" required>
+        </div>
+
+        <div class="form-group">
+          <label for="catDeskripsi">Deskripsi Singkat Kartu Beranda <span class="req">*</span></label>
+          <input type="text" id="catDeskripsi" placeholder="Contoh: Abon, kerupuk, pempek & aneka olahan gurih" required>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="catBannerTag">Label Tag Banner Kategori</label>
+            <input type="text" id="catBannerTag" placeholder="KATEGORI OLAHAN HIGIENIS">
+          </div>
+          <div class="form-group">
+            <label for="catBannerTitle">Judul Banner Halaman Kategori</label>
+            <input type="text" id="catBannerTitle" placeholder="Produk Olahan Ikan">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="catBannerDeskripsi">Deskripsi Lengkap Banner Kategori</label>
+          <textarea id="catBannerDeskripsi" rows="2" placeholder="Penjelasan di bagian atas saat kategori dibuka..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Foto Background Kategori <span class="req">*</span></label>
+          <div class="image-upload-box">
+            <div class="image-preview-wrap">
+              <img id="catImagePreview" src="" alt="Pratinjau foto kategori">
+            </div>
+            <div class="image-upload-controls">
+              <label for="catImageFile" class="btn-secondary btn-sm upload-btn-label">
+                &#128247; Upload Foto Kategori Baru
+              </label>
+              <input type="file" id="catImageFile" accept="image/jpeg,image/png,image/webp" class="hidden">
+              <span id="catUploadStatus" class="upload-status-text">Maksimal 2 MB (JPG, PNG, WebP)</span>
+              <input type="text" id="catBg" placeholder="cat-olahan-real.jpg atau URL gambar" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="cancelCategoryModalBtn" class="btn-secondary">Batal</button>
+          <button type="submit" id="saveCategoryBtn" class="btn-primary">Simpan Kategori</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       5. MODAL TAMBAH / EDIT BANNER HOMEPAGE
+       ======================================================================== -->
+  <div id="bannerModalBackdrop" class="modal-overlay hidden">
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="bannerModalTitle">
+      <div class="modal-header">
+        <h3 id="bannerModalTitle">Tambah Slide Banner Beranda</h3>
+        <button type="button" id="closeBannerModalBtn" class="modal-close-btn" aria-label="Tutup">&times;</button>
+      </div>
+
+      <form id="bannerForm" class="modal-body" novalidate>
+        <input type="hidden" id="bannerId">
+        <div id="bannerFormAlert" class="alert-box hidden"></div>
+
+        <div class="form-group">
+          <label for="bannerJudul">Judul / Keterangan Gambar Slide (Alt Text) <span class="req">*</span></label>
+          <input type="text" id="bannerJudul" placeholder="Contoh: Solusi Perikanan & Bahari Nusantara" required>
+        </div>
+
+        <div class="form-group">
+          <label for="bannerSubjudul">Catatan / Subjudul Slide</label>
+          <input type="text" id="bannerSubjudul" placeholder="Contoh: Kurasi produk bahari berkualitas dari hulu ke hilir.">
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="bannerUrutan">Urutan Slide</label>
+            <input type="number" id="bannerUrutan" value="1" min="1" max="20">
+          </div>
+          <div class="form-group form-checkbox-row" style="padding-top: 28px;">
+            <input type="checkbox" id="bannerAktif" checked>
+            <label for="bannerAktif">Slide Aktif di Beranda</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Foto Slide Banner <span class="req">*</span></label>
+          <div class="image-upload-box">
+            <div class="image-preview-wrap">
+              <img id="bannerImagePreview" src="" alt="Pratinjau banner">
+            </div>
+            <div class="image-upload-controls">
+              <label for="bannerImageFile" class="btn-secondary btn-sm upload-btn-label">
+                &#128247; Pilih &amp; Upload Foto Banner
+              </label>
+              <input type="file" id="bannerImageFile" accept="image/jpeg,image/png,image/webp" class="hidden">
+              <span id="bannerUploadStatus" class="upload-status-text">Rekomendasi rasio landscape, maks 2 MB</span>
+              <input type="text" id="bannerGambar" placeholder="hero-kapal-laut.jpg atau URL gambar" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="cancelBannerModalBtn" class="btn-secondary">Batal</button>
+          <button type="submit" id="saveBannerBtn" class="btn-primary">Simpan Banner</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       6. MODAL KONFIRMASI PENGHAPUSAN AMAN
+       ======================================================================== -->
+  <div id="confirmDeleteBackdrop" class="modal-overlay hidden">
+    <div class="modal-dialog modal-sm" role="dialog" aria-modal="true" aria-labelledby="confirmDeleteTitle">
+      <div class="modal-header">
+        <h3 id="confirmDeleteTitle">Konfirmasi Penghapusan</h3>
+        <button type="button" id="closeConfirmDeleteBtn" class="modal-close-btn" aria-label="Tutup">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmDeleteMessage" class="confirm-text">Apakah Anda yakin ingin menghapus item ini? Tindakan ini akan langsung diterapkan ke database website publik.</p>
+        <div class="modal-footer">
+          <button type="button" id="cancelConfirmDeleteBtn" class="btn-secondary">Batal</button>
+          <button type="button" id="executeConfirmDeleteBtn" class="btn-danger">Ya, Hapus Permanen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFIKASI -->
+  <div id="adminToast" class="admin-toast hidden" role="status" aria-live="polite"></div>
+
+  <!-- SDK SUPABASE RESMI & SCRIPT ADMIN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="seed-data.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,1853 @@
+/* ============================================================================
+   LOGIKA DASHBOARD ADMIN — AQUAAGRI.ID
+   Terhubung ke Supabase Auth, PostgreSQL Database (RLS), & Supabase Storage
+   ============================================================================ */
+
+(function () {
+  "use strict";
+
+  const PLACEHOLDER_IMG =
+    "data:image/svg+xml;charset=UTF-8," +
+    encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">' +
+      '<rect width="120" height="120" fill="#e6f4f2"/>' +
+      '<text x="50%" y="50%" font-family="sans-serif" font-size="11" fill="#0f766e" text-anchor="middle" dominant-baseline="middle">Foto AquaAgri</text>' +
+      "</svg>"
+    );
+
+  // State data di memori admin
+  let state = {
+    user: null,
+    categories: [],
+    products: [],
+    banners: [],
+    pendingDelete: null // { type: 'product'|'category'|'banner', id: any, name: string }
+  };
+
+  // ---------- 1. UTILITAS KEAMANAN (ANTI-XSS, VALIDASI URL & FILE GAMBAR) ----------
+
+  function escapeHtml(str) {
+    return String(str || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function isValidShopeeUrl(rawUrl) {
+    const val = String(rawUrl || "").trim();
+    if (!val) return false;
+    try {
+      const parsed = new URL(val);
+      if (parsed.protocol !== "https:" && parsed.protocol !== "http:") return false;
+      const host = parsed.hostname.toLowerCase();
+      return (
+        host === "shopee.co.id" ||
+        host.endsWith(".shopee.co.id") ||
+        host === "shp.ee" ||
+        host.endsWith(".shp.ee")
+      );
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function isSafeHttpUrl(rawUrl) {
+    const val = String(rawUrl || "").trim();
+    if (!val) return false;
+    try {
+      const parsed = new URL(val);
+      return parsed.protocol === "https:" || parsed.protocol === "http:";
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /**
+   * Pemeriksaan Magic Bytes (Header Asli File) untuk mencegah upload file palsu/berbahaya
+   */
+  async function verifyImageMagicBytes(file) {
+    if (!file || file.size === 0) return false;
+    const slice = file.slice(0, 12);
+    const buffer = await slice.arrayBuffer();
+    const bytes = new Uint8Array(buffer);
+    if (bytes.length < 4) return false;
+
+    // JPEG: FF D8 FF
+    if (bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) {
+      return true;
+    }
+    // PNG: 89 50 4E 47
+    if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47) {
+      return true;
+    }
+    // GIF: 47 49 46 38
+    if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x38) {
+      return true;
+    }
+    // WEBP: RIFF....WEBP
+    if (
+      bytes.length >= 12 &&
+      bytes[0] === 0x52 &&
+      bytes[1] === 0x49 &&
+      bytes[2] === 0x46 &&
+      bytes[3] === 0x46 &&
+      bytes[8] === 0x57 &&
+      bytes[9] === 0x45 &&
+      bytes[10] === 0x42 &&
+      bytes[11] === 0x50
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Upload file gambar ke Supabase Storage dengan validasi ketat
+   */
+  async function uploadImageToSupabase(file, folderName, statusElement) {
+    if (!file) throw new Error("Pilih file gambar terlebih dahulu.");
+
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    if (!allowedTypes.includes(file.type)) {
+      throw new Error("Format file ditolak! Gunakan gambar JPG, PNG, atau WebP.");
+    }
+
+    const maxBytes = 2 * 1024 * 1024; // 2 MB
+    if (file.size > maxBytes) {
+      throw new Error("Ukuran gambar terlalu besar! Maksimal 2 MB.");
+    }
+
+    const isGenuineImage = await verifyImageMagicBytes(file);
+    if (!isGenuineImage) {
+      throw new Error("File tidak valid atau rusak! Pastikan mengunggah file gambar asli.");
+    }
+
+    const sb = window.getAquaAgriSupabaseClient();
+    const cfg = window.getAquaAgriSupabaseConfig();
+    if (!sb || !cfg.isConfigured) {
+      throw new Error("Koneksi Supabase belum aktif.");
+    }
+
+    if (statusElement) {
+      statusElement.textContent = "Mengunggah gambar ke Supabase Storage...";
+      statusElement.style.color = "#0284c7";
+    }
+
+    const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
+    const safeExt = ["jpg", "jpeg", "png", "webp", "gif"].includes(ext) ? ext : "jpg";
+    const randomCode = Math.random().toString(36).substring(2, 9);
+    const filePath = `${folderName}/${Date.now()}-${randomCode}.${safeExt}`;
+
+    const { error } = await sb.storage
+      .from(cfg.bucket)
+      .upload(filePath, file, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: file.type
+      });
+
+    if (error) {
+      throw new Error("Gagal upload gambar: " + error.message);
+    }
+
+    const { data: pubData } = sb.storage.from(cfg.bucket).getPublicUrl(filePath);
+    if (!pubData || !pubData.publicUrl) {
+      throw new Error("Gagal mendapatkan URL publik gambar.");
+    }
+
+    if (statusElement) {
+      statusElement.textContent = "Gambar berhasil diunggah!";
+      statusElement.style.color = "#059669";
+    }
+
+    return pubData.publicUrl;
+  }
+
+  // ---------- 2. UTILITAS HARGA & DISKON OTOMATIS ----------
+
+  function parseRupiahNumber(str) {
+    const digits = String(str || "").replace(/[^0-9]/g, "");
+    return digits ? parseInt(digits, 10) : 0;
+  }
+
+  function formatRupiahText(raw) {
+    const num = parseRupiahNumber(raw);
+    if (!num) return "";
+    return "Rp" + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  function calculateDiscountPercent(hargaJualStr, hargaCoretStr) {
+    const jual = parseRupiahNumber(hargaJualStr);
+    const coret = parseRupiahNumber(hargaCoretStr);
+    if (jual > 0 && coret > jual) {
+      const pct = Math.round(((coret - jual) / coret) * 100);
+      if (pct > 0 && pct < 100) {
+        return pct + "%";
+      }
+    }
+    return "";
+  }
+
+  // ---------- 3. TOAST & ALERT NOTIFIKASI ----------
+
+  let toastTimer = null;
+  function showToast(message) {
+    const toast = document.getElementById("adminToast");
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.remove("hidden");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toast.classList.add("hidden");
+    }, 3200);
+  }
+
+  function showBoxAlert(elId, message, type = "error") {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    if (!message) {
+      el.classList.add("hidden");
+      el.textContent = "";
+      return;
+    }
+    el.textContent = message;
+    el.className = "alert-box " + (type === "success" ? "alert-success" : "alert-error");
+    el.classList.remove("hidden");
+  }
+
+  // ---------- 4. CEK STATUS KONEKSI SUPABASE & AUTENTIKASI ----------
+
+  function updateConnectionBannerUI() {
+    const cfg = window.getAquaAgriSupabaseConfig();
+    const banner = document.getElementById("connStatusBanner");
+    const title = document.getElementById("connStatusTitle");
+    const desc = document.getElementById("connStatusDesc");
+    const urlInput = document.getElementById("setupSbUrl");
+    const keyInput = document.getElementById("setupSbKey");
+
+    if (urlInput && cfg.url) urlInput.value = cfg.url;
+    if (keyInput && cfg.anonKey) keyInput.value = cfg.anonKey;
+
+    if (!banner || !title || !desc) return;
+
+    if (cfg.isConfigured) {
+      banner.className = "conn-banner conn-banner-ok";
+      title.textContent = "Terhubung ke Proyek Supabase";
+      desc.textContent = cfg.url;
+    } else {
+      banner.className = "conn-banner conn-banner-warn";
+      title.textContent = "Koneksi Supabase Belum Diisi";
+      desc.textContent = "Klik tombol 'Atur Koneksi' untuk memasukkan Project URL & Anon Key Supabase Anda.";
+      const panel = document.getElementById("supabaseSetupPanel");
+      if (panel) panel.classList.remove("hidden");
+    }
+  }
+
+  async function checkAuthSession() {
+    updateConnectionBannerUI();
+    const sb = window.getAquaAgriSupabaseClient();
+    const loginScreen = document.getElementById("loginScreen");
+    const dashboardScreen = document.getElementById("dashboardScreen");
+
+    if (!sb) {
+      if (loginScreen) loginScreen.classList.remove("hidden");
+      if (dashboardScreen) dashboardScreen.classList.add("hidden");
+      return;
+    }
+
+    try {
+      const { data, error } = await sb.auth.getSession();
+      if (error || !data || !data.session) {
+        if (loginScreen) loginScreen.classList.remove("hidden");
+        if (dashboardScreen) dashboardScreen.classList.add("hidden");
+        return;
+      }
+
+      onAdminAuthenticated(data.session.user);
+    } catch (err) {
+      if (loginScreen) loginScreen.classList.remove("hidden");
+      if (dashboardScreen) dashboardScreen.classList.add("hidden");
+    }
+  }
+
+  async function onAdminAuthenticated(user) {
+    state.user = user;
+    const loginScreen = document.getElementById("loginScreen");
+    const dashboardScreen = document.getElementById("dashboardScreen");
+
+    if (loginScreen) loginScreen.classList.add("hidden");
+    if (dashboardScreen) dashboardScreen.classList.remove("hidden");
+
+    const emailEl = document.getElementById("adminUserEmail");
+    const initialEl = document.getElementById("adminUserInitial");
+    if (emailEl && user && user.email) {
+      emailEl.textContent = user.email;
+    }
+    if (initialEl && user && user.email) {
+      initialEl.textContent = user.email.charAt(0).toUpperCase();
+    }
+
+    await loadAllDatabaseData();
+  }
+
+  // ---------- 5. MUAT DATA DARI DATABASE SUPABASE ----------
+
+  async function loadAllDatabaseData() {
+    const sb = window.getAquaAgriSupabaseClient();
+    if (!sb) return;
+
+    try {
+      const [catRes, prodRes, banRes] = await Promise.all([
+        sb.from("categories").select("*").order("urutan", { ascending: true }),
+        sb.from("products").select("*").order("urutan", { ascending: true }).order("id", { ascending: true }),
+        sb.from("banners").select("*").order("urutan", { ascending: true }).order("id", { ascending: true })
+      ]);
+
+      if (catRes.error) throw new Error("Tabel categories belum siap: " + catRes.error.message);
+      if (prodRes.error) throw new Error("Tabel products belum siap: " + prodRes.error.message);
+      if (banRes.error) throw new Error("Tabel banners belum siap: " + banRes.error.message);
+
+      state.categories = catRes.data || [];
+      state.products = prodRes.data || [];
+      state.banners = banRes.data || [];
+
+      renderAllAdminViews();
+    } catch (err) {
+      showToast("Perhatian: " + err.message);
+      console.error(err);
+    }
+  }
+
+  function renderAllAdminViews() {
+    renderOverviewTab();
+    populateCategoryDropdowns();
+    renderProductsTable();
+    renderCategoriesGrid();
+    renderBannersGrid();
+    renderShopeeTable();
+  }
+
+  // ---------- 6. RENDER TAB 1: RINGKASAN (OVERVIEW) ----------
+
+  function renderOverviewTab() {
+    const totalProds = state.products.length;
+    const activeProds = state.products.filter(function (p) { return p.aktif !== false; }).length;
+    const totalCats = state.categories.length;
+    const totalBans = state.banners.length;
+    const activeBans = state.banners.filter(function (b) { return b.aktif !== false; }).length;
+
+    const validShopeeCount = state.products.filter(function (p) {
+      return isValidShopeeUrl(p.link_affiliate);
+    }).length;
+    const invalidShopeeCount = totalProds - validShopeeCount;
+
+    const setTxt = function (id, val) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = String(val);
+    };
+
+    setTxt("statTotalProducts", totalProds);
+    setTxt("statActiveProducts", activeProds + " produk ditampilkan di publik");
+    setTxt("statTotalCategories", totalCats);
+    setTxt("statTotalBanners", totalBans);
+    setTxt("statActiveBanners", activeBans + " slide aktif di beranda");
+    setTxt("statValidShopee", validShopeeCount + " / " + totalProds);
+    setTxt(
+      "statInvalidShopee",
+      invalidShopeeCount === 0
+        ? "Semua link Shopee valid"
+        : invalidShopeeCount + " produk perlu dicek linknya"
+    );
+
+    setTxt("navBadgeProducts", totalProds);
+    setTxt("navBadgeCategories", totalCats);
+    setTxt("navBadgeBanners", totalBans);
+
+    // Tampilkan kartu bantuan import 1-klik jika database masih kosong
+    const emptyBanner = document.getElementById("emptyDbBanner");
+    if (emptyBanner) {
+      if (totalProds === 0) {
+        emptyBanner.classList.remove("hidden");
+      } else {
+        emptyBanner.classList.add("hidden");
+      }
+    }
+
+    // Distribusi produk per kategori
+    const breakdownList = document.getElementById("categoryBreakdownList");
+    if (breakdownList) {
+      breakdownList.innerHTML = "";
+      if (state.categories.length === 0) {
+        const emptyMsg = document.createElement("p");
+        emptyMsg.style.color = "#64748b";
+        emptyMsg.style.fontSize = "0.84rem";
+        emptyMsg.textContent = "Belum ada kategori di database.";
+        breakdownList.appendChild(emptyMsg);
+      } else {
+        state.categories.forEach(function (cat) {
+          const count = state.products.filter(function (p) {
+            return p.kategori === cat.id;
+          }).length;
+
+          const item = document.createElement("div");
+          item.className = "breakdown-item";
+
+          const left = document.createElement("div");
+          left.className = "breakdown-left";
+          const st = document.createElement("strong");
+          st.textContent = cat.nama;
+          const sp = document.createElement("span");
+          sp.textContent = "Kode: " + cat.id + " — " + (cat.deskripsi || "");
+          left.appendChild(st);
+          left.appendChild(sp);
+
+          const badge = document.createElement("span");
+          badge.className = "breakdown-badge";
+          badge.textContent = count + " Produk";
+
+          item.appendChild(left);
+          item.appendChild(badge);
+          breakdownList.appendChild(item);
+        });
+      }
+    }
+  }
+
+  // ---------- 7. IMPORT / SINKRONISASI 138 PRODUK AWAL KE SUPABASE ----------
+
+  async function seedInitialCatalogToSupabase() {
+    const sb = window.getAquaAgriSupabaseClient();
+    const initial = window.AQUAAGRI_INITIAL_DATA;
+    if (!sb || !initial) {
+      showToast("Data bawaan tidak ditemukan.");
+      return;
+    }
+
+    const btn = document.getElementById("seedInitialDataBtn");
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = "Sedang Mengimpor Data ke Supabase...";
+    }
+
+    try {
+      // 1. Upsert 4 kategori utama
+      if (Array.isArray(initial.categories) && initial.categories.length > 0) {
+        const { error: catErr } = await sb
+          .from("categories")
+          .upsert(initial.categories, { onConflict: "id" });
+        if (catErr) throw new Error("Gagal menyimpan kategori: " + catErr.message);
+      }
+
+      // 2. Jika banner masih kosong, masukkan 5 slide banner awal
+      if (state.banners.length === 0 && Array.isArray(initial.banners)) {
+        const { error: banErr } = await sb.from("banners").insert(initial.banners);
+        if (banErr) throw new Error("Gagal menyimpan banner: " + banErr.message);
+      }
+
+      // 3. Jika produk masih kosong, masukkan 138 produk awal
+      if (state.products.length === 0 && Array.isArray(initial.products)) {
+        const { error: prodErr } = await sb.from("products").insert(initial.products);
+        if (prodErr) throw new Error("Gagal menyimpan produk: " + prodErr.message);
+      }
+
+      showToast("Berhasil mengimpor katalog awal ke database Supabase!");
+      await loadAllDatabaseData();
+    } catch (err) {
+      showToast(err.message || "Gagal mengimpor data awal.");
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = "Import 138 Produk Awal Sekarang";
+      }
+    }
+  }
+
+  // ---------- 8. RENDER & CRUD TAB 2: KELOLA PRODUK ----------
+
+  function getCategoryNameById(catId) {
+    const found = state.categories.find(function (c) {
+      return c.id === catId;
+    });
+    return found ? found.nama : catId;
+  }
+
+  function populateCategoryDropdowns() {
+    const filterSel = document.getElementById("adminProductCatFilter");
+    const formSel = document.getElementById("prodKategori");
+
+    if (filterSel) {
+      const currentVal = filterSel.value || "semua";
+      filterSel.innerHTML = '<option value="semua">Semua Kategori</option>';
+      state.categories.forEach(function (c) {
+        const opt = document.createElement("option");
+        opt.value = c.id;
+        opt.textContent = c.nama;
+        filterSel.appendChild(opt);
+      });
+      filterSel.value = currentVal;
+    }
+
+    if (formSel) {
+      const currentVal = formSel.value;
+      formSel.innerHTML = "";
+      state.categories.forEach(function (c) {
+        const opt = document.createElement("option");
+        opt.value = c.id;
+        opt.textContent = c.nama;
+        formSel.appendChild(opt);
+      });
+      if (currentVal && state.categories.some(function (c) { return c.id === currentVal; })) {
+        formSel.value = currentVal;
+      }
+    }
+  }
+
+  function renderProductsTable() {
+    const tbody = document.getElementById("productsTableBody");
+    const countEl = document.getElementById("productTableCount");
+    const searchEl = document.getElementById("adminProductSearch");
+    const catFilterEl = document.getElementById("adminProductCatFilter");
+    const subFilterEl = document.getElementById("adminProductSubFilter");
+
+    if (!tbody) return;
+    tbody.innerHTML = "";
+
+    const kw = searchEl ? searchEl.value.trim().toLowerCase() : "";
+    const catFilter = catFilterEl ? catFilterEl.value : "semua";
+    const subFilter = subFilterEl ? subFilterEl.value : "semua";
+
+    const filtered = state.products.filter(function (p) {
+      if (catFilter !== "semua" && p.kategori !== catFilter) return false;
+      if (subFilter !== "semua" && (p.kelompok || "") !== subFilter) return false;
+      if (kw) {
+        const matchName = (p.nama || "").toLowerCase().includes(kw);
+        const matchDesc = (p.deskripsi || "").toLowerCase().includes(kw);
+        if (!matchName && !matchDesc) return false;
+      }
+      return true;
+    });
+
+    if (countEl) {
+      countEl.textContent = "Menampilkan " + filtered.length + " dari " + state.products.length + " produk";
+    }
+
+    if (filtered.length === 0) {
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+      td.colSpan = 7;
+      td.style.textAlign = "center";
+      td.style.padding = "28px";
+      td.style.color = "#64748b";
+      td.textContent = "Tidak ada produk yang cocok dengan pencarian/filter.";
+      tr.appendChild(td);
+      tbody.appendChild(tr);
+      return;
+    }
+
+    filtered.forEach(function (prod) {
+      const tr = document.createElement("tr");
+
+      // 1. Foto
+      const tdImg = document.createElement("td");
+      const img = document.createElement("img");
+      img.className = "table-thumb";
+      img.src = prod.gambar || PLACEHOLDER_IMG;
+      img.alt = prod.nama || "";
+      img.loading = "lazy";
+      img.addEventListener("error", function () {
+        img.src = PLACEHOLDER_IMG;
+      });
+      tdImg.appendChild(img);
+
+      // 2. Nama & Deskripsi
+      const tdInfo = document.createElement("td");
+      const titleDiv = document.createElement("div");
+      titleDiv.className = "prod-cell-title";
+      titleDiv.textContent = prod.nama;
+      const descDiv = document.createElement("div");
+      descDiv.className = "prod-cell-desc";
+      descDiv.textContent = prod.deskripsi || "-";
+      tdInfo.appendChild(titleDiv);
+      tdInfo.appendChild(descDiv);
+
+      // 3. Kategori & Subkategori
+      const tdCat = document.createElement("td");
+      const catBadge = document.createElement("span");
+      catBadge.className = "badge-pill badge-teal";
+      catBadge.textContent = getCategoryNameById(prod.kategori);
+      tdCat.appendChild(catBadge);
+
+      if (prod.kategori === "Benih-Pakan-Budidaya" && prod.kelompok) {
+        const subBadge = document.createElement("span");
+        subBadge.className = "badge-pill badge-ocean";
+        subBadge.style.marginLeft = "4px";
+        subBadge.textContent = prod.kelompok;
+        tdCat.appendChild(subBadge);
+      }
+
+      // 4. Harga & Diskon
+      const tdPrice = document.createElement("td");
+      const pMain = document.createElement("span");
+      pMain.className = "price-main";
+      pMain.textContent = prod.harga || "Rp0";
+      tdPrice.appendChild(pMain);
+
+      if (prod.harga_coret) {
+        const pStrike = document.createElement("span");
+        pStrike.className = "price-strike";
+        pStrike.textContent = prod.harga_coret;
+        tdPrice.appendChild(pStrike);
+      }
+
+      if (prod.diskon) {
+        const dBadge = document.createElement("div");
+        const pill = document.createElement("span");
+        pill.className = "badge-pill badge-coral";
+        pill.style.marginTop = "4px";
+        pill.textContent = "Diskon " + prod.diskon;
+        dBadge.appendChild(pill);
+        tdPrice.appendChild(dBadge);
+      }
+
+      // 5. Tautan Shopee
+      const tdShopee = document.createElement("td");
+      if (isValidShopeeUrl(prod.link_affiliate)) {
+        const link = document.createElement("a");
+        link.href = prod.link_affiliate;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.className = "badge-pill badge-coral";
+        link.style.textDecoration = "none";
+        link.textContent = "Buka Shopee ↗";
+        tdShopee.appendChild(link);
+      } else {
+        const warn = document.createElement("span");
+        warn.className = "badge-pill badge-warn";
+        warn.textContent = "Perlu Dicek";
+        tdShopee.appendChild(warn);
+      }
+
+      // 6. Status Aktif
+      const tdStatus = document.createElement("td");
+      const stBadge = document.createElement("span");
+      if (prod.aktif !== false) {
+        stBadge.className = "badge-pill badge-success";
+        stBadge.textContent = "Aktif";
+      } else {
+        stBadge.className = "badge-pill badge-warn";
+        stBadge.textContent = "Disembunyikan";
+      }
+      tdStatus.appendChild(stBadge);
+
+      // 7. Tombol Aksi
+      const tdAct = document.createElement("td");
+      const actWrap = document.createElement("div");
+      actWrap.className = "row-actions";
+
+      const editBtn = document.createElement("button");
+      editBtn.type = "button";
+      editBtn.className = "btn-secondary btn-sm";
+      editBtn.textContent = "Edit";
+      editBtn.addEventListener("click", function () {
+        openProductModal(prod);
+      });
+
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.className = "btn-danger btn-sm";
+      delBtn.textContent = "Hapus";
+      delBtn.addEventListener("click", function () {
+        openConfirmDeleteModal("product", prod.id, prod.nama);
+      });
+
+      actWrap.appendChild(editBtn);
+      actWrap.appendChild(delBtn);
+      tdAct.appendChild(actWrap);
+
+      tr.appendChild(tdImg);
+      tr.appendChild(tdInfo);
+      tr.appendChild(tdCat);
+      tr.appendChild(tdPrice);
+      tr.appendChild(tdShopee);
+      tr.appendChild(tdStatus);
+      tr.appendChild(tdAct);
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  function syncProductKelompokVisibility() {
+    const catSel = document.getElementById("prodKategori");
+    const kelWrap = document.getElementById("prodKelompokWrap");
+    if (!catSel || !kelWrap) return;
+    if (catSel.value === "Benih-Pakan-Budidaya") {
+      kelWrap.classList.remove("hidden");
+    } else {
+      kelWrap.classList.add("hidden");
+    }
+  }
+
+  function openProductModal(prod = null) {
+    populateCategoryDropdowns();
+    showBoxAlert("productFormAlert", "");
+
+    const modal = document.getElementById("productModalBackdrop");
+    const title = document.getElementById("productModalTitle");
+    const idInput = document.getElementById("prodId");
+    const namaInput = document.getElementById("prodNama");
+    const katInput = document.getElementById("prodKategori");
+    const kelInput = document.getElementById("prodKelompok");
+    const hargaInput = document.getElementById("prodHarga");
+    const coretInput = document.getElementById("prodHargaCoret");
+    const diskonInput = document.getElementById("prodDiskon");
+    const linkInput = document.getElementById("prodLinkAffiliate");
+    const gambarInput = document.getElementById("prodGambar");
+    const previewImg = document.getElementById("prodImagePreview");
+    const descInput = document.getElementById("prodDeskripsi");
+    const aktifInput = document.getElementById("prodAktif");
+    const uploadStatus = document.getElementById("prodUploadStatus");
+    const fileInput = document.getElementById("prodImageFile");
+
+    if (fileInput) fileInput.value = "";
+    if (uploadStatus) {
+      uploadStatus.textContent = "Maksimal 2 MB (JPG, PNG, WebP)";
+      uploadStatus.style.color = "";
+    }
+
+    if (prod) {
+      if (title) title.textContent = "Edit Produk: " + prod.nama;
+      if (idInput) idInput.value = prod.id;
+      if (namaInput) namaInput.value = prod.nama || "";
+      if (katInput) katInput.value = prod.kategori || "produk-olahan-ikan";
+      if (kelInput) kelInput.value = prod.kelompok || "alat-aksesoris";
+      if (hargaInput) hargaInput.value = prod.harga || "";
+      if (coretInput) coretInput.value = prod.harga_coret || "";
+      if (diskonInput) diskonInput.value = prod.diskon || "";
+      if (linkInput) linkInput.value = prod.link_affiliate || "";
+      if (gambarInput) gambarInput.value = prod.gambar || "";
+      if (previewImg) previewImg.src = prod.gambar || PLACEHOLDER_IMG;
+      if (descInput) descInput.value = prod.deskripsi || "";
+      if (aktifInput) aktifInput.checked = prod.aktif !== false;
+    } else {
+      if (title) title.textContent = "Tambah Produk Baru";
+      if (idInput) idInput.value = "";
+      if (namaInput) namaInput.value = "";
+      if (katInput && state.categories[0]) katInput.value = state.categories[0].id;
+      if (kelInput) kelInput.value = "pakan";
+      if (hargaInput) hargaInput.value = "";
+      if (coretInput) coretInput.value = "";
+      if (diskonInput) diskonInput.value = "";
+      if (linkInput) linkInput.value = "";
+      if (gambarInput) gambarInput.value = "";
+      if (previewImg) previewImg.src = PLACEHOLDER_IMG;
+      if (descInput) descInput.value = "";
+      if (aktifInput) aktifInput.checked = true;
+    }
+
+    syncProductKelompokVisibility();
+    if (modal) modal.classList.remove("hidden");
+  }
+
+  function closeProductModal() {
+    const modal = document.getElementById("productModalBackdrop");
+    if (modal) modal.classList.add("hidden");
+  }
+
+  async function handleSaveProduct(e) {
+    e.preventDefault();
+    showBoxAlert("productFormAlert", "");
+
+    const idVal = document.getElementById("prodId").value.trim();
+    const nama = document.getElementById("prodNama").value.trim();
+    const kategori = document.getElementById("prodKategori").value.trim();
+    const kelompokRaw = document.getElementById("prodKelompok").value.trim();
+    const hargaRaw = document.getElementById("prodHarga").value.trim();
+    const coretRaw = document.getElementById("prodHargaCoret").value.trim();
+    const diskonRaw = document.getElementById("prodDiskon").value.trim();
+    const linkAffiliate = document.getElementById("prodLinkAffiliate").value.trim();
+    const gambar = document.getElementById("prodGambar").value.trim();
+    const deskripsi = document.getElementById("prodDeskripsi").value.trim();
+    const aktif = document.getElementById("prodAktif").checked;
+
+    if (!nama) {
+      showBoxAlert("productFormAlert", "Nama produk wajib diisi.");
+      return;
+    }
+    if (!kategori) {
+      showBoxAlert("productFormAlert", "Kategori produk wajib dipilih.");
+      return;
+    }
+    if (!hargaRaw || parseRupiahNumber(hargaRaw) <= 0) {
+      showBoxAlert("productFormAlert", "Harga jual wajib diisi dengan angka yang valid (contoh: Rp34.000).");
+      return;
+    }
+    if (!linkAffiliate || !isSafeHttpUrl(linkAffiliate)) {
+      showBoxAlert("productFormAlert", "Tautan Shopee wajib berupa URL lengkap (diawali https://).");
+      return;
+    }
+    if (!gambar) {
+      showBoxAlert("productFormAlert", "Foto produk wajib diisi (upload foto atau ketik path gambar).");
+      return;
+    }
+    if (!deskripsi) {
+      showBoxAlert("productFormAlert", "Deskripsi produk wajib diisi.");
+      return;
+    }
+
+    const hargaFormatted = formatRupiahText(hargaRaw);
+    const coretFormatted = coretRaw ? formatRupiahText(coretRaw) : "";
+    let diskonFinal = diskonRaw;
+    if (!diskonFinal && coretFormatted) {
+      diskonFinal = calculateDiscountPercent(hargaFormatted, coretFormatted);
+    }
+    if (diskonFinal && !diskonFinal.endsWith("%")) {
+      diskonFinal = diskonFinal.replace(/[^0-9]/g, "") + "%";
+    }
+
+    const payload = {
+      nama: nama,
+      kategori: kategori,
+      kelompok: kategori === "Benih-Pakan-Budidaya" ? kelompokRaw : "",
+      harga: hargaFormatted,
+      harga_coret: coretFormatted,
+      diskon: diskonFinal,
+      link_affiliate: linkAffiliate,
+      gambar: gambar,
+      deskripsi: deskripsi,
+      aktif: aktif,
+      updated_at: new Date().toISOString()
+    };
+
+    const sb = window.getAquaAgriSupabaseClient();
+    const saveBtn = document.getElementById("saveProductBtn");
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      saveBtn.textContent = "Menyimpan...";
+    }
+
+    try {
+      if (idVal) {
+        const { error } = await sb.from("products").update(payload).eq("id", Number(idVal));
+        if (error) throw error;
+        showToast("Produk '" + nama + "' berhasil diperbarui!");
+      } else {
+        payload.urutan = state.products.length + 1;
+        const { error } = await sb.from("products").insert([payload]);
+        if (error) throw error;
+        showToast("Produk baru '" + nama + "' berhasil ditambahkan!");
+      }
+
+      closeProductModal();
+      await loadAllDatabaseData();
+    } catch (err) {
+      showBoxAlert("productFormAlert", "Gagal menyimpan ke database: " + (err.message || err));
+    } finally {
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Simpan Produk";
+      }
+    }
+  }
+
+  // ---------- 9. RENDER & CRUD TAB 3: KELOLA KATEGORI ----------
+
+  function renderCategoriesGrid() {
+    const grid = document.getElementById("categoriesAdminGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    state.categories.forEach(function (cat) {
+      const prodCount = state.products.filter(function (p) {
+        return p.kategori === cat.id;
+      }).length;
+
+      const card = document.createElement("div");
+      card.className = "admin-media-card";
+
+      const imgWrap = document.createElement("div");
+      imgWrap.className = "admin-media-img-wrap";
+
+      const img = document.createElement("img");
+      img.src = cat.bg || PLACEHOLDER_IMG;
+      img.alt = cat.nama;
+      img.addEventListener("error", function () {
+        img.src = PLACEHOLDER_IMG;
+      });
+
+      const badge = document.createElement("span");
+      badge.className = "admin-media-badge";
+      badge.textContent = prodCount + " Produk";
+
+      imgWrap.appendChild(img);
+      imgWrap.appendChild(badge);
+
+      const body = document.createElement("div");
+      body.className = "admin-media-body";
+
+      const topInfo = document.createElement("div");
+      const h4 = document.createElement("h4");
+      h4.textContent = cat.nama;
+      const pDesc = document.createElement("p");
+      pDesc.textContent = cat.deskripsi || "";
+      topInfo.appendChild(h4);
+      topInfo.appendChild(pDesc);
+
+      const footer = document.createElement("div");
+      footer.className = "admin-media-footer";
+
+      const codeSpan = document.createElement("span");
+      codeSpan.className = "badge-pill badge-teal";
+      codeSpan.textContent = cat.id;
+
+      const btnGroup = document.createElement("div");
+      btnGroup.className = "row-actions";
+
+      const editBtn = document.createElement("button");
+      editBtn.type = "button";
+      editBtn.className = "btn-secondary btn-sm";
+      editBtn.textContent = "Edit";
+      editBtn.addEventListener("click", function () {
+        openCategoryModal(cat);
+      });
+
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.className = "btn-danger btn-sm";
+      delBtn.textContent = "Hapus";
+      delBtn.addEventListener("click", function () {
+        if (prodCount > 0) {
+          showToast("Kategori ini masih memiliki " + prodCount + " produk. Pindahkan produknya terlebih dahulu.");
+          return;
+        }
+        openConfirmDeleteModal("category", cat.id, cat.nama);
+      });
+
+      btnGroup.appendChild(editBtn);
+      btnGroup.appendChild(delBtn);
+
+      footer.appendChild(codeSpan);
+      footer.appendChild(btnGroup);
+
+      body.appendChild(topInfo);
+      body.appendChild(footer);
+
+      card.appendChild(imgWrap);
+      card.appendChild(body);
+      grid.appendChild(card);
+    });
+  }
+
+  let isEditingExistingCategory = false;
+
+  function openCategoryModal(cat = null) {
+    showBoxAlert("categoryFormAlert", "");
+    const modal = document.getElementById("categoryModalBackdrop");
+    const title = document.getElementById("categoryModalTitle");
+    const idInput = document.getElementById("catId");
+    const urutanInput = document.getElementById("catUrutan");
+    const namaInput = document.getElementById("catNama");
+    const descInput = document.getElementById("catDeskripsi");
+    const tagInput = document.getElementById("catBannerTag");
+    const bTitleInput = document.getElementById("catBannerTitle");
+    const bDescInput = document.getElementById("catBannerDeskripsi");
+    const bgInput = document.getElementById("catBg");
+    const preview = document.getElementById("catImagePreview");
+    const fileInput = document.getElementById("catImageFile");
+    const statusText = document.getElementById("catUploadStatus");
+
+    if (fileInput) fileInput.value = "";
+    if (statusText) {
+      statusText.textContent = "Maksimal 2 MB (JPG, PNG, WebP)";
+      statusText.style.color = "";
+    }
+
+    if (cat) {
+      isEditingExistingCategory = true;
+      if (title) title.textContent = "Edit Kategori: " + cat.nama;
+      if (idInput) {
+        idInput.value = cat.id;
+        idInput.readOnly = true;
+      }
+      if (urutanInput) urutanInput.value = cat.urutan || 1;
+      if (namaInput) namaInput.value = cat.nama || "";
+      if (descInput) descInput.value = cat.deskripsi || "";
+      if (tagInput) tagInput.value = cat.banner_tag || "KATALOG PRODUK";
+      if (bTitleInput) bTitleInput.value = cat.banner_title || cat.nama || "";
+      if (bDescInput) bDescInput.value = cat.banner_deskripsi || cat.deskripsi || "";
+      if (bgInput) bgInput.value = cat.bg || "";
+      if (preview) preview.src = cat.bg || PLACEHOLDER_IMG;
+    } else {
+      isEditingExistingCategory = false;
+      if (title) title.textContent = "Tambah Kategori Baru";
+      if (idInput) {
+        idInput.value = "";
+        idInput.readOnly = false;
+      }
+      if (urutanInput) urutanInput.value = state.categories.length + 1;
+      if (namaInput) namaInput.value = "";
+      if (descInput) descInput.value = "";
+      if (tagInput) tagInput.value = "KATALOG PILIHAN";
+      if (bTitleInput) bTitleInput.value = "";
+      if (bDescInput) bDescInput.value = "";
+      if (bgInput) bgInput.value = "";
+      if (preview) preview.src = PLACEHOLDER_IMG;
+    }
+
+    if (modal) modal.classList.remove("hidden");
+  }
+
+  function closeCategoryModal() {
+    const modal = document.getElementById("categoryModalBackdrop");
+    if (modal) modal.classList.add("hidden");
+  }
+
+  async function handleSaveCategory(e) {
+    e.preventDefault();
+    showBoxAlert("categoryFormAlert", "");
+
+    const idVal = document.getElementById("catId").value.trim().replace(/\s+/g, "-");
+    const urutan = parseInt(document.getElementById("catUrutan").value, 10) || 1;
+    const nama = document.getElementById("catNama").value.trim();
+    const deskripsi = document.getElementById("catDeskripsi").value.trim();
+    const bannerTag = document.getElementById("catBannerTag").value.trim() || "KATALOG PRODUK";
+    const bannerTitle = document.getElementById("catBannerTitle").value.trim() || nama;
+    const bannerDeskripsi = document.getElementById("catBannerDeskripsi").value.trim() || deskripsi;
+    const bg = document.getElementById("catBg").value.trim();
+
+    if (!idVal || !/^[a-zA-Z0-9_-]+$/.test(idVal)) {
+      showBoxAlert("categoryFormAlert", "ID Kategori hanya boleh berisi huruf, angka, dan tanda hubung (-).");
+      return;
+    }
+    if (!nama || !deskripsi || !bg) {
+      showBoxAlert("categoryFormAlert", "Nama, deskripsi singkat, dan foto kategori wajib diisi.");
+      return;
+    }
+
+    const defaultSvg =
+      '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>';
+
+    const existingCat = state.categories.find(function (c) { return c.id === idVal; });
+
+    const payload = {
+      id: idVal,
+      nama: nama,
+      deskripsi: deskripsi,
+      bg: bg,
+      svg: existingCat && existingCat.svg ? existingCat.svg : defaultSvg,
+      banner_tag: bannerTag,
+      banner_title: bannerTitle,
+      banner_deskripsi: bannerDeskripsi,
+      urutan: urutan,
+      updated_at: new Date().toISOString()
+    };
+
+    const sb = window.getAquaAgriSupabaseClient();
+    const saveBtn = document.getElementById("saveCategoryBtn");
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      saveBtn.textContent = "Menyimpan...";
+    }
+
+    try {
+      const { error } = await sb.from("categories").upsert([payload], { onConflict: "id" });
+      if (error) throw error;
+      showToast("Kategori '" + nama + "' berhasil disimpan!");
+      closeCategoryModal();
+      await loadAllDatabaseData();
+    } catch (err) {
+      showBoxAlert("categoryFormAlert", "Gagal menyimpan kategori: " + (err.message || err));
+    } finally {
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Simpan Kategori";
+      }
+    }
+  }
+
+  // ---------- 10. RENDER & CRUD TAB 4: KELOLA BANNER HOMEPAGE ----------
+
+  function renderBannersGrid() {
+    const grid = document.getElementById("bannersAdminGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    if (state.banners.length === 0) {
+      const p = document.createElement("p");
+      p.style.color = "#64748b";
+      p.textContent = "Belum ada slide banner. Klik '+ Tambah Slide Banner' atau gunakan tombol Import di tab Ringkasan.";
+      grid.appendChild(p);
+      return;
+    }
+
+    state.banners.forEach(function (ban, index) {
+      const card = document.createElement("div");
+      card.className = "admin-media-card";
+
+      const imgWrap = document.createElement("div");
+      imgWrap.className = "admin-media-img-wrap";
+
+      const img = document.createElement("img");
+      img.src = ban.gambar || PLACEHOLDER_IMG;
+      img.alt = ban.judul || "Slide Banner";
+      img.addEventListener("error", function () {
+        img.src = PLACEHOLDER_IMG;
+      });
+
+      const badge = document.createElement("span");
+      badge.className = "admin-media-badge";
+      badge.textContent = "Slide #" + (ban.urutan || index + 1);
+
+      imgWrap.appendChild(img);
+      imgWrap.appendChild(badge);
+
+      const body = document.createElement("div");
+      body.className = "admin-media-body";
+
+      const topInfo = document.createElement("div");
+      const h4 = document.createElement("h4");
+      h4.textContent = ban.judul;
+      const pSub = document.createElement("p");
+      pSub.textContent = ban.subjudul || ban.gambar;
+      topInfo.appendChild(h4);
+      topInfo.appendChild(pSub);
+
+      const footer = document.createElement("div");
+      footer.className = "admin-media-footer";
+
+      const stSpan = document.createElement("span");
+      stSpan.className = ban.aktif !== false ? "badge-pill badge-success" : "badge-pill badge-warn";
+      stSpan.textContent = ban.aktif !== false ? "Aktif" : "Nonaktif";
+
+      const btnGroup = document.createElement("div");
+      btnGroup.className = "row-actions";
+
+      const editBtn = document.createElement("button");
+      editBtn.type = "button";
+      editBtn.className = "btn-secondary btn-sm";
+      editBtn.textContent = "Edit";
+      editBtn.addEventListener("click", function () {
+        openBannerModal(ban);
+      });
+
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.className = "btn-danger btn-sm";
+      delBtn.textContent = "Hapus";
+      delBtn.addEventListener("click", function () {
+        openConfirmDeleteModal("banner", ban.id, ban.judul);
+      });
+
+      btnGroup.appendChild(editBtn);
+      btnGroup.appendChild(delBtn);
+
+      footer.appendChild(stSpan);
+      footer.appendChild(btnGroup);
+
+      body.appendChild(topInfo);
+      body.appendChild(footer);
+
+      card.appendChild(imgWrap);
+      card.appendChild(body);
+      grid.appendChild(card);
+    });
+  }
+
+  function openBannerModal(ban = null) {
+    showBoxAlert("bannerFormAlert", "");
+    const modal = document.getElementById("bannerModalBackdrop");
+    const title = document.getElementById("bannerModalTitle");
+    const idInput = document.getElementById("bannerId");
+    const judulInput = document.getElementById("bannerJudul");
+    const subInput = document.getElementById("bannerSubjudul");
+    const urutanInput = document.getElementById("bannerUrutan");
+    const aktifInput = document.getElementById("bannerAktif");
+    const gambarInput = document.getElementById("bannerGambar");
+    const preview = document.getElementById("bannerImagePreview");
+    const fileInput = document.getElementById("bannerImageFile");
+    const statusText = document.getElementById("bannerUploadStatus");
+
+    if (fileInput) fileInput.value = "";
+    if (statusText) {
+      statusText.textContent = "Rekomendasi rasio landscape, maks 2 MB";
+      statusText.style.color = "";
+    }
+
+    if (ban) {
+      if (title) title.textContent = "Edit Slide Banner";
+      if (idInput) idInput.value = ban.id;
+      if (judulInput) judulInput.value = ban.judul || "";
+      if (subInput) subInput.value = ban.subjudul || "";
+      if (urutanInput) urutanInput.value = ban.urutan || 1;
+      if (aktifInput) aktifInput.checked = ban.aktif !== false;
+      if (gambarInput) gambarInput.value = ban.gambar || "";
+      if (preview) preview.src = ban.gambar || PLACEHOLDER_IMG;
+    } else {
+      if (title) title.textContent = "Tambah Slide Banner Baru";
+      if (idInput) idInput.value = "";
+      if (judulInput) judulInput.value = "";
+      if (subInput) subInput.value = "";
+      if (urutanInput) urutanInput.value = state.banners.length + 1;
+      if (aktifInput) aktifInput.checked = true;
+      if (gambarInput) gambarInput.value = "";
+      if (preview) preview.src = PLACEHOLDER_IMG;
+    }
+
+    if (modal) modal.classList.remove("hidden");
+  }
+
+  function closeBannerModal() {
+    const modal = document.getElementById("bannerModalBackdrop");
+    if (modal) modal.classList.add("hidden");
+  }
+
+  async function handleSaveBanner(e) {
+    e.preventDefault();
+    showBoxAlert("bannerFormAlert", "");
+
+    const idVal = document.getElementById("bannerId").value.trim();
+    const judul = document.getElementById("bannerJudul").value.trim();
+    const subjudul = document.getElementById("bannerSubjudul").value.trim();
+    const urutan = parseInt(document.getElementById("bannerUrutan").value, 10) || 1;
+    const aktif = document.getElementById("bannerAktif").checked;
+    const gambar = document.getElementById("bannerGambar").value.trim();
+
+    if (!judul || !gambar) {
+      showBoxAlert("bannerFormAlert", "Judul slide dan foto banner wajib diisi.");
+      return;
+    }
+
+    const payload = {
+      judul: judul,
+      subjudul: subjudul,
+      gambar: gambar,
+      tipe: "hero",
+      urutan: urutan,
+      aktif: aktif,
+      updated_at: new Date().toISOString()
+    };
+
+    const sb = window.getAquaAgriSupabaseClient();
+    const saveBtn = document.getElementById("saveBannerBtn");
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      saveBtn.textContent = "Menyimpan...";
+    }
+
+    try {
+      if (idVal) {
+        const { error } = await sb.from("banners").update(payload).eq("id", Number(idVal));
+        if (error) throw error;
+        showToast("Slide banner berhasil diperbarui!");
+      } else {
+        const { error } = await sb.from("banners").insert([payload]);
+        if (error) throw error;
+        showToast("Slide banner baru berhasil ditambahkan!");
+      }
+
+      closeBannerModal();
+      await loadAllDatabaseData();
+    } catch (err) {
+      showBoxAlert("bannerFormAlert", "Gagal menyimpan banner: " + (err.message || err));
+    } finally {
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Simpan Banner";
+      }
+    }
+  }
+
+  // ---------- 11. RENDER & QUICK-SAVE TAB 5: TAUTAN SHOPEE ----------
+
+  function renderShopeeTable() {
+    const tbody = document.getElementById("shopeeTableBody");
+    const searchEl = document.getElementById("shopeeSearchInput");
+    const statusFilterEl = document.getElementById("shopeeStatusFilter");
+
+    if (!tbody) return;
+    tbody.innerHTML = "";
+
+    const kw = searchEl ? searchEl.value.trim().toLowerCase() : "";
+    const statusFilter = statusFilterEl ? statusFilterEl.value : "semua";
+
+    const filtered = state.products.filter(function (p) {
+      const valid = isValidShopeeUrl(p.link_affiliate);
+      if (statusFilter === "valid" && !valid) return false;
+      if (statusFilter === "invalid" && valid) return false;
+      if (kw) {
+        const matchName = (p.nama || "").toLowerCase().includes(kw);
+        const matchLink = (p.link_affiliate || "").toLowerCase().includes(kw);
+        if (!matchName && !matchLink) return false;
+      }
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+      td.colSpan = 5;
+      td.style.textAlign = "center";
+      td.style.padding = "24px";
+      td.style.color = "#64748b";
+      td.textContent = "Tidak ada data tautan Shopee yang sesuai filter.";
+      tr.appendChild(td);
+      tbody.appendChild(tr);
+      return;
+    }
+
+    filtered.forEach(function (prod) {
+      const tr = document.createElement("tr");
+
+      const tdImg = document.createElement("td");
+      const img = document.createElement("img");
+      img.className = "table-thumb";
+      img.src = prod.gambar || PLACEHOLDER_IMG;
+      img.alt = prod.nama;
+      img.addEventListener("error", function () {
+        img.src = PLACEHOLDER_IMG;
+      });
+      tdImg.appendChild(img);
+
+      const tdName = document.createElement("td");
+      const titleDiv = document.createElement("div");
+      titleDiv.className = "prod-cell-title";
+      titleDiv.textContent = prod.nama;
+      const catSpan = document.createElement("span");
+      catSpan.style.fontSize = "0.75rem";
+      catSpan.style.color = "#64748b";
+      catSpan.textContent = getCategoryNameById(prod.kategori) + " • " + (prod.harga || "");
+      tdName.appendChild(titleDiv);
+      tdName.appendChild(catSpan);
+
+      const tdStatus = document.createElement("td");
+      const statusBadge = document.createElement("span");
+      const isOk = isValidShopeeUrl(prod.link_affiliate);
+      statusBadge.className = isOk ? "badge-pill badge-success" : "badge-pill badge-warn";
+      statusBadge.textContent = isOk ? "Shopee Valid" : "Perlu Dicek";
+      tdStatus.appendChild(statusBadge);
+
+      const tdInput = document.createElement("td");
+      const urlInput = document.createElement("input");
+      urlInput.type = "url";
+      urlInput.value = prod.link_affiliate || "";
+      urlInput.placeholder = "https://s.shopee.co.id/...";
+      tdInput.appendChild(urlInput);
+
+      const tdAct = document.createElement("td");
+      const actWrap = document.createElement("div");
+      actWrap.className = "row-actions";
+
+      const saveBtn = document.createElement("button");
+      saveBtn.type = "button";
+      saveBtn.className = "btn-primary btn-sm";
+      saveBtn.textContent = "Simpan";
+      saveBtn.addEventListener("click", async function () {
+        const newUrl = urlInput.value.trim();
+        if (!newUrl || !isSafeHttpUrl(newUrl)) {
+          showToast("Masukkan URL yang valid (diawali https://).");
+          return;
+        }
+        saveBtn.disabled = true;
+        saveBtn.textContent = "...";
+        try {
+          const sb = window.getAquaAgriSupabaseClient();
+          const { error } = await sb
+            .from("products")
+            .update({ link_affiliate: newUrl, updated_at: new Date().toISOString() })
+            .eq("id", prod.id);
+          if (error) throw error;
+          prod.link_affiliate = newUrl;
+          showToast("Link Shopee '" + prod.nama + "' berhasil disimpan!");
+          renderShopeeTable();
+          renderOverviewTab();
+        } catch (err) {
+          showToast("Gagal menyimpan link: " + (err.message || err));
+        } finally {
+          saveBtn.disabled = false;
+          saveBtn.textContent = "Simpan";
+        }
+      });
+
+      const testBtn = document.createElement("button");
+      testBtn.type = "button";
+      testBtn.className = "btn-secondary btn-sm";
+      testBtn.textContent = "Tes ↗";
+      testBtn.addEventListener("click", function () {
+        const targetUrl = urlInput.value.trim();
+        if (!isSafeHttpUrl(targetUrl)) {
+          showToast("URL belum valid untuk dibuka.");
+          return;
+        }
+        window.open(targetUrl, "_blank", "noopener,noreferrer");
+      });
+
+      actWrap.appendChild(saveBtn);
+      actWrap.appendChild(testBtn);
+      tdAct.appendChild(actWrap);
+
+      tr.appendChild(tdImg);
+      tr.appendChild(tdName);
+      tr.appendChild(tdStatus);
+      tr.appendChild(tdInput);
+      tr.appendChild(tdAct);
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  // ---------- 12. MODAL KONFIRMASI PENGHAPUSAN ----------
+
+  function openConfirmDeleteModal(type, id, name) {
+    state.pendingDelete = { type: type, id: id, name: name };
+    const modal = document.getElementById("confirmDeleteBackdrop");
+    const msg = document.getElementById("confirmDeleteMessage");
+    if (msg) {
+      msg.textContent =
+        'Apakah Anda yakin ingin menghapus "' +
+        name +
+        '" secara permanen dari database? Perubahan ini akan langsung terlihat di website publik.';
+    }
+    if (modal) modal.classList.remove("hidden");
+  }
+
+  function closeConfirmDeleteModal() {
+    state.pendingDelete = null;
+    const modal = document.getElementById("confirmDeleteBackdrop");
+    if (modal) modal.classList.add("hidden");
+  }
+
+  async function executePendingDelete() {
+    if (!state.pendingDelete) return;
+    const { type, id, name } = state.pendingDelete;
+    const sb = window.getAquaAgriSupabaseClient();
+    const btn = document.getElementById("executeConfirmDeleteBtn");
+
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = "Menghapus...";
+    }
+
+    try {
+      let table = "products";
+      if (type === "category") table = "categories";
+      else if (type === "banner") table = "banners";
+
+      const { error } = await sb.from(table).delete().eq("id", id);
+      if (error) throw error;
+
+      showToast('Berhasil menghapus "' + name + '".');
+      closeConfirmDeleteModal();
+      await loadAllDatabaseData();
+    } catch (err) {
+      showToast("Gagal menghapus: " + (err.message || err));
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = "Ya, Hapus Permanen";
+      }
+    }
+  }
+
+  // ---------- 13. NAVIGASI TAB & EVENT LISTENERS ----------
+
+  function switchAdminTab(tabName) {
+    const titles = {
+      overview: ["Ringkasan Dashboard", "Pantau dan kelola seluruh isi katalog aquaagri.id"],
+      products: ["Kelola Produk Katalog", "Tambah, edit, hapus produk, harga diskon, dan foto produk"],
+      categories: ["Kelola Kategori", "Atur 4 kategori utama beserta foto dan teks banner kategori"],
+      banners: ["Kelola Banner Beranda", "Atur slide foto otomatis di bagian atas beranda"],
+      shopee: ["Kelola Tautan Affiliate Shopee", "Cek dan ubah cepat link produk Shopee dalam satu tabel"]
+    };
+
+    document.querySelectorAll(".nav-item").forEach(function (btn) {
+      if (btn.getAttribute("data-tab") === tabName) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+
+    document.querySelectorAll(".tab-panel").forEach(function (panel) {
+      if (panel.id === "tab-" + tabName) {
+        panel.classList.remove("hidden");
+        panel.classList.add("active");
+      } else {
+        panel.classList.add("hidden");
+        panel.classList.remove("active");
+      }
+    });
+
+    const info = titles[tabName] || titles.overview;
+    const titleEl = document.getElementById("pageHeaderTitle");
+    const subEl = document.getElementById("pageHeaderSubtitle");
+    if (titleEl) titleEl.textContent = info[0];
+    if (subEl) subEl.textContent = info[1];
+
+    // Tutup sidebar mobile jika terbuka
+    const sidebar = document.getElementById("adminSidebar");
+    const backdrop = document.getElementById("sidebarBackdrop");
+    if (sidebar) sidebar.classList.remove("open");
+    if (backdrop) backdrop.classList.add("hidden");
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    // 1. Toggle Panel Setup Supabase
+    const toggleConfigBtn = document.getElementById("toggleConfigBtn");
+    const setupPanel = document.getElementById("supabaseSetupPanel");
+    if (toggleConfigBtn && setupPanel) {
+      toggleConfigBtn.addEventListener("click", function () {
+        setupPanel.classList.toggle("hidden");
+      });
+    }
+
+    // 2. Simpan Pengaturan Koneksi Supabase
+    const saveSetupBtn = document.getElementById("saveSetupBtn");
+    if (saveSetupBtn) {
+      saveSetupBtn.addEventListener("click", function () {
+        const url = document.getElementById("setupSbUrl").value.trim();
+        const key = document.getElementById("setupSbKey").value.trim();
+        if (!url.startsWith("https://") || !key) {
+          showBoxAlert("loginAlert", "Masukkan Project URL (diawali https://) dan Anon Public Key Supabase yang valid.");
+          return;
+        }
+        window.saveAquaAgriSupabaseConfigLocal(url, key);
+        updateConnectionBannerUI();
+        if (setupPanel) setupPanel.classList.add("hidden");
+        showBoxAlert("loginAlert", "Koneksi Supabase tersimpan! Silakan login menggunakan akun Admin Anda.", "success");
+      });
+    }
+
+    // 3. Salin Kode untuk supabase-config.js
+    const copyConfigCodeBtn = document.getElementById("copyConfigCodeBtn");
+    if (copyConfigCodeBtn) {
+      copyConfigCodeBtn.addEventListener("click", function () {
+        const url = document.getElementById("setupSbUrl").value.trim();
+        const key = document.getElementById("setupSbKey").value.trim();
+        if (!url || !key) {
+          showBoxAlert("loginAlert", "Isi Project URL dan Anon Key terlebih dahulu sebelum menyalin.");
+          return;
+        }
+        const snippet =
+          `window.AQUAAGRI_SUPABASE_CONFIG = {\n` +
+          `  SUPABASE_URL: "${url}",\n` +
+          `  SUPABASE_ANON_KEY: "${key}",\n` +
+          `  STORAGE_BUCKET: "aquaagri-images"\n` +
+          `};`;
+        navigator.clipboard.writeText(snippet).then(function () {
+          showBoxAlert("loginAlert", "Kode berhasil disalin! Tempelkan ke bagian atas file supabase-config.js.", "success");
+        });
+      });
+    }
+
+    // 4. Toggle Lihat Password
+    const togglePassBtn = document.getElementById("togglePassBtn");
+    const passInput = document.getElementById("loginPassword");
+    if (togglePassBtn && passInput) {
+      togglePassBtn.addEventListener("click", function () {
+        if (passInput.type === "password") {
+          passInput.type = "text";
+          togglePassBtn.textContent = "Sembunyikan";
+        } else {
+          passInput.type = "password";
+          togglePassBtn.textContent = "Lihat";
+        }
+      });
+    }
+
+    // 5. Submit Login Admin (Supabase Auth)
+    const loginForm = document.getElementById("loginForm");
+    if (loginForm) {
+      loginForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        showBoxAlert("loginAlert", "");
+
+        const sb = window.getAquaAgriSupabaseClient();
+        if (!sb) {
+          showBoxAlert("loginAlert", "Atur koneksi Project URL & Anon Key Supabase terlebih dahulu.");
+          return;
+        }
+
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value;
+        if (!email || !password) {
+          showBoxAlert("loginAlert", "Email dan password wajib diisi.");
+          return;
+        }
+
+        const submitBtn = document.getElementById("loginSubmitBtn");
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Memverifikasi...";
+        }
+
+        try {
+          const { data, error } = await sb.auth.signInWithPassword({
+            email: email,
+            password: password
+          });
+          if (error) throw error;
+          if (data && data.user) {
+            await onAdminAuthenticated(data.user);
+          }
+        } catch (err) {
+          showBoxAlert(
+            "loginAlert",
+            "Login gagal: Pastikan Email & Password Admin sudah terdaftar di menu Authentication Supabase. (" +
+              (err.message || "Unauthorized") +
+              ")"
+          );
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>Masuk ke Dashboard</span> <span aria-hidden="true">&rarr;</span>';
+          }
+        }
+      });
+    }
+
+    // 6. Logout Admin
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", async function () {
+        const sb = window.getAquaAgriSupabaseClient();
+        if (sb) {
+          await sb.auth.signOut();
+        }
+        state.user = null;
+        document.getElementById("dashboardScreen").classList.add("hidden");
+        document.getElementById("loginScreen").classList.remove("hidden");
+        showToast("Anda telah keluar dari sesi Admin.");
+      });
+    }
+
+    // 7. Navigasi Sidebar
+    document.querySelectorAll(".nav-item").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const tab = btn.getAttribute("data-tab");
+        if (tab) switchAdminTab(tab);
+      });
+    });
+
+    // Mobile Sidebar Toggle
+    const openMobileBtn = document.getElementById("openSidebarMobileBtn");
+    const closeMobileBtn = document.getElementById("closeSidebarMobileBtn");
+    const sidebar = document.getElementById("adminSidebar");
+    const backdrop = document.getElementById("sidebarBackdrop");
+
+    if (openMobileBtn && sidebar && backdrop) {
+      openMobileBtn.addEventListener("click", function () {
+        sidebar.classList.add("open");
+        backdrop.classList.remove("hidden");
+      });
+    }
+    if (closeMobileBtn && sidebar && backdrop) {
+      closeMobileBtn.addEventListener("click", function () {
+        sidebar.classList.remove("open");
+        backdrop.classList.add("hidden");
+      });
+    }
+    if (backdrop && sidebar) {
+      backdrop.addEventListener("click", function () {
+        sidebar.classList.remove("open");
+        backdrop.classList.add("hidden");
+      });
+    }
+
+    // 8. Pintasan Cepat & Tombol Topbar
+    const refreshBtn = document.getElementById("refreshDataBtn");
+    if (refreshBtn) {
+      refreshBtn.addEventListener("click", async function () {
+        showToast("Memuat ulang data dari Supabase...");
+        await loadAllDatabaseData();
+      });
+    }
+
+    const quickAddBtn = document.getElementById("quickAddProductBtn");
+    if (quickAddBtn) {
+      quickAddBtn.addEventListener("click", function () {
+        openProductModal(null);
+      });
+    }
+
+    const addProdMainBtn = document.getElementById("addProductMainBtn");
+    if (addProdMainBtn) {
+      addProdMainBtn.addEventListener("click", function () {
+        openProductModal(null);
+      });
+    }
+
+    const qaAddProduct = document.getElementById("qaAddProduct");
+    if (qaAddProduct) {
+      qaAddProduct.addEventListener("click", function () {
+        openProductModal(null);
+      });
+    }
+
+    const qaManageBanners = document.getElementById("qaManageBanners");
+    if (qaManageBanners) {
+      qaManageBanners.addEventListener("click", function () {
+        switchAdminTab("banners");
+      });
+    }
+
+    const qaManageShopee = document.getElementById("qaManageShopee");
+    if (qaManageShopee) {
+      qaManageShopee.addEventListener("click", function () {
+        switchAdminTab("shopee");
+      });
+    }
+
+    const seedBtn = document.getElementById("seedInitialDataBtn");
+    if (seedBtn) {
+      seedBtn.addEventListener("click", seedInitialCatalogToSupabase);
+    }
+
+    const qaSyncInitial = document.getElementById("qaSyncInitial");
+    if (qaSyncInitial) {
+      qaSyncInitial.addEventListener("click", seedInitialCatalogToSupabase);
+    }
+
+    // 9. Filter & Search Produk
+    const prodSearch = document.getElementById("adminProductSearch");
+    const prodCatFilter = document.getElementById("adminProductCatFilter");
+    const prodSubFilter = document.getElementById("adminProductSubFilter");
+    if (prodSearch) prodSearch.addEventListener("input", renderProductsTable);
+    if (prodCatFilter) prodCatFilter.addEventListener("change", renderProductsTable);
+    if (prodSubFilter) prodSubFilter.addEventListener("change", renderProductsTable);
+
+    // 10. Filter & Search Shopee
+    const shopeeSearch = document.getElementById("shopeeSearchInput");
+    const shopeeFilter = document.getElementById("shopeeStatusFilter");
+    if (shopeeSearch) shopeeSearch.addEventListener("input", renderShopeeTable);
+    if (shopeeFilter) shopeeFilter.addEventListener("change", renderShopeeTable);
+
+    // 11. Modal Produk Listeners & Kalkulasi Diskon Otomatis
+    const prodKategori = document.getElementById("prodKategori");
+    if (prodKategori) {
+      prodKategori.addEventListener("change", syncProductKelompokVisibility);
+    }
+
+    const prodHarga = document.getElementById("prodHarga");
+    const prodCoret = document.getElementById("prodHargaCoret");
+    const prodDiskon = document.getElementById("prodDiskon");
+
+    function autoUpdateDiscountField() {
+      if (!prodHarga || !prodCoret || !prodDiskon) return;
+      const pct = calculateDiscountPercent(prodHarga.value, prodCoret.value);
+      if (pct) prodDiskon.value = pct;
+    }
+
+    if (prodHarga) prodHarga.addEventListener("input", autoUpdateDiscountField);
+    if (prodCoret) prodCoret.addEventListener("input", autoUpdateDiscountField);
+
+    const prodGambar = document.getElementById("prodGambar");
+    const prodPreview = document.getElementById("prodImagePreview");
+    if (prodGambar && prodPreview) {
+      prodGambar.addEventListener("input", function () {
+        prodPreview.src = prodGambar.value.trim() || PLACEHOLDER_IMG;
+      });
+    }
+
+    const prodImageFile = document.getElementById("prodImageFile");
+    if (prodImageFile) {
+      prodImageFile.addEventListener("change", async function () {
+        if (!prodImageFile.files || !prodImageFile.files[0]) return;
+        const statusEl = document.getElementById("prodUploadStatus");
+        try {
+          const publicUrl = await uploadImageToSupabase(prodImageFile.files[0], "products", statusEl);
+          if (prodGambar) prodGambar.value = publicUrl;
+          if (prodPreview) prodPreview.src = publicUrl;
+        } catch (err) {
+          if (statusEl) {
+            statusEl.textContent = err.message;
+            statusEl.style.color = "#dc2626";
+          }
+          showToast(err.message);
+        }
+      });
+    }
+
+    document.getElementById("closeProductModalBtn").addEventListener("click", closeProductModal);
+    document.getElementById("cancelProductModalBtn").addEventListener("click", closeProductModal);
+    document.getElementById("productForm").addEventListener("submit", handleSaveProduct);
+
+    // 12. Modal Kategori Listeners
+    document.getElementById("addCategoryBtn").addEventListener("click", function () {
+      openCategoryModal(null);
+    });
+    document.getElementById("closeCategoryModalBtn").addEventListener("click", closeCategoryModal);
+    document.getElementById("cancelCategoryModalBtn").addEventListener("click", closeCategoryModal);
+    document.getElementById("categoryForm").addEventListener("submit", handleSaveCategory);
+
+    const catBg = document.getElementById("catBg");
+    const catPreview = document.getElementById("catImagePreview");
+    if (catBg && catPreview) {
+      catBg.addEventListener("input", function () {
+        catPreview.src = catBg.value.trim() || PLACEHOLDER_IMG;
+      });
+    }
+
+    const catImageFile = document.getElementById("catImageFile");
+    if (catImageFile) {
+      catImageFile.addEventListener("change", async function () {
+        if (!catImageFile.files || !catImageFile.files[0]) return;
+        const statusEl = document.getElementById("catUploadStatus");
+        try {
+          const publicUrl = await uploadImageToSupabase(catImageFile.files[0], "categories", statusEl);
+          if (catBg) catBg.value = publicUrl;
+          if (catPreview) catPreview.src = publicUrl;
+        } catch (err) {
+          if (statusEl) {
+            statusEl.textContent = err.message;
+            statusEl.style.color = "#dc2626";
+          }
+          showToast(err.message);
+        }
+      });
+    }
+
+    // 13. Modal Banner Listeners
+    document.getElementById("addBannerBtn").addEventListener("click", function () {
+      openBannerModal(null);
+    });
+    document.getElementById("closeBannerModalBtn").addEventListener("click", closeBannerModal);
+    document.getElementById("cancelBannerModalBtn").addEventListener("click", closeBannerModal);
+    document.getElementById("bannerForm").addEventListener("submit", handleSaveBanner);
+
+    const bannerGambar = document.getElementById("bannerGambar");
+    const bannerPreview = document.getElementById("bannerImagePreview");
+    if (bannerGambar && bannerPreview) {
+      bannerGambar.addEventListener("input", function () {
+        bannerPreview.src = bannerGambar.value.trim() || PLACEHOLDER_IMG;
+      });
+    }
+
+    const bannerImageFile = document.getElementById("bannerImageFile");
+    if (bannerImageFile) {
+      bannerImageFile.addEventListener("change", async function () {
+        if (!bannerImageFile.files || !bannerImageFile.files[0]) return;
+        const statusEl = document.getElementById("bannerUploadStatus");
+        try {
+          const publicUrl = await uploadImageToSupabase(bannerImageFile.files[0], "banners", statusEl);
+          if (bannerGambar) bannerGambar.value = publicUrl;
+          if (bannerPreview) bannerPreview.src = publicUrl;
+        } catch (err) {
+          if (statusEl) {
+            statusEl.textContent = err.message;
+            statusEl.style.color = "#dc2626";
+          }
+          showToast(err.message);
+        }
+      });
+    }
+
+    // 14. Modal Konfirmasi Hapus Listeners
+    document.getElementById("closeConfirmDeleteBtn").addEventListener("click", closeConfirmDeleteModal);
+    document.getElementById("cancelConfirmDeleteBtn").addEventListener("click", closeConfirmDeleteModal);
+    document.getElementById("executeConfirmDeleteBtn").addEventListener("click", executePendingDelete);
+
+    // 15. Jalankan Pengecekan Sesi Awal
+    checkAuthSession();
+  });
+})();

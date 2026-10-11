@@ -6,3 +6,4 @@ node_modules
 wrangler.jsonc
 wrangler.toml
 README.md
+supabase-setup.sql
