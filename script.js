@@ -1558,8 +1558,56 @@ const products = [
     kelompok: "suplemen",
     linkAffiliate: "https://s.shopee.co.id/2gBmFvejE2"
   },
-  {
+   {
     id: 6,
+    nama: "Mayin Water Stabilizer aquarium",
+    harga: "Rp49.000",
+    hargaCoret: "Rp60.000",
+    diskon: "18%",
+    gambar: "assets/products/mayin-water-stabilizer-aquarium.jpg",
+    deskripsi: "Mayin Water Stabilizer aquarium untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "suplemen",
+    linkAffiliate: "https://s.shopee.co.id/4qGKKa7KPl"
+  },
+   {
+    id: 7,
+    nama: "MAYIN Probiotic & Nitrifying Bacteria Probiotik",
+    harga: "Rp50.000",
+    hargaCoret: "Rp65.000",
+    diskon: "23%",
+    gambar: "assets/products/mayin-probiotic-nitrifying-bacteria-probiotik.jpg",
+    deskripsi: "MAYIN Probiotic & Nitrifying Bacteria Probiotik untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "suplemen",
+    linkAffiliate: "https://s.shopee.co.id/AAHqgZ5kSw"
+  },
+   {
+    id: 8,
+    nama: "MAYIN Micronutrient Supplement",
+    harga: "Rp50.000",
+    hargaCoret: "Rp60.000",
+    diskon: "18%",
+    gambar: "assets/products/mayin-micronutrient-supplement.jpg",
+    deskripsi: "MAYIN Micronutrient Supplement untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "suplemen",
+    linkAffiliate: "https://s.shopee.co.id/50ZkXDOsLg"
+  },
+   {
+    id: 9,
+    nama: "Tetes Tebu/Molase Asli Murni 100%",
+    harga: "Rp18.000",
+    hargaCoret: "Rp25.000",
+    diskon: "28%",
+    gambar: "assets/products/tetes-tebu-molase-asli-murni-100.jpg",
+    deskripsi: "Tetes Tebu/Molase Asli Murni 100% untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    kategori: "Benih-Pakan-Budidaya",
+    kelompok: "suplemen",
+    linkAffiliate: "https://s.shopee.co.id/2gBmFvejE2"
+  },
+  {
+    id: 10,
     nama: "molase tetes tebu murni 5kg",
     harga: "Rp39.000",
     hargaCoret: "Rp45.000",
@@ -1570,6 +1618,7 @@ const products = [
     kelompok: "suplemen",
     linkAffiliate: "https://s.shopee.co.id/qk84fa9Kb"
   }
+  
   // -> Tambahkan produk SUPLEMEN baru di atas baris ini (gunakan kelompok: "suplemen")
 
 ];
