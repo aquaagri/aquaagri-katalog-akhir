@@ -1650,7 +1650,7 @@ const categories = [
   { 
     id: "Benih-Pakan-Budidaya", 
     nama: "Benih, Pakan & Budidaya", 
-    svg: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-9"/><path d="M12 13a5 5 0 0 1 5-5c2 0 3 1 3 1s0 2-1 3-3 1-7 1"/><path d="M12 13a5 5 0 0 0-5-5c-2 0-3 1-3 1s0 2 1 3 3 1 7 1"/></svg>', 
+    svg: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6-3.56 0-7.56-2.53-8.5-6Z"/><path d="M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 1.5-1 5 .23 6.5-1.24 1.5-1.24 5-.23 6.5C5.58 18.03 7 16 7 13.33"/><circle cx="15.5" cy="11" r="1" fill="currentColor" stroke="none"/></svg>', 
     deskripsi: "Pakan bernutrisi, aerator & sarana tambak",
     bg: "cat-budidaya-real.jpg"
   }
@@ -1773,6 +1773,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const aboutBackBtn = document.getElementById("aboutBackBtn");
   const aboutBottomBackBtn = document.getElementById("aboutBottomBackBtn");
   const aboutExploreBtn = document.getElementById("aboutExploreBtn");
+  const aboutProductCount = document.getElementById("aboutProductCount");
+  const aboutCategoryCount = document.getElementById("aboutCategoryCount");
+
+  function updateAboutStats() {
+    if (aboutProductCount && Array.isArray(products)) {
+      aboutProductCount.textContent = products.length;
+    }
+    if (aboutCategoryCount && Array.isArray(categories)) {
+      aboutCategoryCount.textContent = categories.length;
+    }
+  }
   const categoryGrid = document.getElementById("categoryGrid");
   const productGrid = document.getElementById("productGrid");
   const categoryTitle = document.getElementById("categoryTitle");
@@ -2754,6 +2765,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function openAboutView() {
+    updateAboutStats();
     if (homeView) homeView.classList.add("hidden");
     if (categoryView) categoryView.classList.add("hidden");
     if (searchView) searchView.classList.add("hidden");
@@ -3382,6 +3394,7 @@ document.addEventListener("DOMContentLoaded", function () {
   updateHeaderOffset();
   window.addEventListener("resize", updateHeaderOffset);
 
+  updateAboutStats();
   renderCategories();
   renderSampleCarousel();
   initStoryCarousel();
