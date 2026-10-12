@@ -31,6 +31,7 @@ Untuk mengubah isi katalog, Anda **tidak perlu membuka kode atau GitHub**:
    - **Produk Katalog:** Tambah produk baru, upload foto produk dari HP/laptop, ubah harga, harga coret, diskon, deskripsi, atau hapus produk.
    - **Kategori:** Ubah nama kategori, foto kartu kategori, dan teks banner kategori.
    - **Banner Beranda:** Tambah/ubah/hapus foto slide otomatis di bagian paling atas halaman utama.
+   - **Pop-Up Iklan:** Pasang poster iklan/promo potret di tengah layar saat pengunjung membuka website (mendukung klik langsung ke **Nomor WhatsApp + Pesan Otomatis** atau **Link Shopee/URL**).
    - **Tautan Shopee:** Cek dan ubah cepat link affiliate Shopee semua produk dalam satu tabel.
 
 Begitu Anda klik **Simpan**, perubahan **langsung tampil otomatis** di website pengunjung detik itu juga!
