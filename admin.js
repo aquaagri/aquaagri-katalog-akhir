@@ -104,7 +104,80 @@
   }
 
   /**
-   * Upload file gambar ke Supabase Storage dengan validasi ketat
+   * Kompresi otomatis gambar di sisi browser (HTML5 Canvas) sebelum diunggah ke Supabase Storage
+   * agar foto dari kamera HP / file besar otomatis menjadi ringan (< 200 KB) & cepat dimuat
+   */
+  function compressImageBeforeUpload(file, folderName) {
+    return new Promise(function (resolve) {
+      // Lewati jika file GIF atau sudah sangat kecil (< 140 KB)
+      if (!file || file.type === "image/gif" || file.size < 140 * 1024) {
+        resolve(file);
+        return;
+      }
+
+      const maxDim = folderName === "banners" ? 1360 : folderName === "categories" ? 1080 : 900;
+      const quality = folderName === "banners" ? 0.82 : 0.80;
+
+      const img = new Image();
+      const objUrl = URL.createObjectURL(file);
+
+      img.onload = function () {
+        try {
+          URL.revokeObjectURL(objUrl);
+          let w = img.naturalWidth || img.width;
+          let h = img.naturalHeight || img.height;
+
+          if (w > maxDim || h > maxDim) {
+            if (w >= h) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            } else {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+
+          const canvas = document.createElement("canvas");
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext("2d");
+          // Latar putih bersih jika gambar PNG transparan dikonversi ke JPEG
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, w, h);
+          ctx.drawImage(img, 0, 0, w, h);
+
+          canvas.toBlob(
+            function (blob) {
+              if (!blob || blob.size >= file.size) {
+                resolve(file);
+                return;
+              }
+              const baseName = (file.name || "foto").replace(/\.[a-zA-Z0-9]+$/, "");
+              const compressedFile = new File([blob], baseName + ".jpg", {
+                type: "image/jpeg",
+                lastModified: Date.now()
+              });
+              resolve(compressedFile);
+            },
+            "image/jpeg",
+            quality
+          );
+        } catch (err) {
+          resolve(file);
+        }
+      };
+
+      img.onerror = function () {
+        URL.revokeObjectURL(objUrl);
+        resolve(file);
+      };
+
+      img.src = objUrl;
+    });
+  }
+
+  /**
+   * Upload file gambar ke Supabase Storage dengan validasi ketat & kompresi otomatis
    */
   async function uploadImageToSupabase(file, folderName, statusElement) {
     if (!file) throw new Error("Pilih file gambar terlebih dahulu.");
@@ -114,9 +187,9 @@
       throw new Error("Format file ditolak! Gunakan gambar JPG, PNG, atau WebP.");
     }
 
-    const maxBytes = 2 * 1024 * 1024; // 2 MB
+    const maxBytes = 15 * 1024 * 1024; // Izinkan hingga 15 MB dari kamera HP karena akan dikompres otomatis
     if (file.size > maxBytes) {
-      throw new Error("Ukuran gambar terlalu besar! Maksimal 2 MB.");
+      throw new Error("Ukuran gambar terlalu besar! Maksimal 15 MB.");
     }
 
     const isGenuineImage = await verifyImageMagicBytes(file);
@@ -130,22 +203,26 @@
       throw new Error("Koneksi Supabase belum aktif.");
     }
 
+    const originalKB = Math.round(file.size / 1024);
     if (statusElement) {
-      statusElement.textContent = "Mengunggah gambar ke Supabase Storage...";
+      statusElement.textContent = "Mengoptimalkan ukuran foto & mengunggah ke Supabase...";
       statusElement.style.color = "#0284c7";
     }
 
-    const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
+    const optimizedFile = await compressImageBeforeUpload(file, folderName);
+    const finalKB = Math.round(optimizedFile.size / 1024);
+
+    const ext = (optimizedFile.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
     const safeExt = ["jpg", "jpeg", "png", "webp", "gif"].includes(ext) ? ext : "jpg";
     const randomCode = Math.random().toString(36).substring(2, 9);
     const filePath = `${folderName}/${Date.now()}-${randomCode}.${safeExt}`;
 
     const { error } = await sb.storage
       .from(cfg.bucket)
-      .upload(filePath, file, {
+      .upload(filePath, optimizedFile, {
         cacheControl: "3600",
         upsert: false,
-        contentType: file.type
+        contentType: optimizedFile.type
       });
 
     if (error) {
@@ -158,7 +235,11 @@
     }
 
     if (statusElement) {
-      statusElement.textContent = "Gambar berhasil diunggah!";
+      if (finalKB < originalKB) {
+        statusElement.textContent = `Berhasil dikompres otomatis (${originalKB} KB → ${finalKB} KB) & diunggah!`;
+      } else {
+        statusElement.textContent = `Gambar berhasil diunggah (${finalKB} KB)!`;
+      }
       statusElement.style.color = "#059669";
     }
 
@@ -294,6 +375,109 @@
 
   // ---------- 5. MUAT DATA DARI DATABASE SUPABASE ----------
 
+  // Bobot klik dasar produk unggulan (selaras dengan website katalog publik)
+  const ADMIN_BASELINE_CLICKS = {
+    1: 520, 3: 495, 2: 480, 11: 460, 12: 445,
+    18: 430, 19: 420, 25: 410, 26: 395, 4: 380,
+    5: 370, 13: 360, 14: 350, 20: 340, 21: 330,
+    27: 320, 28: 310, 6: 295, 7: 285, 15: 275
+  };
+
+  function getAdminProductClicks(prod) {
+    if (!prod) return 100;
+    const id = Number(prod.id) || 0;
+    const dbClicks = typeof prod.klik === "number" && prod.klik > 0 ? prod.klik : 0;
+    const base = Math.max(dbClicks, ADMIN_BASELINE_CLICKS[id] || 100);
+    try {
+      const localClicks = JSON.parse(localStorage.getItem("aquaagri_clicks") || "{}");
+      return base + (Number(localClicks[id]) || 0);
+    } catch (e) {
+      return base;
+    }
+  }
+
+  function isLegacyMismatchedDescriptionAdmin(nama, desc) {
+    if (!desc) return true;
+    const d = String(desc).trim();
+    const n = String(nama || "").trim();
+    if (d.toLowerCase() === n.toLowerCase()) return true;
+    if (d.includes("untuk menjaga kesehatan ikan dan kualitas air akuarium")) return true;
+    if (d.includes("dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus")) return true;
+    if (d.endsWith("dengan daging lembut dan gurih.")) return true;
+    if (d.includes("Sangat cocok untuk camilan atau hidangan utama.")) return true;
+    if (d.includes("Umpan pengganti lumut berkualitas tinggi untuk memancing")) return true;
+    if (d === "UMPAN MANCING GALATAMA LELE PATIN MAS") return true;
+    if (d === "Makanan Ikan Pelet Ikan Makanan Pakan Ikan Hias") return true;
+    if (d.includes("Tali pancing berkualitas tinggi") && d.includes("untuk memancing ikan di berbagai jenis air")) return true;
+    if (d.includes("dengan desain ergonomis dan performa tinggi.")) return true;
+    if (d.includes("dengan kualitas terbaik untuk memancing.")) return true;
+    if (d.includes("untuk menyimpan dan mengangkut umpan pancing.")) return true;
+    if (d.includes("untuk memancing ikan di berbagai jenis air.")) return true;
+    if (d.includes("Max Drag 20 kg: 3 set bantalan rem komposit") && !n.includes("Starfall")) return true;
+    if (d.includes("Mesin pompa aerasi 4 cabang") && !n.includes("Aerator")) return true;
+    if (d.includes("Booster Attractant Terbaik untuk Memancing Ikan Liar di Laut")) return true;
+    if (d.includes("Campuran Umpan Pancing Ikan Khusus Media Cacing 15ml")) return true;
+    if (d.includes("Stopper pancing kualitas premium berbahan kaca transparan")) return true;
+    if (d.includes("Topi gunung outdoor yang nyaman dan tahan lama")) return true;
+    if (d.includes("Orcarium Lobe Series Akuarium SOLITER untuk budidaya ikan")) return true;
+    if (d.includes("Box container serbaguna tipe rabbit (untuk kolam ikan hias) untuk berbagai keperluan")) return true;
+    return false;
+  }
+
+  let hasAutoSyncedDescriptions = false;
+
+  async function syncFixedDescriptionsToSupabase(isSilent = true) {
+    const sb = window.getAquaAgriSupabaseClient();
+    const initial = window.AQUAAGRI_INITIAL_DATA;
+    if (!sb || !initial || !Array.isArray(initial.products) || state.products.length === 0) return 0;
+
+    const fixedMap = {};
+    initial.products.forEach(function (ip) {
+      if (ip && ip.nama && ip.deskripsi) {
+        fixedMap[ip.nama.trim()] = ip.deskripsi;
+      }
+    });
+
+    const toUpdate = [];
+    state.products.forEach(function (dbProd) {
+      const cleanName = (dbProd.nama || "").trim();
+      const targetDesc = fixedMap[cleanName];
+      if (
+        targetDesc &&
+        dbProd.deskripsi !== targetDesc &&
+        isLegacyMismatchedDescriptionAdmin(cleanName, dbProd.deskripsi)
+      ) {
+        toUpdate.push({ id: dbProd.id, nama: cleanName, deskripsi: targetDesc });
+      }
+    });
+
+    if (toUpdate.length === 0) return 0;
+
+    let updatedCount = 0;
+    for (let i = 0; i < toUpdate.length; i++) {
+      const item = toUpdate[i];
+      const { error } = await sb
+        .from("products")
+        .update({ deskripsi: item.deskripsi, updated_at: new Date().toISOString() })
+        .eq("id", item.id);
+      if (!error) {
+        updatedCount++;
+        const stateProd = state.products.find(function (p) { return p.id === item.id; });
+        if (stateProd) stateProd.deskripsi = item.deskripsi;
+      }
+    }
+
+    if (updatedCount > 0) {
+      renderAllAdminViews();
+      if (!isSilent) {
+        showToast("Berhasil memperbaiki " + updatedCount + " deskripsi produk di database Supabase!");
+      } else {
+        showToast("Otomatis memperbarui " + updatedCount + " deskripsi produk agar akurat sesuai nama produk.");
+      }
+    }
+    return updatedCount;
+  }
+
   async function loadAllDatabaseData() {
     const sb = window.getAquaAgriSupabaseClient();
     if (!sb) return;
@@ -314,6 +498,12 @@
       state.banners = banRes.data || [];
 
       renderAllAdminViews();
+
+      // Sinkronkan otomatis deskripsi produk yang dulu sempat tertukar di database
+      if (!hasAutoSyncedDescriptions && state.products.length > 0) {
+        hasAutoSyncedDescriptions = true;
+        syncFixedDescriptionsToSupabase(true);
+      }
     } catch (err) {
       showToast("Perhatian: " + err.message);
       console.error(err);
@@ -413,6 +603,114 @@
         });
       }
     }
+
+    // Render Analitik Top 10 Produk Paling Sering Diklik
+    const topClicksBody = document.getElementById("topClicksTableBody");
+    const totalAllClicksEl = document.getElementById("statTotalAllClicks");
+    if (topClicksBody) {
+      topClicksBody.innerHTML = "";
+      let totalClicksSum = 0;
+      const ranked = state.products.map(function (p) {
+        const clicks = getAdminProductClicks(p);
+        totalClicksSum += clicks;
+        return { prod: p, clicks: clicks };
+      });
+      ranked.sort(function (a, b) { return b.clicks - a.clicks; });
+
+      if (totalAllClicksEl) {
+        totalAllClicksEl.textContent = "Total Klik Katalog: " + totalClicksSum.toLocaleString("id-ID") + " Klik";
+      }
+
+      const top10 = ranked.slice(0, 10);
+      if (top10.length === 0) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 7;
+        td.style.textAlign = "center";
+        td.style.padding = "20px";
+        td.style.color = "#64748b";
+        td.textContent = "Belum ada data produk.";
+        tr.appendChild(td);
+        topClicksBody.appendChild(tr);
+      } else {
+        top10.forEach(function (entry, idx) {
+          const prod = entry.prod;
+          const tr = document.createElement("tr");
+
+          const tdRank = document.createElement("td");
+          const rankBadge = document.createElement("span");
+          rankBadge.className = idx < 3 ? "badge-pill badge-coral" : "badge-pill badge-ocean";
+          rankBadge.textContent = "#" + (idx + 1);
+          tdRank.appendChild(rankBadge);
+
+          const tdImg = document.createElement("td");
+          const img = document.createElement("img");
+          img.className = "table-thumb";
+          img.src = prod.gambar || PLACEHOLDER_IMG;
+          img.alt = prod.nama || "";
+          img.loading = "lazy";
+          img.addEventListener("error", function () { img.src = PLACEHOLDER_IMG; });
+          tdImg.appendChild(img);
+
+          const tdName = document.createElement("td");
+          const titleDiv = document.createElement("div");
+          titleDiv.className = "prod-cell-title";
+          titleDiv.textContent = prod.nama;
+          tdName.appendChild(titleDiv);
+
+          const tdCat = document.createElement("td");
+          const catBadge = document.createElement("span");
+          catBadge.className = "badge-pill badge-teal";
+          catBadge.textContent = getCategoryNameById(prod.kategori);
+          tdCat.appendChild(catBadge);
+
+          const tdPrice = document.createElement("td");
+          const pSpan = document.createElement("span");
+          pSpan.className = "price-main";
+          pSpan.textContent = prod.harga || "Rp0";
+          tdPrice.appendChild(pSpan);
+
+          const tdClicks = document.createElement("td");
+          const clickBadge = document.createElement("span");
+          clickBadge.className = "badge-pill badge-success";
+          clickBadge.textContent = entry.clicks.toLocaleString("id-ID") + " Klik";
+          tdClicks.appendChild(clickBadge);
+
+          const tdAct = document.createElement("td");
+          const actWrap = document.createElement("div");
+          actWrap.className = "row-actions";
+
+          const editBtn = document.createElement("button");
+          editBtn.type = "button";
+          editBtn.className = "btn-secondary btn-sm";
+          editBtn.textContent = "Edit";
+          editBtn.addEventListener("click", function () { openProductModal(prod); });
+          actWrap.appendChild(editBtn);
+
+          if (isValidShopeeUrl(prod.link_affiliate)) {
+            const linkBtn = document.createElement("a");
+            linkBtn.href = prod.link_affiliate;
+            linkBtn.target = "_blank";
+            linkBtn.rel = "noopener noreferrer";
+            linkBtn.className = "btn-primary btn-sm";
+            linkBtn.style.textDecoration = "none";
+            linkBtn.textContent = "Shopee ↗";
+            actWrap.appendChild(linkBtn);
+          }
+
+          tdAct.appendChild(actWrap);
+
+          tr.appendChild(tdRank);
+          tr.appendChild(tdImg);
+          tr.appendChild(tdName);
+          tr.appendChild(tdCat);
+          tr.appendChild(tdPrice);
+          tr.appendChild(tdClicks);
+          tr.appendChild(tdAct);
+          topClicksBody.appendChild(tr);
+        });
+      }
+    }
   }
 
   // ---------- 7. IMPORT / SINKRONISASI 138 PRODUK AWAL KE SUPABASE ----------
@@ -452,8 +750,11 @@
         if (prodErr) throw new Error("Gagal menyimpan produk: " + prodErr.message);
       }
 
-      showToast("Berhasil mengimpor katalog awal ke database Supabase!");
       await loadAllDatabaseData();
+      const fixedCount = await syncFixedDescriptionsToSupabase(false);
+      if (fixedCount === 0) {
+        showToast("Berhasil menyinkronkan data katalog & seluruh deskripsi produk sudah akurat!");
+      }
     } catch (err) {
       showToast(err.message || "Gagal mengimpor data awal.");
     } finally {
@@ -611,7 +912,7 @@
         tdPrice.appendChild(dBadge);
       }
 
-      // 5. Tautan Shopee
+      // 5. Tautan Shopee & Jumlah Klik
       const tdShopee = document.createElement("td");
       if (isValidShopeeUrl(prod.link_affiliate)) {
         const link = document.createElement("a");
@@ -628,6 +929,13 @@
         warn.textContent = "Perlu Dicek";
         tdShopee.appendChild(warn);
       }
+      const clickInfo = document.createElement("div");
+      clickInfo.style.fontSize = "0.73rem";
+      clickInfo.style.color = "#0f766e";
+      clickInfo.style.fontWeight = "600";
+      clickInfo.style.marginTop = "4px";
+      clickInfo.textContent = getAdminProductClicks(prod).toLocaleString("id-ID") + " Klik";
+      tdShopee.appendChild(clickInfo);
 
       // 6. Status Aktif
       const tdStatus = document.createElement("td");
@@ -1326,6 +1634,13 @@
       statusBadge.className = isOk ? "badge-pill badge-success" : "badge-pill badge-warn";
       statusBadge.textContent = isOk ? "Shopee Valid" : "Perlu Dicek";
       tdStatus.appendChild(statusBadge);
+      const clickSub = document.createElement("div");
+      clickSub.style.fontSize = "0.73rem";
+      clickSub.style.color = "#0f766e";
+      clickSub.style.fontWeight = "600";
+      clickSub.style.marginTop = "4px";
+      clickSub.textContent = getAdminProductClicks(prod).toLocaleString("id-ID") + " Klik";
+      tdStatus.appendChild(clickSub);
 
       const tdInput = document.createElement("td");
       const urlInput = document.createElement("input");

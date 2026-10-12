@@ -136,7 +136,7 @@ const products = [
     hargaCoret: "Rp70.000",
     diskon: "15%",
     gambar: "assets/products/Siomay-Ikan-Tenggiri-Frozen.jpg",
-    deskripsi: "Siomay ikan tenggiri frozen 10 pcs jumbo dengan tekstur lembut dan rasa gurih. Sangat cocok untuk camilan atau hidangan utama.",
+    deskripsi: "Siomay ikan tenggiri asli ukuran jumbo isi 10 pcs dengan tekstur kenyal lembut dan rasa ikan yang gurih terasa. Lengkap dengan bumbu kacang lezat, praktis tinggal dikukus.",
     kategori: "produk-olahan-ikan",
     linkAffiliate: "https://s.shopee.co.id/70KdySvDX6"
   },
@@ -147,7 +147,7 @@ const products = [
     hargaCoret: "Rp30.000",
     diskon: "53%",
     gambar: "assets/products/Otak-Otak-Ikan-Tenggiri-Fresh-Frozen.jpg",
-    deskripsi: "Otak otak ikan tenggiri fresh frozen isi 50pcs dengan tekstur lembut dan rasa gurih. Sangat cocok untuk camilan atau hidangan utama.",
+    deskripsi: "Otak-otak ikan tenggiri segar beku kemasan hemat isi 50 pcs. Gurih, lembut, bebas bahan pengawet, cocok digoreng maupun dikukus untuk camilan keluarga.",
     kategori: "produk-olahan-ikan",
     linkAffiliate: "https://s.shopee.co.id/5VVqC4JCA4"
   },
@@ -158,7 +158,7 @@ const products = [
     hargaCoret: "Rp35.000",
     diskon: "51%",
     gambar: "assets/products/Baby-Fish-Crispy-Original.jpg",
-    deskripsi: "Baby fish crispy original gurih daun jeruk 100gr. Sangat cocok untuk camilan atau hidangan utama.",
+    deskripsi: "Camilan bayi ikan air tawar goreng krispi dengan taburan bumbu original gurih dan aroma daun jeruk segar. Renyah tahan lama dan kaya kalsium.",
     kategori: "produk-olahan-ikan",
     linkAffiliate: "https://s.shopee.co.id/9zyFZ82pEA"
   },
@@ -169,7 +169,7 @@ const products = [
     hargaCoret: "Rp45.000",
     diskon: "35%",
     gambar: "assets/products/Edo-Chikuwa-Olahan-Ikan.jpg",
-    deskripsi: "Edo chikuwa olahan ikan 250 gr. Sangat cocok untuk camilan atau hidangan utama.",
+    deskripsi: "Olahan daging ikan putih premium berbentuk tabung khas Jepang (Chikuwa) 250gr. Tekstur kenyal gurih, cocok untuk isian sup tom yum, suki, bakso kuah, atau dibakar.",
     kategori: "produk-olahan-ikan",
     linkAffiliate: "https://s.shopee.co.id/113QqwF09o"
   },
@@ -180,7 +180,7 @@ const products = [
     hargaCoret: "Rp30.000",
     diskon: "43%",
     gambar: "assets/products/Dimsum-Frozen-Isi-32-500gr.jpg",
-    deskripsi: "Dimsum frozen isi 32 pcs 500gr. Sangat cocok untuk camilan atau hidangan utama.",
+    deskripsi: "Dimsum olahan ikan dan ayam pilihan isi 32 pcs (500gr) dengan kulit lembut dan isian padat gurih. Praktis dikukus kapan saja untuk hidangan keluarga.",
     kategori: "produk-olahan-ikan",
     linkAffiliate: "https://s.shopee.co.id/2LYoRfy7M5"
   },
@@ -191,7 +191,7 @@ const products = [
     hargaCoret: "Rp200.000",
     diskon: "11%",
     gambar: "assets/products/Basreng-KATAJI-Mentah-10Kg.jpg",
-    deskripsi: "Basreng KATAJI mentah 10Kg. Sangat cocok untuk camilan atau hidangan utama.",
+    deskripsi: "Bakso goreng (basreng) ikan mentah kualitas super kemasan usaha 10Kg. Irisan rapi, rasa ikan gurih terasa, renyah mekar saat digoreng dan tidak keras.",
     kategori: "produk-olahan-ikan",
     linkAffiliate: "https://s.shopee.co.id/30oVFLPZpQ"
   },
@@ -202,7 +202,7 @@ const products = [
     hargaCoret: "Rp40.000",
     diskon: "38%",
     gambar: "assets/products/Basreng-Lontong-Mentah-Juragan-Basreng-Ikan.jpg",
-    deskripsi: "Basreng lontong mentah juragan basreng ikan. Sangat cocok untuk camilan atau hidangan utama.",
+    deskripsi: "Adonan basreng ikan bentuk lontong mentah siap iris sesuai selera. Terbuat dari daging ikan pilihan dengan bumbu rempah gurih khas Bandung.",
     kategori: "produk-olahan-ikan",
     linkAffiliate: "https://s.shopee.co.id/5fpGQQVfpS"
   },
@@ -213,7 +213,7 @@ const products = [
     hargaCoret: "Rp30.000",
     diskon: "50%",
     gambar: "assets/products/Scallop-Ikan-Isi-40-Butir.jpg",
-    deskripsi: "Scallop ikan isi 40 butir. Sangat cocok untuk camilan atau hidangan utama.",
+    deskripsi: "Olahan daging ikan bentuk koin scallop isi 40 butir. Tekstur lembut gurih, sangat disukai anak-anak untuk lauk bekal sekolah atau camilan goreng.",
     kategori: "produk-olahan-ikan",
     linkAffiliate: "https://s.shopee.co.id/3g4C3L31xN"
   },
@@ -290,7 +290,7 @@ const products = [
     hargaCoret: "Rp25.000",
     diskon: "20%",
     gambar: "assets/products/Ikan-Pindang-Bandeng.jpg",
-    deskripsi: "Ikan pindang bandeng presto 200gr dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    deskripsi: "Bandeng presto pindang duri lunak 200gr yang diolah higienis dengan bumbu rempah tradisional meresap hingga ke tulang. Praktis tinggal digoreng sebentar.",
     kategori: "produk-olahan-ikan",
     linkAffiliate: "https://s.shopee.co.id/8AWfo4h1jw"
   },
@@ -393,7 +393,7 @@ const products = [
     hargaCoret: "Rp200.000",
     diskon: "11%",
     gambar: "assets/products/Lobster-Laut.jpg",
-    deskripsi: "Lobster laut segar dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    deskripsi: "Lobster laut segar pilihan ukuran 325gr dengan daging padat, manis alami, dan tekstur lembut. Dibekukan cepat untuk menjaga mutu kesegaran standar restoran seafood.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/7ptoCEEyoF"
   },
@@ -404,7 +404,7 @@ const products = [
     hargaCoret: "Rp80.000",
     diskon: "22%",
     gambar: "assets/products/Lobster-Tawar.jpg",
-    deskripsi: "Lobster tawar cook 1kg 20-40 pcs dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    deskripsi: "Lobster air tawar segar yang sudah direbus higienis (cooked frozen) kemasan 1kg isi 20-40 ekor. Daging manis gurih, praktis tinggal dimasak saus padang atau mentega.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/8fSvBzo9Jd"
   },
@@ -415,7 +415,7 @@ const products = [
     hargaCoret: "Rp72.000",
     diskon: "21%",
     gambar: "assets/products/Udang-Kupas.jpg",
-    deskripsi: "Udang kupas IQF premium 250gr dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    deskripsi: "Udang vaname kupas bersih tanpa kepala dan kulit dengan metode pembekuan IQF 250gr. Praktis langsung masak untuk tumisan, capcay, tempura, maupun MPASI.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/9APBll7Ud9"
   },
@@ -426,7 +426,7 @@ const products = [
     hargaCoret: "Rp50.000",
     diskon: "42%",
     gambar: "assets/products/Cumi-Besar.jpg",
-    deskripsi: "Cumi besar segar 1kg dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    deskripsi: "Cumi-cumi laut ukuran besar segar 1kg dengan daging tebal, kenyal empuk, dan tidak amis. Cocok untuk cumi bakar, goreng tepung calamari, atau dimasak hitam.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/3g4FFYb8XA"
   },
@@ -437,7 +437,7 @@ const products = [
     hargaCoret: "Rp60.000",
     diskon: "25%",
     gambar: "assets/products/Kerang-Dara.jpg",
-    deskripsi: "Kerang dara frozen fresh dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    deskripsi: "Kerang dara laut segar pilihan 1kg yang telah dibersihkan dan dibekukan cepat. Daging tebal manis gurih, lezat direbus maupun dimasak saus tiram dan asam manis.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/2VsHrq9UwA"
   },
@@ -448,7 +448,7 @@ const products = [
     hargaCoret: "Rp25.000",
     diskon: "32%",
     gambar: "assets/products/Kerang-Tahu.jpg",
-    deskripsi: "Kerang tahu premium fresh 500gr dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    deskripsi: "Kerang tahu segar 500gr bercangkang putih bersih dengan tekstur daging kenyal lembut. Sangat lezat untuk sup bening, tumis tauco, atau rebusan jahe.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/70KhEUyxsA"
   },
@@ -459,7 +459,7 @@ const products = [
     hargaCoret: "Rp60.000",
     diskon: "25%",
     gambar: "assets/products/Kerang-Remis.jpg",
-    deskripsi: "Remis Laya pensi haremis 1kg dengan daging lembut dan gurih.",
+    deskripsi: "Kerang remis (haremis) segar pilihan 1kg kaya protein dan mineral. Cocok diolah menjadi sup kuah kaldu gurih atau tumisan pedas.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/1AwuK7tqA"
   },
@@ -470,7 +470,7 @@ const products = [
     hargaCoret: "Rp17.000",
     diskon: "29%",
     gambar: "assets/products/Kerang-Hijau.jpg",
-    deskripsi: "Kerang hijau segar 1kg dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    deskripsi: "Kerang hijau laut segar 1kg ukuran besar dan berisi padat. Pilihan favorit untuk olahan kerang saus padang, bumbu kuning, atau rebusan serai.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/5VVtScExyD"
   },
@@ -481,7 +481,7 @@ const products = [
     hargaCoret: "Rp60.000",
     diskon: "20%",
     gambar: "assets/products/Ikan-Dory.jpg",
-    deskripsi: "Ikan Dory fillet fresh 1kg dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    deskripsi: "Fillet daging ikan dori bersih tanpa tulang dan duri kemasan 1kg. Tekstur daging putih sangat lembut, cocok untuk fish and chips, crispy fillet, maupun tim ikan.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/AAHkAyyvAV"
   },
@@ -492,7 +492,7 @@ const products = [
     hargaCoret: "Rp28.000",
     diskon: "29%",
     gambar: "assets/products/Rahang-Tuna.jpg",
-    deskripsi: "Rahang tuna beku segar 200-1000 gram per pcs dengan daging lembut dan gurih. Sangat cocok untuk dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus, atau dijadikan bagian dari hidangan seafood premium.",
+    deskripsi: "Potongan rahang ikan tuna segar berdaging tebal dan juicy kaya kolagen serta Omega-3. Bagian paling favorit untuk menu rahang tuna bakar khas Manado.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/8fSwOYLmYP"
   },
@@ -503,7 +503,7 @@ const products = [
     hargaCoret: "Rp40.000",
     diskon: "22%",
     gambar: "assets/products/Ikan-Baby-Tuna.jpg",
-    deskripsi: "Ikan baby tuna beku segar 1kg dengan daging lembut dan gurih.",
+    deskripsi: "Ikan baby tuna segar utuh 1kg hasil tangkapan laut dengan daging padat bernutrisi tinggi. Cocok untuk balado, gulai ikan, pindang, maupun bakar bumbu kecap.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/8fSwPOHgjS"
   },
@@ -514,7 +514,7 @@ const products = [
     hargaCoret: "Rp80.000",
     diskon: "15%",
     gambar: "assets/products/Ikan-Gurame.jpg",
-    deskripsi: "Ikan gurame beku segar 1kg dengan daging lembut dan gurih.",
+    deskripsi: "Ikan gurame segar 1kg yang sudah dibersihkan sisik dan insangnya, siap langsung diolah. Daging tebal lembut tanpa bau tanah, pas untuk gurame bakar atau asam manis.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/50Ze3C9wFQ"
   },
@@ -525,7 +525,7 @@ const products = [
     hargaCoret: "Rp40.000",
     diskon: "22%",
     gambar: "assets/products/Ikan-Barakuda.jpg",
-    deskripsi: "Ikan barakuda fresh 1kg dengan daging lembut dan gurih.",
+    deskripsi: "Ikan barakuda laut segar 1kg dengan karakter daging putih padat dan gurih. Sangat cocok untuk bahan baku pempek, otak-otak, maupun ikan bakar.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/3B7zs80NH6"
   },
@@ -536,7 +536,7 @@ const products = [
     hargaCoret: "Rp40.000",
     diskon: "37%",
     gambar: "assets/products/Ikan-Bawal.jpg",
-    deskripsi: "Ikan bawal air tawar segar 500gr dengan daging lembut dan gurih.",
+    deskripsi: "Ikan bawal air tawar segar 500gr berdaging tebal dan gurih. Nikmat digoreng kering maupun dibakar dengan olesan bumbu madu atau kecap pedas.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/4LJxGRmKkS"
   },
@@ -547,7 +547,7 @@ const products = [
     hargaCoret: "Rp55.000",
     diskon: "20%",
     gambar: "assets/products/Baby-Octopus.jpg",
-    deskripsi: "Baby octopus gurita segar 1kg dengan daging lembut dan gurih.",
+    deskripsi: "Baby octopus (gurita muda) segar 1kg yang telah dibersihkan higienis. Tekstur kenyal empuk, cocok untuk hidangan takoyaki, tumis pedas Korea, atau bakaran.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/9fLTcWlYrQ"
   },
@@ -558,7 +558,7 @@ const products = [
     hargaCoret: "Rp47.000",
     diskon: "25%",
     gambar: "assets/products/Ikan-Bawal-Putih.jpg",
-    deskripsi: "Ikan bawal putih bawal laut segar 500gr dengan daging lembut dan gurih.",
+    deskripsi: "Ikan bawal putih laut segar premium 500gr dengan tekstur daging super lembut dan rasa manis gurih alami. Terbaik untuk menu bawal kukus hongkong (steam) atau goreng.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/2BFShSOat8"
   },
@@ -569,7 +569,7 @@ const products = [
     hargaCoret: "Rp50.000",
     diskon: "12%",
     gambar: "assets/products/Ikan-Patin.jpg",
-    deskripsi: "Ikan patin segar 1kg dengan daging lembut dan gurih.",
+    deskripsi: "Ikan patin segar pilihan 1kg dengan daging lembut gurih kaya lemak sehat. Sangat lezat diolah menjadi pindang patin, sup ikan, atau patin bakar bambu.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/AKbAS1xQPH"
   },
@@ -580,7 +580,7 @@ const products = [
     hargaCoret: "Rp77.000",
     diskon: "15%",
     gambar: "assets/products/Ikan-Kuwe.jpg",
-    deskripsi: "Ikan kuwe segar 300gr dengan daging lembut dan gurih.",
+    deskripsi: "Ikan kuwe laut segar 300gr favorit pecinta kuliner bahari karena dagingnya yang padat, gurih, dan tidak mudah hancur saat dibakar di atas bara.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/60SBGzffo5"
   },
@@ -591,7 +591,7 @@ const products = [
     hargaCoret: "Rp30.000",
     diskon: "47%",
     gambar: "assets/products/Ikan-Layang.jpg",
-    deskripsi: "Ikan layang 1kg dengan daging lembut dan gurih.",
+    deskripsi: "Ikan layang laut segar 1kg ekonomis dan kaya protein untuk lauk harian keluarga. Lezat digoreng garing, dimasak pindang, maupun sambal balado.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/4qGDuPFwBW"
   },
@@ -602,7 +602,7 @@ const products = [
     hargaCoret: "Rp32.000",
     diskon: "34%",
     gambar: "assets/products/Kerang-Tiram.jpg",
-    deskripsi: "Kerang tiram/oyster laut fresh dengan daging lembut dan gurih.",
+    deskripsi: "Kerang tiram (oyster) laut segar pilihan dengan cita rasa khas laut yang kaya nutrisi seng (zinc) dan protein. Cocok untuk tiram bakar keju atau tumis bawang putih.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/5At4JFTV26"
   },
@@ -613,7 +613,7 @@ const products = [
     hargaCoret: "Rp45.000",
     diskon: "18%",
     gambar: "assets/products/Ikan-Ayam.jpg",
-    deskripsi: "Ikan ayam ayam premium segar 750gr dengan daging lembut dan gurih.",
+    deskripsi: "Ikan ayam-ayam (leatherjacket fish) laut segar 750gr dengan tekstur daging putih tebal mirip daging ayam yang sangat lezat saat dibakar.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/8fSwSUFGkr"
   },
@@ -624,7 +624,7 @@ const products = [
     hargaCoret: "Rp55.000",
     diskon: "24%",
     gambar: "assets/products/Ikan-Baronang.jpg",
-    deskripsi: "Ikan baronang segar 100gr dengan daging lembut dan gurih.",
+    deskripsi: "Ikan baronang laut segar pilihan dengan daging putih manis dan gurih. Sangat populer untuk menu baronang bakar rica atau sambal dabu-dabu.",
     kategori: "ikan-seafood-segar",
     linkAffiliate: "https://s.shopee.co.id/1LgLifLLvz"
   },
@@ -637,7 +637,7 @@ const products = [
     hargaCoret: "Rp50.000",
     diskon: "40%",
     gambar: "assets/products/umpan-kucur.jpg",
-    deskripsi: "Umpan kucur paket 500 gram + free STIK",
+    deskripsi: "Umpan kucur fermentasi khas sungai kemasan 500gr lengkap gratis stik pemasang. Aroma tajam teruji ampuh memikat ikan baung, patin sungai, dan tapah.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/AKbCKkvGOG"
   },
@@ -648,7 +648,7 @@ const products = [
     hargaCoret: "Rp170.000",
     diskon: "7%",
     gambar: "assets/products/reel-pancing.jpg",
-    deskripsi: "Reel pancing VX1000-7000 dengan desain ergonomis dan performa tinggi.",
+    deskripsi: "Reel pancing spinning seri VX1000-7000 dengan putaran halus, bodi kokoh tahan korosi, dan tarikan drag stabil untuk mancing kolam maupun perairan liar.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/1gJE18BiJL"
   },
@@ -659,7 +659,7 @@ const products = [
     hargaCoret: "Rp20.000",
     diskon: "45%",
     gambar: "assets/products/kail-hook.jpg",
-    deskripsi: "Kail hook pancing Chinu 1053 hitam black nickel 1 dengan desain ergonomis dan performa tinggi.",
+    deskripsi: "Mata kail pancing Chinu 1053 bahan baja karbon berlapis black nickel yang super tajam, kuat, dan tahan karat untuk berbagai ukuran ikan target.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/60SDBOVOQ3"
   },
@@ -670,7 +670,7 @@ const products = [
     hargaCoret: "Rp210.000",
     diskon: "8%",
     gambar: "assets/products/essen-pertamax.jpg",
-    deskripsi: "Essen PERTAMAX TURBO + Murni dengan kualitas terbaik untuk memancing.",
+    deskripsi: "Essen pancing konsentrat murni beraroma kuat dan tahan lama di dalam air. Dirancang untuk mempercepat sambaran ikan di kolam harian maupun galatama.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/4qGFnQo9sX"
   },
@@ -681,7 +681,7 @@ const products = [
     hargaCoret: "Rp80.000",
     diskon: "16%",
     gambar: "assets/products/siraman-serangga.jpg",
-    deskripsi: "Siraman serangga (SIRANGGA) dengan kualitas terbaik untuk memancing.",
+    deskripsi: "Cairan atraktan siraman ekstrak serangga alami untuk campuran umpan pancing. Meningkatkan nafsu makan ikan target secara cepat di air keruh maupun jernih.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/4VdPOvGq5n"
   },
@@ -692,7 +692,7 @@ const products = [
     hargaCoret: "Rp170.000",
     diskon: "18%",
     gambar: "assets/products/joran-tegek.jpg",
-    deskripsi: "Joran tegek kaku limited & super leader dengan desain ergonomis dan performa tinggi.",
+    deskripsi: "Joran pancing tegek ruas berbahan serat karbon kaku, ringan di tangan, dan berdaya lentur tangguh untuk menaklukkan tarikan ikan nila, mas, dan baronang.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/1VznpXLrl3"
   },
@@ -703,7 +703,7 @@ const products = [
     hargaCoret: "Rp50.000",
     diskon: "22%",
     gambar: "assets/products/paket-timah.jpg",
-    deskripsi: "Paket timah pancing komplit lengkap 130pcs dengan kualitas terbaik untuk memancing.",
+    deskripsi: "Satu kotak lengkap berisi 130 pcs pemberat timah pancing berbagai ukuran. Praktis dibawa memancing untuk menyesuaikan arus dan kedalaman air.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/5fpMnJCFbV"
   },
@@ -758,7 +758,7 @@ const products = [
     hargaCoret: "Rp50.000",
     diskon: "58%",
     gambar: "assets/products/AQUASEA-Tali-Pancing.jpg",
-    deskripsi: "Tali pancing berkualitas tinggi dari Germany dengan panjang 200 meter, cocok untuk memancing ikan di berbagai jenis air.",
+    deskripsi: "Senar pancing monofilamen teknologi Jerman sepanjang 200 meter yang kuat, lembut, tahan gesekan, dan mudah tenggelam di dalam air.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/3g48uACWxh"
   },
@@ -769,7 +769,7 @@ const products = [
     hargaCoret: "Rp66.000",
     diskon: "12%",
     gambar: "assets/products/Tali-Pancing-Sensor-Bright.jpg",
-    deskripsi: "Tali pancing berkualitas tinggi dari Germany dengan panjang 200 meter, cocok untuk memancing ikan di berbagai jenis air.",
+    deskripsi: "Senar pancing Sensor Bright 200m dengan visibilitas tinggi dan kekuatan simpul ekstra, memudahkan pemancing mendeteksi pergerakan umpan dengan akurat.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/5fpMnk4dz2"
   },
@@ -780,7 +780,7 @@ const products = [
     hargaCoret: "Rp37.000",
     diskon: "32%",
     gambar: "assets/products/JELLYFISH-Umpan-Pengganti-Lumut.jpg",
-    deskripsi: "Umpan pengganti lumut berkualitas tinggi untuk memancing ikan di berbagai jenis air.",
+    deskripsi: "Umpan praktis pengganti lumut bertekstur serat lembut di dalam air. Sangat efektif untuk memancing ikan nila dan mujair di waduk, sungai, maupun kolam.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/7AeAaa0h8i"
   },
@@ -791,7 +791,7 @@ const products = [
     hargaCoret: "Rp76.000",
     diskon: "18%",
     gambar: "assets/products/Siraman-Cacing.jpg",
-    deskripsi: "Umpan pengganti lumut berkualitas tinggi untuk memancing ikan di berbagai jenis air.",
+    deskripsi: "Cairan atraktan siraman khusus media umpan cacing dan pelet. Memperkuat jejak aroma amis alami agar ikan target lebih cepat berkumpul di titik lapak.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/gQgsJszeX"
   },
@@ -802,7 +802,7 @@ const products = [
     hargaCoret: "Rp37.000",
     diskon: "32%",
     gambar: "assets/products/Umpan-Pancing-Olahan-SAWIT-GURIH-WANGI.jpg",
-    deskripsi: "Umpan pengganti lumut berkualitas tinggi untuk memancing ikan di berbagai jenis air.",
+    deskripsi: "Umpan pancing olahan sari buah kelapa sawit matang dengan perpaduan aroma gurih wangi alami yang sangat disukai ikan mas, patin, bawal, dan nilem.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/8V9YCukvhb"
   },
@@ -813,7 +813,7 @@ const products = [
     hargaCoret: "Rp120.000",
     diskon: "21%",
     gambar: "assets/products/Tas-Pancing-Joran-Anti-Air-Waterproof.jpg",
-    deskripsi: "Umpan pengganti lumut berkualitas tinggi untuk memancing ikan di berbagai jenis air.",
+    deskripsi: "Tas joran pancing berbahan kanvas waterproof tebal anti air dengan jahitan kuat. Melindungi joran, reel, dan kotak perkakas pancing agar rapi dan aman dibawa.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/5fpMpreXv9"
   },
@@ -824,7 +824,7 @@ const products = [
     hargaCoret: "Rp37.000",
     diskon: "32%",
     gambar: "assets/products/Stopper-Pancing-premium.jpg",
-    deskripsi: "Stopper pancing kualitas premium berbahan kaca transparan yang dirancang untuk penggunaan lebih halus",
+    deskripsi: "Stopper senar pancing premium isi 100 pcs berbahan silikon kaca transparan yang mencengkeram senar dengan presisi tanpa merusak lapisan senar.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/30obfIVpnI"
   },
@@ -835,7 +835,7 @@ const products = [
     hargaCoret: "Rp95.000",
     diskon: "18%",
     gambar: "assets/products/Booster-Attractant-Essen-Ikan-Laut.jpg",
-    deskripsi: "Booster Attractant Terbaik untuk Memancing Ikan Liar di Laut",
+    deskripsi: "Cairan booster atraktan 100ml khusus mancing laut (saltwater). Aroma amis tajam merangsang insting sambar ikan predator karang dan laut dalam.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/1B05x4Znq"
   },
@@ -846,7 +846,7 @@ const products = [
     hargaCoret: "Rp60.000",
     diskon: "27%",
     gambar: "assets/products/Tali-Pancing-TARANTULA-500m.jpg",
-    deskripsi: "Tali pancing berkualitas tinggi untuk memancing ikan di berbagai jenis air.",
+    deskripsi: "Senar pancing Tarantula gulungan besar 500 meter berdaya regang rendah dan tahan abrasi tinggi, tangguh untuk mancing sungai, danau, hingga tepi laut.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/9V25PViy1Y"
   },
@@ -857,7 +857,7 @@ const products = [
     hargaCoret: "Rp140.000",
     diskon: "15%",
     gambar: "assets/products/Box-Umpan-Pancing-40CM.jpg",
-    deskripsi: "Box umpan pancing 40cm untuk menyimpan dan mengangkut umpan pancing.",
+    deskripsi: "Kotak perkakas pancing (tackle box) ukuran 40cm dengan sekat kompartemen rapi untuk menyimpan kail, lure, timah, stopper, dan peralatan mancing.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/7ptrRGmvcB"
   },
@@ -868,7 +868,7 @@ const products = [
     hargaCoret: "Rp40.000",
     diskon: "38%",
     gambar: "assets/products/umpan-pancing-popper-big-bait.jpg",
-    deskripsi: "Umpan pancing popper big bait 12.5cm 40g",
+    deskripsi: "Umpan tiruan (lure) tipe popper 12.5cm berat 40g dengan cipratan air berisik yang memancing sambaran agresif ikan predator laut seperti GT dan barakuda.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/40h8rgkk1o"
   },
@@ -890,7 +890,7 @@ const products = [
     hargaCoret: "Rp65.000",
     diskon: "22%",
     gambar: "assets/products/Umpan-Pancing-Casting-Lure.jpg",
-    deskripsi: "Umpan pancing casting lure untuk memancing ikan di berbagai jenis air.",
+    deskripsi: "Umpan casting lure realistis dengan gerakan renang stabil dan mata kail treble tajam, efektif untuk berburu ikan gabus, hampala, dan kakap bakau.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/W7GiPysya"
   },
@@ -912,7 +912,7 @@ const products = [
     hargaCoret: "Rp140.000",
     diskon: "10%",
     gambar: "assets/products/JERSEY-MANCING-CUSTOM-SATUAN.jpg",
-    deskripsi: "UMPAN MANCING GALATAMA LELE PATIN MAS",
+    deskripsi: "Baju kaos jersey mancing lengan panjang berbahan dry-fit sejuk, cepat kering, dan melindungi kulit dari sinar UV matahari. Bisa custom nama dan desain satuan.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/qk77zjHNP"
   },
@@ -923,7 +923,7 @@ const products = [
     hargaCoret: "Rp400.000",
     diskon: "6%",
     gambar: "assets/products/SeaHunter-Starfall-Power-Handle-Spinning-Fishing-Reel.jpg",
-    deskripsi: "Max Drag 20 kg: 3 set bantalan rem komposit (3 besi + 3 serat karbon) untuk pengereman halus",
+    deskripsi: "Reel spinning SeaHunter Starfall dilengkapi Power Handle ergonomis dan Max Drag 20 kg (3 bantalan rem besi + 3 serat karbon) untuk pertarungan ikan besar.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/1qceK72Vdo"
   },
@@ -934,7 +934,7 @@ const products = [
     hargaCoret: "Rp120.000",
     diskon: "22%",
     gambar: "assets/products/SeaHunter-Black-Arrow-Senar-PE-X8.jpg",
-    deskripsi: "Bahan berkualitas tinggi yang diimpor dari Jepang, dengan teknologi tenun kompresi kepadatan tinggi.",
+    deskripsi: "Senar pancing braided PE X8 kepangan 8 serat teknologi Jepang yang super bulat, halus saat dilempar jauh, dan memiliki kekuatan tarik maksimal.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/4LJzIqPqsc"
   },
@@ -945,7 +945,7 @@ const products = [
     hargaCoret: "Rp39.000",
     diskon: "33%",
     gambar: "assets/products/Topi-Gunung-Outdoor-Pria-Wanita.jpg",
-    deskripsi: "Topi gunung outdoor yang nyaman dan tahan lama, cocok untuk aktivitas di luar ruangan.",
+    deskripsi: "Topi outdoor rimba pria dan wanita berbahan ringan cepat kering dengan sirkulasi udara sejuk, nyaman dipakai memancing, berkemah, dan aktivitas lapangan.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/8pmOfMo1lU"
   },
@@ -956,7 +956,7 @@ const products = [
     hargaCoret: "Rp40.000",
     diskon: "28%",
     gambar: "assets/products/TrailTop-Topi-Mancing.jpg",
-    deskripsi: "Topi gunung outdoor yang nyaman dan tahan lama, cocok untuk aktivitas di luar ruangan.",
+    deskripsi: "Topi mancing TrailTop berdesain sporty dengan lidah topi lebar pelindung silau matahari di atas perairan, ringan dan nyaman dipakai seharian.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/30obkZbmiT"
   },
@@ -967,7 +967,7 @@ const products = [
     hargaCoret: "Rp150.000",
     diskon: "20%",
     gambar: "assets/products/Topi-Mancing-anti-UV-Masker-Jepang.jpg",
-    deskripsi: "Topi gunung outdoor yang nyaman dan tahan lama, cocok untuk aktivitas di luar ruangan.",
+    deskripsi: "Topi mancing full-protection gaya Jepang lengkap dengan penutup leher dan masker wajah anti-UV 360 derajat, menjaga wajah tetap teduh saat memancing di terik matahari.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/6fhu7d5IWV"
   },
@@ -978,7 +978,7 @@ const products = [
     hargaCoret: "Rp60.000",
     diskon: "25%",
     gambar: "assets/products/AGA-Essen-MICRO-CACING-Premium.jpg",
-    deskripsi: "Campuran Umpan Pancing Ikan Khusus Media Cacing 15ml",
+    deskripsi: "Essen konsentrat khusus olesan/tetesan umpan cacing 15ml yang melipatgandakan daya pikat aroma cacing untuk mancing ikan lele, bawal, patin, dan nila.",
     kategori: "pancing-umpan",
     linkAffiliate: "https://s.shopee.co.id/8pmOhtMYs8"
   },
@@ -1007,7 +1007,7 @@ const products = [
     hargaCoret: "Rp60.000",
     diskon: "25%",
     gambar: "assets/products/Pelet-Makanan-Ikan-Koi-1kg.jpg",
-    deskripsi: "Mesin pompa aerasi 4 cabang bertenaga stabil dengan suara halus (silent operation) dan hemat daya listrik. Menjaga suplai oksigen terlarut kolam tetap prima.",
+    deskripsi: "Pelet pakan ikan koi apung 1kg bernutrisi seimbang dengan kandungan protein tinggi dan spirulina untuk mendukung pertumbuhan badan ideal serta warna cerah.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "pakan",
     linkAffiliate: "https://s.shopee.co.id/4qGFxpHusZ"
@@ -1019,7 +1019,7 @@ const products = [
     hargaCoret: "Rp12.000",
     diskon: "58%",
     gambar: "assets/products/Takari-Pakan-Ikan-mix-1-mm-100-gr.jpg",
-    deskripsi: "Makanan Ikan Pelet Ikan Makanan Pakan Ikan Hias",
+    deskripsi: "Pakan pelet butiran mikro 1mm kemasan 100gr khusus ikan hias kecil. Mudah dicerna, kaya vitamin, dan tidak membuat air akuarium cepat keruh.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "pakan",
     linkAffiliate: "https://s.shopee.co.id/40h8yqcyfI"
@@ -1031,7 +1031,7 @@ const products = [
     hargaCoret: "Rp110.000",
     diskon: "14%",
     gambar: "assets/products/Makanan-Pelet-Ikan-Predator-Carnivore-300gr.jpg",
-    deskripsi: "Makanan pelet ikan predator carnivore 300gr untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Pelet khusus ikan predator (carnivore) 300gr tinggi protein hewani dan kalsium untuk memacu pertumbuhan channa, arwana, oscar, dan pbass.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "pakan",
     linkAffiliate: "https://s.shopee.co.id/9KigDD2lRV"
@@ -1043,7 +1043,7 @@ const products = [
     hargaCoret: "Rp30.000",
     diskon: "17%",
     gambar: "assets/products/Pakan-Ikan-Cacing-Sutera-Sutra-Kering-Tubifex.jpg",
-    deskripsi: "Pakan ikan cacing sutera/sutra kering tubifex untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Cacing sutera (tubifex) kering beku berbentuk kubus praktis yang higienis, bebas parasit, dan sangat tinggi protein untuk burayak maupun ikan hias.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "pakan",
     linkAffiliate: "https://s.shopee.co.id/BURIT7bt9"
@@ -1055,7 +1055,7 @@ const products = [
     hargaCoret: "Rp40.000",
     diskon: "38%",
     gambar: "assets/products/Pelet-Ikan-Koi-850gr.jpg",
-    deskripsi: "Pelet ikan koi color booster mix maggot BSFL (c) 850gr untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Pelet ikan koi 850gr yang diperkaya ekstrak maggot BSF dan astaxanthin alami untuk mencerahkan corak warna merah-putih koi sekaligus meningkatkan imun.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "pakan",
     linkAffiliate: "https://s.shopee.co.id/3B82sAEIJn"
@@ -1067,7 +1067,7 @@ const products = [
     hargaCoret: "Rp100.000",
     diskon: "11%",
     gambar: "assets/products/Red-Maggot-with-Beta-carotene.jpg",
-    deskripsi: "Red Maggot with Beta-carotene untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Maggot kering premium yang diperkaya Beta-Carotene untuk mendongkrak pigmen warna merah alami dan mempertebal bodi ikan predator maupun ikan hias.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "pakan",
     linkAffiliate: "https://s.shopee.co.id/6L54eB24Bp"
@@ -1085,7 +1085,7 @@ const products = [
     hargaCoret: "Rp90.000",
     diskon: "14%",
     gambar: "assets/products/Bibit-Ikan_Lele-per-100-ekor.jpg",
-    deskripsi: "Bibit Ikan Lele per 100 ekor untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Paket 100 ekor bibit ikan lele sehat, lincah, dan bebas jamur hasil pemijahan induk unggul. Pertumbuhan cepat dan daya tahan tinggi di kolam terpal maupun tanah.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "benih",
     linkAffiliate: "https://s.shopee.co.id/30ocevlQrn"
@@ -1097,7 +1097,7 @@ const products = [
     hargaCoret: "Rp10.000",
     diskon: "30%",
     gambar: "assets/products/gurame-soang-size-3-jari-ikan-air-tawar.jpg",
-    deskripsi: "gurame soang size 3 jari ikan air tawar untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Benih ikan gurame jenis soang ukuran 3 jari yang sehat dan aktif makan. Varietas unggulan dengan laju pertumbuhan lebih cepat untuk budidaya kolam.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "benih",
     linkAffiliate: "https://s.shopee.co.id/5LCXRLU1aO"
@@ -1109,7 +1109,7 @@ const products = [
     hargaCoret: "Rp30.000",
     diskon: "33%",
     gambar: "assets/products/Benih-2-3-cm-per-100-ekor.jpg",
-    deskripsi: "Benih bibit ikan lele Sangkuriang ukuran 2-3 cm per 100 ekor untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Paket 100 ekor benih lele Sangkuriang ukuran 2-3 cm berkualitas seragam, gesit, dan hemat pakan (FCR rendah) untuk pembesaran budidaya.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "benih",
     linkAffiliate: "https://s.shopee.co.id/4qGGqmbCdF"
@@ -1127,7 +1127,7 @@ const products = [
     hargaCoret: "Rp1.200.000",
     diskon: "20%",
     gambar: "assets/products/FFC-15-Mesin-Penepung-Disk-Mill.jpg",
-    deskripsi: " Alat Serbaguna Kompak Kapasitas 50-60 kg/jam Berat 18 kg",
+    deskripsi: "Mesin penepung serbaguna FFC-15 (Disk Mill) kapasitas 50-60 kg/jam untuk menggiling bahan baku pakan ikan mandiri seperti jagung, dedak, dan tepung ikan.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "alat-aksesoris",
     linkAffiliate: "https://s.shopee.co.id/6q1KMKUKWk"
@@ -1259,7 +1259,7 @@ const products = [
     hargaCoret: "Rp120.000",
     diskon: "18%",
     gambar: "assets/products/1-Set-aquarium-akrilik.jpg",
-    deskripsi: "1 set aquarium akrilik 2 meter tinggi 90 cm untuk budidaya ikan, terbuat dari bahan berkualitas tinggi yang tahan lama dan mudah dipasang.",
+    deskripsi: "Satu set akuarium akrilik bening kristal yang ringan, tahan pecah, dan elegan untuk memelihara ikan hias di meja kerja maupun ruang keluarga.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "alat-aksesoris",
     linkAffiliate: "https://s.shopee.co.id/113Y928ygk"
@@ -1271,7 +1271,7 @@ const products = [
     hargaCoret: "Rp140.000",
     diskon: "21%",
     gambar: "assets/products/Orcarium-Lobe-Series-Akuarium-SOLITER.jpg",
-    deskripsi: "Orcarium Lobe Series Akuarium SOLITER untuk budidaya ikan, terbuat dari bahan berkualitas tinggi yang tahan lama dan mudah dipasang.",
+    deskripsi: "Akuarium soliter Orcarium Lobe Series berdesain modern minimalis dengan sudut lengkung rapi, sangat ideal untuk display ikan cupang, guppy, dan channa.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "alat-aksesoris",
     linkAffiliate: "https://s.shopee.co.id/3qNjWMivha"
@@ -1403,7 +1403,7 @@ const products = [
     hargaCoret: "Rp1.600.000",
     diskon: "9%",
     gambar: "assets/products/kolam-terpal-bulat-fullset-orchid.jpg",
-    deskripsi: "kolam Terpal Bulat Fullset Diameter 3 tinggi 1,2 Merk orchid",
+    deskripsi: "Paket lengkap (fullset) kolam terpal bulat diameter 3 meter tinggi 1,2 meter bahan semi-karet Orchid tebal lengkap rangka besi wiremesh dan saluran pembuangan.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "alat-aksesoris",
     linkAffiliate: "https://s.shopee.co.id/9zyMydrVnc"
@@ -1415,7 +1415,7 @@ const products = [
     hargaCoret: "Rp130.000",
     diskon: "22%",
     gambar: "assets/products/Diffuser-Aerasi-Gelembung-Halus-Grade-B-Import.jpg",
-    deskripsi: "Diffuser Aerasi Gelembung Halus Grade B Import untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Piringan diffuser aerasi pemecah oksigen gelembung mikro halus (fine bubble) untuk memaksimalkan kadar oksigen terlarut (DO) di kolam bioflok dan tambak.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "alat-aksesoris",
     linkAffiliate: "https://s.shopee.co.id/2qVCRs0eYQ"
@@ -1427,7 +1427,7 @@ const products = [
     hargaCoret: "Rp400.000",
     diskon: "13%",
     gambar: "assets/products/Drum-budidaya-ikan-200L.jpg",
-    deskripsi: "Drum budidaya ikan 200L untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Tong/drum plastik HDPE tebal kapasitas 200 liter tahan cuaca untuk budidaya ikan lahan sempit (budikdamber), tandon air kolam, maupun fermentasi pakan.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "alat-aksesoris",
     linkAffiliate: "https://s.shopee.co.id/1VzosSAwtQ"
@@ -1475,7 +1475,7 @@ const products = [
     hargaCoret: "Rp130.000",
     diskon: "12%",
     gambar: "assets/products/Box-Container-Serbaguna-Tipe-Rabbit.jpg",
-    deskripsi: "Box container serbaguna tipe rabbit (untuk kolam ikan hias) untuk berbagai keperluan di kolam ikan hias. Tahan terhadap cuaca panas ekstrem dan tidak mudah rapuh.",
+    deskripsi: "Box kontainer plastik tebal tipe Rabbit yang kokoh dan tahan banting, sangat praktis untuk karantina ikan hias, pemijahan, maupun wadah filter chamber.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "alat-aksesoris",
     linkAffiliate: "https://s.shopee.co.id/5LCZGVObUx"
@@ -1487,7 +1487,7 @@ const products = [
     hargaCoret: "Rp100.000",
     diskon: "26%",
     gambar: "assets/products/Baskom-Plastik-Besar-Kotak.jpg",
-    deskripsi: "Baskom plastik besar kotak untuk berbagai keperluan di kolam ikan hias. Tahan terhadap cuaca panas ekstrem dan tidak mudah rapuh.",
+    deskripsi: "Bak/baskom plastik kotak ukuran besar berbahan tebal dan awet untuk wadah penampungan benih ikan, sortir panen, maupun kultur pakan alami.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "alat-aksesoris",
     linkAffiliate: "https://s.shopee.co.id/1gJGtJXEjb"
@@ -1505,7 +1505,7 @@ const products = [
     hargaCoret: "Rp140.000",
     diskon: "12%",
     gambar: "assets/products/Bakteri-Starter-Untuk-Koi.jpg",
-    deskripsi: "Bakteri starter untuk koi untuk menjaga kesehatan ikan dan menjaga kualitas air.",
+    deskripsi: "Bakteri starter aktif pengurai amonia dan nitrit untuk mempercepat kematangan ekosistem air kolam koi baru agar tetap jernih dan sehat.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "suplemen",
     linkAffiliate: "https://s.shopee.co.id/7ptsMYD0jf"
@@ -1517,7 +1517,7 @@ const products = [
     hargaCoret: "Rp40.000",
     diskon: "38%",
     gambar: "assets/products/BOSTER-AQUAENZYM-100-Gram.jpg",
-    deskripsi: "BOSTER AQUAENZYM (100 Gram) untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Suplemen enzim perikanan Boster Aquaenzym 100gr untuk memperbaiki pencernaan ikan dan menguraikan sisa pakan di dasar kolam budidaya.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "suplemen",
     linkAffiliate: "https://s.shopee.co.id/1qcfEjfeEd"
@@ -1529,7 +1529,7 @@ const products = [
     hargaCoret: "Rp20.000",
     diskon: "40%",
     gambar: "assets/products/Nitrobacter-Original-Probiotik.jpg",
-    deskripsi: "Nitrobacter Original Probiotik untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Probiotik bakteri nitrifikasi (Nitrobacter) murni untuk menjernihkan air kolam/akuarium, menghilangkan bau amis, dan menekan gas beracun amonia.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "suplemen",
     linkAffiliate: "https://s.shopee.co.id/3qNjdRsvcQ"
@@ -1541,7 +1541,7 @@ const products = [
     hargaCoret: "Rp40.000",
     diskon: "25%",
     gambar: "assets/products/AQUAPROENZYM-100g.jpg",
-    deskripsi: "AQUAPROENZYM 100g untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Enzim probiotik Aquaproenzym 100g untuk meningkatkan penyerapan nutrisi pakan pada ikan dan udang serta menjaga kestabilan pH air tambak.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "suplemen",
     linkAffiliate: "https://s.shopee.co.id/5At7E36yKh"
@@ -1553,7 +1553,7 @@ const products = [
     hargaCoret: "Rp25.000",
     diskon: "28%",
     gambar: "assets/products/tetes-tebu-molase-asli-murni-100.jpg",
-    deskripsi: "Tetes Tebu/Molase Asli Murni 100% untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Tetes tebu (molase) kental 100% murni sebagai sumber karbon utama untuk pengaktifan bakteri probiotik dan sistem budidaya kolam bioflok.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "suplemen",
     linkAffiliate: "https://s.shopee.co.id/2gBmFvejE2"
@@ -1565,7 +1565,7 @@ const products = [
     hargaCoret: "Rp60.000",
     diskon: "18%",
     gambar: "assets/products/mayin-water-stabilizer-aquarium.jpg",
-    deskripsi: "Mayin Water Stabilizer aquarium untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Cairan kondisioner penjernih dan penstabil parameter air akuarium Mayin. Menetralisir klorin, logam berat, dan mengurangi stres pada ikan baru.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "suplemen",
     linkAffiliate: "https://s.shopee.co.id/4qGKKa7KPl"
@@ -1577,7 +1577,7 @@ const products = [
     hargaCoret: "Rp65.000",
     diskon: "23%",
     gambar: "assets/products/mayin-probiotic-nitrifying-bacteria-probiotik.jpg",
-    deskripsi: "MAYIN Probiotic & Nitrifying Bacteria Probiotik untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Formula bakteri probiotik dan nitrifikasi Mayin konsentrasi tinggi untuk menjaga kejernihan air kristal dan mengurai kotoran organik di filter akuarium.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "suplemen",
     linkAffiliate: "https://s.shopee.co.id/AAHqgZ5kSw"
@@ -1589,7 +1589,7 @@ const products = [
     hargaCoret: "Rp60.000",
     diskon: "18%",
     gambar: "assets/products/mayin-micronutrient-supplement.jpg",
-    deskripsi: "MAYIN Micronutrient Supplement untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Suplemen mikronutrisi dan mineral esensial Mayin untuk memperkuat daya tahan tubuh ikan hias, mencegah penyakit, dan mencerahkan sisik ikan.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "suplemen",
     linkAffiliate: "https://s.shopee.co.id/50ZkXDOsLg"
@@ -1601,7 +1601,7 @@ const products = [
     hargaCoret: "Rp25.000",
     diskon: "28%",
     gambar: "assets/products/tetes-tebu-molase-asli-murni-100.jpg",
-    deskripsi: "Tetes Tebu/Molase Asli Murni 100% untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Tetes tebu (molase) kental 100% murni sebagai sumber karbon utama untuk pengaktifan bakteri probiotik dan sistem budidaya kolam bioflok.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "suplemen",
     linkAffiliate: "https://s.shopee.co.id/2gBmFvejE2"
@@ -1613,7 +1613,7 @@ const products = [
     hargaCoret: "Rp45.000",
     diskon: "13%",
     gambar: "assets/products/molase-tetes-tebu-murni-5kg.jpg",
-    deskripsi: "molase tetes tebu murni 5kg untuk menjaga kesehatan ikan dan kualitas air akuarium.",
+    deskripsi: "Jerigen hemat 5kg molase tetes tebu murni berkualitas pekat untuk kebutuhan rutin aplikasi probiotik tambak udang dan kolam ikan bioflok.",
     kategori: "Benih-Pakan-Budidaya",
     kelompok: "suplemen",
     linkAffiliate: "https://s.shopee.co.id/qk84fa9Kb"
@@ -2045,11 +2045,14 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   function getProductClickCount(prodId) {
+    const prodObj = products.find(function (p) { return Number(p.id) === Number(prodId); });
+    const dbClicks = prodObj && typeof prodObj.klik === "number" && prodObj.klik > 0 ? prodObj.klik : 0;
+    const baseClicks = Math.max(dbClicks, baselineProductClicks[prodId] || 100);
     try {
       const savedClicks = JSON.parse(localStorage.getItem("aquaagri_clicks") || "{}");
-      return (baselineProductClicks[prodId] || 100) + (savedClicks[prodId] || 0);
+      return baseClicks + (savedClicks[prodId] || 0);
     } catch (e) {
-      return baselineProductClicks[prodId] || 100;
+      return baseClicks;
     }
   }
 
@@ -2059,6 +2062,16 @@ document.addEventListener("DOMContentLoaded", function () {
       const savedClicks = JSON.parse(localStorage.getItem("aquaagri_clicks") || "{}");
       savedClicks[prodId] = (savedClicks[prodId] || 0) + 1;
       localStorage.setItem("aquaagri_clicks", JSON.stringify(savedClicks));
+    } catch (e) {}
+
+    // Kirim pencatatan klik ke Supabase secara asinkron (jika RPC tersedia)
+    try {
+      if (typeof window.getAquaAgriSupabaseClient === "function") {
+        const sb = window.getAquaAgriSupabaseClient();
+        if (sb) {
+          sb.rpc("increment_product_click", { product_id: Number(prodId) }).then(function () {}).catch(function () {});
+        }
+      }
     } catch (e) {}
   }
 
@@ -3084,18 +3097,138 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Kamera Search (Upload / Scan foto produk)
+  // Kamera Search Pintar (Analisis Nama File + Profil Visual Warna & Tekstur HTML5 Canvas)
+  function analyzeCameraImageForSearch(file) {
+    return new Promise(function (resolve) {
+      const rawName = (file && file.name ? file.name : "").toLowerCase();
+      // 1. Cek kecocokan langsung dengan nama gambar produk di katalog
+      const exactImgMatch = products.find(function (p) {
+        const base = (p.gambar || "").split("/").pop().toLowerCase().replace(/\.[a-z0-9]+$/, "");
+        const cleanFile = rawName.replace(/\.[a-z0-9]+$/, "");
+        return base && cleanFile && (cleanFile.includes(base) || base.includes(cleanFile));
+      });
+      if (exactImgMatch) {
+        resolve({ keyword: exactImgMatch.nama.split(" ").slice(0, 2).join(" "), label: exactImgMatch.nama });
+        return;
+      }
+
+      // 2. Cek kata kunci spesifik perikanan pada nama file foto
+      const knownKeywords = [
+        "abon", "kerupuk", "sambal", "roa", "pempek", "baso", "bakso", "siomay", "otak", "dimsum",
+        "basreng", "scallop", "chikuwa", "bandeng", "salmon", "udang", "kepiting", "kakap", "cumi",
+        "lobster", "kerang", "dori", "dory", "tuna", "gurame", "barakuda", "bawal", "gurita", "octopus",
+        "patin", "kuwe", "layang", "tiram", "oyster", "baronang", "joran", "reel", "senar", "tali",
+        "umpan", "lure", "minnow", "popper", "kail", "hook", "pelampung", "essen", "siraman", "timah",
+        "tas", "stopper", "box", "jersey", "topi", "aerator", "jaring", "waring", "pelet", "pakan",
+        "benih", "bibit", "lele", "nila", "maggot", "cacing", "mesin", "aquarium", "akuarium", "kolam",
+        "terpal", "diffuser", "drum", "baskom", "bakteri", "probiotik", "enzim", "molase", "mayin"
+      ];
+      for (let i = 0; i < knownKeywords.length; i++) {
+        if (rawName.includes(knownKeywords[i])) {
+          const kw = knownKeywords[i];
+          const label = kw.charAt(0).toUpperCase() + kw.slice(1);
+          resolve({ keyword: label, label: "Produk " + label });
+          return;
+        }
+      }
+
+      // 3. Analisis piksel visual (warna dominan, saturasi & kontras) menggunakan HTML5 Canvas
+      const img = new Image();
+      const objUrl = URL.createObjectURL(file);
+      img.onload = function () {
+        try {
+          const canvas = document.createElement("canvas");
+          const size = 64;
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, size, size);
+          URL.revokeObjectURL(objUrl);
+
+          const data = ctx.getImageData(0, 0, size, size).data;
+          let sumR = 0, sumG = 0, sumB = 0, sumSat = 0, edgeDiff = 0;
+          const totalPixels = size * size;
+
+          for (let p = 0; p < data.length; p += 4) {
+            const r = data[p], g = data[p + 1], b = data[p + 2];
+            sumR += r;
+            sumG += g;
+            sumB += b;
+            const maxC = Math.max(r, g, b);
+            const minC = Math.min(r, g, b);
+            sumSat += maxC > 0 ? (maxC - minC) / maxC : 0;
+            if (p >= 4) {
+              edgeDiff += Math.abs(r - data[p - 4]) + Math.abs(g - data[p - 3]) + Math.abs(b - data[p - 2]);
+            }
+          }
+
+          const avgR = sumR / totalPixels;
+          const avgG = sumG / totalPixels;
+          const avgB = sumB / totalPixels;
+          const avgSat = sumSat / totalPixels;
+          const avgEdge = edgeDiff / totalPixels;
+
+          // Klasifikasi cerdas berdasarkan profil warna & kontras objek perikanan
+          if (avgR > avgG + 22 && avgG > avgB + 15 && avgSat > 0.28) {
+            // Warna keemasan / kecokelatan / oranye hangat -> Produk Olahan Ikan (Kerupuk, Abon, Gorengan)
+            resolve({ chipType: "cat", chipValue: "produk-olahan-ikan", keyword: "", label: "Produk Olahan Ikan" });
+          } else if (avgR > avgB + 28 && avgR > 135 && avgSat > 0.22) {
+            // Warna kemerahan / oranye muda -> Udang, Salmon, Lobster, Kakap Merah
+            resolve({ chipType: "cat", chipValue: "Ikan-Segar-Seafood", keyword: "", label: "Ikan Segar & Seafood" });
+          } else if (avgB >= avgR - 8 && avgB > 95) {
+            // Dominan biru / perak / nuansa laut -> Ikan Segar & Hasil Laut
+            resolve({ chipType: "cat", chipValue: "Ikan-Segar-Seafood", keyword: "", label: "Ikan Segar & Hasil Laut" });
+          } else if (avgG >= avgR && avgG > avgB + 10) {
+            // Dominan hijau / organik / kolam -> Sarana Budidaya, Pakan & Benih
+            resolve({ chipType: "cat", chipValue: "Benih-Pakan-Budidaya", keyword: "", label: "Sarana Budidaya & Pakan" });
+          } else if (avgEdge > 42 || avgSat < 0.16) {
+            // Kontras garis tajam atau warna metalik/gelap -> Alat Pancing & Aksesoris
+            resolve({ chipType: "cat", chipValue: "Alat-Pancing", keyword: "", label: "Alat Pancing & Perlengkapan" });
+          } else {
+            resolve({ chipType: "cat", chipValue: "produk-olahan-ikan", keyword: "", label: "Rekomendasi Katalog" });
+          }
+        } catch (err) {
+          URL.revokeObjectURL(objUrl);
+          resolve({ keyword: "Ikan", label: "Katalog Ikan" });
+        }
+      };
+      img.onerror = function () {
+        URL.revokeObjectURL(objUrl);
+        resolve({ keyword: "Ikan", label: "Katalog Ikan" });
+      };
+      img.src = objUrl;
+    });
+  }
+
   if (searchCameraBtn && cameraFileInput) {
     searchCameraBtn.addEventListener("click", function () {
       cameraFileInput.click();
     });
-    cameraFileInput.addEventListener("change", function () {
+    cameraFileInput.addEventListener("change", async function () {
       if (cameraFileInput.files && cameraFileInput.files[0]) {
-        showSearchToast("Foto produk diterima. Menampilkan rekomendasi...");
-        if (searchInterfaceInput) {
-          searchInterfaceInput.value = "Ikan";
+        const file = cameraFileInput.files[0];
+        showSearchToast("Menganalisis foto produk...");
+        const result = await analyzeCameraImageForSearch(file);
+
+        if (result.chipType && result.chipValue && searchChipsScroll) {
+          const chips = searchChipsScroll.querySelectorAll(".search-chip");
+          chips.forEach(function (c) {
+            if (c.getAttribute("data-value") === result.chipValue) {
+              c.classList.add("active");
+            } else {
+              c.classList.remove("active");
+            }
+          });
+          activeSearchChip = { type: result.chipType, value: result.chipValue };
         }
+
+        if (searchInterfaceInput) {
+          searchInterfaceInput.value = result.keyword !== undefined ? result.keyword : "";
+        }
+
         renderSearchInterfaceProducts();
+        showSearchToast("Hasil scan foto: Menampilkan " + (result.label || "rekomendasi produk"));
+        cameraFileInput.value = "";
       }
     });
   }
@@ -3477,6 +3610,42 @@ document.addEventListener("DOMContentLoaded", function () {
     initHeroSlider();
   }
 
+  // Simpan peta deskripsi lokal yang sudah diperbaiki untuk fallback cerdas jika baris Supabase masih memakai teks template lama
+  const localFixedDescriptionsByName = {};
+  products.forEach(function (p) {
+    if (p && p.nama && p.deskripsi) {
+      localFixedDescriptionsByName[p.nama.trim()] = p.deskripsi;
+    }
+  });
+
+  function isLegacyMismatchedDescription(nama, desc) {
+    if (!desc) return true;
+    const d = String(desc).trim();
+    const n = String(nama || "").trim();
+    if (d.toLowerCase() === n.toLowerCase()) return true;
+    if (d.includes("untuk menjaga kesehatan ikan dan kualitas air akuarium")) return true;
+    if (d.includes("dimasak dengan berbagai cara seperti dipanggang, direndam dalam saus")) return true;
+    if (d.endsWith("dengan daging lembut dan gurih.")) return true;
+    if (d.includes("Sangat cocok untuk camilan atau hidangan utama.")) return true;
+    if (d.includes("Umpan pengganti lumut berkualitas tinggi untuk memancing")) return true;
+    if (d === "UMPAN MANCING GALATAMA LELE PATIN MAS") return true;
+    if (d === "Makanan Ikan Pelet Ikan Makanan Pakan Ikan Hias") return true;
+    if (d.includes("Tali pancing berkualitas tinggi") && d.includes("untuk memancing ikan di berbagai jenis air")) return true;
+    if (d.includes("dengan desain ergonomis dan performa tinggi.")) return true;
+    if (d.includes("dengan kualitas terbaik untuk memancing.")) return true;
+    if (d.includes("untuk menyimpan dan mengangkut umpan pancing.")) return true;
+    if (d.includes("untuk memancing ikan di berbagai jenis air.")) return true;
+    if (d.includes("Max Drag 20 kg: 3 set bantalan rem komposit") && !n.includes("Starfall")) return true;
+    if (d.includes("Mesin pompa aerasi 4 cabang") && !n.includes("Aerator")) return true;
+    if (d.includes("Booster Attractant Terbaik untuk Memancing Ikan Liar di Laut")) return true;
+    if (d.includes("Campuran Umpan Pancing Ikan Khusus Media Cacing 15ml")) return true;
+    if (d.includes("Stopper pancing kualitas premium berbahan kaca transparan")) return true;
+    if (d.includes("Topi gunung outdoor yang nyaman dan tahan lama")) return true;
+    if (d.includes("Orcarium Lobe Series Akuarium SOLITER untuk budidaya ikan")) return true;
+    if (d.includes("Box container serbaguna tipe rabbit (untuk kolam ikan hias) untuk berbagai keperluan")) return true;
+    return false;
+  }
+
   async function syncCatalogFromSupabase() {
     if (typeof window.getAquaAgriSupabaseClient !== "function") return;
     const sb = window.getAquaAgriSupabaseClient();
@@ -3515,6 +3684,12 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!prodRes.error && Array.isArray(prodRes.data) && prodRes.data.length > 0) {
         products.length = 0;
         prodRes.data.forEach(function (row) {
+          const cleanName = (row.nama || "").trim();
+          let resolvedDesc = row.deskripsi || "";
+          if (localFixedDescriptionsByName[cleanName] && isLegacyMismatchedDescription(cleanName, resolvedDesc)) {
+            resolvedDesc = localFixedDescriptionsByName[cleanName];
+          }
+
           const item = {
             id: row.id,
             nama: row.nama || "",
@@ -3522,10 +3697,11 @@ document.addEventListener("DOMContentLoaded", function () {
             hargaCoret: row.harga_coret || "",
             diskon: row.diskon || "",
             gambar: row.gambar || "",
-            deskripsi: row.deskripsi || "",
+            deskripsi: resolvedDesc,
             kategori: row.kategori || "produk-olahan-ikan",
             kelompok: row.kelompok || "",
-            linkAffiliate: row.link_affiliate || ""
+            linkAffiliate: row.link_affiliate || "",
+            klik: Number(row.klik) || 0
           };
           if (item.kategori === "Benih-Pakan-Budidaya") {
             const resolved = getBudidayaSubcategory(item);

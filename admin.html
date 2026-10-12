@@ -328,11 +328,40 @@
                 <button type="button" class="quick-action-item" id="qaSyncInitial">
                   <div class="qa-icon">&#8635;</div>
                   <div>
-                    <strong>Muat / Pulihkan Data Bawaan (138 Produk)</strong>
-                    <span>Import data katalog awal jika ada produk bawaan yang belum masuk</span>
+                    <strong>Sinkronkan Data &amp; Perbaiki Deskripsi Produk</strong>
+                    <span>Perbarui otomatis deskripsi produk yang tertukar &amp; muat data bawaan</span>
                   </div>
                 </button>
               </div>
+            </div>
+          </div>
+
+          <!-- Panel Analitik Klik Produk & Shopee Terpopuler -->
+          <div class="panel-card" style="margin-top: 20px;">
+            <div class="panel-header-with-btn">
+              <div>
+                <h3>Top 10 Produk Paling Sering Diklik Pengunjung (Analitik Shopee)</h3>
+                <p>Daftar produk dengan minat tertinggi berdasarkan jumlah klik tombol produk &amp; tautan affiliate Shopee.</p>
+              </div>
+              <span id="statTotalAllClicks" class="badge-pill badge-teal" style="font-size: 0.82rem; padding: 6px 12px;">Total Klik: 0</span>
+            </div>
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th style="width: 56px;">Peringkat</th>
+                    <th style="width: 60px;">Foto</th>
+                    <th>Nama Produk</th>
+                    <th>Kategori</th>
+                    <th>Harga</th>
+                    <th>Total Klik</th>
+                    <th style="text-align: right;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="topClicksTableBody">
+                  <!-- Diisi dinamis oleh admin.js -->
+                </tbody>
+              </table>
             </div>
           </div>
         </section>
