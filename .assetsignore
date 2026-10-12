@@ -6,4 +6,5 @@ node_modules
 wrangler.jsonc
 wrangler.toml
 README.md
+PANDUAN-ADMIN-AQUAAGRI.md
 supabase-setup.sql
