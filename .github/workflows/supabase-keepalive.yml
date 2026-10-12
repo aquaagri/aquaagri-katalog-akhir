@@ -1,0 +1,23 @@
+name: Supabase Database Keep-Alive (AquaAgri.id)
+
+on:
+  schedule:
+    # Jalan otomatis setiap 3 hari sekali pada pukul 03:00 UTC (10:00 WIB)
+    - cron: '0 3 */3 * *'
+  workflow_dispatch: # Bisa juga dijalankan manual kapan saja dari tab Actions di GitHub
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Database Supabase agar tetap aktif (Anti-Pause)
+        run: |
+          STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://uqihzgskwxdurcwjpvbc.supabase.co/rest/v1/categories?select=id&limit=1" \
+            -H "apikey: sb_publishable_XOjGorIRGBqztcldte1AzQ_GwOyFKXQ")
+          echo "Supabase Keep-Alive HTTP Status: $STATUS_CODE"
+          if [ "$STATUS_CODE" -ne 200 ]; then
+            echo "Gagal menghubungi Supabase (Status: $STATUS_CODE)"
+            exit 1
+          fi
+          echo "Berhasil! Database Supabase AquaAgri.id tercatat aktif."
