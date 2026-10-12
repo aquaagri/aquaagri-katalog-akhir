@@ -3559,7 +3559,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!visualSlider || !Array.isArray(bannerRows) || bannerRows.length === 0) return;
 
     const activeBanners = bannerRows.filter(function (b) {
-      return b.aktif !== false && b.gambar;
+      return b.aktif !== false && b.gambar && (b.tipe || "hero") === "hero";
     });
     if (activeBanners.length === 0) return;
 
@@ -3593,6 +3593,113 @@ document.addEventListener("DOMContentLoaded", function () {
 
     visualSlider.appendChild(dotsWrap);
     initHeroSlider();
+  }
+
+  // ---------- SISTEM POP-UP POSTER IKLAN / PROMO (DARI DASHBOARD ADMIN) ----------
+  function initPromoPopupFromBanners(bannerRows) {
+    if (!Array.isArray(bannerRows) || bannerRows.length === 0) return;
+
+    const popupRow = bannerRows.find(function (b) {
+      return b.tipe === "popup" && b.aktif !== false && b.gambar;
+    });
+    if (!popupRow) return;
+
+    const overlay = document.getElementById("promoPopupOverlay");
+    const card = document.getElementById("promoPopupCard");
+    const img = document.getElementById("promoPopupImg");
+    const badge = document.getElementById("promoPopupBadge");
+    const badgeText = document.getElementById("promoPopupBadgeText");
+    const closeBtn = document.getElementById("promoPopupCloseBtn");
+
+    if (!overlay || !card || !img || !closeBtn) return;
+
+    // Cek pengaturan frekuensi tampil (disimpan pada subjudul JSON jika ada)
+    let meta = { targetType: "none", freq: "always", badgeLabel: "" };
+    if (popupRow.subjudul) {
+      try {
+        const parsed = JSON.parse(popupRow.subjudul);
+        if (parsed && typeof parsed === "object") {
+          meta = Object.assign(meta, parsed);
+        }
+      } catch (e) {}
+    }
+
+    const sessionKey = "aquaagri_popup_closed_" + popupRow.id + "_" + (popupRow.updated_at || "");
+    if (meta.freq === "session") {
+      try {
+        if (sessionStorage.getItem(sessionKey) === "1") return;
+      } catch (e) {}
+    }
+
+    img.src = popupRow.gambar;
+    img.alt = popupRow.judul || "Promo Spesial aquaagri.id";
+
+    const targetLink = (popupRow.link_tujuan || "").trim();
+    if (targetLink) {
+      card.style.cursor = "pointer";
+      if (badge && badgeText && meta.badgeLabel) {
+        badgeText.textContent = meta.badgeLabel;
+        badge.classList.remove("hidden");
+      } else if (badge) {
+        badge.classList.add("hidden");
+      }
+    } else {
+      card.style.cursor = "default";
+      if (badge) badge.classList.add("hidden");
+    }
+
+    function closePromoPopup() {
+      overlay.classList.remove("open");
+      if (meta.freq === "session") {
+        try {
+          sessionStorage.setItem(sessionKey, "1");
+        } catch (e) {}
+      }
+      setTimeout(function () {
+        overlay.classList.add("hidden");
+      }, 280);
+    }
+
+    function openPromoTarget() {
+      if (!targetLink) return;
+      try {
+        const parsedUrl = new URL(targetLink);
+        if (parsedUrl.protocol === "https:" || parsedUrl.protocol === "http:") {
+          window.open(parsedUrl.href, "_blank", "noopener,noreferrer");
+        }
+      } catch (e) {}
+    }
+
+    card.onclick = function (e) {
+      e.stopPropagation();
+      if (targetLink) {
+        openPromoTarget();
+      }
+    };
+
+    card.onkeydown = function (e) {
+      if ((e.key === "Enter" || e.key === " ") && targetLink) {
+        e.preventDefault();
+        openPromoTarget();
+      }
+    };
+
+    closeBtn.onclick = function (e) {
+      e.stopPropagation();
+      closePromoPopup();
+    };
+
+    overlay.onclick = function (e) {
+      if (e.target === overlay) {
+        closePromoPopup();
+      }
+    };
+
+    setTimeout(function () {
+      overlay.classList.remove("hidden");
+      void overlay.offsetWidth;
+      overlay.classList.add("open");
+    }, 450);
   }
 
   // Simpan peta deskripsi lokal yang sudah diperbaiki untuk fallback cerdas jika baris Supabase masih memakai teks template lama
@@ -3701,9 +3808,10 @@ document.addEventListener("DOMContentLoaded", function () {
         renderSearchInterfaceProducts();
       }
 
-      // 3. Perbarui slide Hero Banner beranda jika tersedia di database
+      // 3. Perbarui slide Hero Banner beranda & Pop-Up Iklan Promo jika tersedia di database
       if (!banRes.error && Array.isArray(banRes.data) && banRes.data.length > 0) {
         renderDynamicHeroBanners(banRes.data);
+        initPromoPopupFromBanners(banRes.data);
       }
 
       updateAboutStats();

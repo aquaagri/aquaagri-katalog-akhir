@@ -508,6 +508,7 @@
     renderProductsTable();
     renderCategoriesGrid();
     renderBannersGrid();
+    renderPopupPromoTab();
     renderShopeeTable();
   }
 
@@ -517,8 +518,11 @@
     const totalProds = state.products.length;
     const activeProds = state.products.filter(function (p) { return p.aktif !== false; }).length;
     const totalCats = state.categories.length;
-    const totalBans = state.banners.length;
-    const activeBans = state.banners.filter(function (b) { return b.aktif !== false; }).length;
+    const heroBanners = state.banners.filter(function (b) { return (b.tipe || "hero") === "hero"; });
+    const totalBans = heroBanners.length;
+    const activeBans = heroBanners.filter(function (b) { return b.aktif !== false; }).length;
+    const popupRow = state.banners.find(function (b) { return b.tipe === "popup"; });
+    const isPopupActive = Boolean(popupRow && popupRow.aktif !== false && popupRow.gambar);
 
     const validShopeeCount = state.products.filter(function (p) {
       return isValidShopeeUrl(p.link_affiliate);
@@ -546,6 +550,7 @@
     setTxt("navBadgeProducts", totalProds);
     setTxt("navBadgeCategories", totalCats);
     setTxt("navBadgeBanners", totalBans);
+    setTxt("navBadgePopup", isPopupActive ? "ON" : "OFF");
 
     // Tampilkan kartu bantuan import 1-klik jika database masih kosong
     const emptyBanner = document.getElementById("emptyDbBanner");
@@ -1373,7 +1378,11 @@
     if (!grid) return;
     grid.innerHTML = "";
 
-    if (state.banners.length === 0) {
+    const heroBanners = state.banners.filter(function (b) {
+      return (b.tipe || "hero") === "hero";
+    });
+
+    if (heroBanners.length === 0) {
       const p = document.createElement("p");
       p.style.color = "#64748b";
       p.textContent = "Belum ada slide banner. Klik '+ Tambah Slide Banner' atau gunakan tombol Import di tab Ringkasan.";
@@ -1381,7 +1390,7 @@
       return;
     }
 
-    state.banners.forEach(function (ban, index) {
+    heroBanners.forEach(function (ban, index) {
       const card = document.createElement("div");
       card.className = "admin-media-card";
 
@@ -1554,6 +1563,254 @@
       if (saveBtn) {
         saveBtn.disabled = false;
         saveBtn.textContent = "Simpan Banner";
+      }
+    }
+  }
+
+  // ---------- 10B. RENDER & SIMPAN TAB POP-UP IKLAN PROMO (WA / SHOPEE) ----------
+
+  function normalizeWaPhone(rawPhone) {
+    let digits = String(rawPhone || "").replace(/[^0-9]/g, "");
+    if (!digits) return "";
+    if (digits.startsWith("08")) {
+      digits = "628" + digits.substring(2);
+    } else if (digits.startsWith("8")) {
+      digits = "628" + digits.substring(1);
+    }
+    return digits;
+  }
+
+  function buildPopupFinalLink() {
+    const typeEl = document.getElementById("popupTargetType");
+    const waNumEl = document.getElementById("popupWaNumber");
+    const waMsgEl = document.getElementById("popupWaMessage");
+    const urlEl = document.getElementById("popupTargetUrl");
+
+    const targetType = typeEl ? typeEl.value : "wa";
+    if (targetType === "wa") {
+      const cleanPhone = normalizeWaPhone(waNumEl ? waNumEl.value : "");
+      if (!cleanPhone) return "";
+      const msg = waMsgEl ? waMsgEl.value.trim() : "";
+      if (msg) {
+        return "https://wa.me/" + cleanPhone + "?text=" + encodeURIComponent(msg);
+      }
+      return "https://wa.me/" + cleanPhone;
+    } else if (targetType === "url") {
+      return urlEl ? urlEl.value.trim() : "";
+    }
+    return "";
+  }
+
+  function syncPopupTargetTypeUI() {
+    const typeEl = document.getElementById("popupTargetType");
+    const waGroup = document.getElementById("popupWaGroup");
+    const urlGroup = document.getElementById("popupUrlGroup");
+    if (!typeEl || !waGroup || !urlGroup) return;
+
+    const val = typeEl.value;
+    if (val === "wa") {
+      waGroup.classList.remove("hidden");
+      urlGroup.classList.add("hidden");
+    } else if (val === "url") {
+      waGroup.classList.add("hidden");
+      urlGroup.classList.remove("hidden");
+    } else {
+      waGroup.classList.add("hidden");
+      urlGroup.classList.add("hidden");
+    }
+    updatePopupLivePreview();
+  }
+
+  function updatePopupLivePreview() {
+    const aktifEl = document.getElementById("popupAktif");
+    const gambarEl = document.getElementById("popupGambar");
+    const smallPrev = document.getElementById("popupSmallPreview");
+    const liveImg = document.getElementById("popupLivePreviewImg");
+    const badgeInput = document.getElementById("popupBadgeLabel");
+    const liveBadge = document.getElementById("popupLivePreviewBadge");
+    const statusLabel = document.getElementById("popupLiveStatusLabel");
+    const typeEl = document.getElementById("popupTargetType");
+
+    const imgSrc = (gambarEl && gambarEl.value.trim()) ? gambarEl.value.trim() : "produk-olahan-ikan.jpg";
+    if (smallPrev) smallPrev.src = imgSrc;
+    if (liveImg) liveImg.src = imgSrc;
+
+    const badgeTxt = badgeInput ? badgeInput.value.trim() : "";
+    if (liveBadge) {
+      if (badgeTxt && typeEl && typeEl.value !== "none") {
+        liveBadge.textContent = badgeTxt;
+        liveBadge.classList.remove("hidden");
+      } else {
+        liveBadge.classList.add("hidden");
+      }
+    }
+
+    if (statusLabel) {
+      const isAktif = aktifEl && aktifEl.checked;
+      const targetType = typeEl ? typeEl.value : "none";
+      const targetDesc =
+        targetType === "wa"
+          ? "Klik mengarah ke WhatsApp"
+          : targetType === "url"
+          ? "Klik mengarah ke Link Shopee/URL"
+          : "Tanpa link klik";
+      statusLabel.textContent = isAktif
+        ? "Status: AKTIF di Website (" + targetDesc + ")"
+        : "Status: NONAKTIF (Disembunyikan dari pengunjung)";
+      statusLabel.style.color = isAktif ? "#4ade80" : "#cbd5e1";
+    }
+  }
+
+  function renderPopupPromoTab() {
+    const popupRow = state.banners.find(function (b) {
+      return b.tipe === "popup";
+    });
+
+    const idEl = document.getElementById("popupRowId");
+    const aktifEl = document.getElementById("popupAktif");
+    const judulEl = document.getElementById("popupJudul");
+    const gambarEl = document.getElementById("popupGambar");
+    const typeEl = document.getElementById("popupTargetType");
+    const waNumEl = document.getElementById("popupWaNumber");
+    const waMsgEl = document.getElementById("popupWaMessage");
+    const urlEl = document.getElementById("popupTargetUrl");
+    const badgeEl = document.getElementById("popupBadgeLabel");
+    const freqEl = document.getElementById("popupFreqMode");
+
+    if (!idEl || !aktifEl || !judulEl || !gambarEl) return;
+
+    if (popupRow) {
+      idEl.value = popupRow.id;
+      aktifEl.checked = popupRow.aktif !== false;
+      judulEl.value = popupRow.judul || "Promo Spesial AquaAgri";
+      gambarEl.value = popupRow.gambar || "";
+
+      let meta = {
+        targetType: "wa",
+        waNumber: "",
+        waMessage: "Halo Admin AquaAgri.id, saya tertarik dengan info promo di pop-up website.",
+        targetUrl: "",
+        badgeLabel: "",
+        freq: "always"
+      };
+
+      if (popupRow.subjudul) {
+        try {
+          const parsed = JSON.parse(popupRow.subjudul);
+          if (parsed && typeof parsed === "object") {
+            meta = Object.assign(meta, parsed);
+          }
+        } catch (e) {}
+      }
+
+      if (typeEl) typeEl.value = meta.targetType || "wa";
+      if (waNumEl) waNumEl.value = meta.waNumber || "";
+      if (waMsgEl) waMsgEl.value = meta.waMessage || "";
+      if (urlEl) urlEl.value = meta.targetUrl || popupRow.link_tujuan || "";
+      if (badgeEl) badgeEl.value = meta.badgeLabel || "";
+      if (freqEl) freqEl.value = meta.freq || "always";
+    } else {
+      idEl.value = "";
+      aktifEl.checked = false;
+      judulEl.value = "Promo Spesial AquaAgri.id";
+      gambarEl.value = "produk-olahan-ikan.jpg";
+      if (typeEl) typeEl.value = "wa";
+      if (waNumEl) waNumEl.value = "";
+      if (waMsgEl) waMsgEl.value = "Halo Admin AquaAgri.id, saya tertarik dengan info promo di pop-up website.";
+      if (urlEl) urlEl.value = "";
+      if (badgeEl) badgeEl.value = "";
+      if (freqEl) freqEl.value = "always";
+    }
+
+    syncPopupTargetTypeUI();
+    updatePopupLivePreview();
+  }
+
+  async function handleSavePopupPromo(e) {
+    e.preventDefault();
+    showBoxAlert("popupFormAlert", "");
+
+    const idVal = document.getElementById("popupRowId").value.trim();
+    const aktif = document.getElementById("popupAktif").checked;
+    const judul = document.getElementById("popupJudul").value.trim() || "Promo Spesial AquaAgri";
+    const gambar = document.getElementById("popupGambar").value.trim();
+    const targetType = document.getElementById("popupTargetType").value;
+    const waNumberRaw = document.getElementById("popupWaNumber").value.trim();
+    const waMessage = document.getElementById("popupWaMessage").value.trim();
+    const targetUrl = document.getElementById("popupTargetUrl").value.trim();
+    const badgeLabel = document.getElementById("popupBadgeLabel").value.trim();
+    const freq = document.getElementById("popupFreqMode").value;
+
+    if (!gambar) {
+      showBoxAlert("popupFormAlert", "Pilih / unggah foto poster terlebih dahulu.");
+      return;
+    }
+
+    if (targetType === "wa") {
+      const cleanWa = normalizeWaPhone(waNumberRaw);
+      if (!cleanWa || cleanWa.length < 9) {
+        showBoxAlert("popupFormAlert", "Masukkan nomor WhatsApp yang valid (contoh: 081234567890).");
+        return;
+      }
+    } else if (targetType === "url") {
+      if (!targetUrl || !isSafeHttpUrl(targetUrl)) {
+        showBoxAlert("popupFormAlert", "Masukkan URL tujuan yang lengkap (diawali https://).");
+        return;
+      }
+    }
+
+    const finalLink = buildPopupFinalLink();
+    const metaJson = JSON.stringify({
+      targetType: targetType,
+      waNumber: waNumberRaw,
+      waMessage: waMessage,
+      targetUrl: targetUrl,
+      badgeLabel: badgeLabel,
+      freq: freq
+    });
+
+    const payload = {
+      judul: judul,
+      subjudul: metaJson,
+      gambar: gambar,
+      tipe: "popup",
+      link_tujuan: finalLink,
+      urutan: 99,
+      aktif: aktif,
+      updated_at: new Date().toISOString()
+    };
+
+    const sb = window.getAquaAgriSupabaseClient();
+    const saveBtn = document.getElementById("savePopupBtn");
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      saveBtn.textContent = "Menyimpan...";
+    }
+
+    try {
+      const existingPopup = state.banners.find(function (b) { return b.tipe === "popup"; });
+      const targetId = idVal ? Number(idVal) : (existingPopup ? existingPopup.id : null);
+
+      if (targetId) {
+        const { error } = await sb.from("banners").update(payload).eq("id", targetId);
+        if (error) throw error;
+      } else {
+        const { error } = await sb.from("banners").insert([payload]);
+        if (error) throw error;
+      }
+
+      showToast(
+        aktif
+          ? "Pop-Up Iklan Promo berhasil disimpan & DIAKTIFKAN di website!"
+          : "Pengaturan Pop-Up Iklan disimpan (Status: Nonaktif)."
+      );
+      await loadAllDatabaseData();
+    } catch (err) {
+      showBoxAlert("popupFormAlert", "Gagal menyimpan Pop-Up Iklan: " + (err.message || err));
+    } finally {
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Simpan Pengaturan Pop-Up";
       }
     }
   }
@@ -1764,6 +2021,7 @@
       products: ["Kelola Produk Katalog", "Tambah, edit, hapus produk, harga diskon, dan foto produk"],
       categories: ["Kelola Kategori", "Atur 4 kategori utama beserta foto dan teks banner kategori"],
       banners: ["Kelola Banner Beranda", "Atur slide foto otomatis di bagian atas beranda"],
+      popup: ["Kelola Pop-Up Iklan Promo", "Atur poster iklan pop-up saat pengunjung membuka website (WhatsApp / Shopee)"],
       shopee: ["Kelola Tautan Affiliate Shopee", "Cek dan ubah cepat link produk Shopee dalam satu tabel"]
     };
 
@@ -1998,6 +2256,13 @@
       });
     }
 
+    const qaManagePopup = document.getElementById("qaManagePopup");
+    if (qaManagePopup) {
+      qaManagePopup.addEventListener("click", function () {
+        switchAdminTab("popup");
+      });
+    }
+
     const qaManageShopee = document.getElementById("qaManageShopee");
     if (qaManageShopee) {
       qaManageShopee.addEventListener("click", function () {
@@ -2146,6 +2411,63 @@
           }
           showToast(err.message);
         }
+      });
+    }
+
+    // 13B. Tab Pop-Up Iklan Promo Listeners
+    const popupForm = document.getElementById("popupPromoForm");
+    if (popupForm) {
+      popupForm.addEventListener("submit", handleSavePopupPromo);
+    }
+
+    const popupTargetType = document.getElementById("popupTargetType");
+    if (popupTargetType) {
+      popupTargetType.addEventListener("change", syncPopupTargetTypeUI);
+    }
+
+    const popupAktif = document.getElementById("popupAktif");
+    if (popupAktif) {
+      popupAktif.addEventListener("change", updatePopupLivePreview);
+    }
+
+    const popupGambar = document.getElementById("popupGambar");
+    if (popupGambar) {
+      popupGambar.addEventListener("input", updatePopupLivePreview);
+    }
+
+    const popupBadgeLabel = document.getElementById("popupBadgeLabel");
+    if (popupBadgeLabel) {
+      popupBadgeLabel.addEventListener("input", updatePopupLivePreview);
+    }
+
+    const popupImageFile = document.getElementById("popupImageFile");
+    if (popupImageFile) {
+      popupImageFile.addEventListener("change", async function () {
+        if (!popupImageFile.files || !popupImageFile.files[0]) return;
+        const statusEl = document.getElementById("popupUploadStatus");
+        try {
+          const publicUrl = await uploadImageToSupabase(popupImageFile.files[0], "banners", statusEl);
+          if (popupGambar) popupGambar.value = publicUrl;
+          updatePopupLivePreview();
+        } catch (err) {
+          if (statusEl) {
+            statusEl.textContent = err.message;
+            statusEl.style.color = "#dc2626";
+          }
+          showToast(err.message);
+        }
+      });
+    }
+
+    const testPopupTargetBtn = document.getElementById("testPopupTargetBtn");
+    if (testPopupTargetBtn) {
+      testPopupTargetBtn.addEventListener("click", function () {
+        const finalUrl = buildPopupFinalLink();
+        if (!finalUrl || !isSafeHttpUrl(finalUrl)) {
+          showToast("Isi Nomor WhatsApp atau URL tujuan terlebih dahulu untuk mengetes.");
+          return;
+        }
+        window.open(finalUrl, "_blank", "noopener,noreferrer");
       });
     }
 

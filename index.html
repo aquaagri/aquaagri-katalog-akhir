@@ -915,6 +915,29 @@
     </div>
   </div>
 
+  <!-- ============================================================
+       POP-UP POSTER IKLAN / PROMO (ALA MARKETPLACE & KOPI KENANGAN)
+       Diatur langsung dari Dashboard Admin (Mendukung Link WA & Shopee)
+       ============================================================ -->
+  <div id="promoPopupOverlay" class="promo-popup-overlay hidden" role="dialog" aria-modal="true" aria-label="Penawaran Promo Spesial">
+    <div class="promo-popup-container">
+      <div id="promoPopupCard" class="promo-popup-card" role="button" tabindex="0" aria-label="Buka Penawaran Promo">
+        <img id="promoPopupImg" src="" alt="Promo Spesial aquaagri.id" class="promo-popup-img">
+        <div id="promoPopupBadge" class="promo-popup-badge hidden">
+          <span id="promoPopupBadgeText">Klik untuk Info Promo</span>
+        </div>
+      </div>
+
+      <!-- Tombol Bulat Putih (X) Persis di Bawah Poster -->
+      <button id="promoPopupCloseBtn" type="button" class="promo-popup-close-circle" aria-label="Tutup Pop-up Promo">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
   <script src="script.js" defer></script>

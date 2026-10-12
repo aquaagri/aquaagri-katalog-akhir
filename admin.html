@@ -145,6 +145,15 @@
           <span id="navBadgeBanners" class="nav-badge">0</span>
         </button>
 
+        <button type="button" class="nav-item" data-tab="popup">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="5" y="2" width="14" height="20" rx="2.5"/>
+            <line x1="12" y1="18" x2="12.01" y2="18"/>
+          </svg>
+          <span>Pop-Up Iklan</span>
+          <span id="navBadgePopup" class="nav-badge">OFF</span>
+        </button>
+
         <button type="button" class="nav-item" data-tab="shopee">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
@@ -318,6 +327,13 @@
                     <span>Ubah gambar slider utama di halaman beranda</span>
                   </div>
                 </button>
+                <button type="button" class="quick-action-item" id="qaManagePopup">
+                  <div class="qa-icon">&#128227;</div>
+                  <div>
+                    <strong>Pasang Pop-Up Iklan Promo (WA / Shopee)</strong>
+                    <span>Tampilkan poster promo saat pengunjung membuka website</span>
+                  </div>
+                </button>
                 <button type="button" class="quick-action-item" id="qaManageShopee">
                   <div class="qa-icon">&#128279;</div>
                   <div>
@@ -458,6 +474,133 @@
 
             <div id="bannersAdminGrid" class="banners-admin-grid">
               <!-- Diisi dinamis oleh admin.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             TAB 4B: KELOLA POP-UP IKLAN PROMO (MENDUKUNG NO WA & LINK SHOPEE)
+             ================================================================== -->
+        <section id="tab-popup" class="tab-panel hidden">
+          <div class="overview-columns" style="align-items: start;">
+            <!-- Kolom Kiri: Form Pengaturan Pop-Up Iklan -->
+            <div class="panel-card">
+              <div class="panel-header">
+                <div>
+                  <h3>Pengaturan Pop-Up Poster Iklan / Promo</h3>
+                  <p>Tampilkan poster iklan di tengah layar saat pengunjung baru membuka website (mendukung Nomor WhatsApp &amp; Link Shopee).</p>
+                </div>
+              </div>
+
+              <div id="popupFormAlert" class="alert-box hidden"></div>
+
+              <form id="popupPromoForm" novalidate>
+                <input type="hidden" id="popupRowId">
+
+                <div class="form-group form-checkbox-row" style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px 14px; border-radius: 10px; margin-bottom: 16px;">
+                  <input type="checkbox" id="popupAktif" style="width: 18px; height: 18px;">
+                  <label for="popupAktif" style="font-weight: 700; color: #065f46; cursor: pointer;">
+                    Aktifkan &amp; Tampilkan Pop-Up Iklan Ini di Website Pengunjung
+                  </label>
+                </div>
+
+                <div class="form-group">
+                  <label for="popupJudul">Nama Promo / Judul Kampanye Iklan <span class="req">*</span></label>
+                  <input type="text" id="popupJudul" placeholder="Contoh: Promo Spesial 10.10 / Penawaran Grosir Ikan Segar" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Foto Poster Pop-Up (Format Potret / Tegak) <span class="req">*</span></label>
+                  <div class="image-upload-box">
+                    <div class="image-preview-wrap" style="width: 84px; height: 108px;">
+                      <img id="popupSmallPreview" src="" alt="Preview Poster">
+                    </div>
+                    <div class="image-upload-controls">
+                      <label for="popupImageFile" class="btn-secondary btn-sm upload-btn-label">
+                        &#128247; Pilih &amp; Upload Poster dari Perangkat
+                      </label>
+                      <input type="file" id="popupImageFile" accept="image/jpeg,image/png,image/webp" class="hidden">
+                      <span id="popupUploadStatus" class="upload-status-text">Ukuran terbaik: <strong>1080 x 1350 px (4:5)</strong> atau <strong>900 x 1200 px (3:4)</strong>. Otomatis dikompres ringan.</span>
+                      <input type="text" id="popupGambar" placeholder="Atau ketik path/URL gambar poster..." required>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="popupTargetType">Tujuan Saat Gambar Poster Diklik Pengunjung</label>
+                  <select id="popupTargetType">
+                    <option value="wa">&#128172; Arahkan ke Chat Nomor WhatsApp (wa.me)</option>
+                    <option value="url">&#128722; Arahkan ke Link Shopee / URL Website</option>
+                    <option value="none">&#128227; Hanya Poster Pengumuman (Tanpa Link Klik)</option>
+                  </select>
+                </div>
+
+                <!-- Opsi 1: Nomor WhatsApp -->
+                <div id="popupWaGroup" class="form-group" style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 10px;">
+                  <div class="form-group" style="margin-bottom: 12px;">
+                    <label for="popupWaNumber">Nomor WhatsApp Tujuan <span class="req">*</span></label>
+                    <input type="tel" id="popupWaNumber" placeholder="Contoh: 081234567890 atau 6281234567890">
+                    <small class="form-hint">Ketik nomor WA biasa (awalan <code>08...</code> otomatis diubah menjadi format internasional <code>628...</code>).</small>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label for="popupWaMessage">Pesan Otomatis Saat WhatsApp Terbuka</label>
+                    <textarea id="popupWaMessage" rows="2" placeholder="Halo Admin AquaAgri.id, saya tertarik dengan info promo di pop-up website."></textarea>
+                  </div>
+                </div>
+
+                <!-- Opsi 2: Link Shopee / URL -->
+                <div id="popupUrlGroup" class="form-group hidden" style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 10px;">
+                  <label for="popupTargetUrl">URL Tujuan (Link Shopee / Link Produk) <span class="req">*</span></label>
+                  <input type="url" id="popupTargetUrl" placeholder="https://s.shopee.co.id/...">
+                  <small class="form-hint">Masukkan link lengkap yang diawali <code>https://</code></small>
+                </div>
+
+                <div class="form-row-2">
+                  <div class="form-group">
+                    <label for="popupBadgeLabel">Label Petunjuk di Bawah Poster (Opsional)</label>
+                    <input type="text" id="popupBadgeLabel" placeholder="Kosongkan jika ingin poster polos">
+                    <small class="form-hint">Contoh: <em>Klik untuk Chat WA</em> (Kosongkan agar murni gambar poster saja)</small>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="popupFreqMode">Frekuensi Muncul di Pengunjung</label>
+                    <select id="popupFreqMode">
+                      <option value="always">Muncul setiap kali website dibuka</option>
+                      <option value="session">Muncul 1x per sesi kunjungan</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="modal-footer" style="padding-top: 12px; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; justify-content: flex-end;">
+                  <button type="button" id="testPopupTargetBtn" class="btn-secondary">Tes Buka Link / WA &#8599;</button>
+                  <button type="submit" id="savePopupBtn" class="btn-primary">Simpan Pengaturan Pop-Up</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Kolom Kanan: Pratinjau Langsung (Persis Tampilan Layar HP Pengunjung) -->
+            <div class="panel-card">
+              <div class="panel-header">
+                <div>
+                  <h3>Pratinjau Tampilan di Layar Pengunjung</h3>
+                  <p>Simulasi tampilan poster promo beserta tombol bulat putih <strong>( X )</strong> di bawahnya.</p>
+                </div>
+              </div>
+
+              <div style="background: linear-gradient(160deg, #0f172a 0%, #1e293b 100%); border-radius: 16px; padding: 28px 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 440px;">
+                <div style="position: relative; width: 240px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 45px rgba(0,0,0,0.5); background: #0f2926;">
+                  <img id="popupLivePreviewImg" src="produk-olahan-ikan.jpg" alt="Pratinjau Poster Pop-up" style="width: 100%; height: auto; max-height: 320px; object-fit: cover; display: block;">
+                  <div id="popupLivePreviewBadge" class="hidden" style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); background: rgba(15,118,110,0.92); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 5px 12px; border-radius: 999px; white-space: nowrap;">
+                    Klik untuk Info Promo
+                  </div>
+                </div>
+                <div style="margin-top: 16px; width: 42px; height: 42px; border-radius: 50%; background: #ffffff; color: #1e293b; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 22px rgba(0,0,0,0.38); font-weight: 800; font-size: 1.1rem;" title="Tombol Tutup (X)">
+                  &#10005;
+                </div>
+                <span id="popupLiveStatusLabel" style="margin-top: 14px; font-size: 0.76rem; color: #cbd5e1; text-align: center;">
+                  Status: Pop-Up Belum Aktif
+                </span>
+              </div>
             </div>
           </div>
         </section>
