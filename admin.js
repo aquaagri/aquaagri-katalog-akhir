@@ -375,24 +375,16 @@
 
   // ---------- 5. MUAT DATA DARI DATABASE SUPABASE ----------
 
-  // Bobot klik dasar produk unggulan (selaras dengan website katalog publik)
-  const ADMIN_BASELINE_CLICKS = {
-    1: 520, 3: 495, 2: 480, 11: 460, 12: 445,
-    18: 430, 19: 420, 25: 410, 26: 395, 4: 380,
-    5: 370, 13: 360, 14: 350, 20: 340, 21: 330,
-    27: 320, 28: 310, 6: 295, 7: 285, 15: 275
-  };
-
+  // Hitungan klik murni mulai dari 0 (hanya menghitung klik nyata dari database & perangkat)
   function getAdminProductClicks(prod) {
-    if (!prod) return 100;
+    if (!prod) return 0;
     const id = Number(prod.id) || 0;
     const dbClicks = typeof prod.klik === "number" && prod.klik > 0 ? prod.klik : 0;
-    const base = Math.max(dbClicks, ADMIN_BASELINE_CLICKS[id] || 100);
     try {
       const localClicks = JSON.parse(localStorage.getItem("aquaagri_clicks") || "{}");
-      return base + (Number(localClicks[id]) || 0);
+      return dbClicks + (Number(localClicks[id]) || 0);
     } catch (e) {
-      return base;
+      return dbClicks;
     }
   }
 

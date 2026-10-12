@@ -2020,39 +2020,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ---------- 7. CAROUSEL PRODUK UNGGULAN (20 PRODUK PALING SERING DI-KLIK) ----------
 
-  // Data bobot klik produk dasar (produk favorit & sering di-klik pengunjung)
-  const baselineProductClicks = {
-    1: 520,  // Abon Ikan Tuna Pedas 100gr
-    3: 495,  // Sambal Ikan Roa Asli Khas Manado 150gr
-    2: 480,  // Kerupuk Ikan Tenggiri Mentah 500gr
-    11: 460, // Fillet Ikan Salmon Trout Segar 500gr
-    12: 445, // Udang Vaname Segar Ukuran Sedang 1kg
-    18: 430, // Joran Pancing Carbon Lentur Prima 2.1m
-    19: 420, // Reel Pancing Spinning Logam 12+1 BB
-    25: 410, // Aerator Aquarium & Kolam Ikan Koi 4 Cabang
-    26: 395, // Jaring Waring Pembatas Kolam 100M x 120CM
-    4: 380,  // Ikan Wader Goreng Crispy 100gr
-    5: 370,  // Kerupuk Kulit Ikan Patin Original 230gr
-    13: 360, // Kepiting Bakau Hidup Segar 1kg
-    14: 350, // Ikan Kakap Merah Segar Utuh 1kg
-    20: 340, // Senar Pancing Nylon Kuat Tahan Gesekan
-    21: 330, // Umpan Pancing Minnow Lure Floating 9cm
-    27: 320, // Pelet Pakan Ikan Apung Protein Tinggi 1kg
-    28: 310, // Benih Bibit Ikan Nila Hitam Unggul 100 Ekor
-    6: 295,  // Kerupuk Tulang Lele Kaya Kalsium
-    7: 285,  // Kerupuk Stik Ikan Tongkol Gurih 500gr
-    15: 275  // Cumi-Cumi Segar Tube Bersih 1kg
+  // Urutan prioritas tampilan awal slider apabila jumlah klik asli masih sama-sama 0
+  const featuredDefaultOrder = {
+    1: 20, 3: 19, 2: 18, 11: 17, 12: 16,
+    18: 15, 19: 14, 25: 13, 26: 12, 4: 11,
+    5: 10, 13: 9, 14: 8, 20: 7, 21: 6,
+    27: 5, 28: 4, 6: 3, 7: 2, 15: 1
   };
 
   function getProductClickCount(prodId) {
     const prodObj = products.find(function (p) { return Number(p.id) === Number(prodId); });
     const dbClicks = prodObj && typeof prodObj.klik === "number" && prodObj.klik > 0 ? prodObj.klik : 0;
-    const baseClicks = Math.max(dbClicks, baselineProductClicks[prodId] || 100);
     try {
       const savedClicks = JSON.parse(localStorage.getItem("aquaagri_clicks") || "{}");
-      return baseClicks + (savedClicks[prodId] || 0);
+      return dbClicks + (Number(savedClicks[prodId]) || 0);
     } catch (e) {
-      return baseClicks;
+      return dbClicks;
     }
   }
 
@@ -2060,7 +2043,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!prodId) return;
     try {
       const savedClicks = JSON.parse(localStorage.getItem("aquaagri_clicks") || "{}");
-      savedClicks[prodId] = (savedClicks[prodId] || 0) + 1;
+      savedClicks[prodId] = (Number(savedClicks[prodId]) || 0) + 1;
       localStorage.setItem("aquaagri_clicks", JSON.stringify(savedClicks));
     } catch (e) {}
 
@@ -2078,7 +2061,9 @@ document.addEventListener("DOMContentLoaded", function () {
   function getTopClickedProducts(limit = 20) {
     const list = [...products];
     list.sort(function (a, b) {
-      return getProductClickCount(b.id) - getProductClickCount(a.id);
+      const diff = getProductClickCount(b.id) - getProductClickCount(a.id);
+      if (diff !== 0) return diff;
+      return (featuredDefaultOrder[b.id] || 0) - (featuredDefaultOrder[a.id] || 0);
     });
     return list.slice(0, limit);
   }
