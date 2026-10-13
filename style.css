@@ -3079,17 +3079,32 @@ body.dark-mode .product-modal-tag {
 
 .product-modal-img-wrap {
   width: 100%;
-  aspect-ratio: 16 / 10;
-  max-height: 220px;
-  border-radius: 12px;
+  max-height: 250px;
+  min-height: 160px;
+  border-radius: 14px;
   overflow: hidden;
-  background: var(--surface-muted);
+  background: linear-gradient(135deg, rgba(15, 118, 110, 0.04) 0%, rgba(15, 23, 42, 0.03) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-light);
+  box-sizing: border-box;
+}
+
+body.dark-mode .product-modal-img-wrap {
+  background: rgba(15, 23, 42, 0.65);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .product-modal-img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  max-height: 250px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  border-radius: 10px;
+  transition: transform 0.25s ease;
 }
 
 .product-modal-info {
@@ -3128,11 +3143,35 @@ body.dark-mode .product-modal-price {
   text-decoration: line-through;
 }
 
+/* DESKRIPSI PRODUK BISA DI-SCROLL MANDIRI DENGAN SCROLLBAR HALUS */
 .product-modal-desc-box {
   background: var(--surface-muted);
   border: 1px solid var(--border-light);
-  border-radius: 10px;
-  padding: 12px 14px;
+  border-radius: 12px;
+  padding: 11px 14px;
+  max-height: 110px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(15, 118, 110, 0.35) transparent;
+}
+
+.product-modal-desc-box::-webkit-scrollbar {
+  width: 4px;
+}
+
+.product-modal-desc-box::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.product-modal-desc-box::-webkit-scrollbar-thumb {
+  background: rgba(15, 118, 110, 0.35);
+  border-radius: 4px;
+}
+
+body.dark-mode .product-modal-desc-box::-webkit-scrollbar-thumb {
+  background: rgba(45, 212, 191, 0.35);
 }
 
 .product-modal-desc-heading {
@@ -3167,9 +3206,20 @@ body.dark-mode .product-modal-desc-heading {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   text-align: center;
+}
+
+/* KATA SHOPEE BERWARNA ORANGE KHAS BRAND SHOPEE */
+.shopee-brand-word {
+  color: #ee4d2d;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+body.dark-mode .shopee-brand-word {
+  color: #ff5e3a;
 }
 
 .modal-lock-icon {
@@ -3177,26 +3227,37 @@ body.dark-mode .product-modal-desc-heading {
   color: var(--brand-teal);
 }
 
+/* KOTAK TOMBOL BELI SEKARANG SESUAI UKURAN MODERN & ELEGAN */
 .product-modal-buy-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: linear-gradient(135deg, #ee4d2d 0%, #d83d1e 100%);
+  background: linear-gradient(135deg, #ee4d2d 0%, #ff5722 100%);
   color: #ffffff;
   text-decoration: none;
-  padding: 11px 18px;
-  border-radius: var(--radius-sm);
-  font-size: 0.9rem;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 0.94rem;
   font-weight: 700;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(238, 77, 45, 0.35);
+  letter-spacing: 0.2px;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(238, 77, 45, 0.32);
   text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .product-modal-buy-btn:hover {
-  opacity: 0.95;
-  transform: translateY(-1px);
+  opacity: 0.96;
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 18px rgba(238, 77, 45, 0.42);
+  filter: brightness(1.03);
+}
+
+.product-modal-buy-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(238, 77, 45, 0.3);
 }
 
 /* ============================================================
@@ -3928,51 +3989,189 @@ body.dark-mode .category-sort-attached-row {
   box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.14);
 }
 
-/* 3. Tombol Bagikan ke WhatsApp & Salin Link di Modal Detail Produk */
-.product-modal-share-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+/* 3. Fitur Bagikan Link & Pilihan Media Sosial Meta di Modal Detail Produk */
+.product-modal-share-container {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
-.product-modal-share-btn {
+.product-modal-share-main-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 9px 12px;
-  border-radius: 10px;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
   font-family: inherit;
-  font-size: 0.76rem;
+  font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.product-modal-share-main-btn:hover {
+  background: rgba(15, 118, 110, 0.07);
+  border-color: rgba(15, 118, 110, 0.28);
+  color: #0f766e;
+}
+
+.product-modal-share-main-btn.active {
+  background: linear-gradient(135deg, rgba(15, 118, 110, 0.12) 0%, rgba(20, 184, 166, 0.18) 100%);
+  border-color: #0f766e;
+  color: #0f766e;
+  box-shadow: 0 3px 10px rgba(15, 118, 110, 0.12);
+}
+
+.share-main-icon {
+  flex-shrink: 0;
+  color: #0f766e;
+}
+
+.share-main-chevron {
+  margin-left: 2px;
+  transition: transform 0.25s ease;
+  color: var(--text-muted);
+}
+
+.product-modal-share-main-btn.active .share-main-chevron {
+  transform: rotate(180deg);
+  color: #0f766e;
+}
+
+/* Panel Opsi Berbagi: Salin Link & Media Sosial Meta (WhatsApp, Facebook, Instagram) */
+.product-modal-share-options {
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(15, 118, 110, 0.03) 0%, rgba(15, 23, 42, 0.02) 100%);
+  border: 1px dashed rgba(15, 118, 110, 0.22);
+  animation: sharePanelFade 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes sharePanelFade {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.share-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.share-option-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: left;
   transition: all 0.18s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
 }
 
-.product-modal-share-btn.share-wa-btn {
-  background: #ecfdf5;
-  color: #047857;
-  border: 1px solid #a7f3d0;
+.share-option-pill:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
-.product-modal-share-btn.share-wa-btn:hover {
-  background: #d1fae5;
-  border-color: #6ee7b7;
-  transform: translateY(-1px);
+.share-option-pill:active {
+  transform: translateY(0);
 }
 
-.product-modal-share-btn.copy-link-btn {
-  background: #f8fafc;
+.share-opt-icon-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.share-opt-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 1. Salin Link */
+.share-opt-copy {
   color: #334155;
-  border: 1px solid #cbd5e1;
+  border-color: #cbd5e1;
+}
+.share-opt-copy .opt-icon-copy {
+  background: #f1f5f9;
+  color: #475569;
+}
+.share-opt-copy:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
 }
 
-.product-modal-share-btn.copy-link-btn:hover {
-  background: #f1f5f9;
-  border-color: #94a3b8;
-  transform: translateY(-1px);
+/* 2. WhatsApp (Meta) */
+.share-opt-wa {
+  color: #047857;
+  border-color: #a7f3d0;
+  background: #f0fdf4;
+}
+.share-opt-wa .opt-icon-wa {
+  background: #25d366;
+  color: #ffffff;
+}
+.share-opt-wa:hover {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+
+/* 3. Facebook (Meta) */
+.share-opt-fb {
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+  background: #eff6ff;
+}
+.share-opt-fb .opt-icon-fb {
+  background: #1877f2;
+  color: #ffffff;
+}
+.share-opt-fb:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+
+/* 4. Instagram (Meta) */
+.share-opt-ig {
+  color: #be185d;
+  border-color: #fbcfe8;
+  background: #fdf2f8;
+}
+.share-opt-ig .opt-icon-ig {
+  background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  color: #ffffff;
+}
+.share-opt-ig:hover {
+  background: #fce7f3;
+  border-color: #f9a8d4;
 }
 
 /* Dukungan Mode Malam (Dark Mode) */
@@ -4010,16 +4209,63 @@ body.dark-mode .search-sort-select {
   border-color: rgba(45, 212, 191, 0.28);
 }
 
-body.dark-mode .product-modal-share-btn.share-wa-btn {
-  background: rgba(16, 185, 129, 0.15);
-  color: #6ee7b7;
-  border-color: rgba(16, 185, 129, 0.35);
+body.dark-mode .product-modal-share-main-btn {
+  background: rgba(15, 38, 33, 0.7);
+  border-color: rgba(45, 212, 191, 0.22);
+  color: #e2e8f0;
 }
 
-body.dark-mode .product-modal-share-btn.copy-link-btn {
-  background: rgba(30, 41, 59, 0.85);
-  color: #e2e8f0;
-  border-color: rgba(148, 163, 184, 0.28);
+body.dark-mode .product-modal-share-main-btn:hover {
+  background: rgba(20, 184, 166, 0.15);
+  border-color: #2dd4bf;
+  color: #5eead4;
+}
+
+body.dark-mode .product-modal-share-main-btn.active {
+  background: rgba(20, 184, 166, 0.20);
+  border-color: #2dd4bf;
+  color: #2dd4bf;
+}
+
+body.dark-mode .product-modal-share-main-btn.active .share-main-chevron,
+body.dark-mode .product-modal-share-main-btn.active .share-main-icon {
+  color: #2dd4bf;
+}
+
+body.dark-mode .product-modal-share-options {
+  background: rgba(8, 22, 19, 0.55);
+  border-color: rgba(45, 212, 191, 0.22);
+}
+
+body.dark-mode .share-option-pill {
+  background: rgba(15, 38, 33, 0.85);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .share-opt-copy {
+  color: #cbd5e1;
+}
+body.dark-mode .share-opt-copy .opt-icon-copy {
+  background: rgba(51, 65, 85, 0.8);
+  color: #94a3b8;
+}
+
+body.dark-mode .share-opt-wa {
+  color: #6ee7b7;
+  border-color: rgba(16, 185, 129, 0.35);
+  background: rgba(6, 78, 59, 0.35);
+}
+
+body.dark-mode .share-opt-fb {
+  color: #93c5fd;
+  border-color: rgba(37, 99, 235, 0.35);
+  background: rgba(30, 58, 138, 0.35);
+}
+
+body.dark-mode .share-opt-ig {
+  color: #f472b6;
+  border-color: rgba(219, 39, 119, 0.35);
+  background: rgba(131, 24, 67, 0.35);
 }
 
 /* ============================================================

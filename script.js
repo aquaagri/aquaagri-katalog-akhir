@@ -3446,9 +3446,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalProductPriceCoret = document.getElementById("modalProductPriceCoret");
   const modalProductDesc = document.getElementById("modalProductDesc");
   const modalProductShopeeLink = document.getElementById("modalProductShopeeLink");
+  const modalShareMainBtn = document.getElementById("modalShareMainBtn");
+  const modalShareOptionsPanel = document.getElementById("modalShareOptionsPanel");
+  const modalShareCopyBtn = document.getElementById("modalShareCopyBtn");
+  const modalShareCopyLabel = document.getElementById("modalShareCopyLabel");
   const modalShareWaBtn = document.getElementById("modalShareWaBtn");
-  const modalCopyLinkBtn = document.getElementById("modalCopyLinkBtn");
-  const modalCopyLinkText = document.getElementById("modalCopyLinkText");
+  const modalShareFbBtn = document.getElementById("modalShareFbBtn");
+  const modalShareIgBtn = document.getElementById("modalShareIgBtn");
 
   function buildProductShareUrl(produk) {
     const prodId = produk && produk.id ? produk.id : 1;
@@ -3533,7 +3537,57 @@ document.addEventListener("DOMContentLoaded", function () {
       };
     }
 
-    // Tombol Bagikan Produk ke WhatsApp (Cara A: membuka Katalog AquaAgri di pop-up produk ini + Thumbnail Produk)
+    // Reset pilihan bagikan link saat modal dibuka
+    if (modalShareOptionsPanel) {
+      modalShareOptionsPanel.classList.add("hidden");
+    }
+    if (modalShareMainBtn) {
+      modalShareMainBtn.classList.remove("active");
+      modalShareMainBtn.setAttribute("aria-expanded", "false");
+    }
+    if (modalShareCopyLabel) {
+      modalShareCopyLabel.textContent = "Salin Link";
+    }
+
+    // Tombol Utama "Bagikan Link" (Buka/Tutup Pilihan Media Sosial Meta & Salin Link)
+    if (modalShareMainBtn && modalShareOptionsPanel) {
+      modalShareMainBtn.onclick = function (e) {
+        e.preventDefault();
+        const isHidden = modalShareOptionsPanel.classList.contains("hidden");
+        if (isHidden) {
+          modalShareOptionsPanel.classList.remove("hidden");
+          modalShareMainBtn.classList.add("active");
+          modalShareMainBtn.setAttribute("aria-expanded", "true");
+        } else {
+          modalShareOptionsPanel.classList.add("hidden");
+          modalShareMainBtn.classList.remove("active");
+          modalShareMainBtn.setAttribute("aria-expanded", "false");
+        }
+      };
+    }
+
+    // Opsi 1: Salin Link ke Clipboard
+    if (modalShareCopyBtn) {
+      modalShareCopyBtn.onclick = function (e) {
+        e.preventDefault();
+        const shareUrl = buildProductShareUrl(produk);
+        copyTextToClipboard(shareUrl)
+          .then(function () {
+            if (modalShareCopyLabel) {
+              modalShareCopyLabel.textContent = "✓ Tersalin!";
+              setTimeout(function () {
+                modalShareCopyLabel.textContent = "Salin Link";
+              }, 2200);
+            }
+            showSearchToast("Link produk berhasil disalin!");
+          })
+          .catch(function () {
+            showSearchToast("Link: " + shareUrl);
+          });
+      };
+    }
+
+    // Opsi 2: Bagikan ke WhatsApp (Meta)
     if (modalShareWaBtn) {
       modalShareWaBtn.onclick = function (e) {
         e.preventDefault();
@@ -3553,24 +3607,30 @@ document.addEventListener("DOMContentLoaded", function () {
       };
     }
 
-    // Tombol Salin Link Produk
-    if (modalCopyLinkBtn) {
-      if (modalCopyLinkText) modalCopyLinkText.textContent = "Salin Link";
-      modalCopyLinkBtn.onclick = function (e) {
+    // Opsi 3: Bagikan ke Facebook (Meta)
+    if (modalShareFbBtn) {
+      modalShareFbBtn.onclick = function (e) {
+        e.preventDefault();
+        const shareUrl = buildProductShareUrl(produk);
+        const fbUrl = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(shareUrl);
+        window.open(fbUrl, "_blank", "noopener,noreferrer,width=600,height=500");
+      };
+    }
+
+    // Opsi 4: Bagikan ke Instagram (Meta)
+    if (modalShareIgBtn) {
+      modalShareIgBtn.onclick = function (e) {
         e.preventDefault();
         const shareUrl = buildProductShareUrl(produk);
         copyTextToClipboard(shareUrl)
           .then(function () {
-            if (modalCopyLinkText) {
-              modalCopyLinkText.textContent = "✓ Link Tersalin!";
-              setTimeout(function () {
-                modalCopyLinkText.textContent = "Salin Link";
-              }, 2200);
-            }
-            showSearchToast("Link produk berhasil disalin! Siap ditempel di WA/Sosmed.");
+            showSearchToast("Link produk disalin! Tempel di Story / DM Instagram 📸");
+            setTimeout(function () {
+              window.open("https://www.instagram.com/", "_blank", "noopener,noreferrer");
+            }, 600);
           })
           .catch(function () {
-            showSearchToast("Link: " + shareUrl);
+            window.open("https://www.instagram.com/", "_blank", "noopener,noreferrer");
           });
       };
     }
@@ -3591,6 +3651,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     modalBackdrop.classList.remove("open");
     productDetailModal.classList.remove("open");
+
+    if (modalShareOptionsPanel) {
+      modalShareOptionsPanel.classList.add("hidden");
+    }
+    if (modalShareMainBtn) {
+      modalShareMainBtn.classList.remove("active");
+      modalShareMainBtn.setAttribute("aria-expanded", "false");
+    }
 
     setTimeout(function () {
       modalBackdrop.classList.add("hidden");
