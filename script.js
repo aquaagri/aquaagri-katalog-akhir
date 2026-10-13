@@ -1808,13 +1808,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const headerBottom = mainHeader.getBoundingClientRect().bottom;
     const wrapRect = categorySortStickyWrap.getBoundingClientRect();
+    // Rapatkan tepat menyatu di bawah baris pencarian dengan overlap 1px agar nol celah/jarak
+    const targetFixedTop = Math.floor(headerBottom) - 1;
 
-    if (wrapRect.top <= headerBottom + 1) {
+    if (wrapRect.top <= targetFixedTop + 1) {
       if (!categorySortBarEl.classList.contains("is-fixed-under-search")) {
         categorySortStickyWrap.style.minHeight = categorySortBarEl.offsetHeight + "px";
         categorySortBarEl.classList.add("is-fixed-under-search");
       }
-      categorySortBarEl.style.top = Math.round(headerBottom) + "px";
+      categorySortBarEl.style.top = targetFixedTop + "px";
     } else {
       if (categorySortBarEl.classList.contains("is-fixed-under-search")) {
         categorySortBarEl.classList.remove("is-fixed-under-search");

@@ -1841,7 +1841,7 @@ body.dark-mode .step-icon {
   position: relative;
   border-radius: var(--radius-xl);
   overflow: hidden;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   min-height: 145px;
   display: flex;
   flex-direction: column;
@@ -2052,8 +2052,8 @@ body.dark-mode .category-search-pill:focus-within {
 .category-filter-section {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-bottom: 4px;
+  gap: 3px;
+  margin-bottom: 3px;
 }
 
 .category-chips-nav {
@@ -2400,6 +2400,10 @@ body.dark-mode .budidaya-group-badge {
   padding: 6px 0 8px;
   background: rgba(255, 255, 255, 0.45);
   transition: all 0.25s ease;
+}
+
+#topbarCategorySearchRow.topbar-sub-row {
+  padding: 5px 0 3px;
 }
 
 body.dark-mode .topbar-sub-row {
@@ -3669,7 +3673,7 @@ body.dark-mode .about-slide-dot.active {
 /* 1. Pembungkus & Baris Urutkan Produk di Halaman Kategori */
 .category-sort-sticky-wrap {
   margin-top: 0;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   position: relative;
   z-index: 95;
 }
@@ -3693,7 +3697,7 @@ body.dark-mode .about-slide-dot.active {
   overflow: hidden;
 }
 
-/* Saat di-scroll ke bawah: tetap diam (fixed) menyatu & sejajar dengan fitur search di header */
+/* Saat di-scroll ke bawah: tetap diam (fixed) menyatu rapat tanpa jarak sejajar dengan fitur search di header */
 .sort-bar-row.is-fixed-under-search {
   position: fixed;
   left: 0;
@@ -3702,13 +3706,13 @@ body.dark-mode .about-slide-dot.active {
   border-radius: 0;
   border-left: none;
   border-right: none;
-  border-top: 1px solid rgba(15, 118, 110, 0.08);
+  border-top: none;
   border-bottom: 1px solid rgba(15, 118, 110, 0.16);
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  padding: 6px 0;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.07);
+  background: var(--surface-topbar);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 2px 0 5px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
 }
 
 .sort-bar-row.is-fixed-under-search .sort-bar-inner {
@@ -3899,10 +3903,10 @@ body.dark-mode .sort-bar-row {
 }
 
 body.dark-mode .sort-bar-row.is-fixed-under-search {
-  background: rgba(8, 22, 19, 0.95);
-  border-top-color: rgba(45, 212, 191, 0.12);
+  background: var(--surface-topbar);
+  border-top: none;
   border-bottom-color: rgba(45, 212, 191, 0.22);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
 }
 
 body.dark-mode .sort-bar-label {
