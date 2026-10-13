@@ -1,3 +1,4 @@
+// AquaAgri Cloudflare Worker - v1.0.4 (S3 Marketing Push Notifications & Broadcast System)
 const SUPABASE_URL = "https://uqihzgskwxdurcwjpvbc.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_XOjGorIRGBqztcldte1AzQ_GwOyFKXQ";
 
