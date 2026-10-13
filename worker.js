@@ -22,9 +22,26 @@ export default {
     if (prodId && /^\d+$/.test(String(prodId).trim())) {
       const cleanId = String(prodId).trim();
       try {
-        const assetUrl = new URL("/index.html", url.origin);
-        const indexRes = await env.ASSETS.fetch(new Request(assetUrl.toString(), request));
+        // Ambil halaman utama "/" dari binding ASSETS (hindari "/index.html" karena Cloudflare melakukan 307 redirect ke "/")
+        const rootAssetUrl = new URL("/", url.origin);
+        let indexRes = await env.ASSETS.fetch(
+          new Request(rootAssetUrl.toString(), {
+            method: "GET",
+            headers: { Accept: "text/html,application/xhtml+xml" }
+          })
+        );
+
+        if (indexRes.status >= 300 && indexRes.status < 400) {
+          const loc = indexRes.headers.get("location");
+          if (loc) {
+            indexRes = await env.ASSETS.fetch(new Request(new URL(loc, url.origin).toString()));
+          }
+        }
+
         let html = await indexRes.text();
+        if (!html || html.length < 100) {
+          return Response.redirect(`${url.origin}/?produk=${cleanId}`, 302);
+        }
 
         // Ambil detail produk langsung dari Supabase REST API untuk merender Open Graph Meta Tags spesifik produk
         const apiEndpoint = `${SUPABASE_URL}/rest/v1/products?id=eq.${cleanId}&select=id,nama,harga,harga_coret,diskon,gambar,deskripsi&limit=1`;
@@ -109,9 +126,7 @@ export default {
           }
         });
       } catch (err) {
-        // Fallback aman ke index.html jika gagal
-        const fallbackUrl = new URL("/index.html", url.origin);
-        return env.ASSETS.fetch(new Request(fallbackUrl.toString(), request));
+        return Response.redirect(`${url.origin}/?produk=${cleanId}`, 302);
       }
     }
 
