@@ -2955,6 +2955,18 @@ document.addEventListener("DOMContentLoaded", function () {
     if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.remove("hidden");
     updateHeaderOffset();
 
+    const searchSortPillsEl = document.getElementById("searchSortPills");
+    if (searchSortPillsEl) {
+      const searchSortBtns = searchSortPillsEl.querySelectorAll(".sort-pill-btn");
+      searchSortBtns.forEach(function (b) {
+        if (b.getAttribute("data-sort") === currentSearchSort) {
+          b.classList.add("active");
+        } else {
+          b.classList.remove("active");
+        }
+      });
+    }
+
     if (searchInterfaceInput) {
       searchInterfaceInput.value = initialKeyword;
       setTimeout(function () {
@@ -3364,11 +3376,35 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Dropdown Urutkan Produk di Halaman Pencarian
+  // Tombol & Navigasi Urutkan Produk di Halaman Pencarian (Format Pil Elegan & Terpadu)
+  const searchSortPills = document.getElementById("searchSortPills");
+  if (searchSortPills) {
+    const searchSortBtns = searchSortPills.querySelectorAll(".sort-pill-btn");
+    searchSortBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        searchSortBtns.forEach(function (b) { b.classList.remove("active"); });
+        btn.classList.add("active");
+        currentSearchSort = btn.getAttribute("data-sort") || "default";
+        renderSearchInterfaceProducts();
+      });
+    });
+  }
+
+  // Dropdown Urutkan Produk di Halaman Pencarian (Fallback sinkronisasi jika ada)
   const searchSortSelect = document.getElementById("searchSortSelect");
   if (searchSortSelect) {
     searchSortSelect.addEventListener("change", function () {
       currentSearchSort = searchSortSelect.value || "default";
+      if (searchSortPills) {
+        const searchSortBtns = searchSortPills.querySelectorAll(".sort-pill-btn");
+        searchSortBtns.forEach(function (b) {
+          if (b.getAttribute("data-sort") === currentSearchSort) {
+            b.classList.add("active");
+          } else {
+            b.classList.remove("active");
+          }
+        });
+      }
       renderSearchInterfaceProducts();
     });
   }
@@ -3583,21 +3619,33 @@ document.addEventListener("DOMContentLoaded", function () {
   // ============================================================
 
   function scrollToCaraPesan() {
-    // Jika sedang berada di halaman kategori, kembali ke beranda
-    if (categoryView && !categoryView.classList.contains("hidden")) {
+    // Jika sedang berada di halaman kategori, pencarian, atau tentang aquaagri, kembali ke beranda lebih dulu
+    const isCategoryOpen = categoryView && !categoryView.classList.contains("hidden");
+    const isSearchOpen = searchView && !searchView.classList.contains("hidden");
+    const isAboutOpen = aboutView && !aboutView.classList.contains("hidden");
+
+    if (isCategoryOpen || isSearchOpen || isAboutOpen) {
       goHome();
     }
     const section = document.getElementById("panduanBelanja");
     if (section) {
       setTimeout(function () {
-        section.scrollIntoView({ behavior: "smooth", block: "start" });
+        const topbar = document.getElementById("mainHeader") || document.querySelector(".topbar");
+        const headerHeight = topbar ? Math.ceil(topbar.getBoundingClientRect().height) : 56;
+        // Jarak aman presisi (14px) agar judul 'TRANSAKSI MUDAH & TERPERCAYA' pas tepat di bawah header dan tidak terpotong
+        const clearOffset = headerHeight + 14;
+        const targetPos = section.getBoundingClientRect().top + window.pageYOffset - clearOffset;
+        window.scrollTo({
+          top: Math.max(0, Math.round(targetPos)),
+          behavior: "smooth"
+        });
         section.classList.remove("highlight-pulse");
         void section.offsetWidth;
         section.classList.add("highlight-pulse");
         setTimeout(function () {
           section.classList.remove("highlight-pulse");
         }, 1800);
-      }, 60);
+      }, (isCategoryOpen || isSearchOpen || isAboutOpen) ? 80 : 20);
     }
   }
 
@@ -4020,6 +4068,38 @@ document.addEventListener("DOMContentLoaded", function () {
   renderSampleCarousel();
   initStoryCarousel();
   initHeroSlider();
+
+  // ============================================================
+  // FITUR TOMBOL KEMBALI KE ATAS (BACK TO TOP FLOATING FAB)
+  // Menandakan kembali ke atas saat scroll ke bawah di semua kategori produk & halaman
+  // ============================================================
+  const backToTopBtn = document.getElementById("backToTopBtn");
+  if (backToTopBtn) {
+    let bttTicking = false;
+    function checkBackToTopScroll() {
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+      if (scrollY > 240) {
+        backToTopBtn.classList.add("visible");
+      } else {
+        backToTopBtn.classList.remove("visible");
+      }
+      bttTicking = false;
+    }
+
+    window.addEventListener("scroll", function () {
+      if (!bttTicking) {
+        window.requestAnimationFrame(checkBackToTopScroll);
+        bttTicking = true;
+      }
+    }, { passive: true });
+
+    backToTopBtn.addEventListener("click", function () {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+  }
 
   // Cek apakah pengunjung membuka link share produk spesifik (Cara A)
   checkAndOpenSharedProduct();

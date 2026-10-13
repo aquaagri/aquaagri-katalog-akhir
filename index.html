@@ -109,6 +109,59 @@
           </div>
         </div>
       </div>
+
+      <!-- TIER 2.5: FITUR PENGELOMPOKAN KATEGORI & URUTAN HARGA MENEMPEL TETAP DIAM SEJAJAR SEARCH -->
+      <div class="search-filter-attached-bar">
+        <!-- 1. CHIPS KATEGORI & KATA KUNCI POPULER -->
+        <div class="search-chips-scroll" id="searchChipsScroll">
+          <button class="search-chip active" data-type="cat" data-value="semua" type="button">Semua Kategori</button>
+          <button class="search-chip" data-type="cat" data-value="produk-olahan-ikan" type="button">Olahan Ikan</button>
+          <button class="search-chip" data-type="cat" data-value="ikan-seafood-segar" type="button">Ikan Segar</button>
+          <button class="search-chip" data-type="cat" data-value="pancing-umpan" type="button">Pancing &amp; Umpan</button>
+          <button class="search-chip" data-type="cat" data-value="Benih-Pakan-Budidaya" type="button">Benih &amp; Budidaya</button>
+          <button class="search-chip" data-type="kw" data-value="Sambal Roa" type="button">Sambal Roa</button>
+          <button class="search-chip" data-type="kw" data-value="Abon Tuna" type="button">Abon Tuna</button>
+          <button class="search-chip" data-type="kw" data-value="Udang Vaname" type="button">Udang Vaname</button>
+          <button class="search-chip" data-type="kw" data-value="Joran Carbon" type="button">Joran Carbon</button>
+          <button class="search-chip" data-type="kw" data-value="Pelet Ikan" type="button">Pelet Apung</button>
+          <button class="search-chip" data-type="kw" data-value="Kerupuk Tenggiri" type="button">Kerupuk Tenggiri</button>
+        </div>
+
+        <!-- 2. FITUR URUTAN HARGA DI SESUAIKAN DENGAN FORMAT PIL ELEGAN -->
+        <div class="search-sort-attached-row" id="searchSortPillBar" aria-label="Urutkan pencarian produk">
+          <div class="search-sort-attached-inner">
+            <span class="sort-bar-label">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 15l5 5 5-5"/>
+                <path d="M7 9l5-5 5 5"/>
+              </svg>
+              <span>Urutkan</span>
+            </span>
+            <span class="sort-bar-divider" aria-hidden="true"></span>
+            <div class="sort-pills-scroll" id="searchSortPills">
+              <button type="button" class="sort-pill-btn active" data-sort="default">
+                <span>Default</span>
+              </button>
+              <button type="button" class="sort-pill-btn" data-sort="price-asc">
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+                <span>Termurah</span>
+              </button>
+              <button type="button" class="sort-pill-btn" data-sort="price-desc">
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+                <span>Termahal</span>
+              </button>
+              <button type="button" class="sort-pill-btn" data-sort="discount-desc">
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+                <span>Diskon Besar</span>
+              </button>
+              <button type="button" class="sort-pill-btn" data-sort="popular">
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span>Terpopuler</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- TIER 2: SEARCH KATEGORI (MENYATU LANGSUNG DENGAN HEADER UTAMA) -->
@@ -418,7 +471,12 @@
       <section id="panduanBelanja" class="payment-guide-section">
         <div class="section-header">
           <div>
-            <span class="section-tag">TRANSAKSI MUDAH & TERPERCAYA</span>
+            <span class="section-tag payment-guide-tag">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              TRANSAKSI MUDAH &amp; TERPERCAYA
+            </span>
             <h2 class="section-title">4 Langkah Mudah Belanja di aquaagri.id</h2>
           </div>
           <p class="section-desc">Nikmati kemudahan transaksi terpercaya, praktis, dan dilindungi garansi keamanan pembayaran resmi Shopee Indonesia.</p>
@@ -582,37 +640,11 @@
          ------------------------------------------------------------ -->
     <section id="searchView" class="view hidden" aria-label="Antarmuka Pencarian Produk">
 
-      <!-- CHIP KATEGORI & KATA KUNCI POPULER (HORIZONTAL SCROLLING) -->
-      <div class="search-chips-bar">
-        <div class="search-chips-scroll" id="searchChipsScroll">
-          <button class="search-chip active" data-type="cat" data-value="semua" type="button">Semua Kategori</button>
-          <button class="search-chip" data-type="cat" data-value="produk-olahan-ikan" type="button">Olahan Ikan</button>
-          <button class="search-chip" data-type="cat" data-value="ikan-seafood-segar" type="button">Ikan Segar</button>
-          <button class="search-chip" data-type="cat" data-value="pancing-umpan" type="button">Pancing &amp; Umpan</button>
-          <button class="search-chip" data-type="cat" data-value="Benih-Pakan-Budidaya" type="button">Benih &amp; Budidaya</button>
-          <button class="search-chip" data-type="kw" data-value="Sambal Roa" type="button">Sambal Roa</button>
-          <button class="search-chip" data-type="kw" data-value="Abon Tuna" type="button">Abon Tuna</button>
-          <button class="search-chip" data-type="kw" data-value="Udang Vaname" type="button">Udang Vaname</button>
-          <button class="search-chip" data-type="kw" data-value="Joran Carbon" type="button">Joran Carbon</button>
-          <button class="search-chip" data-type="kw" data-value="Pelet Ikan" type="button">Pelet Apung</button>
-          <button class="search-chip" data-type="kw" data-value="Kerupuk Tenggiri" type="button">Kerupuk Tenggiri</button>
-        </div>
-      </div>
-
-      <!-- HEADING: PENCARIAN PILIHAN & URUTKAN PRODUK -->
+      <!-- HEADING: HASIL PENCARIAN & JUMLAH PRODUK -->
       <div class="search-heading-row">
         <div class="search-heading-left">
-          <h3 class="search-heading-text">Pencarian Pilihan</h3>
+          <h3 class="search-heading-text">Hasil Pencarian</h3>
           <span class="search-heading-count" id="searchResultCount">48 Produk</span>
-        </div>
-        <div class="search-sort-wrap">
-          <select id="searchSortSelect" class="search-sort-select" aria-label="Urutkan hasil pencarian">
-            <option value="default">Urutkan: Default</option>
-            <option value="price-asc">Harga Termurah</option>
-            <option value="price-desc">Harga Tertinggi</option>
-            <option value="discount-desc">Diskon Terbesar</option>
-            <option value="popular">Terpopuler</option>
-          </select>
         </div>
       </div>
 
@@ -1022,6 +1054,17 @@
       </button>
     </div>
   </div>
+
+  <!-- ============================================================
+       TOMBOL FLOATING KEMBALI KE ATAS (BACK TO TOP)
+       Muncul saat digulir ke bawah di semua halaman & kategori
+       ============================================================ -->
+  <button id="backToTopBtn" class="back-to-top-fab" type="button" aria-label="Kembali ke atas" title="Kembali ke atas">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+    <span class="back-to-top-text">Atas</span>
+  </button>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
