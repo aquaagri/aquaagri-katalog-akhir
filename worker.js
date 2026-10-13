@@ -1,4 +1,4 @@
-// AquaAgri Cloudflare Worker - v1.0.5 (Fix duplicate const declaration & robust admin init)
+// AquaAgri Cloudflare Worker - v1.0.6 (Add local push notification test button & broadcast simulator)
 const SUPABASE_URL = "https://uqihzgskwxdurcwjpvbc.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_XOjGorIRGBqztcldte1AzQ_GwOyFKXQ";
 

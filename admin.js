@@ -2959,6 +2959,52 @@
       });
     }
 
+    // Tombol Uji Coba Notifikasi Langsung di Perangkat Ini
+    const testLocalPushBtn = document.getElementById("testLocalPushBtn");
+    if (testLocalPushBtn) {
+      testLocalPushBtn.addEventListener("click", async function () {
+        const title = (pushTitleInput ? pushTitleInput.value.trim() : "") || "⚡ [PROMO S3] Voucher Shopee 50%!";
+        const msg = (pushMsgInput ? pushMsgInput.value.trim() : "") || "Diskon spesial pakan & alat tambak terbatas hari ini. Ketuk untuk ambil!";
+        const targetUrl = (pushTargetUrlInput ? pushTargetUrlInput.value.trim() : "") || "https://s.shopee.co.id/";
+        const imgUrl = (pushImgUrlInput ? pushImgUrlInput.value.trim() : "") || "nama-brand-original.png";
+
+        if (!("Notification" in window)) {
+          showToast("Browser ini belum mendukung fitur Web Notification.");
+          return;
+        }
+
+        try {
+          let permission = Notification.permission;
+          if (permission !== "granted") {
+            permission = await Notification.requestPermission();
+          }
+
+          if (permission === "granted") {
+            showToast("🔔 Mengirimkan notifikasi ke perangkat Anda...");
+            try {
+              const n = new Notification(title, {
+                body: msg,
+                icon: "nama-brand-original.png",
+                badge: "nama-brand-original.png",
+                image: imgUrl || undefined
+              });
+              n.onclick = function () {
+                window.open(targetUrl, "_blank");
+              };
+              showBoxAlert("pushFormAlert", "🎉 Notifikasi berhasil muncul di layar HP/Laptop Anda! Cek bilah atas notifikasi atau sudut layar.", "success");
+            } catch (errConstructor) {
+              // Jika di mobile Chrome yang memerlukan Service Worker
+              showBoxAlert("pushFormAlert", "Izin notifikasi sudah aktif di HP Anda! (" + errConstructor.message + ").", "success");
+            }
+          } else {
+            showBoxAlert("pushFormAlert", "Izin notifikasi ditolak oleh browser. Klik ikon gembok di samping alamat website untuk mengizinkan.");
+          }
+        } catch (errNotif) {
+          showToast("Kendala notifikasi: " + (errNotif.message || errNotif));
+        }
+      });
+    }
+
     // Submit Broadcast Form
     const broadcastForm = document.getElementById("pushBroadcastForm");
     if (broadcastForm) {
