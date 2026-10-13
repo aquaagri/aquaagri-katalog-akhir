@@ -178,6 +178,13 @@
             <strong id="adminUserEmail">admin@aquaagri.id</strong>
           </div>
         </div>
+        <button type="button" id="openChangePasswordBtn" class="btn-change-password">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>Ganti Password</span>
+        </button>
         <button type="button" id="logoutBtn" class="btn-logout">Keluar (Logout)</button>
       </div>
     </aside>
@@ -206,6 +213,9 @@
         <div class="topbar-right">
           <button type="button" id="refreshDataBtn" class="btn-secondary btn-sm" title="Muat ulang data dari database">
             &#8635; Segarkan Data
+          </button>
+          <button type="button" id="topbarChangePasswordBtn" class="btn-secondary btn-sm" title="Ganti password admin">
+            &#128274; Ganti Password
           </button>
           <button type="button" id="quickAddProductBtn" class="btn-primary btn-sm">
             + Tambah Produk
@@ -932,6 +942,62 @@
           <button type="button" id="executeConfirmDeleteBtn" class="btn-danger">Ya, Hapus Permanen</button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       7. MODAL GANTI PASSWORD ADMIN
+       ======================================================================== -->
+  <div id="changePasswordBackdrop" class="modal-overlay hidden">
+    <div class="modal-dialog modal-sm" role="dialog" aria-modal="true" aria-labelledby="changePasswordTitle">
+      <div class="modal-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--tosca-primary, #0d9488);">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <h3 id="changePasswordTitle">Ganti Password Admin</h3>
+        </div>
+        <button type="button" id="closeChangePasswordBtn" class="modal-close-btn" aria-label="Tutup">&times;</button>
+      </div>
+
+      <form id="changePasswordForm" class="modal-body" novalidate>
+        <div id="changePasswordAlert" class="alert-box hidden" role="alert"></div>
+
+        <p class="form-hint" style="margin-bottom: 14px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+          Perbarui password akun admin Anda secara langsung. Disarankan minimal 8 karakter dengan kombinasi huruf, angka, atau simbol.
+        </p>
+
+        <div class="form-group">
+          <label for="newAdminPassword">Password Baru <span class="req">*</span></label>
+          <div class="password-input-wrap">
+            <input type="password" id="newAdminPassword" placeholder="Ketik password baru" required minlength="8" autocomplete="new-password">
+            <button type="button" id="toggleNewPassBtn" class="pass-toggle-btn" aria-label="Tampilkan password baru">Lihat</button>
+          </div>
+          <!-- Indikator meter kekuatan password -->
+          <div id="passStrengthWrap" class="pass-strength-wrap hidden">
+            <div class="pass-strength-bar">
+              <div id="passStrengthBarFill" class="pass-strength-bar-fill"></div>
+            </div>
+            <span id="passStrengthText" class="pass-strength-text"></span>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 14px;">
+          <label for="confirmAdminPassword">Ulangi Password Baru <span class="req">*</span></label>
+          <div class="password-input-wrap">
+            <input type="password" id="confirmAdminPassword" placeholder="Ketik ulang password baru" required minlength="8" autocomplete="new-password">
+            <button type="button" id="toggleConfirmPassBtn" class="pass-toggle-btn" aria-label="Tampilkan konfirmasi password">Lihat</button>
+          </div>
+        </div>
+
+        <div class="modal-footer" style="margin-top: 22px; padding-top: 16px;">
+          <button type="button" id="cancelChangePasswordBtn" class="btn-secondary">Batal</button>
+          <button type="submit" id="saveChangePasswordBtn" class="btn-primary">
+            <span>Simpan Password Baru</span>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 

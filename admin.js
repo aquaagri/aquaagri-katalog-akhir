@@ -2099,6 +2099,113 @@
     }
   }
 
+  // ---------- 12B. FITUR GANTI PASSWORD ADMIN ----------
+  function openChangePasswordModal() {
+    const modal = document.getElementById("changePasswordBackdrop");
+    const form = document.getElementById("changePasswordForm");
+    const newPass = document.getElementById("newAdminPassword");
+    const confPass = document.getElementById("confirmAdminPassword");
+    const strengthWrap = document.getElementById("passStrengthWrap");
+    const strengthBarFill = document.getElementById("passStrengthBarFill");
+    const strengthText = document.getElementById("passStrengthText");
+
+    if (form) form.reset();
+    showBoxAlert("changePasswordAlert", "");
+    if (newPass) newPass.type = "password";
+    if (confPass) confPass.type = "password";
+    const tNew = document.getElementById("toggleNewPassBtn");
+    const tConf = document.getElementById("toggleConfirmPassBtn");
+    if (tNew) tNew.textContent = "Lihat";
+    if (tConf) tConf.textContent = "Lihat";
+    if (strengthWrap) strengthWrap.classList.add("hidden");
+    if (strengthBarFill) {
+      strengthBarFill.style.width = "0%";
+      strengthBarFill.style.backgroundColor = "";
+    }
+    if (strengthText) strengthText.textContent = "";
+
+    if (modal) modal.classList.remove("hidden");
+    if (newPass) setTimeout(() => newPass.focus(), 150);
+  }
+
+  function closeChangePasswordModal() {
+    const modal = document.getElementById("changePasswordBackdrop");
+    if (modal) modal.classList.add("hidden");
+  }
+
+  function calculatePasswordStrength(pass) {
+    if (!pass) return { score: 0, label: "", color: "", width: "0%" };
+    let score = 0;
+    if (pass.length >= 8) score += 1;
+    if (pass.length >= 12) score += 1;
+    if (/[A-Z]/.test(pass) && /[a-z]/.test(pass)) score += 1;
+    if (/[0-9]/.test(pass)) score += 1;
+    if (/[^A-Za-z0-9]/.test(pass)) score += 1;
+
+    if (pass.length < 8) {
+      return { score: 1, label: "Terlalu Pendek", color: "#ef4444", width: "25%" };
+    }
+    if (score <= 2) {
+      return { score: 2, label: "Lemah", color: "#f97316", width: "45%" };
+    }
+    if (score <= 4) {
+      return { score: 3, label: "Sedang", color: "#eab308", width: "70%" };
+    }
+    return { score: 4, label: "Sangat Kuat", color: "#10b981", width: "100%" };
+  }
+
+  async function handleSaveNewPassword(e) {
+    e.preventDefault();
+    showBoxAlert("changePasswordAlert", "");
+
+    const newPass = document.getElementById("newAdminPassword").value;
+    const confPass = document.getElementById("confirmAdminPassword").value;
+    const submitBtn = document.getElementById("saveChangePasswordBtn");
+
+    if (!newPass) {
+      showBoxAlert("changePasswordAlert", "Password baru wajib diisi.");
+      return;
+    }
+    if (newPass.length < 8) {
+      showBoxAlert("changePasswordAlert", "Password baru minimal 8 karakter.");
+      return;
+    }
+    if (/^(12345678|123456789|1\.2\.3\.4\.5\.6|admin123|aquaagri123|password)$/i.test(newPass.trim())) {
+      showBoxAlert("changePasswordAlert", "Pola password terlalu mudah ditebak! Gunakan kombinasi huruf, angka, atau simbol unik.");
+      return;
+    }
+    if (newPass !== confPass) {
+      showBoxAlert("changePasswordAlert", "Konfirmasi password tidak cocok dengan password baru.");
+      return;
+    }
+
+    const sb = window.getAquaAgriSupabaseClient();
+    if (!sb) {
+      showBoxAlert("changePasswordAlert", "Koneksi Supabase belum siap.");
+      return;
+    }
+
+    try {
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>Menyimpan...</span>';
+      }
+
+      const { data, error } = await sb.auth.updateUser({ password: newPass });
+      if (error) throw error;
+
+      closeChangePasswordModal();
+      showToast("Password admin berhasil diperbarui! Gunakan password baru ini saat login berikutnya.");
+    } catch (err) {
+      showBoxAlert("changePasswordAlert", "Gagal memperbarui password: " + (err.message || "Terjadi kesalahan."));
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>Simpan Password Baru</span>';
+      }
+    }
+  }
+
   // ---------- 13. NAVIGASI TAB & EVENT LISTENERS ----------
 
   function switchAdminTab(tabName) {
@@ -2271,6 +2378,77 @@
         showToast("Anda telah keluar dari sesi Admin.");
       });
     }
+
+    // 6B. Ganti Password Admin
+    const openPassBtn = document.getElementById("openChangePasswordBtn");
+    const topbarPassBtn = document.getElementById("topbarChangePasswordBtn");
+    if (openPassBtn) openPassBtn.addEventListener("click", openChangePasswordModal);
+    if (topbarPassBtn) topbarPassBtn.addEventListener("click", openChangePasswordModal);
+
+    const closePassBtn = document.getElementById("closeChangePasswordBtn");
+    const cancelPassBtn = document.getElementById("cancelChangePasswordBtn");
+    const passBackdrop = document.getElementById("changePasswordBackdrop");
+    if (closePassBtn) closePassBtn.addEventListener("click", closeChangePasswordModal);
+    if (cancelPassBtn) cancelPassBtn.addEventListener("click", closeChangePasswordModal);
+    if (passBackdrop) {
+      passBackdrop.addEventListener("click", function (e) {
+        if (e.target === passBackdrop) closeChangePasswordModal();
+      });
+    }
+
+    const toggleNewPassBtn = document.getElementById("toggleNewPassBtn");
+    const newPassInput = document.getElementById("newAdminPassword");
+    if (toggleNewPassBtn && newPassInput) {
+      toggleNewPassBtn.addEventListener("click", function () {
+        if (newPassInput.type === "password") {
+          newPassInput.type = "text";
+          toggleNewPassBtn.textContent = "Sembunyikan";
+        } else {
+          newPassInput.type = "password";
+          toggleNewPassBtn.textContent = "Lihat";
+        }
+      });
+    }
+
+    const toggleConfPassBtn = document.getElementById("toggleConfirmPassBtn");
+    const confPassInput = document.getElementById("confirmAdminPassword");
+    if (toggleConfPassBtn && confPassInput) {
+      toggleConfPassBtn.addEventListener("click", function () {
+        if (confPassInput.type === "password") {
+          confPassInput.type = "text";
+          toggleConfPassBtn.textContent = "Sembunyikan";
+        } else {
+          confPassInput.type = "password";
+          toggleConfPassBtn.textContent = "Lihat";
+        }
+      });
+    }
+
+    if (newPassInput) {
+      newPassInput.addEventListener("input", function () {
+        const val = newPassInput.value;
+        const wrap = document.getElementById("passStrengthWrap");
+        const fill = document.getElementById("passStrengthBarFill");
+        const txt = document.getElementById("passStrengthText");
+        if (!val) {
+          if (wrap) wrap.classList.add("hidden");
+          return;
+        }
+        if (wrap) wrap.classList.remove("hidden");
+        const strength = calculatePasswordStrength(val);
+        if (fill) {
+          fill.style.width = strength.width;
+          fill.style.backgroundColor = strength.color;
+        }
+        if (txt) {
+          txt.textContent = strength.label;
+          txt.style.color = strength.color;
+        }
+      });
+    }
+
+    const passForm = document.getElementById("changePasswordForm");
+    if (passForm) passForm.addEventListener("submit", handleSaveNewPassword);
 
     // 7. Navigasi Sidebar
     document.querySelectorAll(".nav-item").forEach(function (btn) {
