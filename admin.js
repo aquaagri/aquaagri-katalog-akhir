@@ -951,6 +951,26 @@
       const actWrap = document.createElement("div");
       actWrap.className = "row-actions";
 
+      const shareWaBtn = document.createElement("button");
+      shareWaBtn.type = "button";
+      shareWaBtn.className = "btn-secondary btn-sm";
+      shareWaBtn.title = "Salin Link Produk (dengan Thumbnail Otomatis) untuk dibagikan ke WhatsApp/Sosmed";
+      shareWaBtn.textContent = "Share WA";
+      shareWaBtn.addEventListener("click", function () {
+        const isLocal = !window.location.origin || window.location.origin === "null" || window.location.protocol === "file:";
+        const base = isLocal ? "https://aquaagri-katalog-akhir.aquaagri-id.workers.dev" : window.location.origin;
+        const shareUrl = base + "/share?produk=" + encodeURIComponent(prod.id);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(shareUrl).then(function () {
+            showToast("Link Share WA (" + prod.nama + ") berhasil disalin!");
+          }).catch(function () {
+            showToast("Link: " + shareUrl);
+          });
+        } else {
+          showToast("Link: " + shareUrl);
+        }
+      });
+
       const editBtn = document.createElement("button");
       editBtn.type = "button";
       editBtn.className = "btn-secondary btn-sm";
@@ -967,6 +987,7 @@
         openConfirmDeleteModal("product", prod.id, prod.nama);
       });
 
+      actWrap.appendChild(shareWaBtn);
       actWrap.appendChild(editBtn);
       actWrap.appendChild(delBtn);
       tdAct.appendChild(actWrap);

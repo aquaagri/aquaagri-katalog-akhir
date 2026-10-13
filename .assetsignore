@@ -5,6 +5,7 @@ node_modules
 .assetsignore
 wrangler.jsonc
 wrangler.toml
+worker.js
 README.md
 PANDUAN-ADMIN-AQUAAGRI.md
 supabase-setup.sql

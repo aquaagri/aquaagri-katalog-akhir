@@ -3662,5 +3662,227 @@ body.dark-mode .about-slide-dot.active {
   transform: scale(0.95);
 }
 
+/* ============================================================
+   FITUR TAMBAHAN: PWA INSTALL PILL, SORTIR HARGA & BAGIKAN WA
+   ============================================================ */
+
+/* 1. Tombol Install Aplikasi (PWA) di Header */
+.topbar-install-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+  box-shadow: 0 3px 10px rgba(13, 148, 136, 0.25);
+}
+
+.topbar-install-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(13, 148, 136, 0.35);
+}
+
+.topbar-install-pill.hidden {
+  display: none !important;
+}
+
+/* 2. Baris Urutkan Produk di Halaman Kategori */
+.sort-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(15, 118, 110, 0.14);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.sort-bar-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #334155;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.sort-pills-scroll {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 1px;
+}
+
+.sort-pills-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.sort-pill-btn {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #475569;
+  font-family: inherit;
+  font-size: 0.73rem;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.18s ease;
+}
+
+.sort-pill-btn:hover {
+  border-color: #0d9488;
+  color: #0f766e;
+}
+
+.sort-pill-btn.active {
+  background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 3px 10px rgba(13, 148, 136, 0.24);
+}
+
+/* Dropdown Urutkan di Halaman Pencarian */
+.search-heading-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-sort-wrap {
+  flex-shrink: 0;
+}
+
+.search-sort-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%230f766e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 9px center;
+  border: 1px solid rgba(15, 118, 110, 0.25);
+  border-radius: 999px;
+  padding: 5px 26px 5px 11px;
+  font-family: inherit;
+  font-size: 0.73rem;
+  font-weight: 700;
+  color: #0f766e;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-sort-select:focus {
+  border-color: #0d9488;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.14);
+}
+
+/* 3. Tombol Bagikan ke WhatsApp & Salin Link di Modal Detail Produk */
+.product-modal-share-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.product-modal-share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.product-modal-share-btn.share-wa-btn {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.product-modal-share-btn.share-wa-btn:hover {
+  background: #d1fae5;
+  border-color: #6ee7b7;
+  transform: translateY(-1px);
+}
+
+.product-modal-share-btn.copy-link-btn {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+.product-modal-share-btn.copy-link-btn:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  transform: translateY(-1px);
+}
+
+/* Dukungan Mode Malam (Dark Mode) */
+body.dark-mode .sort-bar-row {
+  background: rgba(15, 34, 42, 0.85);
+  border-color: rgba(45, 212, 191, 0.18);
+}
+
+body.dark-mode .sort-bar-label {
+  color: #cbd5e1;
+}
+
+body.dark-mode .sort-pill-btn {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(148, 163, 184, 0.25);
+  color: #cbd5e1;
+}
+
+body.dark-mode .sort-pill-btn:hover {
+  border-color: #2dd4bf;
+  color: #5eead4;
+}
+
+body.dark-mode .sort-pill-btn.active {
+  background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+body.dark-mode .search-sort-select {
+  background-color: #132a33;
+  color: #5eead4;
+  border-color: rgba(45, 212, 191, 0.28);
+}
+
+body.dark-mode .product-modal-share-btn.share-wa-btn {
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+body.dark-mode .product-modal-share-btn.copy-link-btn {
+  background: rgba(30, 41, 59, 0.85);
+  color: #e2e8f0;
+  border-color: rgba(148, 163, 184, 0.28);
+}
+
+
 
 

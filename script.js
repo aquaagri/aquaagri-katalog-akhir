@@ -2612,12 +2612,52 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ---------- 11. FILTER & PENCARIAN ----------
+  // ---------- 11. FILTER, PENCARIAN & PENGURUTAN HARGA/DISKON ----------
+
+  let currentCategorySort = "default";
+  let currentSearchSort = "default";
+
+  function parsePriceToNumber(hargaStr) {
+    return Number(String(hargaStr || "").replace(/[^0-9]/g, "")) || 0;
+  }
+
+  function parseDiscountToNumber(diskonStr) {
+    return Number(String(diskonStr || "").replace(/[^0-9]/g, "")) || 0;
+  }
+
+  function sortProductsList(list, sortMode) {
+    if (!Array.isArray(list) || !sortMode || sortMode === "default") {
+      return list;
+    }
+    const copy = list.slice();
+    copy.sort(function (a, b) {
+      if (sortMode === "price-asc") {
+        return parsePriceToNumber(a.harga) - parsePriceToNumber(b.harga);
+      }
+      if (sortMode === "price-desc") {
+        return parsePriceToNumber(b.harga) - parsePriceToNumber(a.harga);
+      }
+      if (sortMode === "discount-desc") {
+        const diff = parseDiscountToNumber(b.diskon) - parseDiscountToNumber(a.diskon);
+        if (diff !== 0) return diff;
+        return parsePriceToNumber(a.harga) - parsePriceToNumber(b.harga);
+      }
+      if (sortMode === "popular") {
+        const clickDiff = getProductClickCount(b.id) - getProductClickCount(a.id);
+        if (clickDiff !== 0) return clickDiff;
+        const featDiff = (featuredDefaultOrder[b.id] || 0) - (featuredDefaultOrder[a.id] || 0);
+        if (featDiff !== 0) return featDiff;
+        return parseDiscountToNumber(b.diskon) - parseDiscountToNumber(a.diskon);
+      }
+      return 0;
+    });
+    return copy;
+  }
 
   function getFilteredProducts() {
     const keyword = currentKeyword.trim().toLowerCase();
 
-    return products.filter(function (produk) {
+    const filtered = products.filter(function (produk) {
       const cocokKategori =
         currentCategory === "semua" || produk.kategori === currentCategory;
 
@@ -2632,6 +2672,8 @@ document.addEventListener("DOMContentLoaded", function () {
         catNama.includes(keyword)
       );
     });
+
+    return sortProductsList(filtered, currentCategorySort);
   }
 
   function getCategoryName(id) {
@@ -2939,7 +2981,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function getSearchFilteredProducts() {
     const query = searchInterfaceInput ? searchInterfaceInput.value.trim().toLowerCase() : "";
 
-    return products.filter(function (p) {
+    const filtered = products.filter(function (p) {
       // 1. Cek filter dari activeSearchChip
       if (activeSearchChip.type === "cat" && activeSearchChip.value !== "semua") {
         if (p.kategori !== activeSearchChip.value) return false;
@@ -2960,6 +3002,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       return true;
     });
+
+    return sortProductsList(filtered, currentSearchSort);
   }
 
   function renderSearchInterfaceProducts() {
@@ -3306,6 +3350,29 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Tombol Urutkan Produk di Halaman Kategori (Semua, Harga Termurah, Harga Tertinggi, Diskon Terbesar, Terpopuler)
+  const categorySortBar = document.getElementById("categorySortBar");
+  if (categorySortBar) {
+    const sortBtns = categorySortBar.querySelectorAll(".sort-pill-btn");
+    sortBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        sortBtns.forEach(function (b) { b.classList.remove("active"); });
+        btn.classList.add("active");
+        currentCategorySort = btn.getAttribute("data-sort") || "default";
+        refreshProductView();
+      });
+    });
+  }
+
+  // Dropdown Urutkan Produk di Halaman Pencarian
+  const searchSortSelect = document.getElementById("searchSortSelect");
+  if (searchSortSelect) {
+    searchSortSelect.addEventListener("change", function () {
+      currentSearchSort = searchSortSelect.value || "default";
+      renderSearchInterfaceProducts();
+    });
+  }
+
   // ---------- 14. REDIRECT AFFILIATE SHOPEE ----------
 
   function openAffiliateLink(produk) {
@@ -3329,7 +3396,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ============================================================
-  // 15. MODAL DETAIL PRODUK (DESKRIPSI LENGKAP & SPESIFIKASI)
+  // 15. MODAL DETAIL PRODUK (DESKRIPSI LENGKAP, SHARE WA & SALIN LINK)
   // ============================================================
 
   const modalBackdrop = document.getElementById("modalBackdrop");
@@ -3343,6 +3410,39 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalProductPriceCoret = document.getElementById("modalProductPriceCoret");
   const modalProductDesc = document.getElementById("modalProductDesc");
   const modalProductShopeeLink = document.getElementById("modalProductShopeeLink");
+  const modalShareWaBtn = document.getElementById("modalShareWaBtn");
+  const modalCopyLinkBtn = document.getElementById("modalCopyLinkBtn");
+  const modalCopyLinkText = document.getElementById("modalCopyLinkText");
+
+  function buildProductShareUrl(produk) {
+    const prodId = produk && produk.id ? produk.id : 1;
+    const isLocalFile = !window.location.origin || window.location.origin === "null" || window.location.protocol === "file:";
+    const baseOrigin = isLocalFile
+      ? "https://aquaagri-katalog-akhir.aquaagri-id.workers.dev"
+      : window.location.origin;
+    return baseOrigin + "/share?produk=" + encodeURIComponent(prodId);
+  }
+
+  function copyTextToClipboard(text) {
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function (resolve, reject) {
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        resolve();
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
 
   function openProductDetailModal(produk) {
     if (!produk || !productDetailModal || !modalBackdrop) return;
@@ -3394,6 +3494,48 @@ document.addEventListener("DOMContentLoaded", function () {
       modalProductShopeeLink.onclick = function (e) {
         e.preventDefault();
         openAffiliateLink(produk);
+      };
+    }
+
+    // Tombol Bagikan Produk ke WhatsApp (Cara A: membuka Katalog AquaAgri di pop-up produk ini + Thumbnail Produk)
+    if (modalShareWaBtn) {
+      modalShareWaBtn.onclick = function (e) {
+        e.preventDefault();
+        const shareUrl = buildProductShareUrl(produk);
+        const discInfo = produk.diskon ? " (Diskon " + produk.diskon + ")" : "";
+        const waText =
+          "Cek produk *" +
+          (produk.nama || "Pilihan AquaAgri") +
+          "* — *" +
+          (produk.harga || "") +
+          "*" +
+          discInfo +
+          " di Katalog Resmi *aquaagri.id*:\n" +
+          shareUrl;
+        const waUrl = "https://wa.me/?text=" + encodeURIComponent(waText);
+        window.open(waUrl, "_blank", "noopener,noreferrer");
+      };
+    }
+
+    // Tombol Salin Link Produk
+    if (modalCopyLinkBtn) {
+      if (modalCopyLinkText) modalCopyLinkText.textContent = "Salin Link";
+      modalCopyLinkBtn.onclick = function (e) {
+        e.preventDefault();
+        const shareUrl = buildProductShareUrl(produk);
+        copyTextToClipboard(shareUrl)
+          .then(function () {
+            if (modalCopyLinkText) {
+              modalCopyLinkText.textContent = "✓ Link Tersalin!";
+              setTimeout(function () {
+                modalCopyLinkText.textContent = "Salin Link";
+              }, 2200);
+            }
+            showSearchToast("Link produk berhasil disalin! Siap ditempel di WA/Sosmed.");
+          })
+          .catch(function () {
+            showSearchToast("Link: " + shareUrl);
+          });
       };
     }
 
@@ -3595,9 +3737,48 @@ document.addEventListener("DOMContentLoaded", function () {
     initHeroSlider();
   }
 
+  // ---------- DETEKSI LINK SHARE PRODUK WA/SOSMED (CARA A: LANGSUNG BUKA POP-UP PRODUK) ----------
+  let hasOpenedSharedProduct = false;
+
+  function getSharedProductIdFromUrl() {
+    if (typeof window.__INITIAL_PRODUCT_ID__ === "number" && window.__INITIAL_PRODUCT_ID__ > 0) {
+      return window.__INITIAL_PRODUCT_ID__;
+    }
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const raw = params.get("produk") || params.get("product") || params.get("id");
+      if (raw && /^\d+$/.test(String(raw).trim())) {
+        return Number(String(raw).trim());
+      }
+      if (window.location.pathname && window.location.pathname.indexOf("/produk/") === 0) {
+        const seg = window.location.pathname.replace("/produk/", "").split("/")[0];
+        if (seg && /^\d+$/.test(seg)) return Number(seg);
+      }
+    } catch (e) {}
+    return null;
+  }
+
+  function checkAndOpenSharedProduct() {
+    if (hasOpenedSharedProduct) return;
+    const targetId = getSharedProductIdFromUrl();
+    if (!targetId) return;
+
+    const foundProd = products.find(function (p) {
+      return Number(p.id) === Number(targetId);
+    });
+    if (foundProd) {
+      hasOpenedSharedProduct = true;
+      setTimeout(function () {
+        openProductDetailModal(foundProd);
+      }, 180);
+    }
+  }
+
   // ---------- SISTEM POP-UP POSTER IKLAN / PROMO (DARI DASHBOARD ADMIN) ----------
   function initPromoPopupFromBanners(bannerRows) {
     if (!Array.isArray(bannerRows) || bannerRows.length === 0) return;
+    // Jika pengunjung datang dari klik Link Produk Spesifik di WA, prioritaskan menampilkan Pop-Up Produk tersebut
+    if (getSharedProductIdFromUrl()) return;
 
     const popupRow = bannerRows.find(function (b) {
       return b.tipe === "popup" && b.aktif !== false && b.gambar;
@@ -3806,6 +3987,7 @@ document.addEventListener("DOMContentLoaded", function () {
         renderSampleCarousel();
         refreshProductView();
         renderSearchInterfaceProducts();
+        checkAndOpenSharedProduct();
       }
 
       // 3. Perbarui slide Hero Banner beranda & Pop-Up Iklan Promo jika tersedia di database
@@ -3821,6 +4003,45 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // ---------- REGISTRASI PROGRESSIVE WEB APP (PWA) & TOMBOL INSTALL ----------
+  let deferredPwaPrompt = null;
+  const installPwaBtn = document.getElementById("installPwaBtn");
+
+  if ("serviceWorker" in navigator && (window.location.protocol === "https:" || window.location.hostname === "localhost")) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("/sw.js").catch(function () {});
+    });
+  }
+
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault();
+    deferredPwaPrompt = e;
+    if (installPwaBtn) {
+      installPwaBtn.classList.remove("hidden");
+    }
+  });
+
+  if (installPwaBtn) {
+    installPwaBtn.addEventListener("click", async function () {
+      if (deferredPwaPrompt) {
+        deferredPwaPrompt.prompt();
+        const choice = await deferredPwaPrompt.userChoice;
+        if (choice && choice.outcome === "accepted") {
+          installPwaBtn.classList.add("hidden");
+          showSearchToast("Aplikasi aquaagri.id berhasil ditambahkan ke layar utama!");
+        }
+        deferredPwaPrompt = null;
+      } else {
+        showSearchToast("Untuk install: Klik menu titik tiga browser -> Tambahkan ke Layar Utama");
+      }
+    });
+  }
+
+  window.addEventListener("appinstalled", function () {
+    if (installPwaBtn) installPwaBtn.classList.add("hidden");
+    deferredPwaPrompt = null;
+  });
+
   updateHeaderOffset();
   window.addEventListener("resize", updateHeaderOffset);
 
@@ -3829,6 +4050,9 @@ document.addEventListener("DOMContentLoaded", function () {
   renderSampleCarousel();
   initStoryCarousel();
   initHeroSlider();
+
+  // Cek apakah pengunjung membuka link share produk spesifik (Cara A)
+  checkAndOpenSharedProduct();
 
   // Sinkronisasi otomatis dengan database Supabase
   syncCatalogFromSupabase();
