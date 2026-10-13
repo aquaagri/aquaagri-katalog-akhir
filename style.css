@@ -2403,12 +2403,17 @@ body.dark-mode .budidaya-group-badge {
 }
 
 #topbarCategorySearchRow.topbar-sub-row {
-  padding: 5px 0 3px;
+  padding: 6px 0 6px;
+  border-bottom: 1px solid rgba(15, 118, 110, 0.08);
 }
 
 body.dark-mode .topbar-sub-row {
   border-top-color: rgba(45, 212, 191, 0.14);
   background: rgba(8, 22, 19, 0.45);
+}
+
+body.dark-mode #topbarCategorySearchRow.topbar-sub-row {
+  border-bottom-color: rgba(45, 212, 191, 0.12);
 }
 
 .topbar-sub-inner {
@@ -3697,7 +3702,7 @@ body.dark-mode .about-slide-dot.active {
   overflow: hidden;
 }
 
-/* Saat di-scroll ke bawah: tetap diam (fixed) menyatu rapat tanpa jarak sejajar dengan fitur search di header */
+/* Saat di-scroll ke bawah: tetap diam (fixed) di bawah fitur search dengan pembatas halus & proporsional */
 .sort-bar-row.is-fixed-under-search {
   position: fixed;
   left: 0;
@@ -3706,13 +3711,13 @@ body.dark-mode .about-slide-dot.active {
   border-radius: 0;
   border-left: none;
   border-right: none;
-  border-top: none;
-  border-bottom: 1px solid rgba(15, 118, 110, 0.16);
-  background: var(--surface-topbar);
+  border-top: 1px solid rgba(15, 118, 110, 0.08);
+  border-bottom: 1px solid rgba(15, 118, 110, 0.14);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  padding: 2px 0 5px;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+  padding: 5px 0 6px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
 }
 
 .sort-bar-row.is-fixed-under-search .sort-bar-inner {
@@ -3903,10 +3908,10 @@ body.dark-mode .sort-bar-row {
 }
 
 body.dark-mode .sort-bar-row.is-fixed-under-search {
-  background: var(--surface-topbar);
-  border-top: none;
-  border-bottom-color: rgba(45, 212, 191, 0.22);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  background: rgba(10, 28, 24, 0.96);
+  border-top: 1px solid rgba(45, 212, 191, 0.10);
+  border-bottom-color: rgba(45, 212, 191, 0.18);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
 body.dark-mode .sort-bar-label {

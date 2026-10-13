@@ -1808,8 +1808,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const headerBottom = mainHeader.getBoundingClientRect().bottom;
     const wrapRect = categorySortStickyWrap.getBoundingClientRect();
-    // Rapatkan tepat menyatu di bawah baris pencarian dengan overlap 1px agar nol celah/jarak
-    const targetFixedTop = Math.floor(headerBottom) - 1;
+    const targetFixedTop = Math.round(headerBottom);
 
     if (wrapRect.top <= targetFixedTop + 1) {
       if (!categorySortBarEl.classList.contains("is-fixed-under-search")) {
