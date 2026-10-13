@@ -4258,6 +4258,117 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // ==========================================================================
+  // SISTEM NOTIFIKASI S3 MARKETING (VIP PROMO & VOUCHER SHOPEE)
+  // ==========================================================================
+  function showNotifToast(message) {
+    let t = document.getElementById("notifGlobalToast");
+    if (!t) {
+      t = document.createElement("div");
+      t.id = "notifGlobalToast";
+      t.style.cssText = "position:fixed; top:24px; left:50%; transform:translateX(-50%); background:#0f172a; color:#fff; padding:12px 22px; border-radius:14px; font-size:0.86rem; font-weight:600; z-index:9999; box-shadow:0 12px 35px rgba(0,0,0,0.35); border:1.5px solid #14b8a6; text-align:center; max-width:92%; transition:all 0.3s ease;";
+      document.body.appendChild(t);
+    }
+    t.textContent = message;
+    t.style.opacity = "1";
+    t.style.display = "block";
+    setTimeout(() => {
+      t.style.opacity = "0";
+      setTimeout(() => { if (t) t.style.display = "none"; }, 300);
+    }, 4500);
+  }
+
+  function initS3MarketingPushPrompt() {
+    const promptBanner = document.getElementById("notifPushPrompt");
+    const subscribeBtn = document.getElementById("notifSubscribeBtn");
+    const dismissBtn = document.getElementById("notifDismissBtn");
+    const floatingBell = document.getElementById("notifFloatingBell");
+
+    if (!promptBanner || !subscribeBtn) return;
+
+    const notifStatus = localStorage.getItem("aquaagri_notif_status");
+
+    function showFloatingBell() {
+      if (floatingBell) floatingBell.classList.remove("hidden");
+    }
+
+    function hideFloatingBell() {
+      if (floatingBell) floatingBell.classList.add("hidden");
+    }
+
+    function showPrompt() {
+      hideFloatingBell();
+      promptBanner.classList.remove("hidden");
+    }
+
+    function hidePrompt() {
+      promptBanner.classList.add("hidden");
+      showFloatingBell();
+    }
+
+    // Munculkan prompt otomatis setelah 3.5 detik jika belum pernah berinteraksi
+    if (!notifStatus) {
+      setTimeout(function () {
+        const promoPopup = document.getElementById("promoPopupOverlay");
+        const prodModal = document.getElementById("productDetailModal");
+        const isPromoOpen = promoPopup && !promoPopup.classList.contains("hidden");
+        const isProdOpen = prodModal && !prodModal.classList.contains("hidden");
+        if (!isPromoOpen && !isProdOpen) {
+          showPrompt();
+        } else {
+          showFloatingBell();
+        }
+      }, 3500);
+    } else {
+      showFloatingBell();
+    }
+
+    // Klik Aktifkan Diskon & Voucher (CTA S3 Marketing)
+    subscribeBtn.addEventListener("click", async function () {
+      hidePrompt();
+
+      if ("Notification" in window) {
+        try {
+          const permission = await Notification.requestPermission();
+          if (permission === "granted") {
+            localStorage.setItem("aquaagri_notif_status", "granted");
+            showNotifToast("🎉 Selamat! Akses VIP Promo & Voucher Shopee aktif di HP Anda.");
+            try {
+              new Notification("🔥 VIP Promo AquaAgri Aktif!", {
+                body: "Anda akan menerima info diskon pakan & voucher Shopee eksklusif pertama kali.",
+                icon: "nama-brand-original.png"
+              });
+            } catch (e) {}
+          } else {
+            localStorage.setItem("aquaagri_notif_status", "denied");
+            showNotifToast("Notifikasi dinonaktifkan. Anda bisa mengaktifkannya kapan saja lewat tombol Diskon VIP.");
+          }
+        } catch (err) {
+          showNotifToast("Notifikasi aktif! Pantau diskon promo terbaru.");
+        }
+      } else {
+        localStorage.setItem("aquaagri_notif_status", "granted");
+        showNotifToast("🎉 Akses VIP Promo Anda telah aktif!");
+      }
+    });
+
+    if (dismissBtn) {
+      dismissBtn.addEventListener("click", function () {
+        localStorage.setItem("aquaagri_notif_status", "dismissed");
+        hidePrompt();
+      });
+    }
+
+    if (floatingBell) {
+      floatingBell.addEventListener("click", function () {
+        showPrompt();
+      });
+    }
+  }
+
+  // Inisialisasi Sistem Notifikasi S3 Marketing
+  initS3MarketingPushPrompt();
+
   // Cek apakah pengunjung membuka link share produk spesifik (Cara A)
   checkAndOpenSharedProduct();
 

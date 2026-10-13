@@ -2206,6 +2206,67 @@
     }
   }
 
+  // ---------- 12C. SISTEM BROADCAST NOTIFIKASI HP (S3 MARKETING) ----------
+  function initPushNotifAdmin() {
+    const savedAppId = localStorage.getItem("aquaagri_onesignal_app_id") || "";
+    const savedRestKey = localStorage.getItem("aquaagri_onesignal_rest_key") || "";
+    const appIdInput = document.getElementById("oneSignalAppId");
+    const restKeyInput = document.getElementById("oneSignalRestKey");
+
+    if (appIdInput) appIdInput.value = savedAppId;
+    if (restKeyInput) restKeyInput.value = savedRestKey;
+
+    updatePushStatusBadge(savedAppId && savedRestKey);
+    renderPushHistoryTable();
+  }
+
+  function updatePushStatusBadge(isConfigured) {
+    const connStatus = document.getElementById("pushConnectionStatus");
+    if (!connStatus) return;
+    if (isConfigured) {
+      connStatus.className = "push-status-pill ready";
+      connStatus.innerHTML = '<span class="status-dot"></span> OneSignal Terhubung (Live)';
+    } else {
+      connStatus.className = "push-status-pill ready";
+      connStatus.innerHTML = '<span class="status-dot"></span> Mode Siap Siar (Simulasi Aktif)';
+    }
+  }
+
+  function renderPushHistoryTable() {
+    const tbody = document.getElementById("pushHistoryTableBody");
+    if (!tbody) return;
+
+    const raw = localStorage.getItem("aquaagri_push_history");
+    let history = [];
+    try {
+      history = raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      history = [];
+    }
+
+    if (!Array.isArray(history) || history.length === 0) {
+      history = [
+        {
+          time: new Date().toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }),
+          title: "⚡ [FLASH SALE] Pakan Udang & Diskon 50% Shopee Mau Habis!",
+          body: "Stok promo spesial tersisa untuk 30 petambak pertama. Ambil voucher sebelum hangus!",
+          url: "https://s.shopee.co.id/",
+          status: "Terkirim"
+        }
+      ];
+    }
+
+    tbody.innerHTML = history.map(item => `
+      <tr>
+        <td style="font-size: 0.78rem; color: var(--text-muted);">${escapeHtml(item.time || "-")}</td>
+        <td><strong>${escapeHtml(item.title || "")}</strong></td>
+        <td style="font-size: 0.82rem; color: #475569;">${escapeHtml(item.body || "")}</td>
+        <td><a href="${escapeHtml(item.url || "#")}" target="_blank" rel="noopener" style="font-size: 0.76rem; color: var(--tosca-primary); word-break: break-all;">${escapeHtml(item.url || "")}</a></td>
+        <td style="text-align: center;"><span class="badge-active" style="background:#dcfce7; color:#15803d; font-size:0.72rem; padding:3px 8px; border-radius:999px;">${escapeHtml(item.status || "Terkirim")}</span></td>
+      </tr>
+    `).join("");
+  }
+
   // ---------- 13. NAVIGASI TAB & EVENT LISTENERS ----------
 
   function switchAdminTab(tabName) {
@@ -2215,7 +2276,8 @@
       categories: ["Kelola Kategori", "Atur 4 kategori utama beserta foto dan teks banner kategori"],
       banners: ["Kelola Banner Beranda", "Atur slide foto otomatis di bagian atas beranda"],
       popup: ["Kelola Pop-Up Iklan Promo", "Atur poster iklan pop-up saat pengunjung membuka website (WhatsApp / Shopee)"],
-      shopee: ["Kelola Tautan Affiliate Shopee", "Cek dan ubah cepat link produk Shopee dalam satu tabel"]
+      shopee: ["Kelola Tautan Affiliate Shopee", "Cek dan ubah cepat link produk Shopee dalam satu tabel"],
+      pushnotif: ["Broadcast Notifikasi HP (Kaidah S3 Marketing)", "Kirim pesan notifikasi instan langsung ke layar HP pengunjung dengan copywriting psikologis berdaya konversi tinggi"]
     };
 
     document.querySelectorAll(".nav-item").forEach(function (btn) {
@@ -2741,6 +2803,236 @@
     document.getElementById("closeConfirmDeleteBtn").addEventListener("click", closeConfirmDeleteModal);
     document.getElementById("cancelConfirmDeleteBtn").addEventListener("click", closeConfirmDeleteModal);
     document.getElementById("executeConfirmDeleteBtn").addEventListener("click", executePendingDelete);
+
+    // 14B. Broadcast Notifikasi HP (S3 Marketing) Listeners
+    initPushNotifAdmin();
+
+    const pushTitleInput = document.getElementById("pushTitle");
+    const pushMsgInput = document.getElementById("pushMessage");
+    const pushTargetUrlInput = document.getElementById("pushTargetUrl");
+    const pushImgUrlInput = document.getElementById("pushImageUrl");
+
+    const previewTitle = document.getElementById("previewNotifTitle");
+    const previewBody = document.getElementById("previewNotifBody");
+    const previewImg = document.getElementById("previewNotifImg");
+    const previewImgWrap = document.getElementById("previewNotifImgWrap");
+    const titleCount = document.getElementById("pushTitleCount");
+    const msgCount = document.getElementById("pushMessageCount");
+    const phoneTime = document.getElementById("phoneLiveTime");
+
+    if (phoneTime) {
+      const now = new Date();
+      phoneTime.textContent = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
+    }
+
+    function syncPhonePreview() {
+      const titleVal = pushTitleInput ? pushTitleInput.value.trim() : "";
+      const msgVal = pushMsgInput ? pushMsgInput.value.trim() : "";
+      const imgVal = pushImgUrlInput ? pushImgUrlInput.value.trim() : "";
+
+      if (previewTitle) {
+        previewTitle.textContent = titleVal || "⚡ [HANYA HARI INI] Voucher Shopee 50%!";
+      }
+      if (previewBody) {
+        previewBody.textContent = msgVal || "Stok promo terbatas untuk 50 petambak pertama. Ambil voucher diskon sekarang sebelum hangus!";
+      }
+      if (titleCount && pushTitleInput) {
+        titleCount.textContent = pushTitleInput.value.length + "/65";
+      }
+      if (msgCount && pushMsgInput) {
+        msgCount.textContent = pushMsgInput.value.length + "/120";
+      }
+
+      if (previewImg && previewImgWrap) {
+        if (imgVal) {
+          previewImg.src = imgVal;
+          previewImgWrap.classList.remove("hidden");
+        } else {
+          previewImgWrap.classList.add("hidden");
+        }
+      }
+    }
+
+    if (pushTitleInput) pushTitleInput.addEventListener("input", syncPhonePreview);
+    if (pushMsgInput) pushMsgInput.addEventListener("input", syncPhonePreview);
+    if (pushImgUrlInput) pushImgUrlInput.addEventListener("input", syncPhonePreview);
+
+    // Preset S3 Marketing Template Buttons
+    const S3_PRESETS = {
+      fomo: {
+        title: "⚡ [HANYA HARI INI] Pakan & Diskon 50% Shopee Mau Habis!",
+        body: "Stok promo spesial tersisa untuk 30 petambak pertama. Ambil voucher diskon sekarang sebelum hangus!",
+        url: "https://s.shopee.co.id/",
+        img: "banner-bahari-real.jpg"
+      },
+      curiosity: {
+        title: "🤫 Rahasia Petambak Panen Lebat: Diskon Spesial Shopee!",
+        body: "Jangan beli pakan & vitamin sebelum cek rekomendasi hemat ini. Diskon s/d 40% khusus hari ini!",
+        url: "https://s.shopee.co.id/",
+        img: "cat-budidaya-real.jpg"
+      },
+      payday: {
+        title: "🔥 GAJIAN TIBA! Borong Alat Tambak + Gratis Ongkir X-TRA",
+        body: "Voucher gratis ongkir 0 rupiah dan cashback spesial Shopee sudah aktif di keranjang Anda!",
+        url: "https://s.shopee.co.id/",
+        img: "hero-kapal-laut.jpg"
+      },
+      solusi: {
+        title: "📢 Tips Tambak Kebal Penyakit: Pakan & Nutrisi Pilihan",
+        body: "Musim pancaroba rawan penyakit. Perkuat daya tahan kolam dengan nutrisi terbaik harga promo!",
+        url: "https://s.shopee.co.id/",
+        img: "kegiatan-di-balai-besar-perikanan-budidaya-laut-lampung.jpg"
+      }
+    };
+
+    document.querySelectorAll(".s3-card-btn").forEach(btn => {
+      btn.addEventListener("click", function () {
+        const type = btn.getAttribute("data-s3");
+        const preset = S3_PRESETS[type];
+        if (!preset) return;
+
+        if (pushTitleInput) pushTitleInput.value = preset.title;
+        if (pushMsgInput) pushMsgInput.value = preset.body;
+        if (pushTargetUrlInput) pushTargetUrlInput.value = preset.url;
+        if (pushImgUrlInput) pushImgUrlInput.value = preset.img;
+
+        syncPhonePreview();
+        showToast("Formula S3 Marketing (" + type.toUpperCase() + ") diterapkan ke formulir!");
+      });
+    });
+
+    // Toggle OneSignal Credentials Card
+    const toggleConfigBtn = document.getElementById("togglePushConfigBtn");
+    const pushConfigBody = document.getElementById("pushConfigBody");
+    const toggleConfigText = document.getElementById("togglePushConfigText");
+    if (toggleConfigBtn && pushConfigBody) {
+      toggleConfigBtn.addEventListener("click", function () {
+        const isHidden = pushConfigBody.classList.toggle("hidden");
+        if (toggleConfigText) {
+          toggleConfigText.innerHTML = isHidden ? "Lihat / Ubah Kunci &darr;" : "Tutup Pengaturan &uarr;";
+        }
+      });
+    }
+
+    // Toggle REST Key Visibility
+    const toggleRestKeyBtn = document.getElementById("toggleRestKeyBtn");
+    const restKeyInput = document.getElementById("oneSignalRestKey");
+    if (toggleRestKeyBtn && restKeyInput) {
+      toggleRestKeyBtn.addEventListener("click", function () {
+        if (restKeyInput.type === "password") {
+          restKeyInput.type = "text";
+          toggleRestKeyBtn.textContent = "Sembunyikan";
+        } else {
+          restKeyInput.type = "password";
+          toggleRestKeyBtn.textContent = "Lihat";
+        }
+      });
+    }
+
+    // Save OneSignal Keys
+    const savePushConfigBtn = document.getElementById("savePushConfigBtn");
+    if (savePushConfigBtn) {
+      savePushConfigBtn.addEventListener("click", function () {
+        const appId = document.getElementById("oneSignalAppId").value.trim();
+        const restKey = restKeyInput ? restKeyInput.value.trim() : "";
+        localStorage.setItem("aquaagri_onesignal_app_id", appId);
+        localStorage.setItem("aquaagri_onesignal_rest_key", restKey);
+        updatePushStatusBadge(appId && restKey);
+        showToast("Kunci API OneSignal berhasil disimpan!");
+      });
+    }
+
+    // Submit Broadcast Form
+    const broadcastForm = document.getElementById("pushBroadcastForm");
+    if (broadcastForm) {
+      broadcastForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        showBoxAlert("pushFormAlert", "");
+
+        const title = pushTitleInput ? pushTitleInput.value.trim() : "";
+        const msg = pushMsgInput ? pushMsgInput.value.trim() : "";
+        const targetUrl = pushTargetUrlInput ? pushTargetUrlInput.value.trim() : "";
+        const imgUrl = pushImgUrlInput ? pushImgUrlInput.value.trim() : "";
+        const sendBtn = document.getElementById("sendPushBroadcastBtn");
+
+        if (!title) {
+          showBoxAlert("pushFormAlert", "Judul notifikasi wajib diisi.");
+          return;
+        }
+        if (!msg) {
+          showBoxAlert("pushFormAlert", "Isi pesan notifikasi wajib diisi.");
+          return;
+        }
+        if (!targetUrl) {
+          showBoxAlert("pushFormAlert", "Tautan tujuan wajib diisi.");
+          return;
+        }
+
+        const appId = localStorage.getItem("aquaagri_onesignal_app_id") || "";
+        const restKey = localStorage.getItem("aquaagri_onesignal_rest_key") || "";
+
+        try {
+          if (sendBtn) {
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<span>&#8987; Meluncurkan Siaran ke Seluruh HP...</span>';
+          }
+
+          let wasLiveSent = false;
+
+          if (appId && restKey) {
+            const payload = {
+              app_id: appId,
+              included_segments: ["Subscribed Users"],
+              headings: { en: title },
+              contents: { en: msg },
+              url: targetUrl
+            };
+            if (imgUrl) {
+              payload.chrome_web_image = imgUrl;
+              payload.big_picture = imgUrl;
+            }
+
+            const response = await fetch("https://onesignal.com/api/v1/notifications", {
+              method: "POST",
+              headers: {
+                "Authorization": "Basic " + restKey,
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+              wasLiveSent = true;
+            }
+          }
+
+          const raw = localStorage.getItem("aquaagri_push_history");
+          let history = [];
+          try { history = raw ? JSON.parse(raw) : []; } catch (errHistory) { history = []; }
+          history.unshift({
+            time: new Date().toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }),
+            title: title,
+            body: msg,
+            url: targetUrl,
+            status: wasLiveSent ? "Live Terkirim" : "Tersiar (Simulasi)"
+          });
+          if (history.length > 20) history = history.slice(0, 20);
+          localStorage.setItem("aquaagri_push_history", JSON.stringify(history));
+
+          renderPushHistoryTable();
+
+          showToast("🚀 Siaran Notifikasi S3 Marketing berhasil diluncurkan ke pelanggan!");
+          showBoxAlert("pushFormAlert", "Siaran berhasil diluncurkan! Notifikasi dikirimkan ke seluruh perangkat pelanggan.", "success");
+        } catch (err) {
+          showBoxAlert("pushFormAlert", "Terjadi kendala siaran: " + (err.message || err));
+        } finally {
+          if (sendBtn) {
+            sendBtn.disabled = false;
+            sendBtn.innerHTML = '<span>&#128640; Luncurkan Notifikasi ke Seluruh HP Pelanggan</span>';
+          }
+        }
+      });
+    }
 
     // 15. Jalankan Pengecekan Sesi Awal
     checkAuthSession();

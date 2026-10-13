@@ -4446,6 +4446,196 @@ body.dark-mode .back-to-top-fab {
   box-shadow: 0 4px 18px rgba(45, 212, 191, 0.35), 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
+/* ============================================================================
+   BANNER NOTIFIKASI S3 MARKETING (VIP PROMO & VOUCHER SHOPEE)
+   ============================================================================ */
+.notif-push-banner {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  z-index: 998;
+  width: calc(100% - 32px);
+  max-width: 480px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px -10px rgba(15, 23, 42, 0.32), 0 0 0 1px rgba(13, 148, 136, 0.22);
+  padding: 16px 18px;
+  animation: notifSlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s ease;
+}
+@keyframes notifSlideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+.notif-push-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+.notif-push-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.notif-push-icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0d9488, #0f766e);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.28);
+}
+.notif-push-text-wrap {
+  flex: 1;
+  min-width: 0;
+}
+.notif-push-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.35;
+  margin: 0 0 4px;
+}
+.notif-push-desc {
+  font-size: 0.8rem;
+  color: #475569;
+  line-height: 1.45;
+  margin: 0;
+}
+.notif-push-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.btn-notif-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #ee4d2d 0%, #ff5722 50%, #f97316 100%);
+  color: #ffffff;
+  border: none;
+  padding: 11px 16px;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(238, 77, 45, 0.35);
+  transition: all 0.2s ease;
+}
+.btn-notif-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(238, 77, 45, 0.45);
+  filter: brightness(1.03);
+}
+.btn-notif-dismiss {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.74rem;
+  cursor: pointer;
+  text-align: center;
+  padding: 4px;
+  transition: color 0.18s ease;
+}
+.btn-notif-dismiss:hover {
+  color: #64748b;
+  text-decoration: underline;
+}
+
+/* Floating Bell Widget */
+.notif-floating-bell {
+  position: fixed;
+  bottom: 22px;
+  left: 18px;
+  z-index: 990;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  padding: 8px 14px 8px 10px;
+  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.38), 0 2px 6px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: all 0.22s ease;
+  animation: bellFloatPulse 3s infinite ease-in-out;
+}
+@keyframes bellFloatPulse {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-3px) scale(1.03); }
+}
+.notif-floating-bell:hover {
+  transform: translateY(-2px) scale(1.05);
+  filter: brightness(1.05);
+}
+.notif-bell-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.notif-bell-badge {
+  position: absolute;
+  top: -5px;
+  right: -6px;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #0d9488;
+}
+body.dark-mode .notif-push-banner {
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6);
+}
+body.dark-mode .notif-push-title {
+  color: #f8fafc;
+}
+body.dark-mode .notif-push-desc {
+  color: #cbd5e1;
+}
+body.dark-mode .btn-notif-dismiss {
+  color: #64748b;
+}
+body.dark-mode .btn-notif-dismiss:hover {
+  color: #94a3b8;
+}
+
 
 
 
