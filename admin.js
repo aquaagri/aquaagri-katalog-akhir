@@ -2311,7 +2311,14 @@
     if (backdrop) backdrop.classList.add("hidden");
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  function initAdminApp() {
+    // 0. Jalankan Pengecekan Sesi & Banner Supabase Terlebih Dahulu
+    try {
+      checkAuthSession();
+    } catch (eAuth) {
+      console.error("Gagal inisialisasi sesi admin:", eAuth);
+    }
+
     // 1. Toggle Panel Setup Supabase
     const toggleConfigBtn = document.getElementById("toggleConfigBtn");
     const setupPanel = document.getElementById("supabaseSetupPanel");
@@ -2668,17 +2675,22 @@
       });
     }
 
-    document.getElementById("closeProductModalBtn").addEventListener("click", closeProductModal);
-    document.getElementById("cancelProductModalBtn").addEventListener("click", closeProductModal);
-    document.getElementById("productForm").addEventListener("submit", handleSaveProduct);
+    const closeProdBtn = document.getElementById("closeProductModalBtn");
+    if (closeProdBtn) closeProdBtn.addEventListener("click", closeProductModal);
+    const cancelProdBtn = document.getElementById("cancelProductModalBtn");
+    if (cancelProdBtn) cancelProdBtn.addEventListener("click", closeProductModal);
+    const prodForm = document.getElementById("productForm");
+    if (prodForm) prodForm.addEventListener("submit", handleSaveProduct);
 
     // 12. Modal Kategori Listeners
-    document.getElementById("addCategoryBtn").addEventListener("click", function () {
-      openCategoryModal(null);
-    });
-    document.getElementById("closeCategoryModalBtn").addEventListener("click", closeCategoryModal);
-    document.getElementById("cancelCategoryModalBtn").addEventListener("click", closeCategoryModal);
-    document.getElementById("categoryForm").addEventListener("submit", handleSaveCategory);
+    const addCatBtn = document.getElementById("addCategoryBtn");
+    if (addCatBtn) addCatBtn.addEventListener("click", function () { openCategoryModal(null); });
+    const closeCatBtn = document.getElementById("closeCategoryModalBtn");
+    if (closeCatBtn) closeCatBtn.addEventListener("click", closeCategoryModal);
+    const cancelCatBtn = document.getElementById("cancelCategoryModalBtn");
+    if (cancelCatBtn) cancelCatBtn.addEventListener("click", closeCategoryModal);
+    const catForm = document.getElementById("categoryForm");
+    if (catForm) catForm.addEventListener("submit", handleSaveCategory);
 
     const catBg = document.getElementById("catBg");
     const catPreview = document.getElementById("catImagePreview");
@@ -2708,12 +2720,14 @@
     }
 
     // 13. Modal Banner Listeners
-    document.getElementById("addBannerBtn").addEventListener("click", function () {
-      openBannerModal(null);
-    });
-    document.getElementById("closeBannerModalBtn").addEventListener("click", closeBannerModal);
-    document.getElementById("cancelBannerModalBtn").addEventListener("click", closeBannerModal);
-    document.getElementById("bannerForm").addEventListener("submit", handleSaveBanner);
+    const addBanBtn = document.getElementById("addBannerBtn");
+    if (addBanBtn) addBanBtn.addEventListener("click", function () { openBannerModal(null); });
+    const closeBanBtn = document.getElementById("closeBannerModalBtn");
+    if (closeBanBtn) closeBanBtn.addEventListener("click", closeBannerModal);
+    const cancelBanBtn = document.getElementById("cancelBannerModalBtn");
+    if (cancelBanBtn) cancelBanBtn.addEventListener("click", closeBannerModal);
+    const banForm = document.getElementById("bannerForm");
+    if (banForm) banForm.addEventListener("submit", handleSaveBanner);
 
     const bannerGambar = document.getElementById("bannerGambar");
     const bannerPreview = document.getElementById("bannerImagePreview");
@@ -2800,9 +2814,12 @@
     }
 
     // 14. Modal Konfirmasi Hapus Listeners
-    document.getElementById("closeConfirmDeleteBtn").addEventListener("click", closeConfirmDeleteModal);
-    document.getElementById("cancelConfirmDeleteBtn").addEventListener("click", closeConfirmDeleteModal);
-    document.getElementById("executeConfirmDeleteBtn").addEventListener("click", executePendingDelete);
+    const closeDelBtn = document.getElementById("closeConfirmDeleteBtn");
+    if (closeDelBtn) closeDelBtn.addEventListener("click", closeConfirmDeleteModal);
+    const cancelDelBtn = document.getElementById("cancelConfirmDeleteBtn");
+    if (cancelDelBtn) cancelDelBtn.addEventListener("click", closeConfirmDeleteModal);
+    const execDelBtn = document.getElementById("executeConfirmDeleteBtn");
+    if (execDelBtn) execDelBtn.addEventListener("click", executePendingDelete);
 
     // 14B. Broadcast Notifikasi HP (S3 Marketing) Listeners
     initPushNotifAdmin();
@@ -2902,11 +2919,11 @@
     });
 
     // Toggle OneSignal Credentials Card
-    const toggleConfigBtn = document.getElementById("togglePushConfigBtn");
+    const togglePushConfigBtn = document.getElementById("togglePushConfigBtn");
     const pushConfigBody = document.getElementById("pushConfigBody");
     const toggleConfigText = document.getElementById("togglePushConfigText");
-    if (toggleConfigBtn && pushConfigBody) {
-      toggleConfigBtn.addEventListener("click", function () {
+    if (togglePushConfigBtn && pushConfigBody) {
+      togglePushConfigBtn.addEventListener("click", function () {
         const isHidden = pushConfigBody.classList.toggle("hidden");
         if (toggleConfigText) {
           toggleConfigText.innerHTML = isHidden ? "Lihat / Ubah Kunci &darr;" : "Tutup Pengaturan &uarr;";
@@ -3033,8 +3050,12 @@
         }
       });
     }
+  }
 
-    // 15. Jalankan Pengecekan Sesi Awal
-    checkAuthSession();
-  });
+  // Jalankan inisialisasi aplikasi admin
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initAdminApp);
+  } else {
+    initAdminApp();
+  }
 })();
