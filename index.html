@@ -128,6 +128,41 @@
           <button id="categorySearchClearBtn" class="category-clear-btn hidden" type="button" aria-label="Hapus kata kunci">✕</button>
         </div>
       </div>
+
+      <!-- BARIS URUTKAN HARGA: NEMPEL LANGSUNG DENGAN ATAS FITUR SEARCH SEBAGUS MUNGKIN -->
+      <div class="category-sort-attached-row" id="categorySortBar" aria-label="Urutkan daftar produk">
+        <div class="category-sort-attached-inner">
+          <span class="sort-bar-label">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 15l5 5 5-5"/>
+              <path d="M7 9l5-5 5 5"/>
+            </svg>
+            <span>Urutkan</span>
+          </span>
+          <span class="sort-bar-divider" aria-hidden="true"></span>
+          <div class="sort-pills-scroll">
+            <button type="button" class="sort-pill-btn active" data-sort="default">
+              <span>Semua</span>
+            </button>
+            <button type="button" class="sort-pill-btn" data-sort="price-asc">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+              <span>Termurah</span>
+            </button>
+            <button type="button" class="sort-pill-btn" data-sort="price-desc">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+              <span>Termahal</span>
+            </button>
+            <button type="button" class="sort-pill-btn" data-sort="discount-desc">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+              <span>Diskon Besar</span>
+            </button>
+            <button type="button" class="sort-pill-btn" data-sort="popular">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span>Terpopuler</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -528,42 +563,7 @@
         </select>
       </section>
 
-      <!-- BARIS URUTKAN HARGA PREMIUM (RAPAT DENGAN KATEGORI & TETAP DIAM SEJAJAR SEARCH SAAT DI-SCROLL) -->
-      <div id="categorySortStickyWrap" class="category-sort-sticky-wrap">
-        <div class="sort-bar-row" id="categorySortBar" aria-label="Urutkan daftar produk">
-          <div class="sort-bar-inner">
-            <span class="sort-bar-label">
-              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M7 15l5 5 5-5"/>
-                <path d="M7 9l5-5 5 5"/>
-              </svg>
-              <span>Urutkan</span>
-            </span>
-            <span class="sort-bar-divider" aria-hidden="true"></span>
-            <div class="sort-pills-scroll">
-              <button type="button" class="sort-pill-btn active" data-sort="default">
-                <span>Semua</span>
-              </button>
-              <button type="button" class="sort-pill-btn" data-sort="price-asc">
-                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-                <span>Termurah</span>
-              </button>
-              <button type="button" class="sort-pill-btn" data-sort="price-desc">
-                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
-                <span>Termahal</span>
-              </button>
-              <button type="button" class="sort-pill-btn" data-sort="discount-desc">
-                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
-                <span>Diskon Besar</span>
-              </button>
-              <button type="button" class="sort-pill-btn" data-sort="popular">
-                <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <span>Terpopuler</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+
 
       <!-- GRID PRODUK DENGAN UKURAN LEBIH RINGKAS (TURUN 15%) -->
       <div class="product-grid" id="productGrid">

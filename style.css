@@ -3672,69 +3672,56 @@ body.dark-mode .about-slide-dot.active {
 }
 
 /* ============================================================
-   FITUR TAMBAHAN: SORTIR HARGA PREMIUM (STICKY SEJAJAR SEARCH) & BAGIKAN WA
+   TIER 2.5: BARIS URUTKAN HARGA (NEMPEL LANGSUNG DENGAN ATAS FITUR SEARCH SEBAGUS MUNGKIN)
+   Desain ultra modern, rapi, menyatu elegan di dalam header kategori
    ============================================================ */
 
-/* 1. Pembungkus & Baris Urutkan Produk di Halaman Kategori */
-.category-sort-sticky-wrap {
-  margin-top: 0;
-  margin-bottom: 8px;
-  position: relative;
-  z-index: 95;
+#topbarCategorySearchRow.topbar-sub-row {
+  padding: 6px 0 0;
+  border-bottom: 1px solid rgba(15, 118, 110, 0.12);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
 
-.sort-bar-row {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(240, 253, 250, 0.90) 100%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(15, 118, 110, 0.16);
-  border-radius: 999px;
-  padding: 5px 10px;
-  box-shadow: 0 2px 10px rgba(15, 118, 110, 0.06);
-  transition: box-shadow 0.22s ease, background 0.22s ease, border-color 0.22s ease;
+body.dark-mode #topbarCategorySearchRow.topbar-sub-row {
+  border-bottom-color: rgba(45, 212, 191, 0.16);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
-.sort-bar-inner {
+.category-sort-attached-row {
+  border-top: 1px solid rgba(15, 118, 110, 0.08);
+  padding: 5px 0 7px;
+  margin-top: 5px;
+  background: rgba(255, 255, 255, 0.50);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+body.dark-mode .category-sort-attached-row {
+  border-top-color: rgba(45, 212, 191, 0.12);
+  background: rgba(8, 22, 19, 0.40);
+}
+
+.category-sort-attached-inner {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 0 14px;
   display: flex;
   align-items: center;
   gap: 8px;
   width: 100%;
-  overflow: hidden;
-}
-
-/* Saat di-scroll ke bawah: tetap diam (fixed) di bawah fitur search dengan pembatas halus & proporsional */
-.sort-bar-row.is-fixed-under-search {
-  position: fixed;
-  left: 0;
-  right: 0;
-  z-index: 995;
-  border-radius: 0;
-  border-left: none;
-  border-right: none;
-  border-top: 1px solid rgba(15, 118, 110, 0.08);
-  border-bottom: 1px solid rgba(15, 118, 110, 0.14);
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  padding: 5px 0 6px;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
-}
-
-.sort-bar-row.is-fixed-under-search .sort-bar-inner {
-  max-width: 580px;
-  margin: 0 auto;
-  padding: 0 14px;
+  box-sizing: border-box;
 }
 
 @media (min-width: 768px) {
-  .sort-bar-row.is-fixed-under-search .sort-bar-inner {
+  .category-sort-attached-inner {
     max-width: 920px;
     padding: 0 24px;
+    gap: 10px;
   }
 }
 
 @media (min-width: 1024px) {
-  .sort-bar-row.is-fixed-under-search .sort-bar-inner {
+  .category-sort-attached-inner {
     max-width: 1140px;
     padding: 0 28px;
   }
@@ -3901,18 +3888,6 @@ body.dark-mode .about-slide-dot.active {
 }
 
 /* Dukungan Mode Malam (Dark Mode) */
-body.dark-mode .sort-bar-row {
-  background: linear-gradient(135deg, rgba(13, 35, 30, 0.92) 0%, rgba(10, 28, 24, 0.92) 100%);
-  border-color: rgba(45, 212, 191, 0.22);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-}
-
-body.dark-mode .sort-bar-row.is-fixed-under-search {
-  background: rgba(10, 28, 24, 0.96);
-  border-top: 1px solid rgba(45, 212, 191, 0.10);
-  border-bottom-color: rgba(45, 212, 191, 0.18);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-}
 
 body.dark-mode .sort-bar-label {
   color: #2dd4bf;

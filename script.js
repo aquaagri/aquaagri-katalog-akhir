@@ -1794,42 +1794,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const mainHeader = document.getElementById("mainHeader");
   const topbarSearchInterfaceRow = document.getElementById("topbarSearchInterfaceRow");
   const topbarCategorySearchRow = document.getElementById("topbarCategorySearchRow");
-  const categorySortStickyWrap = document.getElementById("categorySortStickyWrap");
-  const categorySortBarEl = document.getElementById("categorySortBar");
-
-  function updateCategorySortStickyState() {
-    if (!categorySortStickyWrap || !categorySortBarEl || !mainHeader) return;
-    if (!categoryView || categoryView.classList.contains("hidden")) {
-      categorySortBarEl.classList.remove("is-fixed-under-search");
-      categorySortBarEl.style.top = "";
-      categorySortStickyWrap.style.minHeight = "";
-      return;
-    }
-
-    const headerBottom = mainHeader.getBoundingClientRect().bottom;
-    const wrapRect = categorySortStickyWrap.getBoundingClientRect();
-    const targetFixedTop = Math.round(headerBottom);
-
-    if (wrapRect.top <= targetFixedTop + 1) {
-      if (!categorySortBarEl.classList.contains("is-fixed-under-search")) {
-        categorySortStickyWrap.style.minHeight = categorySortBarEl.offsetHeight + "px";
-        categorySortBarEl.classList.add("is-fixed-under-search");
-      }
-      categorySortBarEl.style.top = targetFixedTop + "px";
-    } else {
-      if (categorySortBarEl.classList.contains("is-fixed-under-search")) {
-        categorySortBarEl.classList.remove("is-fixed-under-search");
-        categorySortBarEl.style.top = "";
-        categorySortStickyWrap.style.minHeight = "";
-      }
-    }
-  }
 
   function updateHeaderOffset() {
     if (mainHeader) {
       document.body.style.paddingTop = mainHeader.offsetHeight + "px";
     }
-    updateCategorySortStickyState();
   }
 
   // Elemen Header Banner Kategori
@@ -4045,7 +4014,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   updateHeaderOffset();
   window.addEventListener("resize", updateHeaderOffset);
-  window.addEventListener("scroll", updateCategorySortStickyState, { passive: true });
 
   updateAboutStats();
   renderCategories();
