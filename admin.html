@@ -291,6 +291,19 @@
                 <span id="statInvalidShopee" class="stat-note">Semua link valid</span>
               </div>
             </div>
+
+            <div class="stat-card">
+              <div class="stat-icon stat-icon-amber">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-label">Total Minat &amp; Klik</span>
+                <strong id="statTotalProductClicks" class="stat-value">0</strong>
+                <span id="statTopProductNote" class="stat-note">0 klik tercatat</span>
+              </div>
+            </div>
           </div>
 
           <!-- Ringkasan Distribusi Kategori & Aksi Cepat -->
@@ -409,6 +422,13 @@
                   <option value="benih">Benih &amp; Bibit Ikan</option>
                   <option value="alat-aksesoris">Alat &amp; Aksesoris</option>
                   <option value="suplemen">Suplemen &amp; Probiotik</option>
+                </select>
+
+                <select id="adminProductSortFilter" aria-label="Urutan Produk">
+                  <option value="default">Urutan: Default</option>
+                  <option value="clicks-desc">Paling Banyak Diklik 🔥</option>
+                  <option value="price-asc">Harga Termurah</option>
+                  <option value="price-desc">Harga Tertinggi</option>
                 </select>
 
                 <button type="button" id="addProductMainBtn" class="btn-primary">

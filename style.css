@@ -3953,6 +3953,123 @@ body.dark-mode .category-sort-attached-row {
   opacity: 1;
 }
 
+/* KOTAK RIWAYAT PENCARIAN TERAKHIR (RECENT SEARCHES) */
+.search-recent-box {
+  margin: 10px auto 14px;
+  max-width: 580px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: 14px;
+  padding: 9px 12px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  transition: all 0.2s ease;
+}
+
+@media (min-width: 768px) {
+  .search-recent-box {
+    max-width: 920px;
+    padding: 11px 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .search-recent-box {
+    max-width: 1140px;
+  }
+}
+
+.search-recent-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+
+.search-recent-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.search-recent-clear-btn {
+  background: none;
+  border: none;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: all 0.18s ease;
+}
+
+.search-recent-clear-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.search-recent-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.recent-chip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.recent-chip-btn:hover {
+  background: rgba(15, 118, 110, 0.08);
+  border-color: rgba(15, 118, 110, 0.35);
+  color: #0f766e;
+  transform: translateY(-1px);
+}
+
+.recent-chip-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-subtle);
+  font-size: 0.72rem;
+  margin-left: 2px;
+  transition: color 0.15s ease;
+}
+
+.recent-chip-remove:hover {
+  color: #ef4444;
+}
+
+body.dark-mode .search-recent-box {
+  background: rgba(15, 38, 33, 0.65);
+  border-color: rgba(45, 212, 191, 0.16);
+}
+
+body.dark-mode .recent-chip-btn {
+  background: rgba(8, 22, 19, 0.75);
+  border-color: rgba(45, 212, 191, 0.18);
+  color: #cbd5e1;
+}
+
+body.dark-mode .recent-chip-btn:hover {
+  background: rgba(20, 184, 166, 0.18);
+  border-color: #2dd4bf;
+  color: #5eead4;
+}
+
 /* 2. Dropdown Urutkan di Halaman Pencarian */
 .search-heading-left {
   display: flex;

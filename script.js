@@ -2450,6 +2450,7 @@ document.addEventListener("DOMContentLoaded", function () {
     img.src = produk.gambar || PLACEHOLDER_IMG;
     img.alt = produk.nama;
     img.loading = "lazy";
+    img.decoding = "async";
     img.addEventListener("error", function () {
       img.src = PLACEHOLDER_IMG;
     });
@@ -2938,6 +2939,89 @@ document.addEventListener("DOMContentLoaded", function () {
     startAboutSlideTimer();
   }
 
+  // ---------- SISTEM RIWAYAT PENCARIAN TERAKHIR (RECENT SEARCHES) ----------
+  const RECENT_SEARCH_KEY = "aquaagri_recent_searches";
+  const searchRecentWrap = document.getElementById("searchRecentWrap");
+  const searchRecentChips = document.getElementById("searchRecentChips");
+  const searchClearHistoryBtn = document.getElementById("searchClearHistoryBtn");
+
+  function getRecentSearches() {
+    try {
+      const data = localStorage.getItem(RECENT_SEARCH_KEY);
+      return data ? JSON.parse(data) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveRecentSearches(list) {
+    try {
+      localStorage.setItem(RECENT_SEARCH_KEY, JSON.stringify(list));
+    } catch (e) {}
+  }
+
+  function addRecentSearch(keyword) {
+    const clean = String(keyword || "").trim();
+    if (!clean || clean.length < 2) return;
+    let list = getRecentSearches().filter(function (item) {
+      return item.toLowerCase() !== clean.toLowerCase();
+    });
+    list.unshift(clean);
+    if (list.length > 5) list = list.slice(0, 5);
+    saveRecentSearches(list);
+    renderRecentSearches();
+  }
+
+  function removeRecentSearch(keyword) {
+    let list = getRecentSearches().filter(function (item) {
+      return item.toLowerCase() !== keyword.toLowerCase();
+    });
+    saveRecentSearches(list);
+    renderRecentSearches();
+  }
+
+  function renderRecentSearches() {
+    if (!searchRecentWrap || !searchRecentChips) return;
+    const list = getRecentSearches();
+    if (!list || list.length === 0) {
+      searchRecentWrap.classList.add("hidden");
+      searchRecentChips.innerHTML = "";
+      return;
+    }
+
+    searchRecentChips.innerHTML = "";
+    list.forEach(function (kw) {
+      const chipBtn = document.createElement("button");
+      chipBtn.type = "button";
+      chipBtn.className = "recent-chip-btn";
+      chipBtn.innerHTML = `<span>${kw}</span><span class="recent-chip-remove" title="Hapus">✕</span>`;
+
+      chipBtn.addEventListener("click", function (e) {
+        if (e.target && e.target.classList.contains("recent-chip-remove")) {
+          e.stopPropagation();
+          removeRecentSearch(kw);
+          return;
+        }
+        if (searchInterfaceInput) {
+          searchInterfaceInput.value = kw;
+        }
+        addRecentSearch(kw);
+        renderSearchInterfaceProducts();
+      });
+
+      searchRecentChips.appendChild(chipBtn);
+    });
+
+    searchRecentWrap.classList.remove("hidden");
+  }
+
+  if (searchClearHistoryBtn) {
+    searchClearHistoryBtn.addEventListener("click", function () {
+      saveRecentSearches([]);
+      renderRecentSearches();
+    });
+  }
+
   // ---------- 13. LOGIKA MOBILE SEARCH INTERFACE (MEGA BAR & CHIPS) ----------
 
   function openSearchInterface(initialKeyword = "") {
@@ -2974,6 +3058,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }, 50);
     }
 
+    renderRecentSearches();
     renderSearchInterfaceProducts();
     window.scrollTo({ top: 0, behavior: "instant" });
   }
@@ -3100,6 +3185,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     searchInterfaceInput.addEventListener("keydown", function (e) {
       if (e.key === "Enter") {
+        addRecentSearch(searchInterfaceInput.value);
         renderSearchInterfaceProducts();
       }
     });
@@ -3119,6 +3205,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // Tombol submit search
   if (searchSubmitBtn) {
     searchSubmitBtn.addEventListener("click", function () {
+      if (searchInterfaceInput) {
+        addRecentSearch(searchInterfaceInput.value);
+      }
       renderSearchInterfaceProducts();
     });
   }

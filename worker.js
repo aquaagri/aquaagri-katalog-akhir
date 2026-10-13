@@ -109,14 +109,53 @@ export default {
                 /<meta name="twitter:image"[^>]*>/i,
                 `<meta name="twitter:image" content="${escapeHtmlAttr(ogImgUrl)}">`
               );
-          }
-        }
 
-        // Suntikkan ID produk awal agar script.js langsung membuka Pop-Up Produk begitu halaman terbuka (Cara A)
-        html = html.replace(
-          "</head>",
-          `<script>window.__INITIAL_PRODUCT_ID__ = ${Number(cleanId)};</script>\n</head>`
-        );
+            const numericPrice = Number(String(p.harga || "").replace(/[^0-9]/g, "")) || 0;
+            const productSchema = {
+              "@context": "https://schema.org",
+              "@type": "Product",
+              "name": p.nama,
+              "image": [ogImgUrl],
+              "description": p.deskripsi || p.nama,
+              "brand": {
+                "@type": "Brand",
+                "name": "aquaagri.id"
+              },
+              "offers": {
+                "@type": "Offer",
+                "url": shareUrl,
+                "priceCurrency": "IDR",
+                "price": numericPrice,
+                "priceValidUntil": "2027-12-31",
+                "itemCondition": "https://schema.org/NewCondition",
+                "availability": "https://schema.org/InStock",
+                "seller": {
+                  "@type": "Organization",
+                  "name": "Shopee Indonesia"
+                }
+              }
+            };
+
+            const schemaTag = `<script type="application/ld+json">\n${JSON.stringify(productSchema, null, 2)}\n</script>\n`;
+
+            html = html.replace(
+              "</head>",
+              `${schemaTag}<script>window.__INITIAL_PRODUCT_ID__ = ${Number(cleanId)};</script>\n</head>`
+            );
+          } else {
+            // Jika produk tidak ditemukan di baris, tetap suntikkan ID
+            html = html.replace(
+              "</head>",
+              `<script>window.__INITIAL_PRODUCT_ID__ = ${Number(cleanId)};</script>\n</head>`
+            );
+          }
+        } else {
+          // Jika API gagal, fallback suntikkan ID
+          html = html.replace(
+            "</head>",
+            `<script>window.__INITIAL_PRODUCT_ID__ = ${Number(cleanId)};</script>\n</head>`
+          );
+        }
 
         return new Response(html, {
           status: 200,

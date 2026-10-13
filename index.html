@@ -29,6 +29,44 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+
+<!-- STRUCTURED DATA SCHEMA.ORG (JSON-LD) UNTUK SEO GOOGLE -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://aquaagri-katalog-akhir.aquaagri-id.workers.dev/#organization",
+      "name": "aquaagri.id",
+      "url": "https://aquaagri-katalog-akhir.aquaagri-id.workers.dev/",
+      "logo": "https://aquaagri-katalog-akhir.aquaagri-id.workers.dev/nama-brand.png",
+      "description": "Ekosistem bahari dan perikanan Nusantara berkualitas dari hulu ke hilir: hasil laut segar, olahan ikan higienis, pakan budidaya, dan perlengkapan pancing terpercaya.",
+      "sameAs": [
+        "https://shopee.co.id",
+        "https://instagram.com"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://aquaagri-katalog-akhir.aquaagri-id.workers.dev/#website",
+      "url": "https://aquaagri-katalog-akhir.aquaagri-id.workers.dev/",
+      "name": "aquaagri.id - Solusi Terpadu Dunia Perikanan & Bahari Nusantara",
+      "publisher": {
+        "@id": "https://aquaagri-katalog-akhir.aquaagri-id.workers.dev/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://aquaagri-katalog-akhir.aquaagri-id.workers.dev/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -249,23 +287,23 @@
             <div class="hero-clean-visual" id="heroVisualSlider" aria-hidden="true">
               <!-- Slide 1: Kapal Bahari & Perikanan Nusantara -->
               <div class="hero-slide-item active">
-                <img src="hero-kapal-laut.jpg" alt="Solusi Perikanan & Bahari Nusantara" class="hero-clean-img" loading="eager">
+                <img src="hero-kapal-laut.jpg" alt="Solusi Perikanan & Bahari Nusantara" class="hero-clean-img" loading="eager" fetchpriority="high" decoding="async">
               </div>
               <!-- Slide 2: Ikan & Hasil Laut Segar Pilihan -->
               <div class="hero-slide-item">
-                <img src="ikan-segar.jpg" alt="Hasil Laut & Tangkapan Ikan Segar Pilihan" class="hero-clean-img" loading="lazy">
+                <img src="ikan-segar.jpg" alt="Hasil Laut & Tangkapan Ikan Segar Pilihan" class="hero-clean-img" loading="lazy" decoding="async">
               </div>
               <!-- Slide 3: Sarana Budidaya & Keramba Jaring Apung Modern -->
               <div class="hero-slide-item">
-                <img src="poto-petambak.jpg" alt="Sarana Budidaya & Keramba Jaring Apung Modern" class="hero-clean-img" loading="lazy">
+                <img src="poto-petambak.jpg" alt="Sarana Budidaya & Keramba Jaring Apung Modern" class="hero-clean-img" loading="lazy" decoding="async">
               </div>
               <!-- Slide 4: Produk Olahan Ikan Higienis & Bergizi -->
               <div class="hero-slide-item">
-                <img src="produk-olahan-ikan.jpg" alt="Ragam Produk Olahan Ikan Higienis & Bergizi" class="hero-clean-img" loading="lazy">
+                <img src="produk-olahan-ikan.jpg" alt="Ragam Produk Olahan Ikan Higienis & Bergizi" class="hero-clean-img" loading="lazy" decoding="async">
               </div>
               <!-- Slide 5: Piranti & Komunitas Mancing Bahari -->
               <div class="hero-slide-item">
-                <img src="poto-pemancing-1.jpg" alt="Perlengkapan Pancing & Hasil Tangkapan Bahari" class="hero-clean-img" loading="lazy">
+                <img src="poto-pemancing-1.jpg" alt="Perlengkapan Pancing & Hasil Tangkapan Bahari" class="hero-clean-img" loading="lazy" decoding="async">
               </div>
 
               <!-- Indikator Slide Hero Simple & Modern -->
@@ -639,6 +677,23 @@
          Gaya simple, modern, clean, profesional khas aquaagri.id
          ------------------------------------------------------------ -->
     <section id="searchView" class="view hidden" aria-label="Antarmuka Pencarian Produk">
+
+      <!-- RIWAYAT PENCARIAN TERAKHIR (RECENT SEARCHES) -->
+      <div id="searchRecentWrap" class="search-recent-box hidden" aria-label="Riwayat pencarian terakhir">
+        <div class="search-recent-header">
+          <span class="search-recent-title">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>Pencarian Terakhir</span>
+          </span>
+          <button type="button" id="searchClearHistoryBtn" class="search-recent-clear-btn" aria-label="Hapus semua riwayat pencarian">Hapus</button>
+        </div>
+        <div id="searchRecentChips" class="search-recent-chips">
+          <!-- Diisi dinamis oleh script.js -->
+        </div>
+      </div>
 
       <!-- HEADING: HASIL PENCARIAN & JUMLAH PRODUK -->
       <div class="search-heading-row">

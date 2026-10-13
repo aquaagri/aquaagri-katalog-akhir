@@ -146,20 +146,38 @@
           ctx.fillRect(0, 0, w, h);
           ctx.drawImage(img, 0, 0, w, h);
 
+          // Prioritaskan format WebP modern untuk efisiensi ukuran file maksimal (~40% lebih hemat)
+          const targetMime = "image/webp";
           canvas.toBlob(
             function (blob) {
-              if (!blob || blob.size >= file.size) {
-                resolve(file);
+              if (blob && blob.size < file.size) {
+                const baseName = (file.name || "foto").replace(/\.[a-zA-Z0-9]+$/, "");
+                const compressedFile = new File([blob], baseName + ".webp", {
+                  type: "image/webp",
+                  lastModified: Date.now()
+                });
+                resolve(compressedFile);
                 return;
               }
-              const baseName = (file.name || "foto").replace(/\.[a-zA-Z0-9]+$/, "");
-              const compressedFile = new File([blob], baseName + ".jpg", {
-                type: "image/jpeg",
-                lastModified: Date.now()
-              });
-              resolve(compressedFile);
+              // Fallback ke JPEG jika WebP tidak lebih kecil
+              canvas.toBlob(
+                function (jpegBlob) {
+                  if (!jpegBlob || jpegBlob.size >= file.size) {
+                    resolve(file);
+                    return;
+                  }
+                  const baseName = (file.name || "foto").replace(/\.[a-zA-Z0-9]+$/, "");
+                  const compressedFile = new File([jpegBlob], baseName + ".jpg", {
+                    type: "image/jpeg",
+                    lastModified: Date.now()
+                  });
+                  resolve(compressedFile);
+                },
+                "image/jpeg",
+                quality
+              );
             },
-            "image/jpeg",
+            targetMime,
             quality
           );
         } catch (err) {
@@ -618,7 +636,22 @@
         totalAllClicksEl.textContent = "Total Klik Katalog: " + totalClicksSum.toLocaleString("id-ID") + " Klik";
       }
 
+      // Update 5th Stat Card di Header Ringkasan
+      const statTotalClicksEl = document.getElementById("statTotalProductClicks");
+      const statTopProductNoteEl = document.getElementById("statTopProductNote");
+      if (statTotalClicksEl) {
+        statTotalClicksEl.textContent = totalClicksSum.toLocaleString("id-ID");
+      }
+      if (statTopProductNoteEl) {
+        const topProd = ranked[0] && ranked[0].clicks > 0 ? ranked[0].prod.nama : null;
+        statTopProductNoteEl.textContent = topProd
+          ? "Top: " + (topProd.length > 20 ? topProd.substring(0, 18) + "..." : topProd) + " (" + ranked[0].clicks + " klik)"
+          : totalClicksSum + " klik tercatat";
+      }
+
       const top10 = ranked.slice(0, 10);
+      const maxClicks = ranked[0] && ranked[0].clicks > 0 ? ranked[0].clicks : 1;
+
       if (top10.length === 0) {
         const tr = document.createElement("tr");
         const td = document.createElement("td");
@@ -667,11 +700,26 @@
           pSpan.textContent = prod.harga || "Rp0";
           tdPrice.appendChild(pSpan);
 
+          // Kolom Klik Lengkap dengan Bar Meter Visual
           const tdClicks = document.createElement("td");
+          const clickWrap = document.createElement("div");
+          clickWrap.className = "click-progress-wrap";
+
           const clickBadge = document.createElement("span");
           clickBadge.className = "badge-pill badge-success";
-          clickBadge.textContent = entry.clicks.toLocaleString("id-ID") + " Klik";
-          tdClicks.appendChild(clickBadge);
+          clickBadge.textContent = "🔥 " + entry.clicks.toLocaleString("id-ID") + " Klik";
+
+          const barOuter = document.createElement("div");
+          barOuter.className = "click-progress-bar";
+          const barFill = document.createElement("div");
+          barFill.className = "click-progress-fill";
+          const pct = Math.min(100, Math.round((entry.clicks / maxClicks) * 100));
+          barFill.style.width = pct + "%";
+          barOuter.appendChild(barFill);
+
+          clickWrap.appendChild(clickBadge);
+          clickWrap.appendChild(barOuter);
+          tdClicks.appendChild(clickWrap);
 
           const tdAct = document.createElement("td");
           const actWrap = document.createElement("div");
@@ -826,6 +874,23 @@
       }
       return true;
     });
+
+    const sortFilterEl = document.getElementById("adminProductSortFilter");
+    const sortVal = sortFilterEl ? sortFilterEl.value : "default";
+
+    if (sortVal === "clicks-desc") {
+      filtered.sort(function (a, b) {
+        return getAdminProductClicks(b) - getAdminProductClicks(a);
+      });
+    } else if (sortVal === "price-asc") {
+      filtered.sort(function (a, b) {
+        return parseRupiahNumber(a.harga) - parseRupiahNumber(b.harga);
+      });
+    } else if (sortVal === "price-desc") {
+      filtered.sort(function (a, b) {
+        return parseRupiahNumber(b.harga) - parseRupiahNumber(a.harga);
+      });
+    }
 
     if (countEl) {
       countEl.textContent = "Menampilkan " + filtered.length + " dari " + state.products.length + " produk";
@@ -2305,9 +2370,11 @@
     const prodSearch = document.getElementById("adminProductSearch");
     const prodCatFilter = document.getElementById("adminProductCatFilter");
     const prodSubFilter = document.getElementById("adminProductSubFilter");
+    const prodSortFilter = document.getElementById("adminProductSortFilter");
     if (prodSearch) prodSearch.addEventListener("input", renderProductsTable);
     if (prodCatFilter) prodCatFilter.addEventListener("change", renderProductsTable);
     if (prodSubFilter) prodSubFilter.addEventListener("change", renderProductsTable);
+    if (prodSortFilter) prodSortFilter.addEventListener("change", renderProductsTable);
 
     // 10. Filter & Search Shopee
     const shopeeSearch = document.getElementById("shopeeSearchInput");
