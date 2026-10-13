@@ -1794,11 +1794,41 @@ document.addEventListener("DOMContentLoaded", function () {
   const mainHeader = document.getElementById("mainHeader");
   const topbarSearchInterfaceRow = document.getElementById("topbarSearchInterfaceRow");
   const topbarCategorySearchRow = document.getElementById("topbarCategorySearchRow");
+  const categorySortStickyWrap = document.getElementById("categorySortStickyWrap");
+  const categorySortBarEl = document.getElementById("categorySortBar");
+
+  function updateCategorySortStickyState() {
+    if (!categorySortStickyWrap || !categorySortBarEl || !mainHeader) return;
+    if (!categoryView || categoryView.classList.contains("hidden")) {
+      categorySortBarEl.classList.remove("is-fixed-under-search");
+      categorySortBarEl.style.top = "";
+      categorySortStickyWrap.style.minHeight = "";
+      return;
+    }
+
+    const headerBottom = mainHeader.getBoundingClientRect().bottom;
+    const wrapRect = categorySortStickyWrap.getBoundingClientRect();
+
+    if (wrapRect.top <= headerBottom + 1) {
+      if (!categorySortBarEl.classList.contains("is-fixed-under-search")) {
+        categorySortStickyWrap.style.minHeight = categorySortBarEl.offsetHeight + "px";
+        categorySortBarEl.classList.add("is-fixed-under-search");
+      }
+      categorySortBarEl.style.top = Math.round(headerBottom) + "px";
+    } else {
+      if (categorySortBarEl.classList.contains("is-fixed-under-search")) {
+        categorySortBarEl.classList.remove("is-fixed-under-search");
+        categorySortBarEl.style.top = "";
+        categorySortStickyWrap.style.minHeight = "";
+      }
+    }
+  }
 
   function updateHeaderOffset() {
     if (mainHeader) {
       document.body.style.paddingTop = mainHeader.offsetHeight + "px";
     }
+    updateCategorySortStickyState();
   }
 
   // Elemen Header Banner Kategori
@@ -4003,47 +4033,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ---------- REGISTRASI PROGRESSIVE WEB APP (PWA) & TOMBOL INSTALL ----------
-  let deferredPwaPrompt = null;
-  const installPwaBtn = document.getElementById("installPwaBtn");
-
-  if ("serviceWorker" in navigator && (window.location.protocol === "https:" || window.location.hostname === "localhost")) {
-    window.addEventListener("load", function () {
-      navigator.serviceWorker.register("/sw.js").catch(function () {});
-    });
+  // Bersihkan Service Worker lama agar tidak memunculkan peringatan keamanan APK di HP
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+      registrations.forEach(function (reg) {
+        reg.unregister();
+      });
+    }).catch(function () {});
   }
-
-  window.addEventListener("beforeinstallprompt", function (e) {
-    e.preventDefault();
-    deferredPwaPrompt = e;
-    if (installPwaBtn) {
-      installPwaBtn.classList.remove("hidden");
-    }
-  });
-
-  if (installPwaBtn) {
-    installPwaBtn.addEventListener("click", async function () {
-      if (deferredPwaPrompt) {
-        deferredPwaPrompt.prompt();
-        const choice = await deferredPwaPrompt.userChoice;
-        if (choice && choice.outcome === "accepted") {
-          installPwaBtn.classList.add("hidden");
-          showSearchToast("Aplikasi aquaagri.id berhasil ditambahkan ke layar utama!");
-        }
-        deferredPwaPrompt = null;
-      } else {
-        showSearchToast("Untuk install: Klik menu titik tiga browser -> Tambahkan ke Layar Utama");
-      }
-    });
-  }
-
-  window.addEventListener("appinstalled", function () {
-    if (installPwaBtn) installPwaBtn.classList.add("hidden");
-    deferredPwaPrompt = null;
-  });
 
   updateHeaderOffset();
   window.addEventListener("resize", updateHeaderOffset);
+  window.addEventListener("scroll", updateCategorySortStickyState, { passive: true });
 
   updateAboutStats();
   renderCategories();

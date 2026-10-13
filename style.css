@@ -2052,8 +2052,8 @@ body.dark-mode .category-search-pill:focus-within {
 .category-filter-section {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 4px;
+  margin-bottom: 4px;
 }
 
 .category-chips-nav {
@@ -2061,7 +2061,7 @@ body.dark-mode .category-search-pill:focus-within {
   gap: 6px;
   overflow-x: auto;
   scrollbar-width: none;
-  padding: 2px 2px 4px;
+  padding: 2px 2px 2px;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -2113,8 +2113,8 @@ body.dark-mode .cat-chip-btn.active {
   gap: 6px;
   overflow-x: auto;
   scrollbar-width: none;
-  padding: 2px 2px 4px;
-  margin-bottom: 8px;
+  padding: 2px 2px 2px;
+  margin-bottom: 0;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -3663,67 +3663,103 @@ body.dark-mode .about-slide-dot.active {
 }
 
 /* ============================================================
-   FITUR TAMBAHAN: PWA INSTALL PILL, SORTIR HARGA & BAGIKAN WA
+   FITUR TAMBAHAN: SORTIR HARGA PREMIUM (STICKY SEJAJAR SEARCH) & BAGIKAN WA
    ============================================================ */
 
-/* 1. Tombol Install Aplikasi (PWA) di Header */
-.topbar-install-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 999px;
-  padding: 5px 11px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
-  box-shadow: 0 3px 10px rgba(13, 148, 136, 0.25);
+/* 1. Pembungkus & Baris Urutkan Produk di Halaman Kategori */
+.category-sort-sticky-wrap {
+  margin-top: 0;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 95;
 }
 
-.topbar-install-pill:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 5px 14px rgba(13, 148, 136, 0.35);
-}
-
-.topbar-install-pill.hidden {
-  display: none !important;
-}
-
-/* 2. Baris Urutkan Produk di Halaman Kategori */
 .sort-bar-row {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(240, 253, 250, 0.90) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 999px;
+  padding: 5px 10px;
+  box-shadow: 0 2px 10px rgba(15, 118, 110, 0.06);
+  transition: box-shadow 0.22s ease, background 0.22s ease, border-color 0.22s ease;
+}
+
+.sort-bar-inner {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-  padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(15, 118, 110, 0.14);
-  border-radius: 12px;
+  gap: 8px;
+  width: 100%;
   overflow: hidden;
+}
+
+/* Saat di-scroll ke bawah: tetap diam (fixed) menyatu & sejajar dengan fitur search di header */
+.sort-bar-row.is-fixed-under-search {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 995;
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  border-top: 1px solid rgba(15, 118, 110, 0.08);
+  border-bottom: 1px solid rgba(15, 118, 110, 0.16);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 6px 0;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.07);
+}
+
+.sort-bar-row.is-fixed-under-search .sort-bar-inner {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 0 14px;
+}
+
+@media (min-width: 768px) {
+  .sort-bar-row.is-fixed-under-search .sort-bar-inner {
+    max-width: 920px;
+    padding: 0 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sort-bar-row.is-fixed-under-search .sort-bar-inner {
+    max-width: 1140px;
+    padding: 0 28px;
+  }
 }
 
 .sort-bar-label {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #334155;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #0f766e;
+  letter-spacing: -0.1px;
   white-space: nowrap;
+  flex-shrink: 0;
+  padding-left: 2px;
+}
+
+.sort-bar-divider {
+  width: 1px;
+  height: 16px;
+  background: rgba(15, 118, 110, 0.18);
   flex-shrink: 0;
 }
 
 .sort-pills-scroll {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding-bottom: 1px;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
 }
 
 .sort-pills-scroll::-webkit-scrollbar {
@@ -3731,32 +3767,48 @@ body.dark-mode .about-slide-dot.active {
 }
 
 .sort-pill-btn {
-  border: 1px solid #cbd5e1;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid rgba(203, 213, 225, 0.85);
   background: #ffffff;
   color: #475569;
   font-family: inherit;
-  font-size: 0.73rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  padding: 5px 11px;
+  padding: 4.5px 11px;
   border-radius: 999px;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.18s ease;
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sort-pill-btn svg {
+  flex-shrink: 0;
+  opacity: 0.82;
 }
 
 .sort-pill-btn:hover {
   border-color: #0d9488;
   color: #0f766e;
+  background: #f0fdfa;
+  transform: translateY(-1px);
 }
 
 .sort-pill-btn.active {
-  background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+  background: linear-gradient(135deg, #0f766e 0%, #0d9488 55%, #14b8a6 100%);
   color: #ffffff;
+  font-weight: 700;
   border-color: transparent;
-  box-shadow: 0 3px 10px rgba(13, 148, 136, 0.24);
+  box-shadow: 0 3px 10px rgba(13, 148, 136, 0.28);
 }
 
-/* Dropdown Urutkan di Halaman Pencarian */
+.sort-pill-btn.active svg {
+  opacity: 1;
+}
+
+/* 2. Dropdown Urutkan di Halaman Pencarian */
 .search-heading-left {
   display: flex;
   align-items: center;
@@ -3773,16 +3825,17 @@ body.dark-mode .about-slide-dot.active {
   background-color: #ffffff;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%230f766e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 9px center;
-  border: 1px solid rgba(15, 118, 110, 0.25);
+  background-position: right 10px center;
+  border: 1px solid rgba(15, 118, 110, 0.24);
   border-radius: 999px;
-  padding: 5px 26px 5px 11px;
+  padding: 5px 28px 5px 12px;
   font-family: inherit;
-  font-size: 0.73rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: #0f766e;
   cursor: pointer;
   outline: none;
+  box-shadow: 0 2px 6px rgba(15, 118, 110, 0.06);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -3840,33 +3893,47 @@ body.dark-mode .about-slide-dot.active {
 
 /* Dukungan Mode Malam (Dark Mode) */
 body.dark-mode .sort-bar-row {
-  background: rgba(15, 34, 42, 0.85);
-  border-color: rgba(45, 212, 191, 0.18);
+  background: linear-gradient(135deg, rgba(13, 35, 30, 0.92) 0%, rgba(10, 28, 24, 0.92) 100%);
+  border-color: rgba(45, 212, 191, 0.22);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+body.dark-mode .sort-bar-row.is-fixed-under-search {
+  background: rgba(8, 22, 19, 0.95);
+  border-top-color: rgba(45, 212, 191, 0.12);
+  border-bottom-color: rgba(45, 212, 191, 0.22);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
 }
 
 body.dark-mode .sort-bar-label {
-  color: #cbd5e1;
+  color: #2dd4bf;
+}
+
+body.dark-mode .sort-bar-divider {
+  background: rgba(45, 212, 191, 0.24);
 }
 
 body.dark-mode .sort-pill-btn {
-  background: rgba(30, 41, 59, 0.9);
-  border-color: rgba(148, 163, 184, 0.25);
+  background: rgba(15, 38, 33, 0.95);
+  border-color: rgba(45, 212, 191, 0.20);
   color: #cbd5e1;
 }
 
 body.dark-mode .sort-pill-btn:hover {
   border-color: #2dd4bf;
   color: #5eead4;
+  background: rgba(20, 184, 166, 0.12);
 }
 
 body.dark-mode .sort-pill-btn.active {
-  background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, #14b8a6 0%, #2dd4bf 100%);
+  color: #041e19;
   border-color: transparent;
+  box-shadow: 0 3px 12px rgba(45, 212, 191, 0.28);
 }
 
 body.dark-mode .search-sort-select {
-  background-color: #132a33;
+  background-color: #0f241f;
   color: #5eead4;
   border-color: rgba(45, 212, 191, 0.28);
 }

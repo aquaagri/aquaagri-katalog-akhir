@@ -6,14 +6,10 @@
 <title>aquaagri.id — Solusi Terpadu Dunia Perikanan &amp; Bahari Nusantara</title>
 <meta name="description" content="aquaagri.id adalah platform dan ekosistem bahari terintegrasi: mitra resmi Shopee Indonesia untuk hasil laut segar, olahan ikan bergizi, perlengkapan pancing, dan sarana budidaya modern.">
 
-<!-- FAVICON & PROGRESSIVE WEB APP (PWA) -->
+<!-- FAVICON & WARNA TEMA BROWSER -->
 <link rel="icon" type="image/png" href="nama-brand.png">
 <link rel="apple-touch-icon" href="nama-brand.png">
-<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0d9488">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="aquaagri.id">
 
 <!-- OPEN GRAPH & SOSMED THUMBNAIL PREVIEW (WHATSAPP, FACEBOOK, TELEGRAM, X) -->
 <meta property="og:site_name" content="aquaagri.id">
@@ -45,14 +41,6 @@
         <span class="brand-aqua">aqua</span><span class="brand-agri">agri</span><span class="brand-dot">.id</span>
       </div>
       <div class="topbar-actions">
-        <button id="installPwaBtn" class="topbar-install-pill hidden" type="button" aria-label="Install Aplikasi aquaagri.id di HP" title="Install Aplikasi di Layar Utama">
-          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-          </svg>
-          <span>Aplikasi</span>
-        </button>
         <div class="topbar-shopee-pill" aria-label="Mitra Resmi Shopee">
           <svg class="shopee-bag-icon" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
             <path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12zm-7-8c-1.66 0-3-1.34-3-3H7c0 2.76 2.24 5 5 5s5-2.24 5-5h-2c0 1.66-1.34 3-3 3z"/>
@@ -538,28 +526,44 @@
           <option value="pancing-umpan">Pancing &amp; Umpan</option>
           <option value="Benih-Pakan-Budidaya">Benih, Pakan &amp; Budidaya</option>
         </select>
+      </section>
 
-        <!-- BARIS URUTKAN PRODUK (HARGA TERMURAH, TERMAHAL, DISKON TERBESAR, TERPOPULER) -->
+      <!-- BARIS URUTKAN HARGA PREMIUM (RAPAT DENGAN KATEGORI & TETAP DIAM SEJAJAR SEARCH SAAT DI-SCROLL) -->
+      <div id="categorySortStickyWrap" class="category-sort-sticky-wrap">
         <div class="sort-bar-row" id="categorySortBar" aria-label="Urutkan daftar produk">
-          <span class="sort-bar-label">
-            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="4" y1="6" x2="16" y2="6"/>
-              <line x1="4" y1="12" x2="12" y2="12"/>
-              <line x1="4" y1="18" x2="8" y2="18"/>
-              <polyline points="15 15 18 18 21 15"/>
-              <line x1="18" y1="9" x2="18" y2="18"/>
-            </svg>
-            Urutkan:
-          </span>
-          <div class="sort-pills-scroll">
-            <button type="button" class="sort-pill-btn active" data-sort="default">Semua</button>
-            <button type="button" class="sort-pill-btn" data-sort="price-asc">Harga Termurah</button>
-            <button type="button" class="sort-pill-btn" data-sort="price-desc">Harga Tertinggi</button>
-            <button type="button" class="sort-pill-btn" data-sort="discount-desc">Diskon Terbesar</button>
-            <button type="button" class="sort-pill-btn" data-sort="popular">Terpopuler</button>
+          <div class="sort-bar-inner">
+            <span class="sort-bar-label">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 15l5 5 5-5"/>
+                <path d="M7 9l5-5 5 5"/>
+              </svg>
+              <span>Urutkan</span>
+            </span>
+            <span class="sort-bar-divider" aria-hidden="true"></span>
+            <div class="sort-pills-scroll">
+              <button type="button" class="sort-pill-btn active" data-sort="default">
+                <span>Semua</span>
+              </button>
+              <button type="button" class="sort-pill-btn" data-sort="price-asc">
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+                <span>Termurah</span>
+              </button>
+              <button type="button" class="sort-pill-btn" data-sort="price-desc">
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+                <span>Termahal</span>
+              </button>
+              <button type="button" class="sort-pill-btn" data-sort="discount-desc">
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+                <span>Diskon Besar</span>
+              </button>
+              <button type="button" class="sort-pill-btn" data-sort="popular">
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span>Terpopuler</span>
+              </button>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
 
       <!-- GRID PRODUK DENGAN UKURAN LEBIH RINGKAS (TURUN 15%) -->
       <div class="product-grid" id="productGrid">
