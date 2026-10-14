@@ -48,6 +48,42 @@ export default {
       }
     }
 
+    // Proxy API OneSignal Notifications untuk pengiriman siaran anti-blokir
+    if (url.pathname === "/api/onesignal/notifications" && request.method === "POST") {
+      const authHeader = request.headers.get("Authorization") || "";
+      if (!authHeader) {
+        return new Response(JSON.stringify({ error: "Missing Authorization header" }), {
+          status: 400,
+          headers: { "content-type": "application/json" }
+        });
+      }
+      try {
+        const bodyText = await request.text();
+        const osRes = await fetch("https://api.onesignal.com/notifications", {
+          method: "POST",
+          headers: {
+            "Authorization": authHeader,
+            "Content-Type": "application/json"
+          },
+          body: bodyText
+        });
+        const osData = await osRes.text();
+        return new Response(osData, {
+          status: osRes.status,
+          headers: {
+            "content-type": "application/json",
+            "cache-control": "no-cache, no-store, must-revalidate",
+            "access-control-allow-origin": "*"
+          }
+        });
+      } catch (eSendProxy) {
+        return new Response(JSON.stringify({ error: eSendProxy.message }), {
+          status: 500,
+          headers: { "content-type": "application/json" }
+        });
+      }
+    }
+
     // Tangani route /share?produk=ID atau /produk/ID untuk Dynamic Open Graph Thumbnail WhatsApp & Sosmed
     let prodId = url.searchParams.get("produk") || url.searchParams.get("id");
     if (!prodId && url.pathname.startsWith("/produk/")) {

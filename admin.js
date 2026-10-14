@@ -3386,7 +3386,7 @@
           if (appId && restKey) {
             const payload = {
               app_id: appId,
-              included_segments: ["Subscribed Users"],
+              included_segments: ["Total Subscriptions", "Subscribed Users"],
               headings: { en: title },
               contents: { en: msg },
               url: targetUrl
@@ -3397,7 +3397,10 @@
             }
 
             const authHeader = restKey.startsWith("os_v2_app_") ? ("Key " + restKey) : ("Basic " + restKey);
-            const response = await fetch("https://api.onesignal.com/notifications", {
+            const isLiveDomain = window.location.hostname.includes("workers.dev") || window.location.hostname.includes("aquaagri.id");
+            const targetEndpoint = isLiveDomain ? "/api/onesignal/notifications" : "https://api.onesignal.com/notifications";
+
+            const response = await fetch(targetEndpoint, {
               method: "POST",
               headers: {
                 "Authorization": authHeader,
