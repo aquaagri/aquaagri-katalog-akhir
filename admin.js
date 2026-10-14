@@ -527,6 +527,7 @@
     renderCategoriesGrid();
     renderBannersGrid();
     renderPopupPromoTab();
+    renderCatalogBellStatus();
     renderShopeeTable();
   }
 
@@ -2206,9 +2207,80 @@
     }
   }
 
-  // ---------- 12C. SISTEM BROADCAST NOTIFIKASI HP (S3 MARKETING) ----------
+  // ---------- 12C. SISTEM BROADCAST NOTIFIKASI HP & SAKELAR LONCENG (S3 MARKETING) ----------
   const DEFAULT_ONESIGNAL_APP_ID = "55292386-5b6a-4b80-83b6-1a7f2541a975";
   const DEFAULT_ONESIGNAL_REST_KEY = "";
+
+  function renderCatalogBellStatus() {
+    const bellSwitch = document.getElementById("catalogBellSwitch");
+    const bellBadge = document.getElementById("catalogBellStatusBadge");
+    if (!bellSwitch) return;
+
+    const bellRow = state.banners.find(function (b) { return b.tipe === "catalog_bell"; });
+    let isBellActive = true;
+    if (bellRow) {
+      isBellActive = bellRow.aktif !== false;
+    } else {
+      isBellActive = localStorage.getItem("aquaagri_catalog_bell_disabled") !== "true";
+    }
+
+    bellSwitch.checked = isBellActive;
+    if (bellBadge) {
+      if (isBellActive) {
+        bellBadge.textContent = "Aktif di Katalog";
+        bellBadge.style.background = "#dcfce7";
+        bellBadge.style.color = "#15803d";
+      } else {
+        bellBadge.textContent = "Dinonaktifkan";
+        bellBadge.style.background = "#fee2e2";
+        bellBadge.style.color = "#b91c1c";
+      }
+    }
+  }
+
+  async function fetchOneSignalSubscriberCount() {
+    const badge = document.getElementById("pushSubscriberCountBadge");
+    if (!badge) return;
+
+    const appId = (localStorage.getItem("aquaagri_onesignal_app_id") || DEFAULT_ONESIGNAL_APP_ID).trim();
+    const restKey = (localStorage.getItem("aquaagri_onesignal_rest_key") || DEFAULT_ONESIGNAL_REST_KEY).trim();
+
+    if (!appId || !restKey) {
+      badge.innerHTML = '<span class="status-dot" style="background:#f59e0b;"></span> 👥 Perlu REST Key';
+      badge.style.background = '#fef3c7';
+      badge.style.color = '#b45309';
+      return;
+    }
+
+    try {
+      const authHeader = restKey.startsWith("os_v2_app_") ? ("Key " + restKey) : ("Basic " + restKey);
+      const res = await fetch("https://api.onesignal.com/apps/" + encodeURIComponent(appId), {
+        headers: {
+          "Authorization": authHeader
+        }
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const players = typeof data.players === "number" ? data.players : (data.messageable_players || 0);
+        if (players > 0) {
+          badge.innerHTML = '<span class="status-dot" style="background:#10b981;"></span> 👥 ' + players + ' HP Terdaftar';
+          badge.style.background = '#dcfce7';
+          badge.style.color = '#15803d';
+        } else {
+          badge.innerHTML = '<span class="status-dot" style="background:#f59e0b;"></span> 👥 0 HP Terdaftar';
+          badge.style.background = '#fef3c7';
+          badge.style.color = '#b45309';
+        }
+      } else {
+        badge.innerHTML = '<span class="status-dot" style="background:#ef4444;"></span> 👥 Kunci Belum Valid';
+        badge.style.background = '#fee2e2';
+        badge.style.color = '#b91c1c';
+      }
+    } catch (err) {
+      badge.innerHTML = '<span class="status-dot" style="background:#94a3b8;"></span> 👥 Status Push Offline';
+    }
+  }
 
   function initPushNotifAdmin() {
     const savedAppId = localStorage.getItem("aquaagri_onesignal_app_id") || DEFAULT_ONESIGNAL_APP_ID;
@@ -2220,6 +2292,8 @@
     if (restKeyInput) restKeyInput.value = savedRestKey;
 
     updatePushStatusBadge(Boolean(savedAppId && savedRestKey));
+    fetchOneSignalSubscriberCount();
+    renderCatalogBellStatus();
     renderPushHistoryTable();
   }
 
@@ -2921,6 +2995,69 @@
       });
     });
 
+    // Sakelar Master Lonceng Katalog Pengunjung (ON/OFF)
+    const bellSwitch = document.getElementById("catalogBellSwitch");
+    if (bellSwitch) {
+      bellSwitch.addEventListener("change", async function () {
+        const isChecked = bellSwitch.checked;
+        const bellBadge = document.getElementById("catalogBellStatusBadge");
+        if (bellBadge) {
+          if (isChecked) {
+            bellBadge.textContent = "Aktif di Katalog";
+            bellBadge.style.background = "#dcfce7";
+            bellBadge.style.color = "#15803d";
+          } else {
+            bellBadge.textContent = "Dinonaktifkan";
+            bellBadge.style.background = "#fee2e2";
+            bellBadge.style.color = "#b91c1c";
+          }
+        }
+        localStorage.setItem("aquaagri_catalog_bell_disabled", isChecked ? "false" : "true");
+
+        const sb = window.getAquaAgriSupabaseClient();
+        if (!sb) {
+          showToast(isChecked ? "Fitur lonceng katalog diaktifkan!" : "Fitur lonceng katalog dinonaktifkan!");
+          return;
+        }
+
+        try {
+          let bellRow = state.banners.find(function (b) { return b.tipe === "catalog_bell"; });
+          const payload = {
+            tipe: "catalog_bell",
+            judul: "Fitur Lonceng Notifikasi Katalog",
+            subjudul: "Kontrol sakelar master lonceng pengunjung",
+            aktif: isChecked,
+            gambar: "",
+            urutan: 99,
+            updated_at: new Date().toISOString()
+          };
+
+          if (bellRow) {
+            const { error } = await sb.from("banners").update({ aktif: isChecked, updated_at: payload.updated_at }).eq("id", bellRow.id);
+            if (error) throw error;
+            bellRow.aktif = isChecked;
+          } else {
+            const { data, error } = await sb.from("banners").insert([payload]).select();
+            if (error) throw error;
+            if (data && data[0]) state.banners.push(data[0]);
+          }
+
+          showToast(isChecked ? "🔔 Fitur Lonceng di website pengunjung berhasil DIAKTIFKAN!" : "🔕 Fitur Lonceng di website pengunjung berhasil DINONAKTIFKAN!");
+        } catch (err) {
+          showToast("Gagal menyimpan ke Supabase: " + (err.message || err));
+        }
+      });
+    }
+
+    // Tombol Refresh Status Subscriber OneSignal
+    const refreshSubscribersBtn = document.getElementById("refreshPushSubscribersBtn");
+    if (refreshSubscribersBtn) {
+      refreshSubscribersBtn.addEventListener("click", async function () {
+        showToast("Memeriksa status subscriber OneSignal...");
+        await fetchOneSignalSubscriberCount();
+      });
+    }
+
     // Toggle OneSignal Credentials Card
     const togglePushConfigBtn = document.getElementById("togglePushConfigBtn");
     const pushConfigBody = document.getElementById("pushConfigBody");
@@ -2952,12 +3089,13 @@
     // Save OneSignal Keys
     const savePushConfigBtn = document.getElementById("savePushConfigBtn");
     if (savePushConfigBtn) {
-      savePushConfigBtn.addEventListener("click", function () {
+      savePushConfigBtn.addEventListener("click", async function () {
         const appId = document.getElementById("oneSignalAppId").value.trim();
         const restKey = restKeyInput ? restKeyInput.value.trim() : "";
         localStorage.setItem("aquaagri_onesignal_app_id", appId);
         localStorage.setItem("aquaagri_onesignal_rest_key", restKey);
-        updatePushStatusBadge(appId && restKey);
+        updatePushStatusBadge(Boolean(appId && restKey));
+        await fetchOneSignalSubscriberCount();
         showToast("Kunci API OneSignal berhasil disimpan!");
       });
     }
@@ -3044,6 +3182,8 @@
           }
 
           let wasLiveSent = false;
+          let recipientsCount = 0;
+          let warningNote = "";
 
           if (appId && restKey) {
             const payload = {
@@ -3068,8 +3208,20 @@
               body: JSON.stringify(payload)
             });
 
-            if (response.ok) {
+            const resData = await response.json().catch(function () { return {}; });
+
+            if (response.ok && resData.id) {
               wasLiveSent = true;
+              recipientsCount = typeof resData.recipients === "number" ? resData.recipients : 0;
+            } else if (resData.errors) {
+              const errStr = Array.isArray(resData.errors) ? resData.errors.join(", ") : JSON.stringify(resData.errors);
+              if (errStr.includes("All included players are not subscribed")) {
+                warningNote = "Belum ada HP pelanggan yang terdaftar (Subscribers: 0). Pengunjung perlu membuka website katalog dari HP dan mengklik 'Aktifkan Diskon VIP' pada lonceng promo terlebih dahulu.";
+              } else {
+                warningNote = "OneSignal menolak siaran: " + errStr;
+              }
+            } else {
+              warningNote = "Gagal terkirim ke OneSignal (Status HTTP: " + response.status + ").";
             }
           }
 
@@ -3081,15 +3233,24 @@
             title: title,
             body: msg,
             url: targetUrl,
-            status: wasLiveSent ? "Live Terkirim" : "Tersiar (Simulasi)"
+            status: wasLiveSent ? ("Live (" + recipientsCount + " HP)") : (warningNote ? "0 Pelanggan" : "Tersiar (Simulasi)")
           });
           if (history.length > 20) history = history.slice(0, 20);
           localStorage.setItem("aquaagri_push_history", JSON.stringify(history));
 
           renderPushHistoryTable();
+          fetchOneSignalSubscriberCount();
 
-          showToast("🚀 Siaran Notifikasi S3 Marketing berhasil diluncurkan ke pelanggan!");
-          showBoxAlert("pushFormAlert", "Siaran berhasil diluncurkan! Notifikasi dikirimkan ke seluruh perangkat pelanggan.", "success");
+          if (wasLiveSent) {
+            showToast("🚀 Siaran berhasil dikirimkan ke " + recipientsCount + " HP pelanggan!");
+            showBoxAlert("pushFormAlert", "🎉 Siaran berhasil terkirim live! Notifikasi langsung dikirim ke " + recipientsCount + " HP pelanggan.", "success");
+          } else if (warningNote) {
+            showToast("⚠️ Siaran dicatat, namun: " + (warningNote.length > 40 ? warningNote.slice(0, 40) + "..." : warningNote));
+            showBoxAlert("pushFormAlert", "⚠️ " + warningNote, "warning");
+          } else {
+            showToast("🚀 Siaran simulasi berhasil diluncurkan!");
+            showBoxAlert("pushFormAlert", "Siaran berhasil disimpan di riwayat lokal. Hubungkan Kunci REST API OneSignal untuk mengirim langsung ke HP pelanggan.", "success");
+          }
         } catch (err) {
           showBoxAlert("pushFormAlert", "Terjadi kendala siaran: " + (err.message || err));
         } finally {

@@ -1734,15 +1734,263 @@ textarea:focus {
   margin-top: 18px;
 }
 
+/* ============================================================================
+   15. MASTER SWITCH FITUR LONCENG KATALOG
+   ============================================================================ */
+.bell-master-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: linear-gradient(135deg, #f0fdfa, #f8fafc);
+  border: 1.5px solid #ccfbf1;
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(15, 118, 110, 0.05);
+  transition: all 0.2s ease;
+}
+.bell-master-card:hover {
+  border-color: #99f6e4;
+  box-shadow: 0 4px 14px rgba(15, 118, 110, 0.09);
+}
+.bell-master-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+.bell-master-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0f766e, #0284c7);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(15, 118, 110, 0.25);
+}
+.bell-master-desc {
+  margin: 3px 0 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+.bell-master-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Sakelar Slider Bergaya iOS */
+.switch-toggle {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  flex-shrink: 0;
+}
+.switch-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cbd5e1;
+  transition: 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 999px;
+}
+.switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #ffffff;
+  transition: 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.22);
+}
+input:checked + .switch-slider {
+  background: linear-gradient(135deg, #0f766e, #0284c7);
+}
+input:checked + .switch-slider:before {
+  transform: translateX(22px);
+}
+
+/* ============================================================================
+   16. OVERHAUL RESPONSIVITAS MOBILE HP (SUPER COMPACT & HEMAT RUANG)
+   ============================================================================ */
 @media (max-width: 900px) {
-  .s3-template-grid {
-    grid-template-columns: 1fr;
-  }
   .push-composer-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
+}
+
+@media (max-width: 768px) {
+  /* Topbar Super Ringkas di Layar HP */
+  .admin-topbar {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  .topbar-title {
+    font-size: 1.02rem;
+  }
+  .topbar-subtitle {
+    display: none !important;
+  }
+  .btn-hide-mobile {
+    display: none !important;
+  }
+  .btn-label-desktop {
+    display: none !important;
+  }
+  .topbar-right {
+    gap: 6px;
+  }
+  .topbar-right .btn-sm {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  /* Konten & Kartu Panel Hemat Ruang */
+  .admin-content {
+    padding: 12px 10px;
+  }
+  .panel-card {
+    padding: 14px 12px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+  }
+  .panel-header-with-btn {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .panel-header-with-btn h3 {
+    font-size: 1.08rem;
+  }
+  .panel-header-with-btn p {
+    font-size: 0.78rem;
+  }
+
+  /* Sakelar Lonceng di HP */
+  .bell-master-card {
+    padding: 12px;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .bell-master-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+  .bell-master-desc {
+    font-size: 0.74rem;
+  }
+
+  /* Template Formula S3 Jadi Carousel Geser Horisontal (Hemat 400px Ruang Layar!) */
+  .s3-template-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 10px;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .s3-card-btn {
+    min-width: 240px;
+    max-width: 250px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    padding: 10px 12px;
+  }
+  .s3-card-header h5 {
+    font-size: 0.84rem;
+  }
+  .s3-preview-snippet {
+    font-size: 0.72rem;
+    max-height: 40px;
+    overflow: hidden;
+  }
+
+  /* Kotak Pengaturan OneSignal di HP */
+  .push-config-card {
+    padding: 12px;
+  }
+  .push-config-header {
+    font-size: 0.82rem;
+  }
+
+  /* Pratinjau Layar HP Real-Time */
   .phone-preview-card {
-    max-width: 340px;
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 10px auto 0;
+    border-radius: 20px;
+    padding: 12px;
+  }
+  .phone-screen-body {
+    min-height: auto;
+    padding: 10px;
+  }
+  .phone-notif-box {
+    padding: 10px;
+  }
+  .phone-notif-title {
+    font-size: 0.84rem;
+  }
+  .phone-notif-body {
+    font-size: 0.78rem;
+  }
+
+  /* Stats Grid Compact 2 Kolom di HP */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px;
+  }
+  .stat-card {
+    padding: 12px 10px;
+  }
+  .stat-card-val {
+    font-size: 1.3rem;
+  }
+
+  /* Tabel Responsif Ringkas */
+  .admin-table th,
+  .admin-table td {
+    padding: 8px 10px;
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-content {
+    padding: 8px 6px;
+  }
+  .panel-card {
+    padding: 12px 8px;
+  }
+  .form-group {
+    margin-bottom: 12px;
+  }
+  input, select, textarea {
+    padding: 8px 10px;
+    font-size: 0.84rem;
+  }
+  .btn-lg {
+    padding: 11px 14px;
+    font-size: 0.88rem;
   }
 }

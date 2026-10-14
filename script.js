@@ -4199,6 +4199,22 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!banRes.error && Array.isArray(banRes.data) && banRes.data.length > 0) {
         renderDynamicHeroBanners(banRes.data);
         initPromoPopupFromBanners(banRes.data);
+
+        // Sinkronisasi status sakelar Lonceng Diskon dari database Supabase
+        const bellConfig = banRes.data.find(function (b) { return b.tipe === "catalog_bell"; });
+        if (bellConfig) {
+          const isBellDisabled = bellConfig.aktif === false;
+          localStorage.setItem("aquaagri_catalog_bell_disabled", isBellDisabled ? "true" : "false");
+          const promptBanner = document.getElementById("notifPushPrompt");
+          const floatingBell = document.getElementById("notifFloatingBell");
+          if (isBellDisabled) {
+            if (promptBanner) promptBanner.classList.add("hidden");
+            if (floatingBell) floatingBell.classList.add("hidden");
+          } else {
+            const notifStatus = localStorage.getItem("aquaagri_notif_status");
+            if (floatingBell && notifStatus) floatingBell.classList.remove("hidden");
+          }
+        }
       }
 
       updateAboutStats();
@@ -4208,11 +4224,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Bersihkan Service Worker lama agar tidak memunculkan peringatan keamanan APK di HP
+  // Bersihkan hanya Service Worker lama dan JANGAN hapus Service Worker resmi OneSignal
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.getRegistrations().then(function (registrations) {
       registrations.forEach(function (reg) {
-        reg.unregister();
+        const swUrl = (reg.active && reg.active.scriptURL) || "";
+        if (!swUrl.includes("OneSignal") && !swUrl.includes("onesignal")) {
+          reg.unregister();
+        }
       });
     }).catch(function () {});
   }
@@ -4286,9 +4305,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!promptBanner || !subscribeBtn) return;
 
+    function isBellDisabled() {
+      return localStorage.getItem("aquaagri_catalog_bell_disabled") === "true";
+    }
+
+    if (isBellDisabled()) {
+      promptBanner.classList.add("hidden");
+      if (floatingBell) floatingBell.classList.add("hidden");
+      return;
+    }
+
     const notifStatus = localStorage.getItem("aquaagri_notif_status");
 
     function showFloatingBell() {
+      if (isBellDisabled()) return;
       if (floatingBell) floatingBell.classList.remove("hidden");
     }
 
@@ -4297,6 +4327,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function showPrompt() {
+      if (isBellDisabled()) return;
       hideFloatingBell();
       promptBanner.classList.remove("hidden");
     }
@@ -4309,6 +4340,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Munculkan prompt otomatis setelah 3.5 detik jika belum pernah berinteraksi
     if (!notifStatus) {
       setTimeout(function () {
+        if (isBellDisabled()) return;
         const promoPopup = document.getElementById("promoPopupOverlay");
         const prodModal = document.getElementById("productDetailModal");
         const isPromoOpen = promoPopup && !promoPopup.classList.contains("hidden");

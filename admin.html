@@ -221,13 +221,13 @@
         </div>
         <div class="topbar-right">
           <button type="button" id="refreshDataBtn" class="btn-secondary btn-sm" title="Muat ulang data dari database">
-            &#8635; Segarkan Data
+            <span>&#8635;</span> <span class="btn-label-desktop">Segarkan</span>
           </button>
-          <button type="button" id="topbarChangePasswordBtn" class="btn-secondary btn-sm" title="Ganti password admin">
-            &#128274; Ganti Password
+          <button type="button" id="topbarChangePasswordBtn" class="btn-secondary btn-sm btn-hide-mobile" title="Ganti password admin">
+            <span>&#128274;</span> <span class="btn-label-desktop">Ganti Password</span>
           </button>
           <button type="button" id="quickAddProductBtn" class="btn-primary btn-sm">
-            + Tambah Produk
+            <span>+</span> <span class="btn-label-desktop">Tambah Produk</span>
           </button>
         </div>
       </header>
@@ -708,6 +708,37 @@
                 <span id="pushConnectionStatus" class="push-status-pill ready">
                   <span class="status-dot"></span> Mode Siap Siar
                 </span>
+                <span id="pushSubscriberCountBadge" class="push-status-pill" style="background:#e0f2fe; color:#0369a1;">
+                  <span class="status-dot" style="background:#0284c7;"></span> 👥 Memeriksa Pelanggan...
+                </span>
+                <button type="button" id="refreshPushSubscribersBtn" class="btn-secondary btn-sm" title="Periksa jumlah HP terdaftar saat ini" style="padding: 4px 10px; font-size: 0.76rem; border-radius: 999px;">
+                  &#8635; Cek Pelanggan
+                </button>
+              </div>
+            </div>
+
+            <!-- SAKELAR MASTER: AKTIFKAN / NONAKTIFKAN FITUR LONCENG DI KATALOG -->
+            <div class="bell-master-card">
+              <div class="bell-master-left">
+                <div class="bell-master-icon">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                  </svg>
+                </div>
+                <div>
+                  <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                    <strong style="color:var(--navy-dark); font-size:0.95rem;">Lonceng &amp; Penawaran Diskon VIP Pengunjung</strong>
+                    <span id="catalogBellStatusBadge" class="badge-active" style="background:#dcfce7; color:#15803d; font-size:0.75rem;">Aktif di Katalog</span>
+                  </div>
+                  <p class="bell-master-desc">Jika dinonaktifkan, ikon lonceng melayang dan banner penawaran diskon VIP akan disembunyikan sepenuhnya dari website pengunjung.</p>
+                </div>
+              </div>
+              <div class="bell-master-right">
+                <label class="switch-toggle" for="catalogBellSwitch" title="Nyalakan / Matikan Lonceng di Katalog">
+                  <input type="checkbox" id="catalogBellSwitch" checked>
+                  <span class="switch-slider"></span>
+                </label>
               </div>
             </div>
 
@@ -724,9 +755,14 @@
                 <button type="button" class="btn-text-sm" id="togglePushConfigText">Lihat / Ubah Kunci &darr;</button>
               </div>
               <div id="pushConfigBody" class="push-config-body hidden">
-                <p class="form-hint" style="margin-bottom: 12px;">
-                  Gunakan akun gratis di <code>onesignal.com</code>. Ambil <strong>App ID</strong> dan <strong>REST API Key</strong> pada menu <em>Settings &rarr; Keys &amp; IDs</em>. Jika belum ada, sistem akan mensimulasikan broadcast secara lokal.
-                </p>
+                <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; font-size: 0.8rem; color: #166534; line-height: 1.5;">
+                  <strong style="display:block; margin-bottom:4px; font-size:0.84rem;">💡 3 Langkah Mudah Agar Notifikasi Terkirim ke HP Lain:</strong>
+                  <ol style="margin: 0 0 0 18px; padding: 0;">
+                    <li><strong>REST API Key:</strong> Masukkan kunci rahasia yang berawalan <code>os_v2_app_...</code> (bukan nama label kuncinya).</li>
+                    <li><strong>Aktifkan Web Push di onesignal.com:</strong> Buka <em>Settings &rarr; Platforms &rarr; Web</em>, pilih <em>Typical Site</em>, masukkan URL <code>https://aquaagri-katalog-akhir.aquaagri-id.workers.dev</code>, lalu Simpan.</li>
+                    <li><strong>Daftarkan HP:</strong> Buka website katalog dari HP lain dan ketuk tombol <strong>Aktifkan Diskon VIP</strong> pada ikon lonceng agar nomor perangkat HP tersebut terdaftar (<em>Subscribers &gt; 0</em>).</li>
+                  </ol>
+                </div>
                 <div class="form-row-2">
                   <div class="form-group">
                     <label for="oneSignalAppId">OneSignal App ID</label>
