@@ -2386,7 +2386,14 @@
 
     try {
       const authHeader = restKey.startsWith("os_v2_app_") ? ("Key " + restKey) : ("Basic " + restKey);
-      const res = await fetch("https://api.onesignal.com/apps/" + encodeURIComponent(appId), {
+      
+      // Gunakan proxy worker jika di domain live untuk mencegah pemblokiran CORS browser pada API apps OneSignal
+      const isLiveDomain = window.location.hostname.includes("workers.dev") || window.location.hostname.includes("aquaagri.id");
+      const targetUrl = isLiveDomain
+        ? ("/api/onesignal/apps/" + encodeURIComponent(appId))
+        : ("https://api.onesignal.com/apps/" + encodeURIComponent(appId));
+
+      const res = await fetch(targetUrl, {
         headers: {
           "Authorization": authHeader
         }

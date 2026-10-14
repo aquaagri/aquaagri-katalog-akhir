@@ -14,6 +14,40 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    // Proxy API OneSignal Apps untuk memeriksa subscriber tanpa hambatan CORS browser
+    if (url.pathname.startsWith("/api/onesignal/apps/")) {
+      const appId = url.pathname.replace("/api/onesignal/apps/", "").split("/")[0].split("?")[0];
+      const authHeader = request.headers.get("Authorization") || "";
+      if (!appId || !authHeader) {
+        return new Response(JSON.stringify({ error: "Missing appId or Authorization" }), {
+          status: 400,
+          headers: { "content-type": "application/json" }
+        });
+      }
+      try {
+        const osRes = await fetch(`https://api.onesignal.com/apps/${encodeURIComponent(appId)}`, {
+          headers: {
+            "Authorization": authHeader,
+            "Accept": "application/json"
+          }
+        });
+        const osData = await osRes.text();
+        return new Response(osData, {
+          status: osRes.status,
+          headers: {
+            "content-type": "application/json",
+            "cache-control": "no-cache, no-store, must-revalidate",
+            "access-control-allow-origin": "*"
+          }
+        });
+      } catch (eProxy) {
+        return new Response(JSON.stringify({ error: eProxy.message }), {
+          status: 500,
+          headers: { "content-type": "application/json" }
+        });
+      }
+    }
+
     // Tangani route /share?produk=ID atau /produk/ID untuk Dynamic Open Graph Thumbnail WhatsApp & Sosmed
     let prodId = url.searchParams.get("produk") || url.searchParams.get("id");
     if (!prodId && url.pathname.startsWith("/produk/")) {
