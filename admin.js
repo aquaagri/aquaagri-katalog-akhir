@@ -2207,16 +2207,19 @@
   }
 
   // ---------- 12C. SISTEM BROADCAST NOTIFIKASI HP (S3 MARKETING) ----------
+  const DEFAULT_ONESIGNAL_APP_ID = "55292386-5b6a-4b80-83b6-1a7f2541a975";
+  const DEFAULT_ONESIGNAL_REST_KEY = "";
+
   function initPushNotifAdmin() {
-    const savedAppId = localStorage.getItem("aquaagri_onesignal_app_id") || "";
-    const savedRestKey = localStorage.getItem("aquaagri_onesignal_rest_key") || "";
+    const savedAppId = localStorage.getItem("aquaagri_onesignal_app_id") || DEFAULT_ONESIGNAL_APP_ID;
+    const savedRestKey = localStorage.getItem("aquaagri_onesignal_rest_key") || DEFAULT_ONESIGNAL_REST_KEY;
     const appIdInput = document.getElementById("oneSignalAppId");
     const restKeyInput = document.getElementById("oneSignalRestKey");
 
     if (appIdInput) appIdInput.value = savedAppId;
     if (restKeyInput) restKeyInput.value = savedRestKey;
 
-    updatePushStatusBadge(savedAppId && savedRestKey);
+    updatePushStatusBadge(Boolean(savedAppId && savedRestKey));
     renderPushHistoryTable();
   }
 
@@ -3031,8 +3034,8 @@
           return;
         }
 
-        const appId = localStorage.getItem("aquaagri_onesignal_app_id") || "";
-        const restKey = localStorage.getItem("aquaagri_onesignal_rest_key") || "";
+        const appId = (localStorage.getItem("aquaagri_onesignal_app_id") || DEFAULT_ONESIGNAL_APP_ID).trim();
+        const restKey = (localStorage.getItem("aquaagri_onesignal_rest_key") || DEFAULT_ONESIGNAL_REST_KEY).trim();
 
         try {
           if (sendBtn) {
@@ -3055,10 +3058,11 @@
               payload.big_picture = imgUrl;
             }
 
-            const response = await fetch("https://onesignal.com/api/v1/notifications", {
+            const authHeader = restKey.startsWith("os_v2_app_") ? ("Key " + restKey) : ("Basic " + restKey);
+            const response = await fetch("https://api.onesignal.com/notifications", {
               method: "POST",
               headers: {
-                "Authorization": "Basic " + restKey,
+                "Authorization": authHeader,
                 "Content-Type": "application/json"
               },
               body: JSON.stringify(payload)

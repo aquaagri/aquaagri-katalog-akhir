@@ -4327,18 +4327,23 @@ document.addEventListener("DOMContentLoaded", function () {
     subscribeBtn.addEventListener("click", async function () {
       hidePrompt();
 
-      if ("Notification" in window) {
+      // Daftarkan pelanggan ke OneSignal secara otomatis
+      if (window.OneSignalDeferred) {
+        window.OneSignalDeferred.push(async function(OneSignal) {
+          try {
+            await OneSignal.Notifications.requestPermission();
+            localStorage.setItem("aquaagri_notif_status", "granted");
+            showNotifToast("🎉 Selamat! Akses VIP Promo & Voucher Shopee aktif di HP Anda.");
+          } catch (eOneSignal) {
+            console.log("OneSignal push permission:", eOneSignal);
+          }
+        });
+      } else if ("Notification" in window) {
         try {
           const permission = await Notification.requestPermission();
           if (permission === "granted") {
             localStorage.setItem("aquaagri_notif_status", "granted");
             showNotifToast("🎉 Selamat! Akses VIP Promo & Voucher Shopee aktif di HP Anda.");
-            try {
-              new Notification("🔥 VIP Promo AquaAgri Aktif!", {
-                body: "Anda akan menerima info diskon pakan & voucher Shopee eksklusif pertama kali.",
-                icon: "nama-brand-original.png"
-              });
-            } catch (e) {}
           } else {
             localStorage.setItem("aquaagri_notif_status", "denied");
             showNotifToast("Notifikasi dinonaktifkan. Anda bisa mengaktifkannya kapan saja lewat tombol Diskon VIP.");

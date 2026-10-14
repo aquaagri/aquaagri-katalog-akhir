@@ -1,4 +1,4 @@
-// AquaAgri Cloudflare Worker - v1.0.6 (Add local push notification test button & broadcast simulator)
+// AquaAgri Cloudflare Worker - v1.0.7 (Full OneSignal Web Push Integration & Live Broadcast)
 const SUPABASE_URL = "https://uqihzgskwxdurcwjpvbc.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_XOjGorIRGBqztcldte1AzQ_GwOyFKXQ";
 

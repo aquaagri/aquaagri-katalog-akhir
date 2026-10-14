@@ -1212,6 +1212,18 @@
     <span class="back-to-top-text">Atas</span>
   </button>
 
+  <!-- ONESIGNAL WEB PUSH SDK RESMI -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "55292386-5b6a-4b80-83b6-1a7f2541a975",
+        allowLocalhostAsSecureOrigin: true
+      });
+    });
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
   <script src="script.js" defer></script>
