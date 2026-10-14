@@ -528,7 +528,9 @@
     renderBannersGrid();
     renderPopupPromoTab();
     renderCatalogBellStatus();
+    syncOneSignalConfigFromDatabase(state.banners);
     renderShopeeTable();
+    setupAdminRealtimeSync();
   }
 
   // ---------- 6. RENDER TAB 1: RINGKASAN (OVERVIEW) ----------
@@ -2220,6 +2222,7 @@
     let isBellActive = true;
     if (bellRow) {
       isBellActive = bellRow.aktif !== false;
+      localStorage.setItem("aquaagri_catalog_bell_disabled", isBellActive ? "false" : "true");
     } else {
       isBellActive = localStorage.getItem("aquaagri_catalog_bell_disabled") !== "true";
     }
@@ -2236,6 +2239,90 @@
         bellBadge.style.color = "#b91c1c";
       }
     }
+  }
+
+  function syncOneSignalConfigFromDatabase(bannersList) {
+    const list = bannersList || state.banners || [];
+    const osConfig = list.find(function (b) { return b.tipe === "onesignal_config"; });
+    const appIdInput = document.getElementById("oneSignalAppId");
+    const restKeyInput = document.getElementById("oneSignalRestKey");
+
+    if (osConfig) {
+      const appId = (osConfig.judul || "").trim();
+      const restKey = (osConfig.subjudul || "").trim();
+      if (appId) {
+        localStorage.setItem("aquaagri_onesignal_app_id", appId);
+        if (appIdInput) appIdInput.value = appId;
+      }
+      if (restKey) {
+        localStorage.setItem("aquaagri_onesignal_rest_key", restKey);
+        if (restKeyInput) restKeyInput.value = restKey;
+      }
+      if (osConfig.link_tujuan) {
+        try {
+          const dbHistory = JSON.parse(osConfig.link_tujuan);
+          if (Array.isArray(dbHistory) && dbHistory.length > 0) {
+            localStorage.setItem("aquaagri_push_history", JSON.stringify(dbHistory));
+            renderPushHistoryTable();
+          }
+        } catch (e) {}
+      }
+      updatePushStatusBadge(Boolean(appId && restKey));
+      fetchOneSignalSubscriberCount();
+    } else {
+      // Auto-migrasikan jika browser ini (misal HP) sudah punya kunci lokal
+      const localAppId = (localStorage.getItem("aquaagri_onesignal_app_id") || DEFAULT_ONESIGNAL_APP_ID).trim();
+      const localRestKey = (localStorage.getItem("aquaagri_onesignal_rest_key") || "").trim();
+      if (localRestKey) {
+        const sb = window.getAquaAgriSupabaseClient();
+        if (sb) {
+          const payload = {
+            tipe: "onesignal_config",
+            judul: localAppId,
+            subjudul: localRestKey,
+            gambar: "",
+            link_tujuan: localStorage.getItem("aquaagri_push_history") || "[]",
+            urutan: 98,
+            aktif: true,
+            updated_at: new Date().toISOString()
+          };
+          sb.from("banners").insert([payload]).select().then(function (res) {
+            if (res.data && res.data[0]) {
+              state.banners.push(res.data[0]);
+            }
+          }).catch(function () {});
+        }
+      }
+    }
+  }
+
+  function setupAdminRealtimeSync() {
+    const sb = window.getAquaAgriSupabaseClient();
+    if (!sb || window.__aquaAgriAdminRealtimeSet) return;
+    window.__aquaAgriAdminRealtimeSet = true;
+
+    try {
+      sb.channel("admin-banners-realtime")
+        .on("postgres_changes", { event: "*", schema: "public", table: "banners" }, function (payload) {
+          const row = payload.new;
+          if (!row) return;
+          const idx = state.banners.findIndex(function (b) { return b.id === row.id; });
+          if (idx >= 0) {
+            state.banners[idx] = row;
+          } else {
+            state.banners.push(row);
+          }
+
+          if (row.tipe === "catalog_bell") {
+            renderCatalogBellStatus();
+            showToast("Sinkronisasi: Status lonceng katalog diperbarui (" + (row.aktif !== false ? "Aktif" : "Nonaktif") + ")");
+          } else if (row.tipe === "onesignal_config") {
+            syncOneSignalConfigFromDatabase(state.banners);
+            showToast("Sinkronisasi: Kunci OneSignal diperbarui dari perangkat lain!");
+          }
+        })
+        .subscribe();
+    } catch (e) {}
   }
 
   async function fetchOneSignalSubscriberCount() {
@@ -3095,8 +3182,36 @@
         localStorage.setItem("aquaagri_onesignal_app_id", appId);
         localStorage.setItem("aquaagri_onesignal_rest_key", restKey);
         updatePushStatusBadge(Boolean(appId && restKey));
+
+        const sb = window.getAquaAgriSupabaseClient();
+        if (sb) {
+          let osRow = state.banners.find(function (b) { return b.tipe === "onesignal_config"; });
+          const payload = {
+            tipe: "onesignal_config",
+            judul: appId,
+            subjudul: restKey,
+            gambar: "",
+            link_tujuan: localStorage.getItem("aquaagri_push_history") || "[]",
+            urutan: 98,
+            aktif: true,
+            updated_at: new Date().toISOString()
+          };
+          try {
+            if (osRow) {
+              const { error } = await sb.from("banners").update(payload).eq("id", osRow.id);
+              if (!error) {
+                osRow.judul = appId;
+                osRow.subjudul = restKey;
+              }
+            } else {
+              const { data, error } = await sb.from("banners").insert([payload]).select();
+              if (!error && data && data[0]) state.banners.push(data[0]);
+            }
+          } catch (eDb) {}
+        }
+
         await fetchOneSignalSubscriberCount();
-        showToast("Kunci API OneSignal berhasil disimpan!");
+        showToast("Kunci API OneSignal berhasil disimpan & disinkronkan ke seluruh perangkat!");
       });
     }
 
@@ -3237,6 +3352,15 @@
           });
           if (history.length > 20) history = history.slice(0, 20);
           localStorage.setItem("aquaagri_push_history", JSON.stringify(history));
+
+          // Sinkronkan riwayat siaran ke Supabase agar laptop & HP selalu melihat data yang sama
+          const sb = window.getAquaAgriSupabaseClient();
+          if (sb) {
+            let osRow = state.banners.find(function (b) { return b.tipe === "onesignal_config"; });
+            if (osRow) {
+              sb.from("banners").update({ link_tujuan: JSON.stringify(history), updated_at: new Date().toISOString() }).eq("id", osRow.id).then(function () {}).catch(function () {});
+            }
+          }
 
           renderPushHistoryTable();
           fetchOneSignalSubscriberCount();

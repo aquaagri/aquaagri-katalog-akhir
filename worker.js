@@ -1,4 +1,4 @@
-// AquaAgri Cloudflare Worker - v1.0.8 (Mobile Responsive Admin Dashboard & Catalog Bell Master Switch)
+// AquaAgri Cloudflare Worker - v1.0.9 (Realtime Cross-Device Sync for Admin Dashboard & Catalog Bell)
 const SUPABASE_URL = "https://uqihzgskwxdurcwjpvbc.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_XOjGorIRGBqztcldte1AzQ_GwOyFKXQ";
 
