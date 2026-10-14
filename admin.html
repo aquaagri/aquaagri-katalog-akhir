@@ -734,8 +734,11 @@
                   <p class="bell-master-desc">Jika dinonaktifkan, ikon lonceng melayang dan banner penawaran diskon VIP akan disembunyikan sepenuhnya dari website pengunjung.</p>
                 </div>
               </div>
-              <div class="bell-master-right">
-                <label class="switch-toggle" for="catalogBellSwitch" title="Nyalakan / Matikan Lonceng di Katalog">
+              <div class="bell-master-right" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                <button type="button" id="catalogBellActionBtn" class="btn-sm" style="font-size:0.8rem; font-weight:700; padding:7px 14px; border-radius:8px; cursor:pointer; transition: all 0.2s ease;">
+                  Matikan Lonceng
+                </button>
+                <label class="switch-toggle" title="Nyalakan / Matikan Lonceng di Katalog">
                   <input type="checkbox" id="catalogBellSwitch" checked>
                   <span class="switch-slider"></span>
                 </label>

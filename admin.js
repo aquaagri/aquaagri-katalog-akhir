@@ -2213,12 +2213,29 @@
   const DEFAULT_ONESIGNAL_APP_ID = "55292386-5b6a-4b80-83b6-1a7f2541a975";
   const DEFAULT_ONESIGNAL_REST_KEY = "";
 
+  function updateBellActionBtn(isActive) {
+    const btn = document.getElementById("catalogBellActionBtn");
+    if (!btn) return;
+    if (isActive) {
+      btn.textContent = "Matikan Lonceng";
+      btn.className = "btn-secondary btn-sm";
+      btn.style.color = "#dc2626";
+      btn.style.borderColor = "#fca5a5";
+      btn.style.background = "#fff1f2";
+    } else {
+      btn.textContent = "Nyalakan Lonceng";
+      btn.className = "btn-primary btn-sm";
+      btn.style.color = "#ffffff";
+      btn.style.borderColor = "";
+      btn.style.background = "";
+    }
+  }
+
   function renderCatalogBellStatus() {
     const bellSwitch = document.getElementById("catalogBellSwitch");
     const bellBadge = document.getElementById("catalogBellStatusBadge");
-    if (!bellSwitch) return;
-
     const bellRow = state.banners.find(function (b) { return b.tipe === "catalog_bell"; });
+
     let isBellActive = true;
     if (bellRow) {
       isBellActive = bellRow.aktif !== false;
@@ -2227,7 +2244,9 @@
       isBellActive = localStorage.getItem("aquaagri_catalog_bell_disabled") !== "true";
     }
 
-    bellSwitch.checked = isBellActive;
+    if (bellSwitch) {
+      bellSwitch.checked = isBellActive;
+    }
     if (bellBadge) {
       if (isBellActive) {
         bellBadge.textContent = "Aktif di Katalog";
@@ -2239,6 +2258,7 @@
         bellBadge.style.color = "#b91c1c";
       }
     }
+    updateBellActionBtn(isBellActive);
   }
 
   function syncOneSignalConfigFromDatabase(bannersList) {
@@ -3082,57 +3102,88 @@
       });
     });
 
-    // Sakelar Master Lonceng Katalog Pengunjung (ON/OFF)
-    const bellSwitch = document.getElementById("catalogBellSwitch");
-    if (bellSwitch) {
-      bellSwitch.addEventListener("change", async function () {
-        const isChecked = bellSwitch.checked;
-        const bellBadge = document.getElementById("catalogBellStatusBadge");
-        if (bellBadge) {
-          if (isChecked) {
-            bellBadge.textContent = "Aktif di Katalog";
-            bellBadge.style.background = "#dcfce7";
-            bellBadge.style.color = "#15803d";
-          } else {
-            bellBadge.textContent = "Dinonaktifkan";
-            bellBadge.style.background = "#fee2e2";
-            bellBadge.style.color = "#b91c1c";
-          }
-        }
-        localStorage.setItem("aquaagri_catalog_bell_disabled", isChecked ? "false" : "true");
+    // Sakelar Master & Tombol Aksi Lonceng Katalog Pengunjung (ON/OFF)
+    async function setCatalogBellState(newActiveState) {
+      const bellSwitch = document.getElementById("catalogBellSwitch");
+      const bellBadge = document.getElementById("catalogBellStatusBadge");
+      const bellActionBtn = document.getElementById("catalogBellActionBtn");
+      const sb = window.getAquaAgriSupabaseClient();
 
-        const sb = window.getAquaAgriSupabaseClient();
-        if (!sb) {
-          showToast(isChecked ? "Fitur lonceng katalog diaktifkan!" : "Fitur lonceng katalog dinonaktifkan!");
-          return;
-        }
+      if (bellSwitch) {
+        bellSwitch.disabled = true;
+        bellSwitch.checked = newActiveState;
+      }
+      if (bellActionBtn) {
+        bellActionBtn.disabled = true;
+        bellActionBtn.textContent = "Menyimpan...";
+      }
 
-        try {
+      if (bellBadge) {
+        if (newActiveState) {
+          bellBadge.textContent = "Aktif di Katalog";
+          bellBadge.style.background = "#dcfce7";
+          bellBadge.style.color = "#15803d";
+        } else {
+          bellBadge.textContent = "Dinonaktifkan";
+          bellBadge.style.background = "#fee2e2";
+          bellBadge.style.color = "#b91c1c";
+        }
+      }
+
+      localStorage.setItem("aquaagri_catalog_bell_disabled", newActiveState ? "false" : "true");
+
+      try {
+        if (sb) {
           let bellRow = state.banners.find(function (b) { return b.tipe === "catalog_bell"; });
           const payload = {
             tipe: "catalog_bell",
             judul: "Fitur Lonceng Notifikasi Katalog",
             subjudul: "Kontrol sakelar master lonceng pengunjung",
-            aktif: isChecked,
+            aktif: newActiveState,
             gambar: "",
             urutan: 99,
             updated_at: new Date().toISOString()
           };
 
           if (bellRow) {
-            const { error } = await sb.from("banners").update({ aktif: isChecked, updated_at: payload.updated_at }).eq("id", bellRow.id);
+            const { error } = await sb.from("banners").update({ aktif: newActiveState, updated_at: payload.updated_at }).eq("id", bellRow.id);
             if (error) throw error;
-            bellRow.aktif = isChecked;
+            bellRow.aktif = newActiveState;
           } else {
             const { data, error } = await sb.from("banners").insert([payload]).select();
             if (error) throw error;
             if (data && data[0]) state.banners.push(data[0]);
           }
-
-          showToast(isChecked ? "🔔 Fitur Lonceng di website pengunjung berhasil DIAKTIFKAN!" : "🔕 Fitur Lonceng di website pengunjung berhasil DINONAKTIFKAN!");
-        } catch (err) {
-          showToast("Gagal menyimpan ke Supabase: " + (err.message || err));
         }
+
+        showToast(newActiveState ? "🔔 Fitur Lonceng di website pengunjung berhasil DIAKTIFKAN!" : "🔕 Fitur Lonceng di website pengunjung berhasil DINONAKTIFKAN!");
+      } catch (err) {
+        showToast("Gagal menyimpan ke Supabase: " + (err.message || err));
+        if (bellSwitch) bellSwitch.checked = !newActiveState;
+      } finally {
+        if (bellSwitch) bellSwitch.disabled = false;
+        if (bellActionBtn) {
+          bellActionBtn.disabled = false;
+          updateBellActionBtn(newActiveState);
+        }
+      }
+    }
+
+    const bellSwitch = document.getElementById("catalogBellSwitch");
+    if (bellSwitch) {
+      bellSwitch.addEventListener("change", function (e) {
+        e.stopPropagation();
+        setCatalogBellState(bellSwitch.checked);
+      });
+    }
+
+    const bellActionBtn = document.getElementById("catalogBellActionBtn");
+    if (bellActionBtn) {
+      bellActionBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const currentActive = bellSwitch ? bellSwitch.checked : false;
+        setCatalogBellState(!currentActive);
       });
     }
 
