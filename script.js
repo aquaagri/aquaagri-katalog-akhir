@@ -4133,7 +4133,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const [catRes, prodRes, banRes] = await Promise.all([
         sb.from("categories").select("*").order("urutan", { ascending: true }),
         sb.from("products").select("*").eq("aktif", true).order("urutan", { ascending: true }).order("id", { ascending: true }),
-        sb.from("banners").select("*").eq("aktif", true).order("urutan", { ascending: true }).order("id", { ascending: true })
+        sb.from("banners").select("*").order("urutan", { ascending: true }).order("id", { ascending: true })
       ]);
 
       // 1. Perbarui daftar kategori & banner kategori jika tersedia di database
@@ -4202,26 +4202,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Sinkronisasi status sakelar Lonceng Diskon dari database Supabase
         const bellConfig = banRes.data.find(function (b) { return b.tipe === "catalog_bell"; });
-        const promptBanner = document.getElementById("notifPushPrompt");
-        const floatingBell = document.getElementById("notifFloatingBell");
-        if (bellConfig) {
-          const isBellDisabled = bellConfig.aktif === false;
-          localStorage.setItem("aquaagri_catalog_bell_disabled", isBellDisabled ? "true" : "false");
-          if (isBellDisabled) {
-            if (promptBanner) promptBanner.classList.add("hidden");
-            if (floatingBell) floatingBell.classList.add("hidden");
-          } else {
-            // Aktif: Tampilkan lonceng melayang di SEMUA perangkat pengunjung
-            if (floatingBell && (!promptBanner || promptBanner.classList.contains("hidden"))) {
-              floatingBell.classList.remove("hidden");
-            }
-          }
-        } else {
-          // Default jika belum ada baris di database
-          if (floatingBell && (!promptBanner || promptBanner.classList.contains("hidden"))) {
-            floatingBell.classList.remove("hidden");
-          }
-        }
+        const isBellActive = bellConfig ? (bellConfig.aktif !== false) : (localStorage.getItem("aquaagri_catalog_bell_disabled") !== "true");
+        applyCatalogBellVisibility(isBellActive);
 
         // Berlangganan Supabase Realtime agar perubahan sakelar di admin HP langsung bereaksi seketika di laptop
         const sbClient = window.getAquaAgriSupabaseClient();
@@ -4232,18 +4214,7 @@ document.addEventListener("DOMContentLoaded", function () {
               .on("postgres_changes", { event: "*", schema: "public", table: "banners" }, function (payload) {
                 const row = payload.new;
                 if (row && row.tipe === "catalog_bell") {
-                  const isBellDisabled = row.aktif === false;
-                  localStorage.setItem("aquaagri_catalog_bell_disabled", isBellDisabled ? "true" : "false");
-                  const pb = document.getElementById("notifPushPrompt");
-                  const fb = document.getElementById("notifFloatingBell");
-                  if (isBellDisabled) {
-                    if (pb) pb.classList.add("hidden");
-                    if (fb) fb.classList.add("hidden");
-                  } else {
-                    if (fb && (!pb || pb.classList.contains("hidden"))) {
-                      fb.classList.remove("hidden");
-                    }
-                  }
+                  applyCatalogBellVisibility(row.aktif !== false);
                 }
               })
               .subscribe();
@@ -4331,6 +4302,60 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 4500);
   }
 
+  // Kontrol Terpusat Visibilitas Lonceng & Banner Notifikasi (Sinkron Lintas Perangkat)
+  function applyCatalogBellVisibility(isActive) {
+    const promptBanner = document.getElementById("notifPushPrompt");
+    const floatingBell = document.getElementById("notifFloatingBell");
+    const isBellDisabled = !isActive;
+
+    localStorage.setItem("aquaagri_catalog_bell_disabled", isBellDisabled ? "true" : "false");
+
+    if (isBellDisabled) {
+      // NONAKTIF: Sembunyikan TOTAL lonceng melayang dan banner prompt
+      if (promptBanner) promptBanner.classList.add("hidden");
+      if (floatingBell) floatingBell.classList.add("hidden");
+      if (window.__bellPromptTimer) {
+        clearTimeout(window.__bellPromptTimer);
+        window.__bellPromptTimer = null;
+      }
+    } else {
+      // AKTIF: Tampilkan lonceng melayang (kecuali jika banner prompt sedang terbuka)
+      if (floatingBell && (!promptBanner || promptBanner.classList.contains("hidden"))) {
+        floatingBell.classList.remove("hidden");
+      }
+      // Munculkan prompt otomatis setelah 3.5 detik jika pengunjung belum pernah berinteraksi
+      const notifStatus = localStorage.getItem("aquaagri_notif_status");
+      if (!notifStatus && !window.__bellPromptTimer) {
+        window.__bellPromptTimer = setTimeout(function () {
+          if (localStorage.getItem("aquaagri_catalog_bell_disabled") === "true") return;
+          const promoPopup = document.getElementById("promoPopupOverlay");
+          const prodModal = document.getElementById("productDetailModal");
+          const isPromoOpen = promoPopup && !promoPopup.classList.contains("hidden");
+          const isProdOpen = prodModal && !prodModal.classList.contains("hidden");
+          if (!isPromoOpen && !isProdOpen) {
+            if (floatingBell) floatingBell.classList.add("hidden");
+            if (promptBanner) promptBanner.classList.remove("hidden");
+          } else {
+            if (floatingBell) floatingBell.classList.remove("hidden");
+          }
+        }, 3500);
+      }
+    }
+  }
+
+  // Cek Cepat Status Lonceng dari Supabase (Kilat tanpa menunggu seluruh katalog)
+  async function checkCatalogBellFast() {
+    if (typeof window.getAquaAgriSupabaseClient !== "function") return;
+    const sb = window.getAquaAgriSupabaseClient();
+    if (!sb) return;
+    try {
+      const { data, error } = await sb.from("banners").select("aktif").eq("tipe", "catalog_bell").limit(1);
+      if (!error && Array.isArray(data) && data.length > 0) {
+        applyCatalogBellVisibility(data[0].aktif !== false);
+      }
+    } catch (e) {}
+  }
+
   function initS3MarketingPushPrompt() {
     const promptBanner = document.getElementById("notifPushPrompt");
     const subscribeBtn = document.getElementById("notifSubscribeBtn");
@@ -4343,53 +4368,27 @@ document.addEventListener("DOMContentLoaded", function () {
       return localStorage.getItem("aquaagri_catalog_bell_disabled") === "true";
     }
 
+    // Default status awal saat halaman pertama kali dibuka:
+    // Jika dinonaktifkan (atau belum disinkronkan), JANGAN tampilkan lonceng sampai Supabase mengonfirmasi
     if (isBellDisabled()) {
       promptBanner.classList.add("hidden");
       if (floatingBell) floatingBell.classList.add("hidden");
-      return;
-    }
-
-    const notifStatus = localStorage.getItem("aquaagri_notif_status");
-
-    function showFloatingBell() {
-      if (isBellDisabled()) return;
+    } else if (localStorage.getItem("aquaagri_catalog_bell_disabled") === "false") {
+      // Jika di sesi sebelumnya sudah terkonfirmasi aktif
       if (floatingBell) floatingBell.classList.remove("hidden");
-    }
-
-    function hideFloatingBell() {
-      if (floatingBell) floatingBell.classList.add("hidden");
     }
 
     function showPrompt() {
       if (isBellDisabled()) return;
-      hideFloatingBell();
+      if (floatingBell) floatingBell.classList.add("hidden");
       promptBanner.classList.remove("hidden");
     }
 
     function hidePrompt() {
       promptBanner.classList.add("hidden");
-      showFloatingBell();
-    }
-
-    // Tampilkan ikon lonceng melayang secara default jika tidak dinonaktifkan
-    if (!isBellDisabled()) {
-      showFloatingBell();
-    }
-
-    // Munculkan prompt otomatis setelah 3.5 detik jika belum pernah berinteraksi
-    if (!notifStatus && !isBellDisabled()) {
-      setTimeout(function () {
-        if (isBellDisabled()) return;
-        const promoPopup = document.getElementById("promoPopupOverlay");
-        const prodModal = document.getElementById("productDetailModal");
-        const isPromoOpen = promoPopup && !promoPopup.classList.contains("hidden");
-        const isProdOpen = prodModal && !prodModal.classList.contains("hidden");
-        if (!isPromoOpen && !isProdOpen) {
-          showPrompt();
-        } else {
-          showFloatingBell();
-        }
-      }, 3500);
+      if (!isBellDisabled() && floatingBell) {
+        floatingBell.classList.remove("hidden");
+      }
     }
 
     // Klik Aktifkan Diskon & Voucher (CTA S3 Marketing)
@@ -4442,6 +4441,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Inisialisasi Sistem Notifikasi S3 Marketing
   initS3MarketingPushPrompt();
+
+  // Jalankan pemeriksaan cepat status lonceng dari database seketika
+  checkCatalogBellFast();
+
+  // Re-sinkronisasi lonceng otomatis saat berpindah tab atau memfokuskan layar di Laptop / HP
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") {
+      checkCatalogBellFast();
+    }
+  });
+  window.addEventListener("focus", function () {
+    checkCatalogBellFast();
+  });
+  setInterval(checkCatalogBellFast, 10000);
 
   // Cek apakah pengunjung membuka link share produk spesifik (Cara A)
   checkAndOpenSharedProduct();

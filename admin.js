@@ -2345,6 +2345,31 @@
     } catch (e) {}
   }
 
+  async function checkAdminBannersFast() {
+    if (typeof window.getAquaAgriSupabaseClient !== "function") return;
+    const sb = window.getAquaAgriSupabaseClient();
+    if (!sb) return;
+    try {
+      const { data, error } = await sb.from("banners").select("*").order("urutan", { ascending: true }).order("id", { ascending: true });
+      if (!error && Array.isArray(data) && data.length > 0) {
+        state.banners = data;
+        renderCatalogBellStatus();
+        syncOneSignalConfigFromDatabase(state.banners);
+      }
+    } catch (e) {}
+  }
+
+  // Re-sinkronisasi otomatis saat beralih tab atau memfokuskan jendela dasbor admin di Laptop & HP
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") {
+      checkAdminBannersFast();
+    }
+  });
+  window.addEventListener("focus", function () {
+    checkAdminBannersFast();
+  });
+  setInterval(checkAdminBannersFast, 8000);
+
   async function fetchOneSignalSubscriberCount() {
     const badge = document.getElementById("pushSubscriberCountBadge");
     if (!badge) return;
