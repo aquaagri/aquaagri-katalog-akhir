@@ -84,6 +84,14 @@
       appId: "55292386-5b6a-4b80-83b6-1a7f2541a975",
       allowLocalhostAsSecureOrigin: true
     });
+    // Jika perangkat ini sudah mengizinkan notifikasi, pastikan push token terhubung
+    try {
+      if (OneSignal.Notifications && OneSignal.Notifications.permission) {
+        if (OneSignal.User && OneSignal.User.PushSubscription) {
+          await OneSignal.User.PushSubscription.optIn();
+        }
+      }
+    } catch (eInitOpt) {}
   });
 </script>
 </head>
@@ -1343,6 +1351,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
-  <script src="script.js?v=20261015_bottom_nav_v1" defer></script>
+  <script src="script.js?v=20261015_push_fix_v3" defer></script>
 </body>
 </html>

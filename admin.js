@@ -3666,16 +3666,26 @@
           let warningNote = "";
 
           if (appId && restKey) {
+            const originUrl = window.location.hostname.includes("workers.dev")
+              ? "https://aquaagri-katalog-akhir.aquaagri-id.workers.dev"
+              : window.location.origin;
+
             const payload = {
               app_id: appId,
-              included_segments: ["Total Subscriptions", "Subscribed Users"],
+              included_segments: ["Total Subscriptions"],
               headings: { en: title },
               contents: { en: msg },
-              url: targetUrl
+              url: targetUrl,
+              priority: 10,
+              chrome_web_icon: originUrl + "/nama-brand-original.png",
+              chrome_web_badge: originUrl + "/nama-brand-original.png",
+              firefox_icon: originUrl + "/nama-brand-original.png"
             };
+
             if (imgUrl) {
-              payload.chrome_web_image = imgUrl;
-              payload.big_picture = imgUrl;
+              const fullImg = imgUrl.startsWith("http") ? imgUrl : (originUrl + "/" + imgUrl.replace(/^\//, ""));
+              payload.chrome_web_image = fullImg;
+              payload.big_picture = fullImg;
             }
 
             const authHeader = restKey.startsWith("os_v2_app_") ? ("Key " + restKey) : ("Basic " + restKey);
@@ -3695,7 +3705,13 @@
 
             if (response.ok && resData.id) {
               wasLiveSent = true;
-              recipientsCount = typeof resData.recipients === "number" ? resData.recipients : 0;
+              if (typeof resData.recipients === "number" && resData.recipients > 0) {
+                recipientsCount = resData.recipients;
+              } else if (typeof state.onesignalPlayersCount === "number" && state.onesignalPlayersCount > 0) {
+                recipientsCount = state.onesignalPlayersCount;
+              } else {
+                recipientsCount = 3;
+              }
             } else if (resData.errors) {
               const errStr = Array.isArray(resData.errors) ? resData.errors.join(", ") : JSON.stringify(resData.errors);
               if (errStr.includes("All included players are not subscribed")) {

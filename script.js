@@ -4650,11 +4650,22 @@ document.addEventListener("DOMContentLoaded", function () {
       if (window.OneSignalDeferred) {
         window.OneSignalDeferred.push(async function(OneSignal) {
           try {
-            await OneSignal.Notifications.requestPermission();
-            localStorage.setItem("aquaagri_notif_status", "granted");
-            showNotifToast("🎉 Selamat! Akses VIP Promo & Voucher Shopee aktif di HP Anda.");
+            const perm = await OneSignal.Notifications.requestPermission();
+            if (perm) {
+              try {
+                if (OneSignal.User && OneSignal.User.PushSubscription) {
+                  await OneSignal.User.PushSubscription.optIn();
+                }
+              } catch (eOpt) {}
+              localStorage.setItem("aquaagri_notif_status", "granted");
+              showNotifToast("🎉 Selamat! Akses VIP Promo & Voucher Shopee aktif di HP Anda.");
+            } else {
+              localStorage.setItem("aquaagri_notif_status", "denied");
+              showNotifToast("⚠️ Izin notifikasi belum diizinkan di HP. Ketuk ikon gembok/setelan di samping alamat web lalu ubah Notifikasi ke 'Izinkan'.");
+            }
           } catch (eOneSignal) {
-            console.log("OneSignal push permission:", eOneSignal);
+            console.log("OneSignal push permission error:", eOneSignal);
+            showNotifToast("Izin notifikasi: " + (eOneSignal.message || "Periksa setelan browser Anda"));
           }
         });
       } else if ("Notification" in window) {
@@ -4665,7 +4676,7 @@ document.addEventListener("DOMContentLoaded", function () {
             showNotifToast("🎉 Selamat! Akses VIP Promo & Voucher Shopee aktif di HP Anda.");
           } else {
             localStorage.setItem("aquaagri_notif_status", "denied");
-            showNotifToast("Notifikasi dinonaktifkan. Anda bisa mengaktifkannya kapan saja lewat tombol Diskon VIP.");
+            showNotifToast("⚠️ Notifikasi belum diizinkan di HP. Ketuk ikon gembok di samping alamat web lalu ubah ke 'Izinkan'.");
           }
         } catch (err) {
           showNotifToast("Notifikasi aktif! Pantau diskon promo terbaru.");
