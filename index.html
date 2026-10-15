@@ -7,9 +7,16 @@
 <meta name="description" content="aquaagri.id adalah platform dan ekosistem bahari terintegrasi: mitra resmi Shopee Indonesia untuk hasil laut segar, olahan ikan bergizi, perlengkapan pancing, dan sarana budidaya modern.">
 
 <!-- FAVICON & WARNA TEMA BROWSER -->
-<link rel="icon" type="image/png" href="nama-brand.png">
-<link rel="apple-touch-icon" href="nama-brand.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <meta name="theme-color" content="#0d9488">
+
+<!-- PWA & WEBAPK MANIFEST RESMI -->
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AquaAgri">
 
 <!-- OPEN GRAPH & SOSMED THUMBNAIL PREVIEW (WHATSAPP, FACEBOOK, TELEGRAM, X) -->
 <meta property="og:site_name" content="aquaagri.id">
@@ -28,7 +35,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261015_clean_ui">
+<link rel="stylesheet" href="style.css?v=20261015_pwa_v1">
 
 <!-- STRUCTURED DATA SCHEMA.ORG (JSON-LD) UNTUK SEO GOOGLE -->
 <script type="application/ld+json">
@@ -105,6 +112,13 @@
             <line x1="9" y1="16" x2="13" y2="16"/>
           </svg>
           <span>Cara Pesan</span>
+        </button>
+        <button id="pwaTopInstallBtn" class="topbar-install-pill hidden" type="button" aria-label="Pasang Aplikasi AquaAgri di HP" title="Pasang Aplikasi AquaAgri">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="5" y="2" width="14" height="20" rx="3" ry="3"/>
+            <line x1="12" y1="18" x2="12.01" y2="18"/>
+          </svg>
+          <span>Pasang App</span>
         </button>
         <button id="themeToggleBtn" class="theme-toggle-btn" type="button" aria-label="Ganti mode tampilan terang atau malam" title="Mode Malam/Terang">
           <svg class="moon-icon" id="themeMoonIcon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -1010,9 +1024,32 @@
         <img src="nama-brand.png" alt="aquaagri.id" class="footer-logo-img">
       </div>
       <p class="footer-collab">Solusi terpadu perikanan nusantara bermitra resmi dengan Shopee Indonesia untuk kemudahan transaksi, jaminan keamanan dana, dan pengiriman terpercaya ke seluruh Indonesia.</p>
-      <p class="footer-copy">&copy; 2026 aquaagri.id — Solusi Terpadu Dunia Perikanan & Agribisnis Bahari Nusantara.</p>
+      <p class="footer-copy">&copy; 2026 aquaagri.id — Solusi Terpadu Dunia Perikanan &amp; Agribisnis Bahari Nusantara.</p>
+      <div class="footer-pwa-wrap">
+        <button id="pwaFooterInstallBtn" class="footer-pwa-btn hidden" type="button">
+          📲 Pasang Aplikasi AquaAgri di HP
+        </button>
+      </div>
     </div>
   </footer>
+
+  <!-- ============================================================
+       SUBTLE PWA INSTALL BAR (NON-INTRUSIVE & ELEGAN)
+       Muncul perlahan di bawah layar, bisa ditutup sekali klik & tidak mengganggu
+       ============================================================ -->
+  <aside id="pwaInstallBar" class="pwa-install-bar hidden" role="dialog" aria-label="Pasang Aplikasi AquaAgri">
+    <div class="pwa-bar-inner">
+      <img src="icon-192.png" alt="Logo AquaAgri" class="pwa-bar-icon">
+      <div class="pwa-bar-text">
+        <strong class="pwa-bar-title">Aplikasi AquaAgri</strong>
+        <span class="pwa-bar-sub">Ringan &bull; 1 MB &bull; Buka Cepat</span>
+      </div>
+      <button id="pwaBarInstallBtn" type="button" class="pwa-bar-action-btn">
+        Pasang
+      </button>
+      <button id="pwaBarCloseBtn" type="button" class="pwa-bar-dismiss-btn" aria-label="Tutup penawaran pasang aplikasi">✕</button>
+    </div>
+  </aside>
 
   <!-- ============================================================
        MODAL DETAIL PRODUK (DESKRIPSI LENGKAP & SPESIFIKASI)
@@ -1246,6 +1283,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
-  <script src="script.js?v=20261015_clean_ui" defer></script>
+  <script src="script.js?v=20261015_pwa_v1" defer></script>
 </body>
 </html>

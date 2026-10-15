@@ -4913,6 +4913,209 @@ body.dark-mode .btn-notif-dismiss:hover {
   color: #94a3b8;
 }
 
+/* ============================================================
+   FITUR INSTAL APLIKASI (PWA / WEBAPK): TIDAK MENGGANGGU TAMPILAN
+   ============================================================ */
+
+/* 1. Tombol Mini di Header (Subtle & Menyatu Rapi) */
+.topbar-install-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, rgba(15, 118, 110, 0.12) 0%, rgba(13, 148, 136, 0.20) 100%);
+  border: 1px solid rgba(13, 148, 136, 0.35);
+  border-radius: var(--radius-pill);
+  padding: 5px 11px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #0f766e;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.topbar-install-pill:hover {
+  background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+}
+
+body.dark-mode .topbar-install-pill {
+  background: rgba(20, 184, 166, 0.15);
+  border-color: rgba(45, 212, 191, 0.32);
+  color: #2dd4bf;
+}
+
+body.dark-mode .topbar-install-pill:hover {
+  background: #14b8a6;
+  color: #061814;
+}
+
+/* 2. Floating Bar di Bawah (Slim, Ramping, Tidak Memblokir Layar) */
+.pwa-install-bar {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  z-index: 994;
+  width: calc(100% - 28px);
+  max-width: 360px;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.35s ease;
+  pointer-events: auto;
+}
+
+.pwa-install-bar.hidden {
+  display: none !important;
+}
+
+.pwa-install-bar.hiding {
+  transform: translateX(-50%) translateY(90px);
+  opacity: 0;
+}
+
+.pwa-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(13, 148, 136, 0.28);
+  border-radius: 999px;
+  padding: 6px 10px 6px 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16), 0 2px 8px rgba(13, 148, 136, 0.15);
+  box-sizing: border-box;
+}
+
+body.dark-mode .pwa-bar-inner {
+  background: rgba(15, 34, 30, 0.92);
+  border-color: rgba(45, 212, 191, 0.30);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+.pwa-bar-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+.pwa-bar-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.pwa-bar-title {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+body.dark-mode .pwa-bar-title {
+  color: #f1f5f9;
+}
+
+.pwa-bar-sub {
+  font-size: 0.64rem;
+  color: #64748b;
+  line-height: 1.2;
+  margin-top: 1px;
+}
+
+body.dark-mode .pwa-bar-sub {
+  color: #94a3b8;
+}
+
+.pwa-bar-action-btn {
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  color: #ffffff;
+  border: none;
+  font-family: inherit;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.35);
+  flex-shrink: 0;
+}
+
+.pwa-bar-action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.45);
+  filter: brightness(1.08);
+}
+
+.pwa-bar-action-btn:active {
+  transform: scale(0.96);
+}
+
+.pwa-bar-dismiss-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 4px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pwa-bar-dismiss-btn:hover {
+  color: #ef4444;
+}
+
+/* 3. Tombol di Footer */
+.footer-pwa-wrap {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-pwa-btn {
+  background: rgba(15, 118, 110, 0.08);
+  border: 1px solid rgba(15, 118, 110, 0.22);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #0f766e;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.footer-pwa-btn:hover {
+  background: #0f766e;
+  color: #ffffff;
+}
+
+body.dark-mode .footer-pwa-btn {
+  background: rgba(45, 212, 191, 0.12);
+  border-color: rgba(45, 212, 191, 0.25);
+  color: #2dd4bf;
+}
+
+body.dark-mode .footer-pwa-btn:hover {
+  background: #14b8a6;
+  color: #061814;
+}
+
+
 
 
 

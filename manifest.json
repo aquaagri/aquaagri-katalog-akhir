@@ -1,0 +1,27 @@
+{
+  "name": "AquaAgri — Solusi Perikanan & Bahari",
+  "short_name": "AquaAgri",
+  "description": "Katalog resmi hasil laut segar, olahan ikan bergizi, perlengkapan pancing, dan sarana budidaya modern — Mitra Resmi Shopee Indonesia.",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#061a1e",
+  "theme_color": "#0d9488",
+  "lang": "id",
+  "categories": ["shopping", "business"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

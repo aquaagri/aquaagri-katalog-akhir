@@ -4695,5 +4695,86 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Sinkronisasi otomatis dengan database Supabase
   syncCatalogFromSupabase();
+
+  // ---------- SISTEM PWA / WEBAPK (PASANG APLIKASI TANPA MENGGANGGU TAMPILAN) ----------
+  function initPwaInstallation() {
+    let deferredPwaPrompt = null;
+    const topBtn = document.getElementById("pwaTopInstallBtn");
+    const footerBtn = document.getElementById("pwaFooterInstallBtn");
+    const pwaBar = document.getElementById("pwaInstallBar");
+    const barInstallBtn = document.getElementById("pwaBarInstallBtn");
+    const barCloseBtn = document.getElementById("pwaBarCloseBtn");
+
+    const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+    if (isStandalone) return;
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/OneSignalSDKWorker.js").catch(function () {});
+    }
+
+    window.addEventListener("beforeinstallprompt", function (e) {
+      e.preventDefault();
+      deferredPwaPrompt = e;
+
+      if (topBtn) topBtn.classList.remove("hidden");
+      if (footerBtn) footerBtn.classList.remove("hidden");
+
+      // Cek apakah pengunjung sudah pernah menutup bar ini dalam 5 hari terakhir
+      const dismissed = localStorage.getItem("aquaagri_pwa_dismissed");
+      const isRecent = dismissed && (Date.now() - Number(dismissed) < 5 * 24 * 60 * 60 * 1000);
+
+      // Hanya tampilkan bar bawah jika belum ditutup dan setelah delay 4,5 detik (agar tidak menimpa pop-up promo)
+      if (!isRecent && pwaBar) {
+        setTimeout(function () {
+          if (deferredPwaPrompt && !isStandalone) {
+            pwaBar.classList.remove("hidden");
+          }
+        }, 4500);
+      }
+    });
+
+    async function handleInstallClick() {
+      if (!deferredPwaPrompt) {
+        alert("Untuk memasang aplikasi AquaAgri:\n1. Buka menu browser di HP (titik 3 di pojok kanan atas)\n2. Pilih 'Tambahkan ke Layar Utama' atau 'Install Aplikasi'");
+        return;
+      }
+      try {
+        deferredPwaPrompt.prompt();
+        const choice = await deferredPwaPrompt.userChoice;
+        if (choice && choice.outcome === "accepted") {
+          if (pwaBar) pwaBar.classList.add("hidden");
+          if (topBtn) topBtn.classList.add("hidden");
+          if (footerBtn) footerBtn.classList.add("hidden");
+        }
+      } catch (err) {}
+      deferredPwaPrompt = null;
+    }
+
+    if (topBtn) topBtn.addEventListener("click", handleInstallClick);
+    if (footerBtn) footerBtn.addEventListener("click", handleInstallClick);
+    if (barInstallBtn) barInstallBtn.addEventListener("click", handleInstallClick);
+
+    if (barCloseBtn) {
+      barCloseBtn.addEventListener("click", function () {
+        if (pwaBar) {
+          pwaBar.classList.add("hiding");
+          setTimeout(function () {
+            pwaBar.classList.add("hidden");
+            pwaBar.classList.remove("hiding");
+          }, 350);
+        }
+        localStorage.setItem("aquaagri_pwa_dismissed", String(Date.now()));
+      });
+    }
+
+    window.addEventListener("appinstalled", function () {
+      if (pwaBar) pwaBar.classList.add("hidden");
+      if (topBtn) topBtn.classList.add("hidden");
+      if (footerBtn) footerBtn.classList.add("hidden");
+      deferredPwaPrompt = null;
+    });
+  }
+
+  initPwaInstallation();
 });
 
