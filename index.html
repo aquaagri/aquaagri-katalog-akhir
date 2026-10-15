@@ -35,7 +35,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261015_clean_head">
+<link rel="stylesheet" href="style.css?v=20261015_bottom_nav_v1">
 
 <!-- STRUCTURED DATA SCHEMA.ORG (JSON-LD) UNTUK SEO GOOGLE -->
 <script type="application/ld+json">
@@ -1027,6 +1027,73 @@
   </footer>
 
   <!-- ============================================================
+       BOTTOM NAVIGATION BAR (MOBILE FIRST, SIMPLE, ELEGAN & NON-INTRUSIVE)
+       Terinspirasi antarmuka modern aplikasi premium (Kopi Kenangan)
+       ============================================================ -->
+  <nav class="bottom-nav-bar" id="bottomNavBar" aria-label="Navigasi Utama">
+    <div class="bottom-nav-inner">
+      <!-- 1. Beranda -->
+      <button type="button" class="bottom-nav-item active" id="bottomNavHome" aria-label="Beranda" data-tab="tab-home">
+        <div class="bottom-nav-icon-wrap">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 10.5L12 3l9 7.5"/>
+            <path d="M5 9.5V20a1 1 0 0 0 1 1h4v-5a2 2 0 0 1 4 0v5h4a1 1 0 0 0 1-1V9.5"/>
+          </svg>
+        </div>
+        <span class="bottom-nav-label">Beranda</span>
+      </button>
+
+      <!-- 2. Katalog -->
+      <button type="button" class="bottom-nav-item" id="bottomNavKatalog" aria-label="Katalog Produk" data-tab="tab-katalog">
+        <div class="bottom-nav-icon-wrap">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+            <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+            <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+            <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+          </svg>
+        </div>
+        <span class="bottom-nav-label">Katalog</span>
+      </button>
+
+      <!-- 3. Cari -->
+      <button type="button" class="bottom-nav-item" id="bottomNavSearch" aria-label="Pencarian Produk" data-tab="tab-search">
+        <div class="bottom-nav-icon-wrap">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7.5"/>
+            <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+          </svg>
+        </div>
+        <span class="bottom-nav-label">Cari</span>
+      </button>
+
+      <!-- 4. Promo VIP -->
+      <button type="button" class="bottom-nav-item" id="bottomNavPromo" aria-label="Promo Diskon VIP" data-tab="tab-promo">
+        <div class="bottom-nav-icon-wrap">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+            <line x1="7" y1="7" x2="7.01" y2="7"/>
+          </svg>
+          <span class="bottom-nav-badge">VIP</span>
+        </div>
+        <span class="bottom-nav-label">Promo VIP</span>
+      </button>
+
+      <!-- 5. Tentang -->
+      <button type="button" class="bottom-nav-item" id="bottomNavAbout" aria-label="Tentang aquaagri.id" data-tab="tab-about">
+        <div class="bottom-nav-icon-wrap">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+        </div>
+        <span class="bottom-nav-label">Tentang</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ============================================================
        SUBTLE PWA INSTALL BAR (NON-INTRUSIVE & ELEGAN)
        Muncul perlahan di bawah layar, bisa ditutup sekali klik & tidak mengganggu
        ============================================================ -->
@@ -1276,6 +1343,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
-  <script src="script.js?v=20261015_clean_head" defer></script>
+  <script src="script.js?v=20261015_bottom_nav_v1" defer></script>
 </body>
 </html>

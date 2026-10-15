@@ -118,18 +118,21 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding-top: 52px; /* Ruang untuk header fixed di posisi yang sama saat digulir */
+  padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); /* Ruang napas untuk bottom navigation bar */
   transition: background 0.3s ease, color 0.25s ease;
 }
 
 @media (min-width: 768px) {
   body {
     padding-top: 58px;
+    padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px));
   }
 }
 
 @media (min-width: 1024px) {
   body {
     padding-top: 62px;
+    padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -4669,7 +4672,7 @@ body.dark-mode .share-opt-ig {
 
 .back-to-top-fab {
   position: fixed;
-  bottom: 22px;
+  bottom: calc(72px + env(safe-area-inset-bottom, 0px));
   right: 18px;
   z-index: 990;
   display: inline-flex;
@@ -4728,7 +4731,7 @@ body.dark-mode .back-to-top-fab {
    ============================================================================ */
 .notif-push-banner {
   position: fixed;
-  bottom: 24px;
+  bottom: calc(68px + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%) translateY(0);
   z-index: 998;
@@ -4846,7 +4849,7 @@ body.dark-mode .back-to-top-fab {
 /* Floating Bell Widget */
 .notif-floating-bell {
   position: fixed;
-  bottom: 22px;
+  bottom: calc(72px + env(safe-area-inset-bottom, 0px));
   left: 18px;
   z-index: 990;
   display: inline-flex;
@@ -4920,7 +4923,7 @@ body.dark-mode .btn-notif-dismiss:hover {
 /* 1. Floating Bar di Bawah (Slim, Ramping, Tidak Memblokir Layar) */
 .pwa-install-bar {
   position: fixed;
-  bottom: 18px;
+  bottom: calc(68px + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%) translateY(0);
   z-index: 994;
@@ -5078,6 +5081,164 @@ body.dark-mode .footer-pwa-btn {
 body.dark-mode .footer-pwa-btn:hover {
   background: #14b8a6;
   color: #061814;
+}
+
+/* ============================================================
+   BOTTOM NAVIGATION BAR (MODERN, CLEAN, PREMIUM & ELEGAN)
+   Terinspirasi antarmuka aplikasi terkemuka (Kopi Kenangan)
+   ============================================================ */
+
+.bottom-nav-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 -3px 16px rgba(15, 23, 42, 0.05);
+  z-index: 995;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  transition: background 0.25s ease, border-color 0.25s ease;
+  user-select: none;
+}
+
+body.dark-mode .bottom-nav-bar {
+  background: rgba(8, 20, 18, 0.94);
+  border-top: 1px solid rgba(45, 212, 191, 0.16);
+  box-shadow: 0 -4px 22px rgba(0, 0, 0, 0.45);
+}
+
+.bottom-nav-inner {
+  max-width: 580px;
+  margin: 0 auto;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 4px;
+}
+
+@media (min-width: 768px) {
+  .bottom-nav-inner {
+    max-width: 680px;
+  }
+}
+
+.bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: transparent;
+  border: none;
+  padding: 4px 2px;
+  cursor: pointer;
+  color: #64748b;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.dark-mode .bottom-nav-item {
+  color: #94a3b8;
+}
+
+.bottom-nav-icon-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 28px;
+  border-radius: 999px;
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.bottom-nav-icon-wrap svg {
+  transition: transform 0.2s ease, stroke 0.2s ease;
+}
+
+.bottom-nav-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  line-height: 1.1;
+  margin-top: 2px;
+  transition: color 0.2s ease, font-weight 0.2s ease;
+}
+
+/* STATE AKTIF (Persis seperti referensi: kapsul lembut di ikon & teks tegas) */
+.bottom-nav-item.active {
+  color: #0f766e;
+}
+
+body.dark-mode .bottom-nav-item.active {
+  color: #2dd4bf;
+}
+
+.bottom-nav-item.active .bottom-nav-icon-wrap {
+  background: rgba(15, 118, 110, 0.12);
+}
+
+body.dark-mode .bottom-nav-item.active .bottom-nav-icon-wrap {
+  background: rgba(45, 212, 191, 0.16);
+}
+
+.bottom-nav-item.active .bottom-nav-icon-wrap svg {
+  transform: scale(1.06);
+  stroke: #0f766e;
+}
+
+body.dark-mode .bottom-nav-item.active .bottom-nav-icon-wrap svg {
+  stroke: #2dd4bf;
+}
+
+.bottom-nav-item.active .bottom-nav-label {
+  color: #0f766e;
+  font-weight: 800;
+}
+
+body.dark-mode .bottom-nav-item.active .bottom-nav-label {
+  color: #2dd4bf;
+}
+
+.bottom-nav-item:hover:not(.active) {
+  color: #0f766e;
+}
+
+body.dark-mode .bottom-nav-item:hover:not(.active) {
+  color: #5eead4;
+}
+
+.bottom-nav-item:active {
+  transform: scale(0.95);
+}
+
+/* MINI BADGE "VIP" DI TAB PROMO (Sesuai referensi Kopi Kenangan) */
+.bottom-nav-badge {
+  position: absolute;
+  top: -2px;
+  right: 2px;
+  background: linear-gradient(135deg, #ee4d2d 0%, #ff5722 100%);
+  color: #ffffff;
+  font-size: 0.52rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  padding: 1.5px 4.5px;
+  border-radius: 999px;
+  line-height: 1;
+  box-shadow: 0 2px 5px rgba(238, 77, 45, 0.4);
+  animation: navBadgePulse 2.5s infinite ease-in-out;
+}
+
+@keyframes navBadgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
 }
 
 

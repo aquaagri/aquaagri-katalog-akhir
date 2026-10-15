@@ -2779,6 +2779,7 @@ document.addEventListener("DOMContentLoaded", function () {
     updateHeaderOffset();
 
     refreshProductView();
+    setActiveBottomNav("tab-katalog");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -2809,6 +2810,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (topbarCategorySearchRow) topbarCategorySearchRow.classList.add("hidden");
     updateHeaderOffset();
 
+    setActiveBottomNav("tab-home");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -2824,7 +2826,20 @@ document.addEventListener("DOMContentLoaded", function () {
     updateHeaderOffset();
 
     initAboutSlider();
+    setActiveBottomNav("tab-about");
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function setActiveBottomNav(tabId) {
+    const navItems = document.querySelectorAll(".bottom-nav-item");
+    if (!navItems || navItems.length === 0) return;
+    navItems.forEach(function (item) {
+      if (item.getAttribute("data-tab") === tabId) {
+        item.classList.add("active");
+      } else {
+        item.classList.remove("active");
+      }
+    });
   }
 
   // ---------- SISTEM SLIDE FOTO OTOMATIS: HALAMAN KOMITMEN KAMI ----------
@@ -3060,6 +3075,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     renderRecentSearches();
     renderSearchInterfaceProducts();
+    setActiveBottomNav("tab-search");
     window.scrollTo({ top: 0, behavior: "instant" });
   }
 
@@ -3072,6 +3088,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (topbarCategorySearchRow) topbarCategorySearchRow.classList.add("hidden");
     updateHeaderOffset();
 
+    setActiveBottomNav("tab-home");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -4770,6 +4787,77 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // ---------- SISTEM BOTTOM NAVIGATION BAR (SIMPLE, MODERN & ELEGAN) ----------
+  function initBottomNavBar() {
+    const navHome = document.getElementById("bottomNavHome");
+    const navKatalog = document.getElementById("bottomNavKatalog");
+    const navSearch = document.getElementById("bottomNavSearch");
+    const navPromo = document.getElementById("bottomNavPromo");
+    const navAbout = document.getElementById("bottomNavAbout");
+
+    if (navHome) {
+      navHome.addEventListener("click", function () {
+        goHome();
+      });
+    }
+
+    if (navKatalog) {
+      navKatalog.addEventListener("click", function () {
+        openCategory("semua", "Semua Produk");
+      });
+    }
+
+    if (navSearch) {
+      navSearch.addEventListener("click", function () {
+        openSearchInterface();
+        if (searchInterfaceInput) {
+          setTimeout(function () {
+            searchInterfaceInput.focus();
+          }, 150);
+        }
+      });
+    }
+
+    if (navPromo) {
+      navPromo.addEventListener("click", function () {
+        setActiveBottomNav("tab-promo");
+        // Prioritaskan membuka Pop-Up Poster Iklan/Promo jika tersedia
+        const promoOverlay = document.getElementById("promoPopupOverlay");
+        const promoTrack = document.getElementById("promoPopupTrack");
+        const promoImg = document.getElementById("promoPopupImg");
+        const hasSlides = promoTrack && promoTrack.children.length > 0;
+        const hasImg = promoImg && promoImg.src && !promoImg.src.endsWith("/") && promoImg.src.indexOf("undefined") === -1;
+
+        if (promoOverlay && (hasSlides || hasImg)) {
+          promoOverlay.classList.remove("hidden");
+          setTimeout(function () {
+            promoOverlay.classList.add("open");
+          }, 20);
+        } else {
+          // Buka Banner Notifikasi Diskon VIP & Voucher Shopee
+          const promptBanner = document.getElementById("notifPushPrompt");
+          const floatingBell = document.getElementById("notifFloatingBell");
+          if (promptBanner) {
+            if (floatingBell) floatingBell.classList.add("hidden");
+            promptBanner.classList.remove("hidden");
+          } else {
+            // Alternatif fallback jika notif ditolak: buka katalog filter diskon besar
+            openCategory("semua", "Semua Produk");
+            currentSort = "discount-desc";
+            refreshProductView();
+          }
+        }
+      });
+    }
+
+    if (navAbout) {
+      navAbout.addEventListener("click", function () {
+        openAboutView();
+      });
+    }
+  }
+
+  initBottomNavBar();
   initPwaInstallation();
 });
 
