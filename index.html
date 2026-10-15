@@ -994,21 +994,168 @@
         </div>
       </div>
 
-      <!-- CALL TO ACTION (CTA) UNTUK JELAJAHI PRODUK ATAU KEMBALI -->
+      <!-- CALL TO ACTION (CTA) UNTUK JELAJAHI PRODUK ATAU KEMBALI (PREMIUM & MODERN) -->
       <div class="about-cta-card">
+        <div class="about-cta-badge">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+          <span>Eksplorasi Katalog Bahari</span>
+        </div>
         <h3 class="about-cta-title">Siap Menemukan Kebutuhan Bahari Anda?</h3>
-        <p class="about-cta-desc">Jelajahi ragam produk olahan ikan lezat, tangkapan laut segar, piranti mancing, dan sarana budidaya pilihan.</p>
+        <p class="about-cta-desc">Temukan ratusan produk olahan ikan higienis, tangkapan laut segar, piranti mancing teruji, dan sarana budidaya pilihan dengan jaminan kualitas terbaik.</p>
         <div class="about-cta-actions">
-          <button id="aboutExploreBtn" class="hero-btn-primary" type="button">
+          <button id="aboutExploreBtn" class="about-cta-btn-primary" type="button">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+              <line x1="8" y1="21" x2="16" y2="21"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
             <span>Jelajahi Semua Produk Katalog</span>
-            <span class="btn-arrow" aria-hidden="true">→</span>
+            <svg class="btn-arrow-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
           </button>
-          <button id="aboutBottomBackBtn" class="about-cta-back-link" type="button">
-            ← Kembali ke Beranda
+          <button id="aboutBottomBackBtn" class="about-cta-btn-secondary" type="button">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span>Kembali ke Beranda</span>
           </button>
         </div>
       </div>
 
+    </section>
+
+    <!-- ------------------------------------------------------------
+         5. HALAMAN EKSKLUSIF: PROMO VIP & VOUCHER DISKON (VIP PROMO VIEW)
+         Tampilan mewah, modern, profesional & bernuansa reward eksklusif
+         ------------------------------------------------------------ -->
+    <section id="vipPromoView" class="view hidden" aria-label="Promo VIP & Voucher Diskon">
+      
+      <!-- HERO BANNER VIP -->
+      <div class="vip-hero-card">
+        <div class="vip-hero-overlay"></div>
+        <div class="vip-hero-nav">
+          <button id="vipPromoBackBtn" class="about-hero-back-pill" type="button" aria-label="Kembali ke Beranda">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <span>Kembali</span>
+          </button>
+          <span class="about-hero-breadcrumb">👑 Area Eksklusif Promo VIP</span>
+        </div>
+        <div class="vip-hero-content">
+          <div class="vip-hero-badge">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+              <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14a1 1 0 0 0 1-1H4a1 1 0 0 0 1 1z"/>
+            </svg>
+            <span>MEMBER PROMO VIP REWARDS</span>
+          </div>
+          <h1 class="vip-hero-title" id="vipPromoHeroTitle">Voucher Diskon &amp; Promo Eksklusif</h1>
+          <p class="vip-hero-desc" id="vipPromoHeroDesc">
+            Nikmati potongan harga spesial mitra resmi Shopee Indonesia, voucher diskon belanja, dan katalog harga promo terbatas untuk produk perikanan &amp; budidaya pilihan.
+          </p>
+        </div>
+      </div>
+
+      <!-- KONTEN UTAMA PROMO VIP -->
+      <div class="vip-content-wrap">
+        
+        <!-- 1. KARTU VOUCHER DISKON SHOPEE VIP (TIKET COUPON STYLE) -->
+        <div class="vip-ticket-card" id="vipTicketCard">
+          <div class="vip-ticket-left">
+            <div class="vip-ticket-cutout top"></div>
+            <div class="vip-ticket-cutout bottom"></div>
+            <span class="vip-ticket-tag">VOUCHER SHOPEE</span>
+            <strong class="vip-ticket-discount" id="vipTicketDiscount">50% OFF</strong>
+            <span class="vip-ticket-code" id="vipTicketCode">KODE: VIPAQUA</span>
+          </div>
+          <div class="vip-ticket-divider" aria-hidden="true"></div>
+          <div class="vip-ticket-right">
+            <div class="vip-ticket-header">
+              <span class="vip-ticket-pill">Terbatas</span>
+              <span class="vip-ticket-expiry">Berlaku Hari Ini</span>
+            </div>
+            <h3 class="vip-ticket-title" id="vipTicketTitle">Voucher Diskon Spesial Shopee</h3>
+            <p class="vip-ticket-desc" id="vipTicketDesc">Khusus transaksi via tautan resmi toko Shopee AquaAgri. Ambil voucher sekarang sebelum kuota diskon habis!</p>
+            <div class="vip-ticket-action">
+              <a id="vipTicketClaimBtn" href="https://shopee.co.id" target="_blank" rel="noopener noreferrer" class="vip-claim-btn">
+                <span id="vipTicketBtnText">Klaim Voucher di Shopee 🛒</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. BANNER POSTER PROMO VIP (OPSIONAL DARI ADMIN) -->
+        <div id="vipPromoBannerCard" class="vip-banner-card hidden">
+          <img id="vipPromoBannerImg" src="" alt="Banner Promo VIP" class="vip-banner-img">
+        </div>
+
+        <!-- 3. GRID PRODUK PILIHAN PROMO VIP -->
+        <div class="vip-products-section">
+          <div class="vip-section-header">
+            <div>
+              <h2 class="vip-section-title">🔥 Produk Promo &amp; Diskon Terbesar</h2>
+              <p class="vip-section-sub">Daftar produk dengan penawaran harga terbaik &amp; potongan harga aktif</p>
+            </div>
+            <button id="vipViewAllProductsBtn" type="button" class="btn-text-sm" style="color: #0d9488; font-weight:700; cursor:pointer; background:none; border:none; padding:4px 8px;">
+              Lihat Semua Katalog &rarr;
+            </button>
+          </div>
+          <div id="vipProductsGrid" class="product-grid">
+            <!-- Diisi dinamis oleh script.js -->
+          </div>
+        </div>
+
+        <!-- 4. KARTU NOTIFIKASI FLASH SALE VIP -->
+        <div class="vip-notif-card">
+          <div class="vip-notif-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+          </div>
+          <div class="vip-notif-content">
+            <h4>Dapatkan Info Flash Sale VIP Langsung di Layar HP</h4>
+            <p>Aktifkan pemberitahuan agar Anda langsung mengetahui saat ada voucher diskon Shopee baru &amp; lelang pakan/hasil laut harga miring.</p>
+          </div>
+          <button id="vipActivateNotifBtn" type="button" class="vip-notif-btn">
+            Aktifkan Notifikasi VIP
+          </button>
+        </div>
+
+        <!-- 5. TOMBOL AKSI AKHIR (JELAJAHI & BERANDA) -->
+        <div class="about-cta-card" style="margin-top: 24px;">
+          <h3 class="about-cta-title">Ingin Melihat Produk Lainnya?</h3>
+          <p class="about-cta-desc">Jelajahi seluruh kategori hasil olahan ikan, produk beku, pancing, dan sarana budidaya di katalog lengkap AquaAgri.</p>
+          <div class="about-cta-actions">
+            <button id="vipBottomExploreBtn" class="about-cta-btn-primary" type="button">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                <line x1="8" y1="21" x2="16" y2="21"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+              <span>Jelajahi Semua Produk Katalog</span>
+              <svg class="btn-arrow-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+            <button id="vipBottomBackBtn" class="about-cta-btn-secondary" type="button">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+              <span>Kembali ke Beranda</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
     </section>
 
     <!-- TOAST NOTIFIKASI INTERAKTIF (UNTUK KAMERA & SUARA) -->

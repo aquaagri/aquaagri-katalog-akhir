@@ -527,6 +527,7 @@
     renderCategoriesGrid();
     renderBannersGrid();
     renderPopupPromoTab();
+    renderVipPromoTab();
     renderCatalogBellStatus();
     syncOneSignalConfigFromDatabase(state.banners);
     renderShopeeTable();
@@ -544,6 +545,8 @@
     const activeBans = heroBanners.filter(function (b) { return b.aktif !== false; }).length;
     const popupRow = state.banners.find(function (b) { return b.tipe === "popup"; });
     const isPopupActive = Boolean(popupRow && popupRow.aktif !== false && popupRow.gambar);
+    const vipRow = state.banners.find(function (b) { return b.tipe === "vip_promo"; });
+    const isVipActive = Boolean(vipRow && vipRow.aktif !== false);
 
     const validShopeeCount = state.products.filter(function (p) {
       return isValidShopeeUrl(p.link_affiliate);
@@ -572,6 +575,7 @@
     setTxt("navBadgeCategories", totalCats);
     setTxt("navBadgeBanners", totalBans);
     setTxt("navBadgePopup", isPopupActive ? "ON" : "OFF");
+    setTxt("navBadgeVipPromo", isVipActive ? "ON" : "OFF");
 
     // Tampilkan kartu bantuan import 1-klik jika database masih kosong
     const emptyBanner = document.getElementById("emptyDbBanner");
@@ -2150,6 +2154,242 @@
     }
   }
 
+  // ---------- 10B. RENDER & KELOLA TAB PROMO VIP & VOUCHER SHOPEE ----------
+
+  function updateVipPromoLivePreview() {
+    const aktifEl = document.getElementById("vipPromoAktif");
+    const judulEl = document.getElementById("vipPromoJudul");
+    const descEl = document.getElementById("vipPromoDesc");
+    const discEl = document.getElementById("vipVoucherDiscount");
+    const codeEl = document.getElementById("vipVoucherCode");
+    const vTitleEl = document.getElementById("vipVoucherTitle");
+    const vDescEl = document.getElementById("vipVoucherDesc");
+    const btnTextEl = document.getElementById("vipShopeeBtnText");
+    const bannerUrlEl = document.getElementById("vipPromoBannerUrl");
+
+    const liveHeroTitle = document.getElementById("vipLiveHeroTitle");
+    const liveHeroDesc = document.getElementById("vipLiveHeroDesc");
+    const liveTicketDiscount = document.getElementById("vipLiveTicketDiscount");
+    const liveTicketCode = document.getElementById("vipLiveTicketCode");
+    const liveTicketTitle = document.getElementById("vipLiveTicketTitle");
+    const liveTicketDesc = document.getElementById("vipLiveTicketDesc");
+    const liveTicketBtn = document.getElementById("vipLiveTicketBtn");
+    const liveBannerWrap = document.getElementById("vipLiveBannerWrap");
+    const liveBannerImg = document.getElementById("vipLiveBannerImg");
+    const smallPrev = document.getElementById("vipPromoBannerSmallPreview");
+    const smallPlaceholder = document.getElementById("vipPromoBannerSmallPlaceholder");
+    const clearBannerBtn = document.getElementById("vipClearBannerBtn");
+    const statusBadge = document.getElementById("vipLiveStatusBadge");
+
+    const judul = (judulEl && judulEl.value.trim()) ? judulEl.value.trim() : "Voucher Diskon & Promo Eksklusif";
+    const desc = (descEl && descEl.value.trim()) ? descEl.value.trim() : "Nikmati potongan harga spesial mitra resmi Shopee Indonesia...";
+    const disc = (discEl && discEl.value.trim()) ? discEl.value.trim() : "50% OFF";
+    const code = (codeEl && codeEl.value.trim()) ? codeEl.value.trim() : "KODE: VIPAQUA";
+    const vTitle = (vTitleEl && vTitleEl.value.trim()) ? vTitleEl.value.trim() : "Voucher Diskon Spesial Shopee";
+    const vDesc = (vDescEl && vDescEl.value.trim()) ? vDescEl.value.trim() : "Khusus transaksi via tautan resmi toko Shopee...";
+    const btnText = (btnTextEl && btnTextEl.value.trim()) ? btnTextEl.value.trim() : "Klaim Voucher di Shopee 🛒";
+    const bannerUrl = (bannerUrlEl && bannerUrlEl.value.trim()) ? bannerUrlEl.value.trim() : "";
+    const isAktif = aktifEl ? aktifEl.checked : true;
+
+    if (liveHeroTitle) liveHeroTitle.textContent = judul;
+    if (liveHeroDesc) liveHeroDesc.textContent = desc;
+    if (liveTicketDiscount) liveTicketDiscount.textContent = disc;
+    if (liveTicketCode) liveTicketCode.textContent = code;
+    if (liveTicketTitle) liveTicketTitle.textContent = vTitle;
+    if (liveTicketDesc) liveTicketDesc.textContent = vDesc;
+    if (liveTicketBtn) liveTicketBtn.textContent = btnText;
+
+    if (bannerUrl) {
+      if (liveBannerWrap) liveBannerWrap.classList.remove("hidden");
+      if (liveBannerImg) liveBannerImg.src = bannerUrl;
+      if (smallPrev) {
+        smallPrev.src = bannerUrl;
+        smallPrev.style.display = "block";
+      }
+      if (smallPlaceholder) smallPlaceholder.style.display = "none";
+      if (clearBannerBtn) clearBannerBtn.style.display = "inline-flex";
+    } else {
+      if (liveBannerWrap) liveBannerWrap.classList.add("hidden");
+      if (smallPrev) smallPrev.style.display = "none";
+      if (smallPlaceholder) smallPlaceholder.style.display = "block";
+      if (clearBannerBtn) clearBannerBtn.style.display = "none";
+    }
+
+    if (statusBadge) {
+      statusBadge.textContent = isAktif
+        ? "● Status: Halaman Promo VIP Aktif di Navigasi Bawah"
+        : "● Status: Halaman Promo VIP Dinonaktifkan";
+      statusBadge.style.color = isAktif ? "#4ade80" : "#cbd5e1";
+    }
+  }
+
+  function renderVipPromoTab() {
+    const vipRow = state.banners.find(function (b) {
+      return b.tipe === "vip_promo";
+    });
+
+    const idEl = document.getElementById("vipPromoRowId");
+    const aktifEl = document.getElementById("vipPromoAktif");
+    const judulEl = document.getElementById("vipPromoJudul");
+    const descEl = document.getElementById("vipPromoDesc");
+    const discEl = document.getElementById("vipVoucherDiscount");
+    const codeEl = document.getElementById("vipVoucherCode");
+    const vTitleEl = document.getElementById("vipVoucherTitle");
+    const vDescEl = document.getElementById("vipVoucherDesc");
+    const quickSelect = document.getElementById("vipQuickProductSelect");
+    const shopeeUrlEl = document.getElementById("vipShopeeUrl");
+    const shopeeBtnTextEl = document.getElementById("vipShopeeBtnText");
+    const bannerUrlEl = document.getElementById("vipPromoBannerUrl");
+
+    if (!judulEl || !shopeeUrlEl) return;
+
+    // Isi Quick Select Produk Shopee
+    if (quickSelect) {
+      quickSelect.innerHTML = '<option value="">-- Pilih Produk untuk Mengisi Otomatis Link Shopee --</option>';
+      state.products.forEach(function (prod) {
+        const opt = document.createElement("option");
+        opt.value = prod.link_affiliate || "";
+        opt.textContent = (prod.nama || "Produk") + (isValidShopeeUrl(prod.link_affiliate) ? " (Shopee Tersedia)" : " (Belum ada link)");
+        opt.dataset.nama = prod.nama || "";
+        quickSelect.appendChild(opt);
+      });
+    }
+
+    let meta = {
+      desc: "Nikmati potongan harga spesial mitra resmi Shopee Indonesia, voucher diskon belanja, dan katalog harga promo terbatas untuk produk perikanan & budidaya pilihan.",
+      voucherDiscount: "50% OFF",
+      voucherTitle: "Voucher Diskon Spesial Shopee",
+      voucherDesc: "Khusus transaksi via tautan resmi toko Shopee AquaAgri. Ambil voucher sekarang sebelum kuota diskon habis!",
+      voucherCode: "KODE: VIPAQUA",
+      shopeeUrl: "https://shopee.co.id",
+      shopeeBtnText: "Klaim Voucher di Shopee 🛒"
+    };
+
+    if (vipRow) {
+      if (idEl) idEl.value = vipRow.id;
+      if (aktifEl) aktifEl.checked = vipRow.aktif !== false;
+      if (judulEl) judulEl.value = vipRow.judul || "Voucher Diskon & Promo Eksklusif";
+      if (bannerUrlEl) bannerUrlEl.value = vipRow.gambar || "";
+
+      if (vipRow.subjudul) {
+        try {
+          const parsed = JSON.parse(vipRow.subjudul);
+          if (parsed && typeof parsed === "object") {
+            meta = Object.assign(meta, parsed);
+          }
+        } catch (e) {
+          if (typeof vipRow.subjudul === "string" && vipRow.subjudul.length > 0) {
+            meta.desc = vipRow.subjudul;
+          }
+        }
+      }
+
+      if (descEl) descEl.value = meta.desc || "";
+      if (discEl) discEl.value = meta.voucherDiscount || "50% OFF";
+      if (codeEl) codeEl.value = meta.voucherCode || "KODE: VIPAQUA";
+      if (vTitleEl) vTitleEl.value = meta.voucherTitle || "Voucher Diskon Spesial Shopee";
+      if (vDescEl) vDescEl.value = meta.voucherDesc || "";
+      if (shopeeUrlEl) shopeeUrlEl.value = meta.shopeeUrl || vipRow.link_tujuan || "https://shopee.co.id";
+      if (shopeeBtnTextEl) shopeeBtnTextEl.value = meta.shopeeBtnText || "Klaim Voucher di Shopee 🛒";
+    } else {
+      if (idEl) idEl.value = "";
+      if (aktifEl) aktifEl.checked = true;
+      if (judulEl) judulEl.value = "Voucher Diskon & Promo Eksklusif";
+      if (descEl) descEl.value = meta.desc;
+      if (discEl) discEl.value = meta.voucherDiscount;
+      if (codeEl) codeEl.value = meta.voucherCode;
+      if (vTitleEl) vTitleEl.value = meta.voucherTitle;
+      if (vDescEl) vDescEl.value = meta.voucherDesc;
+      if (shopeeUrlEl) shopeeUrlEl.value = meta.shopeeUrl;
+      if (shopeeBtnTextEl) shopeeBtnTextEl.value = meta.shopeeBtnText;
+      if (bannerUrlEl) bannerUrlEl.value = "";
+    }
+
+    updateVipPromoLivePreview();
+  }
+
+  async function handleSaveVipPromo(e) {
+    e.preventDefault();
+    showBoxAlert("vipPromoAlert", "");
+
+    const idVal = document.getElementById("vipPromoRowId").value.trim();
+    const aktif = document.getElementById("vipPromoAktif").checked;
+    const judul = document.getElementById("vipPromoJudul").value.trim() || "Voucher Diskon & Promo Eksklusif";
+    const desc = document.getElementById("vipPromoDesc") ? document.getElementById("vipPromoDesc").value.trim() : "";
+    const voucherDiscount = document.getElementById("vipVoucherDiscount") ? document.getElementById("vipVoucherDiscount").value.trim() : "50% OFF";
+    const voucherCode = document.getElementById("vipVoucherCode") ? document.getElementById("vipVoucherCode").value.trim() : "KODE: VIPAQUA";
+    const voucherTitle = document.getElementById("vipVoucherTitle") ? document.getElementById("vipVoucherTitle").value.trim() : "Voucher Diskon Spesial Shopee";
+    const voucherDesc = document.getElementById("vipVoucherDesc") ? document.getElementById("vipVoucherDesc").value.trim() : "";
+    const shopeeUrl = document.getElementById("vipShopeeUrl") ? document.getElementById("vipShopeeUrl").value.trim() : "https://shopee.co.id";
+    const shopeeBtnText = document.getElementById("vipShopeeBtnText") ? document.getElementById("vipShopeeBtnText").value.trim() : "Klaim Voucher di Shopee 🛒";
+    const bannerUrl = document.getElementById("vipPromoBannerUrl") ? document.getElementById("vipPromoBannerUrl").value.trim() : "";
+
+    if (!shopeeUrl || !isSafeHttpUrl(shopeeUrl)) {
+      showBoxAlert("vipPromoAlert", "Tautan Shopee harus diawali dengan https:// (contoh: https://s.shopee.co.id/... atau https://shopee.co.id/...)");
+      return;
+    }
+
+    const metaJson = JSON.stringify({
+      desc: desc,
+      voucherDiscount: voucherDiscount,
+      voucherTitle: voucherTitle,
+      voucherDesc: voucherDesc,
+      voucherCode: voucherCode,
+      shopeeUrl: shopeeUrl,
+      shopeeBtnText: shopeeBtnText
+    });
+
+    const payload = {
+      judul: judul,
+      subjudul: metaJson,
+      gambar: bannerUrl,
+      tipe: "vip_promo",
+      link_tujuan: shopeeUrl,
+      urutan: 98,
+      aktif: aktif,
+      updated_at: new Date().toISOString()
+    };
+
+    const sb = window.getAquaAgriSupabaseClient();
+    const saveBtn = document.getElementById("saveVipPromoBtn");
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      saveBtn.textContent = "Menyimpan...";
+    }
+
+    try {
+      const existingVip = state.banners.find(function (b) { return b.tipe === "vip_promo"; });
+      const targetId = idVal ? Number(idVal) : (existingVip ? existingVip.id : null);
+
+      if (targetId) {
+        const { error } = await sb.from("banners").update(payload).eq("id", targetId);
+        if (error) throw error;
+      } else {
+        const { error } = await sb.from("banners").insert([payload]);
+        if (error) throw error;
+      }
+
+      // Simpan juga ke cache lokal untuk load instan di website
+      try {
+        localStorage.setItem("aquaagri_vip_promo_data", JSON.stringify(payload));
+      } catch (cacheErr) {}
+
+      showToast(
+        aktif
+          ? "Pengaturan Promo VIP berhasil disimpan & DIAKTIFKAN di website!"
+          : "Pengaturan Promo VIP disimpan (Status: Dinonaktifkan)."
+      );
+      await loadAllDatabaseData();
+    } catch (err) {
+      showBoxAlert("vipPromoAlert", "Gagal menyimpan Promo VIP: " + (err.message || err));
+    } finally {
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Simpan Pengaturan Promo VIP";
+      }
+    }
+  }
+
   // ---------- 11. RENDER & QUICK-SAVE TAB 5: TAUTAN SHOPEE ----------
 
   function renderShopeeTable() {
@@ -2738,6 +2978,7 @@
       categories: ["Kelola Kategori", "Atur 4 kategori utama beserta foto dan teks banner kategori"],
       banners: ["Kelola Banner Beranda", "Atur slide foto otomatis di bagian atas beranda"],
       popup: ["Kelola Pop-Up Iklan Promo", "Atur poster iklan pop-up saat pengunjung membuka website (WhatsApp / Shopee)"],
+      vippromo: ["Pengaturan Promo VIP & Voucher Shopee", "Atur kupon reward, voucher Shopee eksklusif, dan penawaran diskon mitra"],
       shopee: ["Kelola Tautan Affiliate Shopee", "Cek dan ubah cepat link produk Shopee dalam satu tabel"],
       pushnotif: ["Broadcast Notifikasi HP (Kaidah S3 Marketing)", "Kirim pesan notifikasi instan langsung ke layar HP pengunjung dengan copywriting psikologis berdaya konversi tinggi"]
     };
@@ -2765,6 +3006,10 @@
     const subEl = document.getElementById("pageHeaderSubtitle");
     if (titleEl) titleEl.textContent = info[0];
     if (subEl) subEl.textContent = info[1];
+
+    if (tabName === "vippromo") {
+      renderVipPromoTab();
+    }
 
     // Tutup sidebar mobile jika terbuka
     const sidebar = document.getElementById("adminSidebar");
@@ -3058,6 +3303,13 @@
       });
     }
 
+    const qaManageVipPromo = document.getElementById("qaManageVipPromo");
+    if (qaManageVipPromo) {
+      qaManageVipPromo.addEventListener("click", function () {
+        switchAdminTab("vippromo");
+      });
+    }
+
     const qaManageShopee = document.getElementById("qaManageShopee");
     if (qaManageShopee) {
       qaManageShopee.addEventListener("click", function () {
@@ -3308,6 +3560,91 @@
           return;
         }
         window.open(finalUrl, "_blank", "noopener,noreferrer");
+      });
+    }
+
+    // 13C. Tab Promo VIP & Voucher Shopee Listeners
+    const vipForm = document.getElementById("vipPromoAdminForm");
+    if (vipForm) {
+      vipForm.addEventListener("submit", handleSaveVipPromo);
+    }
+
+    const vipInputs = [
+      "vipPromoAktif",
+      "vipPromoJudul",
+      "vipPromoDesc",
+      "vipVoucherDiscount",
+      "vipVoucherCode",
+      "vipVoucherTitle",
+      "vipVoucherDesc",
+      "vipShopeeUrl",
+      "vipShopeeBtnText",
+      "vipPromoBannerUrl"
+    ];
+    vipInputs.forEach(function (id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("input", updateVipPromoLivePreview);
+        el.addEventListener("change", updateVipPromoLivePreview);
+      }
+    });
+
+    const vipQuickSelect = document.getElementById("vipQuickProductSelect");
+    if (vipQuickSelect) {
+      vipQuickSelect.addEventListener("change", function () {
+        const val = vipQuickSelect.value;
+        const selOpt = vipQuickSelect.options[vipQuickSelect.selectedIndex];
+        const prodName = selOpt ? selOpt.dataset.nama : "";
+        if (val) {
+          const vipShopeeUrl = document.getElementById("vipShopeeUrl");
+          if (vipShopeeUrl) vipShopeeUrl.value = val;
+        }
+        if (prodName) {
+          const vipVTitle = document.getElementById("vipVoucherTitle");
+          if (vipVTitle && (!vipVTitle.value || vipVTitle.value === "Voucher Diskon Spesial Shopee")) {
+            vipVTitle.value = "Diskon Spesial " + prodName;
+          }
+        }
+        updateVipPromoLivePreview();
+      });
+    }
+
+    const vipBannerFile = document.getElementById("vipPromoBannerFile");
+    if (vipBannerFile) {
+      vipBannerFile.addEventListener("change", async function () {
+        if (!vipBannerFile.files || !vipBannerFile.files[0]) return;
+        try {
+          const publicUrl = await uploadImageToSupabase(vipBannerFile.files[0], "banners");
+          const urlEl = document.getElementById("vipPromoBannerUrl");
+          if (urlEl) urlEl.value = publicUrl;
+          updateVipPromoLivePreview();
+          showToast("Foto banner VIP berhasil diunggah!");
+        } catch (err) {
+          showToast("Gagal unggah foto banner VIP: " + (err.message || err));
+        }
+      });
+    }
+
+    const vipClearBannerBtn = document.getElementById("vipClearBannerBtn");
+    if (vipClearBannerBtn) {
+      vipClearBannerBtn.addEventListener("click", function () {
+        const urlEl = document.getElementById("vipPromoBannerUrl");
+        const fileEl = document.getElementById("vipPromoBannerFile");
+        if (urlEl) urlEl.value = "";
+        if (fileEl) fileEl.value = "";
+        updateVipPromoLivePreview();
+      });
+    }
+
+    const testVipShopeeBtn = document.getElementById("testVipShopeeBtn");
+    if (testVipShopeeBtn) {
+      testVipShopeeBtn.addEventListener("click", function () {
+        const url = document.getElementById("vipShopeeUrl") ? document.getElementById("vipShopeeUrl").value.trim() : "";
+        if (!url || !isSafeHttpUrl(url)) {
+          showToast("Masukkan tautan Shopee yang valid terlebih dahulu untuk mengetes.");
+          return;
+        }
+        window.open(url, "_blank", "noopener,noreferrer");
       });
     }
 

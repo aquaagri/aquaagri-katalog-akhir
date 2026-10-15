@@ -1770,6 +1770,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const categoryView = document.getElementById("categoryView");
   const searchView = document.getElementById("searchView");
   const aboutView = document.getElementById("aboutView");
+  const vipPromoView = document.getElementById("vipPromoView");
+  const vipPromoBackBtn = document.getElementById("vipPromoBackBtn");
+  const vipBottomBackBtn = document.getElementById("vipBottomBackBtn");
+  const vipBottomExploreBtn = document.getElementById("vipBottomExploreBtn");
+  const vipViewAllProductsBtn = document.getElementById("vipViewAllProductsBtn");
+  const vipActivateNotifBtn = document.getElementById("vipActivateNotifBtn");
   const aboutBackBtn = document.getElementById("aboutBackBtn");
   const aboutBottomBackBtn = document.getElementById("aboutBottomBackBtn");
   const aboutExploreBtn = document.getElementById("aboutExploreBtn");
@@ -2767,6 +2773,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (homeView) homeView.classList.add("hidden");
     if (searchView) searchView.classList.add("hidden");
     if (aboutView) aboutView.classList.add("hidden");
+    if (vipPromoView) vipPromoView.classList.add("hidden");
     if (categoryView) categoryView.classList.remove("hidden");
 
     if (aboutSlideTimer) {
@@ -2799,6 +2806,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (categoryView) categoryView.classList.add("hidden");
     if (searchView) searchView.classList.add("hidden");
     if (aboutView) aboutView.classList.add("hidden");
+    if (vipPromoView) vipPromoView.classList.add("hidden");
     if (homeView) homeView.classList.remove("hidden");
 
     if (aboutSlideTimer) {
@@ -2819,6 +2827,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (homeView) homeView.classList.add("hidden");
     if (categoryView) categoryView.classList.add("hidden");
     if (searchView) searchView.classList.add("hidden");
+    if (vipPromoView) vipPromoView.classList.add("hidden");
     if (aboutView) aboutView.classList.remove("hidden");
 
     if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.add("hidden");
@@ -2828,6 +2837,140 @@ document.addEventListener("DOMContentLoaded", function () {
     initAboutSlider();
     setActiveBottomNav("tab-about");
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // ---------- SISTEM HALAMAN EKSKLUSIF PROMO VIP & VOUCHER DISKON ----------
+
+  function renderVipPromoProducts() {
+    const vipGrid = document.getElementById("vipProductsGrid");
+    if (!vipGrid) return;
+    vipGrid.innerHTML = "";
+
+    if (!Array.isArray(products) || products.length === 0) {
+      vipGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 24px;">Memuat produk promo...</p>';
+      return;
+    }
+
+    // Ambil produk aktif yang memiliki diskon, diurutkan dari diskon terbesar
+    const promoList = products.filter(function (p) {
+      return p.aktif !== false;
+    }).sort(function (a, b) {
+      const discA = parseDiscountToNumber(a.diskon);
+      const discB = parseDiscountToNumber(b.diskon);
+      if (discB !== discA) return discB - discA;
+      return parsePriceToNumber(a.harga) - parsePriceToNumber(b.harga);
+    }).slice(0, 8);
+
+    if (promoList.length === 0) {
+      vipGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 24px;">Belum ada produk promo diskon saat ini.</p>';
+      return;
+    }
+
+    promoList.forEach(function (p) {
+      vipGrid.appendChild(createProductCard(p));
+    });
+  }
+
+  function openVipPromoView() {
+    if (homeView) homeView.classList.add("hidden");
+    if (categoryView) categoryView.classList.add("hidden");
+    if (searchView) searchView.classList.add("hidden");
+    if (aboutView) aboutView.classList.add("hidden");
+    if (vipPromoView) vipPromoView.classList.remove("hidden");
+
+    if (aboutSlideTimer) {
+      clearInterval(aboutSlideTimer);
+      aboutSlideTimer = null;
+    }
+
+    if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.add("hidden");
+    if (topbarCategorySearchRow) topbarCategorySearchRow.classList.add("hidden");
+    updateHeaderOffset();
+
+    renderVipPromoProducts();
+    setActiveBottomNav("tab-promo");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function initVipPromoFromBanners(bannerRows) {
+    let vipRow = null;
+    if (Array.isArray(bannerRows)) {
+      vipRow = bannerRows.find(function (b) { return b.tipe === "vip_promo"; });
+    }
+
+    // Fallback ke cache localStorage jika offline atau belum tersinkron
+    if (!vipRow) {
+      try {
+        const cached = localStorage.getItem("aquaagri_vip_promo_data");
+        if (cached) vipRow = JSON.parse(cached);
+      } catch (e) {}
+    }
+
+    if (!vipRow) return;
+
+    // Simpan ke cache lokal
+    try {
+      localStorage.setItem("aquaagri_vip_promo_data", JSON.stringify(vipRow));
+    } catch (e) {}
+
+    let meta = {
+      desc: "Nikmati potongan harga spesial mitra resmi Shopee Indonesia, voucher diskon belanja, dan katalog harga promo terbatas untuk produk perikanan & budidaya pilihan.",
+      voucherDiscount: "50% OFF",
+      voucherTitle: "Voucher Diskon Spesial Shopee",
+      voucherDesc: "Khusus transaksi via tautan resmi toko Shopee AquaAgri. Ambil voucher sekarang sebelum kuota diskon habis!",
+      voucherCode: "KODE: VIPAQUA",
+      shopeeUrl: "https://shopee.co.id",
+      shopeeBtnText: "Klaim Voucher di Shopee 🛒"
+    };
+
+    if (vipRow.subjudul) {
+      try {
+        const parsed = JSON.parse(vipRow.subjudul);
+        if (parsed && typeof parsed === "object") {
+          meta = Object.assign(meta, parsed);
+        }
+      } catch (e) {
+        if (typeof vipRow.subjudul === "string" && vipRow.subjudul.length > 0) {
+          meta.desc = vipRow.subjudul;
+        }
+      }
+    }
+
+    const heroTitleEl = document.getElementById("vipPromoHeroTitle");
+    const heroDescEl = document.getElementById("vipPromoHeroDesc");
+    const ticketDiscEl = document.getElementById("vipTicketDiscount");
+    const ticketCodeEl = document.getElementById("vipTicketCode");
+    const ticketTitleEl = document.getElementById("vipTicketTitle");
+    const ticketDescEl = document.getElementById("vipTicketDesc");
+    const ticketClaimBtn = document.getElementById("vipTicketClaimBtn");
+    const ticketBtnText = document.getElementById("vipTicketBtnText");
+    const bannerCard = document.getElementById("vipPromoBannerCard");
+    const bannerImg = document.getElementById("vipPromoBannerImg");
+
+    if (heroTitleEl) heroTitleEl.textContent = vipRow.judul || "Voucher Diskon & Promo Eksklusif";
+    if (heroDescEl) heroDescEl.textContent = meta.desc || "";
+    if (ticketDiscEl) ticketDiscEl.textContent = meta.voucherDiscount || "50% OFF";
+    if (ticketCodeEl) ticketCodeEl.textContent = meta.voucherCode || "KODE: VIPAQUA";
+    if (ticketTitleEl) ticketTitleEl.textContent = meta.voucherTitle || "Voucher Diskon Spesial Shopee";
+    if (ticketDescEl) ticketDescEl.textContent = meta.voucherDesc || "";
+
+    const targetShopeeUrl = meta.shopeeUrl || vipRow.link_tujuan || "https://shopee.co.id";
+    if (ticketClaimBtn) {
+      ticketClaimBtn.href = targetShopeeUrl;
+    }
+    if (ticketBtnText) {
+      ticketBtnText.textContent = meta.shopeeBtnText || "Klaim Voucher di Shopee 🛒";
+    }
+
+    if (vipRow.gambar && vipRow.gambar.trim().length > 0) {
+      if (bannerCard) bannerCard.classList.remove("hidden");
+      if (bannerImg) {
+        bannerImg.src = vipRow.gambar.trim();
+        bannerImg.alt = vipRow.judul || "Banner Promo VIP";
+      }
+    } else {
+      if (bannerCard) bannerCard.classList.add("hidden");
+    }
   }
 
   function setActiveBottomNav(tabId) {
@@ -3043,6 +3186,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (homeView) homeView.classList.add("hidden");
     if (categoryView) categoryView.classList.add("hidden");
     if (aboutView) aboutView.classList.add("hidden");
+    if (vipPromoView) vipPromoView.classList.add("hidden");
     if (searchView) searchView.classList.remove("hidden");
 
     if (aboutSlideTimer) {
@@ -3082,6 +3226,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function closeSearchInterface() {
     if (searchView) searchView.classList.add("hidden");
     if (aboutView) aboutView.classList.add("hidden");
+    if (vipPromoView) vipPromoView.classList.add("hidden");
     if (homeView) homeView.classList.remove("hidden");
 
     if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.add("hidden");
@@ -3878,6 +4023,36 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Tombol Interaktif Halaman Promo VIP
+  if (vipPromoBackBtn) {
+    vipPromoBackBtn.addEventListener("click", goHome);
+  }
+  if (vipBottomBackBtn) {
+    vipBottomBackBtn.addEventListener("click", goHome);
+  }
+  if (vipBottomExploreBtn) {
+    vipBottomExploreBtn.addEventListener("click", function () {
+      openCategory("semua", "Semua Produk");
+    });
+  }
+  if (vipViewAllProductsBtn) {
+    vipViewAllProductsBtn.addEventListener("click", function () {
+      openCategory("semua", "Semua Produk");
+    });
+  }
+  if (vipActivateNotifBtn) {
+    vipActivateNotifBtn.addEventListener("click", function () {
+      const bell = document.getElementById("notifFloatingBell");
+      if (bell) {
+        bell.click();
+      } else {
+        const promptBanner = document.getElementById("notifPushPrompt");
+        if (promptBanner) promptBanner.classList.remove("hidden");
+      }
+      showSearchToast("🔔 Notifikasi Flash Sale VIP Diaktifkan");
+    });
+  }
+
   // ---------- 16. INISIALISASI HALAMAN AWAL & SINKRONISASI SUPABASE ----------
 
   function rebuildCategoryChipsAndSelect() {
@@ -4450,6 +4625,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!banRes.error && Array.isArray(banRes.data) && banRes.data.length > 0) {
         renderDynamicHeroBanners(banRes.data);
         initPromoPopupFromBanners(banRes.data);
+        initVipPromoFromBanners(banRes.data);
 
         // Sinkronisasi status sakelar Lonceng Diskon dari database Supabase
         const bellConfig = banRes.data.find(function (b) { return b.tipe === "catalog_bell"; });
@@ -4466,6 +4642,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 const row = payload.new;
                 if (row && row.tipe === "catalog_bell") {
                   applyCatalogBellVisibility(row.aktif !== false);
+                }
+                if (row && row.tipe === "vip_promo") {
+                  initVipPromoFromBanners([row]);
                 }
               })
               .subscribe();
@@ -4500,6 +4679,7 @@ document.addEventListener("DOMContentLoaded", function () {
   renderSampleCarousel();
   initStoryCarousel();
   initHeroSlider();
+  initVipPromoFromBanners([]);
 
   // ============================================================
   // FITUR TOMBOL KEMBALI KE ATAS (BACK TO TOP FLOATING FAB)
@@ -4831,33 +5011,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (navPromo) {
       navPromo.addEventListener("click", function () {
-        setActiveBottomNav("tab-promo");
-        // Prioritaskan membuka Pop-Up Poster Iklan/Promo jika tersedia
-        const promoOverlay = document.getElementById("promoPopupOverlay");
-        const promoTrack = document.getElementById("promoPopupTrack");
-        const promoImg = document.getElementById("promoPopupImg");
-        const hasSlides = promoTrack && promoTrack.children.length > 0;
-        const hasImg = promoImg && promoImg.src && !promoImg.src.endsWith("/") && promoImg.src.indexOf("undefined") === -1;
-
-        if (promoOverlay && (hasSlides || hasImg)) {
-          promoOverlay.classList.remove("hidden");
-          setTimeout(function () {
-            promoOverlay.classList.add("open");
-          }, 20);
-        } else {
-          // Buka Banner Notifikasi Diskon VIP & Voucher Shopee
-          const promptBanner = document.getElementById("notifPushPrompt");
-          const floatingBell = document.getElementById("notifFloatingBell");
-          if (promptBanner) {
-            if (floatingBell) floatingBell.classList.add("hidden");
-            promptBanner.classList.remove("hidden");
-          } else {
-            // Alternatif fallback jika notif ditolak: buka katalog filter diskon besar
-            openCategory("semua", "Semua Produk");
-            currentSort = "discount-desc";
-            refreshProductView();
-          }
-        }
+        openVipPromoView();
       });
     }
 
