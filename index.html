@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=20261015_popup_v2">
 
 <!-- STRUCTURED DATA SCHEMA.ORG (JSON-LD) UNTUK SEO GOOGLE -->
 <script type="application/ld+json">
@@ -1146,13 +1146,49 @@
   </div>
 
   <!-- ============================================================
-       POP-UP POSTER IKLAN / PROMO (ALA MARKETPLACE & KOPI KENANGAN)
-       Diatur langsung dari Dashboard Admin (Mendukung Link WA & Shopee)
+       POP-UP POSTER IKLAN / PROMO DENGAN SLIDE MANUAL & 4 DETIK AUTO-CLOSE
+       Mendukung multi-slide manual, pause saat disentuh, & tautan Shopee
        ============================================================ -->
   <div id="promoPopupOverlay" class="promo-popup-overlay hidden" role="dialog" aria-modal="true" aria-label="Penawaran Promo Spesial">
     <div class="promo-popup-container">
-      <div id="promoPopupCard" class="promo-popup-card" role="button" tabindex="0" aria-label="Buka Penawaran Promo">
-        <img id="promoPopupImg" src="" alt="Promo Spesial aquaagri.id" class="promo-popup-img">
+      
+      <!-- Kartu Pop-Up Multi-Slide & Durasi 4 Detik -->
+      <div id="promoPopupCard" class="promo-popup-card" role="region" aria-label="Penawaran Promo">
+        
+        <!-- Bar Progress Durasi 4 Detik (Menyusut jika tidak disentuh) -->
+        <div id="promoPopupTimerWrap" class="promo-popup-timer-wrap">
+          <div id="promoPopupTimerBar" class="promo-popup-timer-bar"></div>
+        </div>
+        <div id="promoPopupTimerBadge" class="promo-popup-timer-badge">⏱️ 4s</div>
+
+        <!-- Slider Viewport & Track -->
+        <div class="promo-popup-slider-viewport" id="promoPopupSliderViewport">
+          <div class="promo-popup-track" id="promoPopupTrack">
+            <!-- Slide gambar dimasukkan dinamis lewat script.js -->
+            <div class="promo-popup-slide active">
+              <img id="promoPopupImg" src="" alt="Promo Spesial aquaagri.id" class="promo-popup-img">
+            </div>
+          </div>
+
+          <!-- Tombol Navigasi Manual Slide (Kiri & Kanan) -->
+          <button id="promoPopupPrevBtn" type="button" class="promo-popup-nav-btn prev hidden" aria-label="Slide sebelumnya">‹</button>
+          <button id="promoPopupNextBtn" type="button" class="promo-popup-nav-btn next hidden" aria-label="Slide berikutnya">›</button>
+
+          <!-- Dot Indikator Slide Manual -->
+          <div id="promoPopupDots" class="promo-popup-dots hidden"></div>
+        </div>
+
+        <!-- Tombol Aksi CTA Shopee / WhatsApp / Link Khusus -->
+        <div id="promoPopupActionWrap" class="promo-popup-action-wrap hidden">
+          <a id="promoPopupCtaBtn" href="#" target="_blank" rel="noopener noreferrer" class="promo-popup-cta-btn shopee">
+            <svg class="shopee-bag-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h6v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z"/>
+            </svg>
+            <span id="promoPopupCtaText">Beli Sekarang di Shopee 🛒</span>
+          </a>
+        </div>
+
+        <!-- Badge Label Klik Tambahan -->
         <div id="promoPopupBadge" class="promo-popup-badge hidden">
           <span id="promoPopupBadgeText">Klik untuk Info Promo</span>
         </div>
@@ -1226,6 +1262,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
-  <script src="script.js?v=20261014_bell_sync" defer></script>
+  <script src="script.js?v=20261015_popup_v2" defer></script>
 </body>
 </html>

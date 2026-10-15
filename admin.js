@@ -1671,12 +1671,15 @@
 
   function buildPopupFinalLink() {
     const typeEl = document.getElementById("popupTargetType");
+    const shopeeUrlEl = document.getElementById("popupShopeeUrl");
     const waNumEl = document.getElementById("popupWaNumber");
     const waMsgEl = document.getElementById("popupWaMessage");
     const urlEl = document.getElementById("popupTargetUrl");
 
-    const targetType = typeEl ? typeEl.value : "wa";
-    if (targetType === "wa") {
+    const targetType = typeEl ? typeEl.value : "shopee";
+    if (targetType === "shopee") {
+      return shopeeUrlEl ? shopeeUrlEl.value.trim() : "";
+    } else if (targetType === "wa") {
       const cleanPhone = normalizeWaPhone(waNumEl ? waNumEl.value : "");
       if (!cleanPhone) return "";
       const msg = waMsgEl ? waMsgEl.value.trim() : "";
@@ -1692,22 +1695,120 @@
 
   function syncPopupTargetTypeUI() {
     const typeEl = document.getElementById("popupTargetType");
+    const shopeeGroup = document.getElementById("popupShopeeGroup");
     const waGroup = document.getElementById("popupWaGroup");
     const urlGroup = document.getElementById("popupUrlGroup");
-    if (!typeEl || !waGroup || !urlGroup) return;
+    if (!typeEl) return;
 
     const val = typeEl.value;
-    if (val === "wa") {
-      waGroup.classList.remove("hidden");
-      urlGroup.classList.add("hidden");
-    } else if (val === "url") {
-      waGroup.classList.add("hidden");
-      urlGroup.classList.remove("hidden");
-    } else {
-      waGroup.classList.add("hidden");
-      urlGroup.classList.add("hidden");
-    }
+    if (shopeeGroup) shopeeGroup.classList.toggle("hidden", val !== "shopee");
+    if (waGroup) waGroup.classList.toggle("hidden", val !== "wa");
+    if (urlGroup) urlGroup.classList.toggle("hidden", val !== "url");
+
     updatePopupLivePreview();
+  }
+
+  function createPopupSlideRow(initialUrl) {
+    const container = document.getElementById("popupAdditionalSlidesList");
+    if (!container) return;
+
+    const row = document.createElement("div");
+    row.className = "popup-slide-row";
+    row.style.cssText = "display: flex; gap: 8px; align-items: center; background: #ffffff; padding: 8px 10px; border-radius: 8px; border: 1px solid #cbd5e1;";
+
+    const thumbWrap = document.createElement("div");
+    thumbWrap.style.cssText = "width: 42px; height: 54px; border-radius: 6px; overflow: hidden; background: #f1f5f9; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border: 1px solid #e2e8f0;";
+
+    const thumbImg = document.createElement("img");
+    thumbImg.style.cssText = "width: 100%; height: 100%; object-fit: cover; display: " + (initialUrl ? "block" : "none") + ";";
+    if (initialUrl) thumbImg.src = initialUrl;
+
+    const thumbPlaceholder = document.createElement("span");
+    thumbPlaceholder.style.cssText = "font-size: 0.65rem; color: #94a3b8; display: " + (initialUrl ? "none" : "block") + ";";
+    thumbPlaceholder.textContent = "Foto";
+
+    thumbWrap.appendChild(thumbImg);
+    thumbWrap.appendChild(thumbPlaceholder);
+
+    const middleWrap = document.createElement("div");
+    middleWrap.style.cssText = "flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0;";
+
+    const urlInput = document.createElement("input");
+    urlInput.type = "text";
+    urlInput.className = "popup-slide-url-input";
+    urlInput.placeholder = "URL foto slide tambahan (https://...)...";
+    urlInput.value = initialUrl || "";
+    urlInput.style.cssText = "width: 100%; font-size: 0.82rem; padding: 6px 8px; box-sizing: border-box;";
+    urlInput.addEventListener("input", function () {
+      const val = urlInput.value.trim();
+      if (val) {
+        thumbImg.src = val;
+        thumbImg.style.display = "block";
+        thumbPlaceholder.style.display = "none";
+      } else {
+        thumbImg.style.display = "none";
+        thumbPlaceholder.style.display = "block";
+      }
+      updatePopupLivePreview();
+    });
+
+    const uploadWrap = document.createElement("div");
+    uploadWrap.style.cssText = "display: flex; gap: 8px; align-items: center; flex-wrap: wrap;";
+
+    const fileLabel = document.createElement("label");
+    fileLabel.className = "btn-secondary btn-sm upload-btn-label";
+    fileLabel.style.cssText = "font-size: 0.72rem; padding: 3px 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;";
+    fileLabel.innerHTML = "&#128247; Upload Foto Slide";
+
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/jpeg,image/png,image/webp";
+    fileInput.className = "hidden";
+    fileLabel.appendChild(fileInput);
+
+    const statusText = document.createElement("span");
+    statusText.style.cssText = "font-size: 0.72rem; color: #64748b;";
+
+    fileInput.addEventListener("change", async function () {
+      if (!fileInput.files || !fileInput.files[0]) return;
+      try {
+        statusText.textContent = "Mengunggah...";
+        statusText.style.color = "#0f766e";
+        const publicUrl = await uploadImageToSupabase(fileInput.files[0], "banners", statusText);
+        urlInput.value = publicUrl;
+        thumbImg.src = publicUrl;
+        thumbImg.style.display = "block";
+        thumbPlaceholder.style.display = "none";
+        statusText.textContent = "Berhasil diunggah";
+        statusText.style.color = "#059669";
+        updatePopupLivePreview();
+      } catch (err) {
+        statusText.textContent = err.message || "Gagal upload";
+        statusText.style.color = "#ef4444";
+      }
+    });
+
+    uploadWrap.appendChild(fileLabel);
+    uploadWrap.appendChild(statusText);
+
+    middleWrap.appendChild(urlInput);
+    middleWrap.appendChild(uploadWrap);
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.type = "button";
+    deleteBtn.className = "btn-secondary btn-sm";
+    deleteBtn.style.cssText = "color: #ef4444; border-color: #fecaca; background: #fef2f2; padding: 6px 10px; font-size: 0.8rem; font-weight: 700; cursor: pointer; flex-shrink: 0;";
+    deleteBtn.innerHTML = "&#128465; Hapus";
+    deleteBtn.addEventListener("click", function () {
+      row.remove();
+      updatePopupLivePreview();
+    });
+
+    row.appendChild(thumbWrap);
+    row.appendChild(middleWrap);
+    row.appendChild(deleteBtn);
+
+    container.appendChild(row);
   }
 
   function updatePopupLivePreview() {
@@ -1715,36 +1816,100 @@
     const gambarEl = document.getElementById("popupGambar");
     const smallPrev = document.getElementById("popupSmallPreview");
     const liveImg = document.getElementById("popupLivePreviewImg");
-    const badgeInput = document.getElementById("popupBadgeLabel");
     const liveBadge = document.getElementById("popupLivePreviewBadge");
     const statusLabel = document.getElementById("popupLiveStatusLabel");
     const typeEl = document.getElementById("popupTargetType");
+    const durationEl = document.getElementById("popupDurationSec");
+    const timerBar = document.getElementById("popupLiveTimerBar");
+    const timerBadge = document.getElementById("popupLiveTimerBadge");
+    const liveDots = document.getElementById("popupLivePreviewDots");
+    const ctaWrap = document.getElementById("popupLiveCtaWrap");
+    const ctaBtn = document.getElementById("popupLiveCtaBtn");
+    const ctaText = document.getElementById("popupLiveCtaText");
 
+    // Poster Utama
     const imgSrc = (gambarEl && gambarEl.value.trim()) ? gambarEl.value.trim() : "produk-olahan-ikan.jpg";
     if (smallPrev) smallPrev.src = imgSrc;
     if (liveImg) liveImg.src = imgSrc;
 
-    const badgeTxt = badgeInput ? badgeInput.value.trim() : "";
-    if (liveBadge) {
-      if (badgeTxt && typeEl && typeEl.value !== "none") {
-        liveBadge.textContent = badgeTxt;
-        liveBadge.classList.remove("hidden");
+    // Slide Tambahan
+    const slideInputs = document.querySelectorAll("#popupAdditionalSlidesList .popup-slide-url-input");
+    let totalSlides = 1;
+    slideInputs.forEach(function (inp) {
+      if (inp.value.trim()) totalSlides++;
+    });
+
+    if (liveDots) {
+      if (totalSlides > 1) {
+        liveDots.classList.remove("hidden");
+        liveDots.innerHTML = "";
+        for (let i = 0; i < totalSlides; i++) {
+          const dotSpan = document.createElement("span");
+          if (i === 0) {
+            dotSpan.style.cssText = "width: 14px; height: 6px; border-radius: 3px; background: #ffffff;";
+          } else {
+            dotSpan.style.cssText = "width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5);";
+          }
+          liveDots.appendChild(dotSpan);
+        }
       } else {
-        liveBadge.classList.add("hidden");
+        liveDots.classList.add("hidden");
       }
+    }
+
+    // Durasi Timer 4 Detik
+    const dur = durationEl ? parseInt(durationEl.value, 10) : 4;
+    if (dur > 0) {
+      if (timerBar && timerBar.parentElement) timerBar.parentElement.style.display = "block";
+      if (timerBadge) {
+        timerBadge.style.display = "block";
+        timerBadge.textContent = "⏱️ " + dur + "s";
+      }
+    } else {
+      if (timerBar && timerBar.parentElement) timerBar.parentElement.style.display = "none";
+      if (timerBadge) timerBadge.style.display = "none";
+    }
+
+    // Tipe Target & Tombol Aksi CTA
+    const targetType = typeEl ? typeEl.value : "shopee";
+    if (ctaWrap && ctaBtn && ctaText) {
+      if (targetType === "shopee") {
+        ctaWrap.style.display = "block";
+        ctaBtn.style.background = "linear-gradient(135deg, #f94c2f, #ee4d2d)";
+        const shopeeBtnTextEl = document.getElementById("popupShopeeBtnText");
+        ctaText.textContent = (shopeeBtnTextEl && shopeeBtnTextEl.value.trim()) ? shopeeBtnTextEl.value.trim() : "Beli Sekarang di Shopee 🛒";
+      } else if (targetType === "wa") {
+        ctaWrap.style.display = "block";
+        ctaBtn.style.background = "linear-gradient(135deg, #25d366, #128c7e)";
+        ctaText.textContent = "Chat WhatsApp Sekarang 💬";
+      } else if (targetType === "url") {
+        ctaWrap.style.display = "block";
+        ctaBtn.style.background = "linear-gradient(135deg, #0284c7, #0369a1)";
+        ctaText.textContent = "Kunjungi Promo Sekarang ↗";
+      } else {
+        ctaWrap.style.display = "none";
+      }
+    }
+
+    if (liveBadge) {
+      liveBadge.classList.add("hidden");
     }
 
     if (statusLabel) {
       const isAktif = aktifEl && aktifEl.checked;
-      const targetType = typeEl ? typeEl.value : "none";
+      const durDesc = dur > 0 ? "Durasi " + dur + "s" : "Tanpa Timer";
+      const slideDesc = totalSlides > 1 ? totalSlides + " Slide Manual" : "1 Slide";
       const targetDesc =
-        targetType === "wa"
-          ? "Klik mengarah ke WhatsApp"
+        targetType === "shopee"
+          ? "Tautan Shopee"
+          : targetType === "wa"
+          ? "WhatsApp"
           : targetType === "url"
-          ? "Klik mengarah ke Link Shopee/URL"
-          : "Tanpa link klik";
+          ? "URL Web"
+          : "Tanpa Link";
+
       statusLabel.textContent = isAktif
-        ? "Status: AKTIF di Website (" + targetDesc + ")"
+        ? "Status: AKTIF di Website (" + targetDesc + ", " + slideDesc + ", " + durDesc + ")"
         : "Status: NONAKTIF (Disembunyikan dari pengunjung)";
       statusLabel.style.color = isAktif ? "#4ade80" : "#cbd5e1";
     }
@@ -1760,13 +1925,32 @@
     const judulEl = document.getElementById("popupJudul");
     const gambarEl = document.getElementById("popupGambar");
     const typeEl = document.getElementById("popupTargetType");
+    const shopeeUrlEl = document.getElementById("popupShopeeUrl");
+    const shopeeBtnTextEl = document.getElementById("popupShopeeBtnText");
+    const shopeeQuickSelect = document.getElementById("popupShopeeQuickSelect");
     const waNumEl = document.getElementById("popupWaNumber");
     const waMsgEl = document.getElementById("popupWaMessage");
     const urlEl = document.getElementById("popupTargetUrl");
-    const badgeEl = document.getElementById("popupBadgeLabel");
+    const durationEl = document.getElementById("popupDurationSec");
     const freqEl = document.getElementById("popupFreqMode");
+    const slidesContainer = document.getElementById("popupAdditionalSlidesList");
 
     if (!idEl || !aktifEl || !judulEl || !gambarEl) return;
+
+    // Bersihkan daftar slide tambahan
+    if (slidesContainer) slidesContainer.innerHTML = "";
+
+    // Isi Quick Select Produk Shopee dari katalog
+    if (shopeeQuickSelect) {
+      shopeeQuickSelect.innerHTML = '<option value="">-- Pilih Produk untuk Isi Otomatis --</option>';
+      state.products.forEach(function (prod) {
+        const opt = document.createElement("option");
+        opt.value = prod.link_affiliate || "";
+        opt.textContent = (prod.nama || "Produk") + (isValidShopeeUrl(prod.link_affiliate) ? " (Shopee Ada)" : " (Belum ada link)");
+        opt.dataset.nama = prod.nama || "";
+        shopeeQuickSelect.appendChild(opt);
+      });
+    }
 
     if (popupRow) {
       idEl.value = popupRow.id;
@@ -1775,12 +1959,15 @@
       gambarEl.value = popupRow.gambar || "";
 
       let meta = {
-        targetType: "wa",
+        targetType: "shopee",
+        shopeeUrl: "",
+        shopeeBtnText: "Beli Sekarang di Shopee 🛒",
         waNumber: "",
         waMessage: "Halo Admin AquaAgri.id, saya tertarik dengan info promo di pop-up website.",
         targetUrl: "",
-        badgeLabel: "",
-        freq: "always"
+        durationSeconds: 4,
+        freq: "always",
+        slides: []
       };
 
       if (popupRow.subjudul) {
@@ -1792,22 +1979,51 @@
         } catch (e) {}
       }
 
-      if (typeEl) typeEl.value = meta.targetType || "wa";
+      if (typeEl) {
+        typeEl.value = meta.targetType || (popupRow.link_tujuan && popupRow.link_tujuan.includes("shopee") ? "shopee" : (popupRow.link_tujuan && popupRow.link_tujuan.includes("wa.me") ? "wa" : "shopee"));
+      }
+      if (shopeeUrlEl) {
+        shopeeUrlEl.value = meta.shopeeUrl || (meta.targetType === "shopee" ? popupRow.link_tujuan || "" : "");
+      }
+      if (shopeeBtnTextEl) {
+        shopeeBtnTextEl.value = meta.shopeeBtnText || "Beli Sekarang di Shopee 🛒";
+      }
       if (waNumEl) waNumEl.value = meta.waNumber || "";
-      if (waMsgEl) waMsgEl.value = meta.waMessage || "";
-      if (urlEl) urlEl.value = meta.targetUrl || popupRow.link_tujuan || "";
-      if (badgeEl) badgeEl.value = meta.badgeLabel || "";
+      if (waMsgEl) waMsgEl.value = meta.waMessage || "Halo Admin AquaAgri.id, saya tertarik dengan info promo di pop-up website.";
+      if (urlEl) urlEl.value = meta.targetUrl || (meta.targetType === "url" ? popupRow.link_tujuan || "" : "");
+      if (durationEl) {
+        durationEl.value = String(meta.durationSeconds !== undefined ? meta.durationSeconds : 4);
+      }
       if (freqEl) freqEl.value = meta.freq || "always";
+
+      // Render slide gambar tambahan (jika ada)
+      const primaryImg = (popupRow.gambar || "").trim();
+      let slides = [];
+      if (Array.isArray(meta.slides)) {
+        slides = meta.slides.filter(function (s) { return typeof s === "string" && s.trim().length > 0; });
+      }
+      const additionalSlides = [];
+      slides.forEach(function (s) {
+        const tr = s.trim();
+        if (tr && tr !== primaryImg && !additionalSlides.includes(tr)) {
+          additionalSlides.push(tr);
+        }
+      });
+      additionalSlides.forEach(function (sUrl) {
+        createPopupSlideRow(sUrl);
+      });
     } else {
       idEl.value = "";
       aktifEl.checked = false;
       judulEl.value = "Promo Spesial AquaAgri.id";
       gambarEl.value = "produk-olahan-ikan.jpg";
-      if (typeEl) typeEl.value = "wa";
+      if (typeEl) typeEl.value = "shopee";
+      if (shopeeUrlEl) shopeeUrlEl.value = "";
+      if (shopeeBtnTextEl) shopeeBtnTextEl.value = "Beli Sekarang di Shopee 🛒";
       if (waNumEl) waNumEl.value = "";
       if (waMsgEl) waMsgEl.value = "Halo Admin AquaAgri.id, saya tertarik dengan info promo di pop-up website.";
       if (urlEl) urlEl.value = "";
-      if (badgeEl) badgeEl.value = "";
+      if (durationEl) durationEl.value = "4";
       if (freqEl) freqEl.value = "always";
     }
 
@@ -1824,18 +2040,45 @@
     const judul = document.getElementById("popupJudul").value.trim() || "Promo Spesial AquaAgri";
     const gambar = document.getElementById("popupGambar").value.trim();
     const targetType = document.getElementById("popupTargetType").value;
-    const waNumberRaw = document.getElementById("popupWaNumber").value.trim();
-    const waMessage = document.getElementById("popupWaMessage").value.trim();
-    const targetUrl = document.getElementById("popupTargetUrl").value.trim();
-    const badgeLabel = document.getElementById("popupBadgeLabel").value.trim();
-    const freq = document.getElementById("popupFreqMode").value;
+    const shopeeUrl = document.getElementById("popupShopeeUrl") ? document.getElementById("popupShopeeUrl").value.trim() : "";
+    const shopeeBtnText = document.getElementById("popupShopeeBtnText") ? document.getElementById("popupShopeeBtnText").value.trim() : "Beli Sekarang di Shopee 🛒";
+    const waNumberRaw = document.getElementById("popupWaNumber") ? document.getElementById("popupWaNumber").value.trim() : "";
+    const waMessage = document.getElementById("popupWaMessage") ? document.getElementById("popupWaMessage").value.trim() : "";
+    const targetUrl = document.getElementById("popupTargetUrl") ? document.getElementById("popupTargetUrl").value.trim() : "";
+    const durationEl = document.getElementById("popupDurationSec");
+    const durationSeconds = durationEl ? (parseInt(durationEl.value, 10) || 0) : 4;
+    const freq = document.getElementById("popupFreqMode") ? document.getElementById("popupFreqMode").value : "always";
 
     if (!gambar) {
-      showBoxAlert("popupFormAlert", "Pilih / unggah foto poster terlebih dahulu.");
+      showBoxAlert("popupFormAlert", "Pilih / unggah foto poster utama terlebih dahulu.");
       return;
     }
 
-    if (targetType === "wa") {
+    // Kumpulkan slide tambahan
+    const slideInps = document.querySelectorAll("#popupAdditionalSlidesList .popup-slide-url-input");
+    const additionalSlides = [];
+    slideInps.forEach(function (inp) {
+      const val = inp.value.trim();
+      if (val && !additionalSlides.includes(val)) {
+        additionalSlides.push(val);
+      }
+    });
+
+    const allSlides = [gambar];
+    additionalSlides.forEach(function (s) {
+      if (!allSlides.includes(s)) allSlides.push(s);
+    });
+
+    if (targetType === "shopee") {
+      if (!shopeeUrl) {
+        showBoxAlert("popupFormAlert", "Masukkan tautan Shopee (contoh: https://s.shopee.co.id/... atau https://shopee.co.id/...).");
+        return;
+      }
+      if (!isSafeHttpUrl(shopeeUrl)) {
+        showBoxAlert("popupFormAlert", "Tautan Shopee harus diawali dengan https://");
+        return;
+      }
+    } else if (targetType === "wa") {
       const cleanWa = normalizeWaPhone(waNumberRaw);
       if (!cleanWa || cleanWa.length < 9) {
         showBoxAlert("popupFormAlert", "Masukkan nomor WhatsApp yang valid (contoh: 081234567890).");
@@ -1851,11 +2094,14 @@
     const finalLink = buildPopupFinalLink();
     const metaJson = JSON.stringify({
       targetType: targetType,
+      shopeeUrl: shopeeUrl,
+      shopeeBtnText: shopeeBtnText,
       waNumber: waNumberRaw,
       waMessage: waMessage,
       targetUrl: targetUrl,
-      badgeLabel: badgeLabel,
-      freq: freq
+      durationSeconds: durationSeconds,
+      freq: freq,
+      slides: allSlides
     });
 
     const payload = {
@@ -2993,9 +3239,45 @@
       popupGambar.addEventListener("input", updatePopupLivePreview);
     }
 
-    const popupBadgeLabel = document.getElementById("popupBadgeLabel");
-    if (popupBadgeLabel) {
-      popupBadgeLabel.addEventListener("input", updatePopupLivePreview);
+    const addSlideBtn = document.getElementById("addPopupSlideBtn");
+    if (addSlideBtn) {
+      addSlideBtn.addEventListener("click", function () {
+        createPopupSlideRow("");
+        updatePopupLivePreview();
+      });
+    }
+
+    const popupShopeeUrl = document.getElementById("popupShopeeUrl");
+    if (popupShopeeUrl) {
+      popupShopeeUrl.addEventListener("input", updatePopupLivePreview);
+    }
+
+    const popupShopeeBtnText = document.getElementById("popupShopeeBtnText");
+    if (popupShopeeBtnText) {
+      popupShopeeBtnText.addEventListener("input", updatePopupLivePreview);
+    }
+
+    const popupShopeeQuickSelect = document.getElementById("popupShopeeQuickSelect");
+    if (popupShopeeQuickSelect) {
+      popupShopeeQuickSelect.addEventListener("change", function () {
+        const selVal = popupShopeeQuickSelect.value;
+        const shopeeUrlInput = document.getElementById("popupShopeeUrl");
+        if (shopeeUrlInput && selVal) {
+          shopeeUrlInput.value = selVal;
+        }
+        const selectedOpt = popupShopeeQuickSelect.options[popupShopeeQuickSelect.selectedIndex];
+        const prodName = selectedOpt ? selectedOpt.dataset.nama : "";
+        const shopeeBtnText = document.getElementById("popupShopeeBtnText");
+        if (shopeeBtnText && prodName) {
+          shopeeBtnText.value = "Beli " + prodName + " di Shopee 🛒";
+        }
+        updatePopupLivePreview();
+      });
+    }
+
+    const popupDurationSec = document.getElementById("popupDurationSec");
+    if (popupDurationSec) {
+      popupDurationSec.addEventListener("change", updatePopupLivePreview);
     }
 
     const popupImageFile = document.getElementById("popupImageFile");
@@ -3022,7 +3304,7 @@
       testPopupTargetBtn.addEventListener("click", function () {
         const finalUrl = buildPopupFinalLink();
         if (!finalUrl || !isSafeHttpUrl(finalUrl)) {
-          showToast("Isi Nomor WhatsApp atau URL tujuan terlebih dahulu untuk mengetes.");
+          showToast("Isi tautan Shopee, nomor WhatsApp, atau URL tujuan yang valid terlebih dahulu untuk mengetes.");
           return;
         }
         window.open(finalUrl, "_blank", "noopener,noreferrer");

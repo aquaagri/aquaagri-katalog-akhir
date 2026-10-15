@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="admin.css">
+  <link rel="stylesheet" href="admin.css?v=20261015_popup_v2">
 </head>
 <body>
 
@@ -567,17 +567,55 @@
                   </div>
                 </div>
 
+                <!-- Slide Gambar Tambahan (Manual Slide) -->
+                <div class="form-group" style="background: #f8fafc; border: 1px dashed #cbd5e1; padding: 14px; border-radius: 12px; margin-top: 14px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <div>
+                      <strong style="font-size: 0.88rem; color: #0f172a;">&#128444;&#65039; Slide Gambar Tambahan (Manual Slider)</strong>
+                      <p style="font-size: 0.76rem; color: #64748b; margin: 2px 0 0 0;">Opsional: Tambahkan foto lain untuk membuat pop-up berformat slide manual.</p>
+                    </div>
+                    <button type="button" id="addPopupSlideBtn" class="btn-secondary btn-sm" style="font-weight: 700;">
+                      + Tambah Slide Foto
+                    </button>
+                  </div>
+                  <div id="popupAdditionalSlidesList" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                    <!-- Diisi dinamis oleh admin.js -->
+                  </div>
+                </div>
+
                 <div class="form-group">
                   <label for="popupTargetType">Tujuan Saat Gambar Poster Diklik Pengunjung</label>
                   <select id="popupTargetType">
+                    <option value="shopee">&#128717;&#65039; Arahkan ke Tautan Shopee (Produk / Voucher / Affiliate)</option>
                     <option value="wa">&#128172; Arahkan ke Chat Nomor WhatsApp (wa.me)</option>
-                    <option value="url">&#128722; Arahkan ke Link Shopee / URL Website</option>
+                    <option value="url">&#127760; Arahkan ke URL Website Lain</option>
                     <option value="none">&#128227; Hanya Poster Pengumuman (Tanpa Link Klik)</option>
                   </select>
                 </div>
 
-                <!-- Opsi 1: Nomor WhatsApp -->
-                <div id="popupWaGroup" class="form-group" style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 10px;">
+                <!-- Opsi 1: Tautan Shopee Khusus -->
+                <div id="popupShopeeGroup" class="form-group" style="background: #fff7ed; border: 1px solid #fed7aa; padding: 14px; border-radius: 10px;">
+                  <div class="form-group" style="margin-bottom: 12px;">
+                    <label for="popupShopeeUrl" style="color: #9a3412; font-weight: 700;">Tautan Shopee (Link Produk / Voucher Diskon) <span class="req">*</span></label>
+                    <input type="url" id="popupShopeeUrl" placeholder="https://s.shopee.co.id/... atau https://shopee.co.id/...">
+                    <small class="form-hint" style="color: #c2410c;">Bisa memakai link affiliate Shopee <code>https://s.shopee.co.id/...</code> (otomatis membuka aplikasi Shopee di HP pembeli).</small>
+                  </div>
+                  <div class="form-row-2" style="margin-bottom: 0;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label for="popupShopeeBtnText" style="color: #9a3412;">Teks Tombol Aksi Shopee</label>
+                      <input type="text" id="popupShopeeBtnText" placeholder="Contoh: Beli Sekarang di Shopee 🛒" value="Beli Sekarang di Shopee 🛒">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label for="popupShopeeQuickSelect" style="color: #9a3412;">Pilih Cepat dari Produk Katalog</label>
+                      <select id="popupShopeeQuickSelect">
+                        <option value="">-- Pilih Produk untuk Isi Otomatis --</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Opsi 2: Nomor WhatsApp -->
+                <div id="popupWaGroup" class="form-group hidden" style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 10px;">
                   <div class="form-group" style="margin-bottom: 12px;">
                     <label for="popupWaNumber">Nomor WhatsApp Tujuan <span class="req">*</span></label>
                     <input type="tel" id="popupWaNumber" placeholder="Contoh: 081234567890 atau 6281234567890">
@@ -589,18 +627,24 @@
                   </div>
                 </div>
 
-                <!-- Opsi 2: Link Shopee / URL -->
+                <!-- Opsi 3: Link URL Lain -->
                 <div id="popupUrlGroup" class="form-group hidden" style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 10px;">
-                  <label for="popupTargetUrl">URL Tujuan (Link Shopee / Link Produk) <span class="req">*</span></label>
-                  <input type="url" id="popupTargetUrl" placeholder="https://s.shopee.co.id/...">
+                  <label for="popupTargetUrl">URL Tujuan (Website Eksternal) <span class="req">*</span></label>
+                  <input type="url" id="popupTargetUrl" placeholder="https://...">
                   <small class="form-hint">Masukkan link lengkap yang diawali <code>https://</code></small>
                 </div>
 
                 <div class="form-row-2">
                   <div class="form-group">
-                    <label for="popupBadgeLabel">Label Petunjuk di Bawah Poster (Opsional)</label>
-                    <input type="text" id="popupBadgeLabel" placeholder="Kosongkan jika ingin poster polos">
-                    <small class="form-hint">Contoh: <em>Klik untuk Chat WA</em> (Kosongkan agar murni gambar poster saja)</small>
+                    <label for="popupDurationSec">&#9201;&#65039; Durasi Auto-Close (Jika Tidak Disentuh)</label>
+                    <select id="popupDurationSec">
+                      <option value="4" selected>4 Detik (Hilang otomatis jika tidak disentuh)</option>
+                      <option value="3">3 Detik</option>
+                      <option value="5">5 Detik</option>
+                      <option value="6">6 Detik</option>
+                      <option value="0">Tidak Otomatis Tutup (Hanya tutup saat klik X)</option>
+                    </select>
+                    <small class="form-hint">Jika pengunjung menyentuh / menggeser iklan, timer langsung berhenti otomatis.</small>
                   </div>
 
                   <div class="form-group">
@@ -613,7 +657,7 @@
                 </div>
 
                 <div class="modal-footer" style="padding-top: 12px; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; justify-content: flex-end;">
-                  <button type="button" id="testPopupTargetBtn" class="btn-secondary">Tes Buka Link / WA &#8599;</button>
+                  <button type="button" id="testPopupTargetBtn" class="btn-secondary">Tes Buka Link / Shopee &#8599;</button>
                   <button type="submit" id="savePopupBtn" class="btn-primary">Simpan Pengaturan Pop-Up</button>
                 </div>
               </form>
@@ -624,21 +668,46 @@
               <div class="panel-header">
                 <div>
                   <h3>Pratinjau Tampilan di Layar Pengunjung</h3>
-                  <p>Simulasi tampilan poster promo beserta tombol bulat putih <strong>( X )</strong> di bawahnya.</p>
+                  <p>Simulasi tampilan poster promo beserta multi-slide, timer 4 detik, dan tombol Shopee.</p>
                 </div>
               </div>
 
-              <div style="background: linear-gradient(160deg, #0f172a 0%, #1e293b 100%); border-radius: 16px; padding: 28px 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 440px;">
-                <div style="position: relative; width: 240px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 45px rgba(0,0,0,0.5); background: #0f2926;">
-                  <img id="popupLivePreviewImg" src="produk-olahan-ikan.jpg" alt="Pratinjau Poster Pop-up" style="width: 100%; height: auto; max-height: 320px; object-fit: cover; display: block;">
-                  <div id="popupLivePreviewBadge" class="hidden" style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); background: rgba(15,118,110,0.92); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 5px 12px; border-radius: 999px; white-space: nowrap;">
-                    Klik untuk Info Promo
+              <div style="background: linear-gradient(160deg, #0f172a 0%, #1e293b 100%); border-radius: 16px; padding: 24px 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 440px;">
+                <div id="popupLiveCardWrap" style="position: relative; width: 250px; border-radius: 18px; overflow: hidden; box-shadow: 0 20px 45px rgba(0,0,0,0.5); background: #ffffff; display: flex; flex-direction: column;">
+                  <!-- Timer bar preview -->
+                  <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: rgba(0,0,0,0.25); z-index: 20;">
+                    <div id="popupLiveTimerBar" style="height: 100%; width: 100%; background: linear-gradient(90deg, #ee4d2d, #ff7a00, #14b8a6);"></div>
+                  </div>
+                  <div id="popupLiveTimerBadge" style="position: absolute; top: 8px; right: 8px; z-index: 22; background: rgba(15,23,42,0.85); color: #fff; font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 999px;">
+                    ⏱️ 4s
+                  </div>
+
+                  <div style="position: relative; width: 100%; overflow: hidden; background: #0f172a;">
+                    <img id="popupLivePreviewImg" src="produk-olahan-ikan.jpg" alt="Pratinjau Poster Pop-up" style="width: 100%; height: auto; max-height: 280px; object-fit: cover; display: block;">
+                    
+                    <!-- Live slide indicator dots -->
+                    <div id="popupLivePreviewDots" class="hidden" style="position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 15; background: rgba(0,0,0,0.4); padding: 3px 8px; border-radius: 999px;">
+                      <span style="width: 14px; height: 6px; border-radius: 3px; background: #fff;"></span>
+                      <span style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5);"></span>
+                    </div>
+
+                    <div id="popupLivePreviewBadge" class="hidden" style="position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); background: rgba(15,118,110,0.92); color: #fff; font-size: 0.68rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; white-space: nowrap;">
+                      Klik untuk Info Promo
+                    </div>
+                  </div>
+
+                  <!-- Live CTA Button -->
+                  <div id="popupLiveCtaWrap" style="padding: 10px 12px; background: #fff;">
+                    <div id="popupLiveCtaBtn" style="width: 100%; padding: 9px 12px; border-radius: 10px; background: linear-gradient(135deg, #f94c2f, #ee4d2d); color: #fff; font-size: 0.8rem; font-weight: 700; text-align: center; box-shadow: 0 4px 14px rgba(238,77,45,0.35); display: flex; align-items: center; justify-content: center; gap: 6px;">
+                      🛍️ <span id="popupLiveCtaText">Beli Sekarang di Shopee 🛒</span>
+                    </div>
                   </div>
                 </div>
-                <div style="margin-top: 16px; width: 42px; height: 42px; border-radius: 50%; background: #ffffff; color: #1e293b; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 22px rgba(0,0,0,0.38); font-weight: 800; font-size: 1.1rem;" title="Tombol Tutup (X)">
+
+                <div style="margin-top: 16px; width: 40px; height: 40px; border-radius: 50%; background: #ffffff; color: #1e293b; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 22px rgba(0,0,0,0.38); font-weight: 800; font-size: 1.05rem;" title="Tombol Tutup (X)">
                   &#10005;
                 </div>
-                <span id="popupLiveStatusLabel" style="margin-top: 14px; font-size: 0.76rem; color: #cbd5e1; text-align: center;">
+                <span id="popupLiveStatusLabel" style="margin-top: 12px; font-size: 0.76rem; color: #cbd5e1; text-align: center;">
                   Status: Pop-Up Belum Aktif
                 </span>
               </div>
@@ -1255,6 +1324,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
   <script src="seed-data.js"></script>
-  <script src="admin.js?v=20261014_broadcast_fix"></script>
+  <script src="admin.js?v=20261015_popup_v2"></script>
 </body>
 </html>

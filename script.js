@@ -3980,6 +3980,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ---------- SISTEM POP-UP POSTER IKLAN / PROMO (DARI DASHBOARD ADMIN) ----------
+  // ---------- SISTEM POP-UP POSTER IKLAN / PROMO (MULTI-SLIDE MANUAL, 4s AUTO-CLOSE & SHOPEE) ----------
   function initPromoPopupFromBanners(bannerRows) {
     if (!Array.isArray(bannerRows) || bannerRows.length === 0) return;
     // Jika pengunjung datang dari klik Link Produk Spesifik di WA, prioritaskan menampilkan Pop-Up Produk tersebut
@@ -3992,15 +3993,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const overlay = document.getElementById("promoPopupOverlay");
     const card = document.getElementById("promoPopupCard");
-    const img = document.getElementById("promoPopupImg");
+    const track = document.getElementById("promoPopupTrack");
+    const prevBtn = document.getElementById("promoPopupPrevBtn");
+    const nextBtn = document.getElementById("promoPopupNextBtn");
+    const dotsWrap = document.getElementById("promoPopupDots");
+    const timerWrap = document.getElementById("promoPopupTimerWrap");
+    const timerBar = document.getElementById("promoPopupTimerBar");
+    const timerBadge = document.getElementById("promoPopupTimerBadge");
+    const actionWrap = document.getElementById("promoPopupActionWrap");
+    const ctaBtn = document.getElementById("promoPopupCtaBtn");
+    const ctaText = document.getElementById("promoPopupCtaText");
     const badge = document.getElementById("promoPopupBadge");
     const badgeText = document.getElementById("promoPopupBadgeText");
     const closeBtn = document.getElementById("promoPopupCloseBtn");
 
-    if (!overlay || !card || !img || !closeBtn) return;
+    if (!overlay || !card || !closeBtn) return;
 
-    // Cek pengaturan frekuensi tampil (disimpan pada subjudul JSON jika ada)
-    let meta = { targetType: "none", freq: "always", badgeLabel: "" };
+    // Cek pengaturan metadata (disimpan pada subjudul JSON jika ada)
+    let meta = {
+      targetType: "shopee",
+      shopeeUrl: "",
+      shopeeBtnText: "Beli Sekarang di Shopee 🛒",
+      waNumber: "",
+      waMessage: "",
+      targetUrl: "",
+      badgeLabel: "",
+      freq: "always",
+      durationSeconds: 4,
+      slides: []
+    };
+
     if (popupRow.subjudul) {
       try {
         const parsed = JSON.parse(popupRow.subjudul);
@@ -4017,24 +4039,236 @@ document.addEventListener("DOMContentLoaded", function () {
       } catch (e) {}
     }
 
-    img.src = popupRow.gambar;
-    img.alt = popupRow.judul || "Promo Spesial aquaagri.id";
-
-    const targetLink = (popupRow.link_tujuan || "").trim();
-    if (targetLink) {
-      card.style.cursor = "pointer";
-      if (badge && badgeText && meta.badgeLabel) {
-        badgeText.textContent = meta.badgeLabel;
-        badge.classList.remove("hidden");
-      } else if (badge) {
-        badge.classList.add("hidden");
-      }
-    } else {
-      card.style.cursor = "default";
-      if (badge) badge.classList.add("hidden");
+    // 1. Kumpulkan daftar gambar (Slide Manual: Utama + Slide Tambahan)
+    let slidesList = [];
+    if (Array.isArray(meta.slides) && meta.slides.length > 0) {
+      slidesList = meta.slides.filter(function (s) { return typeof s === "string" && s.trim().length > 0; });
+    }
+    if (slidesList.length === 0 && popupRow.gambar) {
+      slidesList = [popupRow.gambar.trim()];
+    } else if (slidesList.length > 0 && popupRow.gambar && !slidesList.includes(popupRow.gambar.trim())) {
+      slidesList.unshift(popupRow.gambar.trim());
     }
 
+    if (slidesList.length === 0) return;
+
+    // Render slide gambar ke dalam track
+    if (track) {
+      track.innerHTML = "";
+      slidesList.forEach(function (imgSrc, idx) {
+        const slideDiv = document.createElement("div");
+        slideDiv.className = "promo-popup-slide" + (idx === 0 ? " active" : "");
+        const slideImg = document.createElement("img");
+        slideImg.src = imgSrc;
+        slideImg.alt = (popupRow.judul || "Promo Spesial") + " - Slide " + (idx + 1);
+        slideImg.className = "promo-popup-img";
+        slideImg.loading = idx === 0 ? "eager" : "lazy";
+        slideDiv.appendChild(slideImg);
+        track.appendChild(slideDiv);
+      });
+    }
+
+    // Navigasi Slide Manual
+    let currentSlide = 0;
+    const totalSlides = slidesList.length;
+
+    function goToSlide(idx) {
+      if (idx < 0) idx = totalSlides - 1;
+      if (idx >= totalSlides) idx = 0;
+      currentSlide = idx;
+      if (track) {
+        track.style.transform = "translateX(-" + (currentSlide * 100) + "%)";
+      }
+      if (dotsWrap) {
+        const dots = dotsWrap.querySelectorAll(".promo-popup-dot");
+        dots.forEach(function (d, dIdx) {
+          d.classList.toggle("active", dIdx === currentSlide);
+        });
+      }
+    }
+
+    if (totalSlides > 1) {
+      if (prevBtn) {
+        prevBtn.classList.remove("hidden");
+        prevBtn.onclick = function (e) {
+          e.stopPropagation();
+          cancelAutoClose("manual-interaction");
+          goToSlide(currentSlide - 1);
+        };
+      }
+      if (nextBtn) {
+        nextBtn.classList.remove("hidden");
+        nextBtn.onclick = function (e) {
+          e.stopPropagation();
+          cancelAutoClose("manual-interaction");
+          goToSlide(currentSlide + 1);
+        };
+      }
+      if (dotsWrap) {
+        dotsWrap.innerHTML = "";
+        dotsWrap.classList.remove("hidden");
+        slidesList.forEach(function (_, dIdx) {
+          const dot = document.createElement("button");
+          dot.type = "button";
+          dot.className = "promo-popup-dot" + (dIdx === 0 ? " active" : "");
+          dot.setAttribute("aria-label", "Pindah ke slide " + (dIdx + 1));
+          dot.onclick = function (e) {
+            e.stopPropagation();
+            cancelAutoClose("manual-interaction");
+            goToSlide(dIdx);
+          };
+          dotsWrap.appendChild(dot);
+        });
+      }
+
+      // Dukungan Touch Swipe Gestures pada HP
+      let touchStartX = 0;
+      let touchEndX = 0;
+      const viewport = document.getElementById("promoPopupSliderViewport") || card;
+      if (viewport) {
+        viewport.addEventListener("touchstart", function (e) {
+          cancelAutoClose("touch");
+          if (e.changedTouches && e.changedTouches[0]) {
+            touchStartX = e.changedTouches[0].clientX;
+          }
+        }, { passive: true });
+
+        viewport.addEventListener("touchend", function (e) {
+          if (e.changedTouches && e.changedTouches[0]) {
+            touchEndX = e.changedTouches[0].clientX;
+            const diffX = touchStartX - touchEndX;
+            if (Math.abs(diffX) > 40) {
+              if (diffX > 0) {
+                goToSlide(currentSlide + 1);
+              } else {
+                goToSlide(currentSlide - 1);
+              }
+            }
+          }
+        }, { passive: true });
+      }
+    } else {
+      if (prevBtn) prevBtn.classList.add("hidden");
+      if (nextBtn) nextBtn.classList.add("hidden");
+      if (dotsWrap) dotsWrap.classList.add("hidden");
+    }
+
+    // 2. Tautan Shopee, WhatsApp, atau URL Eksternal
+    let finalTargetLink = (popupRow.link_tujuan || "").trim();
+    const targetType = meta.targetType || (finalTargetLink.includes("shopee") ? "shopee" : (finalTargetLink.includes("wa.me") ? "wa" : "url"));
+
+    if (actionWrap && ctaBtn && ctaText && finalTargetLink && targetType !== "none") {
+      actionWrap.classList.remove("hidden");
+      ctaBtn.href = finalTargetLink;
+      if (targetType === "shopee") {
+        ctaBtn.className = "promo-popup-cta-btn shopee";
+        ctaText.textContent = meta.shopeeBtnText || "Beli Sekarang di Shopee 🛒";
+      } else if (targetType === "wa") {
+        ctaBtn.className = "promo-popup-cta-btn wa";
+        ctaText.textContent = meta.waBtnText || "Chat WhatsApp Sekarang 💬";
+      } else {
+        ctaBtn.className = "promo-popup-cta-btn url";
+        ctaText.textContent = meta.urlBtnText || "Kunjungi Promo Sekarang ↗";
+      }
+      ctaBtn.onclick = function (e) {
+        e.stopPropagation();
+        cancelAutoClose("cta-click");
+      };
+    } else if (actionWrap) {
+      actionWrap.classList.add("hidden");
+    }
+
+    // Badge Label Tambahan
+    if (badge && badgeText && meta.badgeLabel && finalTargetLink) {
+      badgeText.textContent = meta.badgeLabel;
+      badge.classList.remove("hidden");
+    } else if (badge) {
+      badge.classList.add("hidden");
+    }
+
+    // 3. Durasi 4 Detik & Deteksi Sentuhan (Auto-close jika tidak disentuh)
+    let autoCloseTimer = null;
+    let countdownInterval = null;
+    let isInteracted = false;
+    const durationSeconds = typeof meta.durationSeconds === "number" ? meta.durationSeconds : 4;
+
+    function cancelAutoClose(reason) {
+      if (isInteracted) return;
+      isInteracted = true;
+      if (autoCloseTimer) {
+        clearTimeout(autoCloseTimer);
+        autoCloseTimer = null;
+      }
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+      if (timerBar) {
+        timerBar.style.transition = "none";
+        timerBar.style.width = "100%";
+        timerBar.style.opacity = "0.4";
+      }
+      if (timerBadge) {
+        timerBadge.textContent = "✨ Promo Aktif";
+        setTimeout(function () {
+          if (timerBadge) timerBadge.style.opacity = "0";
+        }, 1200);
+      }
+    }
+
+    function startAutoCloseTimer() {
+      if (durationSeconds <= 0) {
+        if (timerWrap) timerWrap.classList.add("hidden");
+        if (timerBadge) timerBadge.classList.add("hidden");
+        return;
+      }
+
+      if (timerWrap) timerWrap.classList.remove("hidden");
+      if (timerBadge) {
+        timerBadge.classList.remove("hidden");
+        timerBadge.textContent = "⏱️ " + durationSeconds + "s";
+      }
+
+      // Animasi bar progres
+      if (timerBar) {
+        timerBar.style.transition = "none";
+        timerBar.style.width = "100%";
+        void timerBar.offsetWidth;
+        timerBar.style.transition = "width " + durationSeconds + "s linear";
+        timerBar.style.width = "0%";
+      }
+
+      let remainingSec = durationSeconds;
+      countdownInterval = setInterval(function () {
+        if (isInteracted) {
+          clearInterval(countdownInterval);
+          return;
+        }
+        remainingSec--;
+        if (timerBadge && remainingSec >= 0) {
+          timerBadge.textContent = "⏱️ " + remainingSec + "s";
+        }
+        if (remainingSec <= 0) {
+          clearInterval(countdownInterval);
+        }
+      }, 1000);
+
+      autoCloseTimer = setTimeout(function () {
+        if (!isInteracted) {
+          closePromoPopup();
+        }
+      }, durationSeconds * 1000);
+    }
+
+    // Pasang sensor interaksi (sentuh / klik / gerak kursor) untuk membatalkan timer 4 detik
+    ["touchstart", "pointerdown", "mouseenter", "wheel"].forEach(function (evtName) {
+      card.addEventListener(evtName, function () {
+        cancelAutoClose(evtName);
+      }, { passive: true });
+    });
+
     function closePromoPopup() {
+      cancelAutoClose("closed");
       overlay.classList.remove("open");
       if (meta.freq === "session") {
         try {
@@ -4047,25 +4281,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function openPromoTarget() {
-      if (!targetLink) return;
+      if (!finalTargetLink) return;
       try {
-        const parsedUrl = new URL(targetLink);
+        const parsedUrl = new URL(finalTargetLink);
         if (parsedUrl.protocol === "https:" || parsedUrl.protocol === "http:") {
           window.open(parsedUrl.href, "_blank", "noopener,noreferrer");
         }
       } catch (e) {}
     }
 
+    // Klik gambar slide membuka link target jika ada
     card.onclick = function (e) {
-      e.stopPropagation();
-      if (targetLink) {
-        openPromoTarget();
+      cancelAutoClose("card-click");
+      // Jangan trigger jika mengeklik tombol navigasi atau tombol CTA
+      if (e.target.closest("#promoPopupPrevBtn") || e.target.closest("#promoPopupNextBtn") || e.target.closest(".promo-popup-dot") || e.target.closest("#promoPopupCtaBtn")) {
+        return;
       }
-    };
-
-    card.onkeydown = function (e) {
-      if ((e.key === "Enter" || e.key === " ") && targetLink) {
-        e.preventDefault();
+      if (finalTargetLink && targetType !== "none") {
         openPromoTarget();
       }
     };
@@ -4081,10 +4313,12 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     };
 
+    // Buka pop-up dengan animasi halus setelah delay 450ms
     setTimeout(function () {
       overlay.classList.remove("hidden");
       void overlay.offsetWidth;
       overlay.classList.add("open");
+      startAutoCloseTimer();
     }, 450);
   }
 
