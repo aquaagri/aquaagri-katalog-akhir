@@ -2985,11 +2985,167 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ---------- SISTEM SLIDE FOTO OTOMATIS: HALAMAN KOMITMEN KAMI ----------
+  // ---------- SISTEM SLIDE FOTO OTOMATIS: HALAMAN KOMITMEN KAMI (DINAMIS & REALTIME) ----------
+  function escapeHtml(str) {
+    if (!str) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  const DEFAULT_ABOUT_DOCS = [
+    {
+      badge: "Edukasi Riset BBPBL Lampung",
+      judul: "Sinergi Edukasi Riset di BBPBL Lampung",
+      subjudul: "Studi lapangan dan alih teknologi budidaya laut modern bersama Balai Besar Perikanan Budidaya Laut.",
+      gambar: "kegiatan-di-balai-besar-perikanan-budidaya-laut-lampung.jpg",
+      urutan: 1,
+      aktif: true
+    },
+    {
+      badge: "Sinergi Kemitraan Komunitas",
+      judul: "Komitmen Resmi Kemitraan Petambak",
+      subjudul: "Kerja sama pembinaan kelompok perikanan dan generasi muda demi rantai pasok yang adil dan transparan.",
+      gambar: "assets/kegiatan-sosial/kegiatan-kemitraan-maninjau.jpg",
+      urutan: 2,
+      aktif: true
+    },
+    {
+      badge: "Budidaya Ikan Unggul",
+      judul: "Pengembangan Budidaya Modern",
+      subjudul: "Teknologi kolam dan pakan teruji menghasilkan ikan sehat, bermutu tinggi, dan berdaya saing kuat.",
+      gambar: "poto-pembudidaya.jpg",
+      urutan: 3,
+      aktif: true
+    },
+    {
+      badge: "Panen Keramba Apung",
+      judul: "Ketekunan Petambak Keramba Apung",
+      subjudul: "Bermitra langsung menjaga kelestarian keramba apung serta mutu panen sehat dan berkelanjutan.",
+      gambar: "poto-petambak.jpg",
+      urutan: 4,
+      aktif: true
+    },
+    {
+      badge: "Tangkapan Laut Cold-Chain",
+      judul: "Standar Kesegaran Tangkapan Nelayan",
+      subjudul: "Sistem rantai dingin higienis menjaga nutrisi prima dan kesegaran alami laut hingga ke meja Anda.",
+      gambar: "ikan-segar.jpg",
+      urutan: 5,
+      aktif: true
+    },
+    {
+      badge: "Olahan Ikan Bergizi UMKM",
+      judul: "Dukungan UMKM Olahan Pesisir",
+      subjudul: "Mendukung UMKM lokal menghasilkan olahan ikan bersih, lezat, dan bebas bahan kimia berbahaya.",
+      gambar: "produk-olahan-ikan.jpg",
+      urutan: 6,
+      aktif: true
+    },
+    {
+      badge: "Sahabat Sportfishing",
+      judul: "Dukungan Penuh Pecinta Bahari",
+      subjudul: "Menyediakan piranti pancing berkualitas teruji dengan semangat sportfishing yang bertanggung jawab.",
+      gambar: "poto-pemancing-1.jpg",
+      urutan: 7,
+      aktif: true
+    },
+    {
+      badge: "Kelestarian Ekosistem Bahari",
+      judul: "Harmoni Perairan Nusantara",
+      subjudul: "Menghubungkan rantai pasok kelautan Indonesia dengan integritas, transparansi, dan cinta kelestarian.",
+      gambar: "banner-bahari-real.jpg",
+      urutan: 8,
+      aktif: true
+    }
+  ];
+
   let aboutSlideIndex = 0;
   let aboutSlideTimer = null;
   let isAboutSlidePaused = false;
   let isAboutSliderBound = false;
+
+  function renderDynamicAboutSlider(docsList) {
+    const track = document.getElementById("aboutSliderTrack");
+    const dotsWrap = document.getElementById("aboutSliderDots");
+    if (!track) return;
+
+    const list = Array.isArray(docsList) && docsList.length > 0
+      ? docsList.filter(function (d) { return d.aktif !== false && d.gambar; })
+      : DEFAULT_ABOUT_DOCS;
+
+    if (list.length === 0) return;
+
+    let trackHtml = "";
+    let dotsHtml = "";
+
+    list.forEach(function (doc, idx) {
+      const badge = doc.link_tujuan || doc.badge || "Komitmen Bahari";
+      const title = doc.judul || "Dokumentasi Dedikasi";
+      const desc = doc.subjudul || "";
+      const img = doc.gambar || "kegiatan-di-balai-besar-perikanan-budidaya-laut-lampung.jpg";
+      const activeCls = idx === 0 ? " active" : "";
+
+      trackHtml += `
+        <div class="about-slide${activeCls}">
+          <div class="about-slide-img-box">
+            <span class="about-slide-badge">${escapeHtml(badge)}</span>
+            <img src="${escapeHtml(img)}" alt="${escapeHtml(title)}" class="about-slide-img" loading="${idx === 0 ? "eager" : "lazy"}">
+          </div>
+          <div class="about-slide-body">
+            <h4 class="about-slide-title">${escapeHtml(title)}</h4>
+            <p class="about-slide-desc">${escapeHtml(desc)}</p>
+          </div>
+        </div>
+      `;
+
+      dotsHtml += `<button class="about-slide-dot${activeCls}" data-index="${idx}" aria-label="Slide ${idx + 1}"></button>`;
+    });
+
+    track.innerHTML = trackHtml;
+    if (dotsWrap) dotsWrap.innerHTML = dotsHtml;
+
+    initAboutSlider();
+  }
+
+  function initAboutDocsFromBanners(bannerRows) {
+    let docs = [];
+
+    if (Array.isArray(bannerRows) && bannerRows.length > 0) {
+      const fromDb = bannerRows.filter(function (b) { return b.tipe === "about_doc" && b.aktif !== false; });
+      if (fromDb.length > 0) {
+        docs = fromDb;
+        try {
+          localStorage.setItem("aquaagri_about_docs_data", JSON.stringify(fromDb));
+        } catch (e) {}
+      }
+    }
+
+    if (docs.length === 0) {
+      try {
+        const cached = localStorage.getItem("aquaagri_about_docs_data");
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            docs = parsed;
+          }
+        }
+      } catch (e) {}
+    }
+
+    if (docs.length === 0) {
+      docs = DEFAULT_ABOUT_DOCS;
+    }
+
+    docs.sort(function (a, b) {
+      return (Number(a.urutan) || 0) - (Number(b.urutan) || 0);
+    });
+
+    renderDynamicAboutSlider(docs);
+  }
 
   function initAboutSlider() {
     const sliderBox = document.getElementById("aboutSliderBox");
@@ -3062,12 +3218,14 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       if (dotsWrap) {
-        const dots = dotsWrap.querySelectorAll(".about-slide-dot");
-        dots.forEach(function (dot, i) {
-          dot.addEventListener("click", function () {
-            showAboutSlide(i);
+        dotsWrap.addEventListener("click", function (e) {
+          const dot = e.target.closest(".about-slide-dot");
+          if (!dot) return;
+          const idx = parseInt(dot.getAttribute("data-index"), 10);
+          if (!isNaN(idx)) {
+            showAboutSlide(idx);
             startAboutSlideTimer();
-          });
+          }
         });
       }
 
@@ -4626,6 +4784,7 @@ document.addEventListener("DOMContentLoaded", function () {
         renderDynamicHeroBanners(banRes.data);
         initPromoPopupFromBanners(banRes.data);
         initVipPromoFromBanners(banRes.data);
+        initAboutDocsFromBanners(banRes.data);
 
         // Sinkronisasi status sakelar Lonceng Diskon dari database Supabase
         const bellConfig = banRes.data.find(function (b) { return b.tipe === "catalog_bell"; });
@@ -4645,6 +4804,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 if (row && row.tipe === "vip_promo") {
                   initVipPromoFromBanners([row]);
+                }
+                if (row && row.tipe === "about_doc") {
+                  initAboutDocsFromBanners([row]);
                 }
               })
               .subscribe();
@@ -4680,6 +4842,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initStoryCarousel();
   initHeroSlider();
   initVipPromoFromBanners([]);
+  initAboutDocsFromBanners([]);
 
   // ============================================================
   // FITUR TOMBOL KEMBALI KE ATAS (BACK TO TOP FLOATING FAB)

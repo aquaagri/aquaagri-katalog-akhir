@@ -528,6 +528,7 @@
     renderBannersGrid();
     renderPopupPromoTab();
     renderVipPromoTab();
+    renderAboutDocsGrid();
     renderCatalogBellStatus();
     syncOneSignalConfigFromDatabase(state.banners);
     renderShopeeTable();
@@ -547,6 +548,8 @@
     const isPopupActive = Boolean(popupRow && popupRow.aktif !== false && popupRow.gambar);
     const vipRow = state.banners.find(function (b) { return b.tipe === "vip_promo"; });
     const isVipActive = Boolean(vipRow && vipRow.aktif !== false);
+    const aboutDocs = state.banners.filter(function (b) { return b.tipe === "about_doc"; });
+    const aboutDocsCount = aboutDocs.length > 0 ? aboutDocs.length : 8;
 
     const validShopeeCount = state.products.filter(function (p) {
       return isValidShopeeUrl(p.link_affiliate);
@@ -576,6 +579,7 @@
     setTxt("navBadgeBanners", totalBans);
     setTxt("navBadgePopup", isPopupActive ? "ON" : "OFF");
     setTxt("navBadgeVipPromo", isVipActive ? "ON" : "OFF");
+    setTxt("navBadgeAboutDocs", aboutDocsCount);
 
     // Tampilkan kartu bantuan import 1-klik jika database masih kosong
     const emptyBanner = document.getElementById("emptyDbBanner");
@@ -2390,6 +2394,395 @@
     }
   }
 
+  // ---------- 10C. RENDER & CRUD TAB: DOKUMENTASI DEDIKASI (TENTANG KAMI) ----------
+
+  const DEFAULT_ABOUT_DOCS = [
+    {
+      badge: "Edukasi Riset BBPBL Lampung",
+      judul: "Sinergi Edukasi Riset di BBPBL Lampung",
+      subjudul: "Studi lapangan dan alih teknologi budidaya laut modern bersama Balai Besar Perikanan Budidaya Laut.",
+      gambar: "kegiatan-di-balai-besar-perikanan-budidaya-laut-lampung.jpg",
+      urutan: 1,
+      aktif: true
+    },
+    {
+      badge: "Sinergi Kemitraan Komunitas",
+      judul: "Komitmen Resmi Kemitraan Petambak",
+      subjudul: "Kerja sama pembinaan kelompok perikanan dan generasi muda demi rantai pasok yang adil dan transparan.",
+      gambar: "assets/kegiatan-sosial/kegiatan-kemitraan-maninjau.jpg",
+      urutan: 2,
+      aktif: true
+    },
+    {
+      badge: "Budidaya Ikan Unggul",
+      judul: "Pengembangan Budidaya Modern",
+      subjudul: "Teknologi kolam dan pakan teruji menghasilkan ikan sehat, bermutu tinggi, dan berdaya saing kuat.",
+      gambar: "poto-pembudidaya.jpg",
+      urutan: 3,
+      aktif: true
+    },
+    {
+      badge: "Panen Keramba Apung",
+      judul: "Ketekunan Petambak Keramba Apung",
+      subjudul: "Bermitra langsung menjaga kelestarian keramba apung serta mutu panen sehat dan berkelanjutan.",
+      gambar: "poto-petambak.jpg",
+      urutan: 4,
+      aktif: true
+    },
+    {
+      badge: "Tangkapan Laut Cold-Chain",
+      judul: "Standar Kesegaran Tangkapan Nelayan",
+      subjudul: "Sistem rantai dingin higienis menjaga nutrisi prima dan kesegaran alami laut hingga ke meja Anda.",
+      gambar: "ikan-segar.jpg",
+      urutan: 5,
+      aktif: true
+    },
+    {
+      badge: "Olahan Ikan Bergizi UMKM",
+      judul: "Dukungan UMKM Olahan Pesisir",
+      subjudul: "Mendukung UMKM lokal menghasilkan olahan ikan bersih, lezat, dan bebas bahan kimia berbahaya.",
+      gambar: "produk-olahan-ikan.jpg",
+      urutan: 6,
+      aktif: true
+    },
+    {
+      badge: "Sahabat Sportfishing",
+      judul: "Dukungan Penuh Pecinta Bahari",
+      subjudul: "Menyediakan piranti pancing berkualitas teruji dengan semangat sportfishing yang bertanggung jawab.",
+      gambar: "poto-pemancing-1.jpg",
+      urutan: 7,
+      aktif: true
+    },
+    {
+      badge: "Kelestarian Ekosistem Bahari",
+      judul: "Harmoni Perairan Nusantara",
+      subjudul: "Menghubungkan rantai pasok kelautan Indonesia dengan integritas, transparansi, dan cinta kelestarian.",
+      gambar: "banner-bahari-real.jpg",
+      urutan: 8,
+      aktif: true
+    }
+  ];
+
+  function getAboutDocsList() {
+    let list = state.banners.filter(function (b) {
+      return b.tipe === "about_doc";
+    });
+
+    if (list.length === 0) {
+      try {
+        const cached = localStorage.getItem("aquaagri_about_docs_data");
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            list = parsed;
+          }
+        }
+      } catch (e) {}
+    }
+
+    if (list.length === 0) {
+      list = DEFAULT_ABOUT_DOCS.map(function (doc, i) {
+        return Object.assign({}, doc, { id: "default-" + (i + 1) });
+      });
+    }
+
+    return list.slice().sort(function (a, b) {
+      return (Number(a.urutan) || 0) - (Number(b.urutan) || 0);
+    });
+  }
+
+  function renderAboutDocsGrid() {
+    const grid = document.getElementById("aboutDocsAdminGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    const docs = getAboutDocsList();
+
+    docs.forEach(function (doc, index) {
+      const card = document.createElement("div");
+      card.className = "admin-media-card";
+
+      const imgWrap = document.createElement("div");
+      imgWrap.className = "admin-media-img-wrap";
+
+      const img = document.createElement("img");
+      img.src = doc.gambar || PLACEHOLDER_IMG;
+      img.alt = doc.judul || "Dokumentasi";
+      img.addEventListener("error", function () {
+        img.src = PLACEHOLDER_IMG;
+      });
+
+      const badge = document.createElement("span");
+      badge.className = "admin-media-badge";
+      badge.textContent = "Slide #" + (doc.urutan || index + 1);
+
+      imgWrap.appendChild(img);
+      imgWrap.appendChild(badge);
+
+      const body = document.createElement("div");
+      body.className = "admin-media-body";
+
+      const topInfo = document.createElement("div");
+      const tagSpan = document.createElement("span");
+      tagSpan.style.cssText = "font-size: 0.65rem; font-weight: 800; color: #0284c7; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 2px;";
+      tagSpan.textContent = doc.link_tujuan || doc.badge || "Dokumentasi Bahari";
+
+      const h4 = document.createElement("h4");
+      h4.textContent = doc.judul || "Tanpa Judul";
+      const pSub = document.createElement("p");
+      pSub.textContent = doc.subjudul || "";
+
+      topInfo.appendChild(tagSpan);
+      topInfo.appendChild(h4);
+      topInfo.appendChild(pSub);
+
+      const footer = document.createElement("div");
+      footer.className = "admin-media-footer";
+
+      const stSpan = document.createElement("span");
+      stSpan.className = doc.aktif !== false ? "badge-pill badge-success" : "badge-pill badge-warn";
+      stSpan.textContent = doc.aktif !== false ? "Aktif" : "Nonaktif";
+
+      const btnGroup = document.createElement("div");
+      btnGroup.className = "row-actions";
+
+      const editBtn = document.createElement("button");
+      editBtn.type = "button";
+      editBtn.className = "btn-secondary btn-sm";
+      editBtn.textContent = "Edit";
+      editBtn.addEventListener("click", function () {
+        openAboutDocModal(doc);
+      });
+
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.className = "btn-danger btn-sm";
+      delBtn.textContent = "Hapus";
+      delBtn.addEventListener("click", function () {
+        handleDeleteAboutDoc(doc);
+      });
+
+      btnGroup.appendChild(editBtn);
+      btnGroup.appendChild(delBtn);
+
+      footer.appendChild(stSpan);
+      footer.appendChild(btnGroup);
+
+      body.appendChild(topInfo);
+      body.appendChild(footer);
+
+      card.appendChild(imgWrap);
+      card.appendChild(body);
+
+      grid.appendChild(card);
+    });
+
+    const badgeEl = document.getElementById("navBadgeAboutDocs");
+    if (badgeEl) {
+      badgeEl.textContent = String(docs.length);
+    }
+  }
+
+  function openAboutDocModal(doc) {
+    const modal = document.getElementById("aboutDocModalBackdrop");
+    const titleEl = document.getElementById("aboutDocModalTitle");
+    const idInput = document.getElementById("aboutDocId");
+    const badgeInput = document.getElementById("aboutDocBadge");
+    const judulInput = document.getElementById("aboutDocJudul");
+    const subjudulInput = document.getElementById("aboutDocSubjudul");
+    const gambarInput = document.getElementById("aboutDocGambar");
+    const preview = document.getElementById("aboutDocPreview");
+    const urutanInput = document.getElementById("aboutDocUrutan");
+    const aktifInput = document.getElementById("aboutDocAktif");
+    const statusEl = document.getElementById("aboutDocUploadStatus");
+
+    showBoxAlert("aboutDocFormAlert", "");
+    if (statusEl) {
+      statusEl.textContent = "Format JPG/PNG/WebP, maks 2 MB";
+      statusEl.style.color = "";
+    }
+
+    if (doc) {
+      if (titleEl) titleEl.textContent = "Edit Foto Dokumentasi Dedikasi";
+      if (idInput) idInput.value = doc.id && !String(doc.id).startsWith("default-") ? doc.id : "";
+      if (badgeInput) badgeInput.value = doc.link_tujuan || doc.badge || "";
+      if (judulInput) judulInput.value = doc.judul || "";
+      if (subjudulInput) subjudulInput.value = doc.subjudul || "";
+      if (gambarInput) gambarInput.value = doc.gambar || "";
+      if (preview) preview.src = doc.gambar || PLACEHOLDER_IMG;
+      if (urutanInput) urutanInput.value = doc.urutan || 1;
+      if (aktifInput) aktifInput.checked = doc.aktif !== false;
+    } else {
+      const docs = getAboutDocsList();
+      if (titleEl) titleEl.textContent = "Tambah Foto Dokumentasi Dedikasi";
+      if (idInput) idInput.value = "";
+      if (badgeInput) badgeInput.value = "";
+      if (judulInput) judulInput.value = "";
+      if (subjudulInput) subjudulInput.value = "";
+      if (gambarInput) gambarInput.value = "";
+      if (preview) preview.src = PLACEHOLDER_IMG;
+      if (urutanInput) urutanInput.value = docs.length + 1;
+      if (aktifInput) aktifInput.checked = true;
+    }
+
+    if (modal) modal.classList.remove("hidden");
+  }
+
+  function closeAboutDocModal() {
+    const modal = document.getElementById("aboutDocModalBackdrop");
+    if (modal) modal.classList.add("hidden");
+  }
+
+  async function handleSaveAboutDoc(e) {
+    e.preventDefault();
+    showBoxAlert("aboutDocFormAlert", "");
+
+    const idInput = document.getElementById("aboutDocId");
+    const badgeInput = document.getElementById("aboutDocBadge");
+    const judulInput = document.getElementById("aboutDocJudul");
+    const subjudulInput = document.getElementById("aboutDocSubjudul");
+    const gambarInput = document.getElementById("aboutDocGambar");
+    const urutanInput = document.getElementById("aboutDocUrutan");
+    const aktifInput = document.getElementById("aboutDocAktif");
+
+    const idVal = idInput ? idInput.value.trim() : "";
+    const badgeVal = badgeInput ? badgeInput.value.trim() : "";
+    const judulVal = judulInput ? judulInput.value.trim() : "";
+    const subjudulVal = subjudulInput ? subjudulInput.value.trim() : "";
+    const gambarVal = gambarInput ? gambarInput.value.trim() : "";
+    const urutanVal = urutanInput ? (parseInt(urutanInput.value, 10) || 1) : 1;
+    const aktifVal = aktifInput ? aktifInput.checked : true;
+
+    if (!gambarVal) {
+      showBoxAlert("aboutDocFormAlert", "Pilih atau unggah foto dokumentasi terlebih dahulu.");
+      return;
+    }
+    if (!badgeVal) {
+      showBoxAlert("aboutDocFormAlert", "Masukkan label badge foto (contoh: Edukasi Riset BBPBL Lampung).");
+      return;
+    }
+    if (!judulVal) {
+      showBoxAlert("aboutDocFormAlert", "Masukkan judul dokumentasi kegiatan.");
+      return;
+    }
+
+    const payload = {
+      tipe: "about_doc",
+      judul: judulVal,
+      subjudul: subjudulVal,
+      link_tujuan: badgeVal,
+      gambar: gambarVal,
+      urutan: urutanVal,
+      aktif: aktifVal,
+      updated_at: new Date().toISOString()
+    };
+
+    const sb = window.getAquaAgriSupabaseClient();
+    const saveBtn = document.getElementById("saveAboutDocBtn");
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      saveBtn.textContent = "Menyimpan...";
+    }
+
+    try {
+      if (idVal) {
+        const { error } = await sb.from("banners").update(payload).eq("id", Number(idVal));
+        if (error) throw error;
+      } else {
+        const { error } = await sb.from("banners").insert([payload]);
+        if (error) throw error;
+      }
+
+      closeAboutDocModal();
+      showToast("Foto dokumentasi dedikasi berhasil disimpan!");
+      await loadAllDatabaseData();
+    } catch (err) {
+      showBoxAlert("aboutDocFormAlert", "Gagal menyimpan dokumentasi: " + (err.message || err));
+    } finally {
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Simpan Dokumentasi";
+      }
+    }
+  }
+
+  async function handleDeleteAboutDoc(doc) {
+    if (!doc) return;
+
+    if (!doc.id || String(doc.id).startsWith("default-")) {
+      const current = getAboutDocsList().filter(function (d) { return d.judul !== doc.judul; });
+      try {
+        localStorage.setItem("aquaagri_about_docs_data", JSON.stringify(current));
+      } catch (e) {}
+      renderAboutDocsGrid();
+      showToast("Foto dokumentasi dihapus dari daftar.");
+      return;
+    }
+
+    openConfirmDeleteModal(
+      "Apakah Anda yakin ingin menghapus foto dokumentasi '" + (doc.judul || "ini") + "' dari halaman Tentang Kami?",
+      async function () {
+        try {
+          const sb = window.getAquaAgriSupabaseClient();
+          const { error } = await sb.from("banners").delete().eq("id", Number(doc.id));
+          if (error) throw error;
+
+          showToast("Foto dokumentasi berhasil dihapus.");
+          await loadAllDatabaseData();
+        } catch (err) {
+          showToast("Gagal menghapus dokumentasi: " + (err.message || err));
+        }
+      }
+    );
+  }
+
+  async function seedDefaultAboutDocs() {
+    const sb = window.getAquaAgriSupabaseClient();
+    const btn = document.getElementById("seedAboutDocsBtn");
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = "Memuat...";
+    }
+
+    try {
+      const existing = state.banners.filter(function (b) { return b.tipe === "about_doc"; });
+      if (existing.length > 0) {
+        showToast("Sudah ada " + existing.length + " foto dokumentasi di database.");
+        return;
+      }
+
+      const rows = DEFAULT_ABOUT_DOCS.map(function (doc, i) {
+        return {
+          tipe: "about_doc",
+          judul: doc.judul,
+          subjudul: doc.subjudul,
+          link_tujuan: doc.badge,
+          gambar: doc.gambar,
+          urutan: doc.urutan || i + 1,
+          aktif: true,
+          updated_at: new Date().toISOString()
+        };
+      });
+
+      const { error } = await sb.from("banners").insert(rows);
+      if (error) throw error;
+
+      try {
+        localStorage.setItem("aquaagri_about_docs_data", JSON.stringify(rows));
+      } catch (e) {}
+
+      showToast("Berhasil memuat 8 foto dokumentasi bawaan ke database!");
+      await loadAllDatabaseData();
+    } catch (err) {
+      showToast("Gagal memuat foto bawaan: " + (err.message || err));
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = "Muat 8 Foto Bawaan";
+      }
+    }
+  }
+
   // ---------- 11. RENDER & QUICK-SAVE TAB 5: TAUTAN SHOPEE ----------
 
   function renderShopeeTable() {
@@ -2810,6 +3203,14 @@
     try {
       sb.channel("admin-banners-realtime")
         .on("postgres_changes", { event: "*", schema: "public", table: "banners" }, function (payload) {
+          if (payload.eventType === "DELETE" && payload.old && payload.old.id) {
+            state.banners = state.banners.filter(function (b) { return b.id !== payload.old.id; });
+            renderAboutDocsGrid();
+            renderBannersTable();
+            renderOverviewTab();
+            return;
+          }
+
           const row = payload.new;
           if (!row) return;
           const idx = state.banners.findIndex(function (b) { return b.id === row.id; });
@@ -2825,6 +3226,10 @@
           } else if (row.tipe === "onesignal_config") {
             syncOneSignalConfigFromDatabase(state.banners);
             showToast("Sinkronisasi: Kunci OneSignal diperbarui dari perangkat lain!");
+          } else if (row.tipe === "about_doc") {
+            renderAboutDocsGrid();
+            renderOverviewTab();
+            showToast("Sinkronisasi: Foto dokumentasi dedikasi diperbarui!");
           }
         })
         .subscribe();
@@ -2979,6 +3384,7 @@
       banners: ["Kelola Banner Beranda", "Atur slide foto otomatis di bagian atas beranda"],
       popup: ["Kelola Pop-Up Iklan Promo", "Atur poster iklan pop-up saat pengunjung membuka website (WhatsApp / Shopee)"],
       vippromo: ["Pengaturan Promo VIP & Voucher Shopee", "Atur kupon reward, voucher Shopee eksklusif, dan penawaran diskon mitra"],
+      aboutdocs: ["Kelola Dokumentasi Dedikasi", "Atur slide foto kegiatan lapangan, kemitraan petambak, dan potret komitmen bahari di halaman Tentang Kami"],
       shopee: ["Kelola Tautan Affiliate Shopee", "Cek dan ubah cepat link produk Shopee dalam satu tabel"],
       pushnotif: ["Broadcast Notifikasi HP (Kaidah S3 Marketing)", "Kirim pesan notifikasi instan langsung ke layar HP pengunjung dengan copywriting psikologis berdaya konversi tinggi"]
     };
@@ -3009,6 +3415,9 @@
 
     if (tabName === "vippromo") {
       renderVipPromoTab();
+    }
+    if (tabName === "aboutdocs") {
+      renderAboutDocsGrid();
     }
 
     // Tutup sidebar mobile jika terbuka
@@ -3307,6 +3716,13 @@
     if (qaManageVipPromo) {
       qaManageVipPromo.addEventListener("click", function () {
         switchAdminTab("vippromo");
+      });
+    }
+
+    const qaManageAboutDocs = document.getElementById("qaManageAboutDocs");
+    if (qaManageAboutDocs) {
+      qaManageAboutDocs.addEventListener("click", function () {
+        switchAdminTab("aboutdocs");
       });
     }
 
@@ -3645,6 +4061,64 @@
           return;
         }
         window.open(url, "_blank", "noopener,noreferrer");
+      });
+    }
+
+    // 13D. Tab Kelola Dokumentasi Dedikasi (Tentang AquaAgri) Listeners
+    const addAboutDocBtn = document.getElementById("addAboutDocBtn");
+    if (addAboutDocBtn) {
+      addAboutDocBtn.addEventListener("click", function () {
+        openAboutDocModal(null);
+      });
+    }
+
+    const seedAboutDocsBtn = document.getElementById("seedAboutDocsBtn");
+    if (seedAboutDocsBtn) {
+      seedAboutDocsBtn.addEventListener("click", seedDefaultAboutDocs);
+    }
+
+    const closeAboutDocBtn = document.getElementById("closeAboutDocModalBtn");
+    if (closeAboutDocBtn) closeAboutDocBtn.addEventListener("click", closeAboutDocModal);
+
+    const cancelAboutDocBtn = document.getElementById("cancelAboutDocModalBtn");
+    if (cancelAboutDocBtn) cancelAboutDocBtn.addEventListener("click", closeAboutDocModal);
+
+    const aboutDocBackdrop = document.getElementById("aboutDocModalBackdrop");
+    if (aboutDocBackdrop) {
+      aboutDocBackdrop.addEventListener("click", function (e) {
+        if (e.target === aboutDocBackdrop) closeAboutDocModal();
+      });
+    }
+
+    const aboutDocForm = document.getElementById("aboutDocForm");
+    if (aboutDocForm) {
+      aboutDocForm.addEventListener("submit", handleSaveAboutDoc);
+    }
+
+    const aboutDocGambar = document.getElementById("aboutDocGambar");
+    const aboutDocPreview = document.getElementById("aboutDocPreview");
+    if (aboutDocGambar && aboutDocPreview) {
+      aboutDocGambar.addEventListener("input", function () {
+        aboutDocPreview.src = aboutDocGambar.value.trim() || PLACEHOLDER_IMG;
+      });
+    }
+
+    const aboutDocFile = document.getElementById("aboutDocFile");
+    if (aboutDocFile) {
+      aboutDocFile.addEventListener("change", async function () {
+        if (!aboutDocFile.files || !aboutDocFile.files[0]) return;
+        const statusEl = document.getElementById("aboutDocUploadStatus");
+        try {
+          const publicUrl = await uploadImageToSupabase(aboutDocFile.files[0], "banners", statusEl);
+          if (aboutDocGambar) aboutDocGambar.value = publicUrl;
+          if (aboutDocPreview) aboutDocPreview.src = publicUrl;
+        } catch (err) {
+          if (statusEl) {
+            statusEl.textContent = err.message;
+            statusEl.style.color = "#dc2626";
+          }
+          showToast(err.message);
+        }
       });
     }
 

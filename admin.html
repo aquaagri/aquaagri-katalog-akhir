@@ -164,6 +164,16 @@
           <span id="navBadgeVipPromo" class="nav-badge" style="background:#0d9488; color:#fff; font-weight:800;">VIP</span>
         </button>
 
+        <button type="button" class="nav-item" data-tab="aboutdocs">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+          <span>Dokumentasi Dedikasi</span>
+          <span id="navBadgeAboutDocs" class="nav-badge" style="background:#0284c7; color:#fff; font-weight:800;">8</span>
+        </button>
+
         <button type="button" class="nav-item" data-tab="shopee">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
@@ -381,6 +391,13 @@
                   <div>
                     <strong>Kelola Promo VIP &amp; Voucher Shopee</strong>
                     <span>Atur kupon reward, voucher diskon Shopee &amp; halaman VIP</span>
+                  </div>
+                </button>
+                <button type="button" class="quick-action-item" id="qaManageAboutDocs">
+                  <div class="qa-icon">&#128248;</div>
+                  <div>
+                    <strong>Kelola Dokumentasi Dedikasi</strong>
+                    <span>Atur foto kegiatan lapangan &amp; potret komitmen bahari</span>
                   </div>
                 </button>
                 <button type="button" class="quick-action-item" id="qaManageShopee">
@@ -914,6 +931,28 @@
         </section>
 
         <!-- ==================================================================
+             TAB 4D: KELOLA DOKUMENTASI DEDIKASI (TENTANG KAMI SLIDER)
+             ================================================================== -->
+        <section id="tab-aboutdocs" class="tab-panel hidden">
+          <div class="panel-card">
+            <div class="panel-header-with-btn">
+              <div>
+                <h3>Dokumentasi Dedikasi Bahari (Halaman Tentang Kami)</h3>
+                <p>Kelola slide foto, label kegiatan, judul, dan keterangan komitmen lapangan yang tampil di halaman Tentang Kami.</p>
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                <button type="button" id="seedAboutDocsBtn" class="btn-secondary btn-sm" title="Kembalikan atau muat 8 dokumentasi komitmen bawaan jika data belum ada di database">Muat 8 Foto Bawaan</button>
+                <button type="button" id="addAboutDocBtn" class="btn-primary">+ Tambah Foto Dokumentasi</button>
+              </div>
+            </div>
+
+            <div id="aboutDocsAdminGrid" class="banners-admin-grid">
+              <!-- Diisi dinamis oleh admin.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
              TAB 5: KELOLA TAUTAN SHOPEE (AUDIT & QUICK EDIT)
              ================================================================== -->
         <section id="tab-shopee" class="tab-panel hidden">
@@ -1435,6 +1474,77 @@
         <div class="modal-footer">
           <button type="button" id="cancelBannerModalBtn" class="btn-secondary">Batal</button>
           <button type="submit" id="saveBannerBtn" class="btn-primary">Simpan Banner</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       5E. MODAL TAMBAH / EDIT DOKUMENTASI DEDIKASI (TENTANG KAMI SLIDER)
+       ======================================================================== -->
+  <div id="aboutDocModalBackdrop" class="modal-overlay hidden">
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="aboutDocModalTitle">
+      <div class="modal-header">
+        <h3 id="aboutDocModalTitle">Tambah Foto Dokumentasi Dedikasi</h3>
+        <button type="button" id="closeAboutDocModalBtn" class="modal-close-btn" aria-label="Tutup">&times;</button>
+      </div>
+
+      <form id="aboutDocForm" class="modal-body" novalidate>
+        <input type="hidden" id="aboutDocId">
+        <div id="aboutDocFormAlert" class="alert-box hidden"></div>
+
+        <!-- Foto Dokumen -->
+        <div class="form-group">
+          <label>Foto Dokumentasi Kegiatan Lapangan <span class="req">*</span></label>
+          <div class="image-upload-box">
+            <div class="image-preview-wrap">
+              <img id="aboutDocPreview" src="kegiatan-di-balai-besar-perikanan-budidaya-laut-lampung.jpg" alt="Preview Foto Dokumentasi">
+            </div>
+            <div class="image-upload-controls">
+              <label for="aboutDocFile" class="btn-secondary btn-sm upload-btn-label">
+                &#128247; Pilih &amp; Upload Foto Lapangan
+              </label>
+              <input type="file" id="aboutDocFile" accept="image/jpeg,image/png,image/webp" class="hidden">
+              <span id="aboutDocUploadStatus" class="upload-status-text">Format JPG/PNG/WebP, maks 2 MB</span>
+              <input type="text" id="aboutDocGambar" placeholder="kegiatan-di-balai-besar-perikanan-budidaya-laut-lampung.jpg atau URL gambar" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Label Badge Foto -->
+        <div class="form-group">
+          <label for="aboutDocBadge">Label Badge Kategori Foto <span class="req">*</span></label>
+          <input type="text" id="aboutDocBadge" placeholder="Contoh: Edukasi Riset BBPBL Lampung / Kemitraan Petambak" required>
+          <small class="form-hint">Label kecil yang muncul di pojok kiri atas foto slider.</small>
+        </div>
+
+        <!-- Judul Kegiatan -->
+        <div class="form-group">
+          <label for="aboutDocJudul">Judul Dokumentasi Kegiatan <span class="req">*</span></label>
+          <input type="text" id="aboutDocJudul" placeholder="Contoh: Sinergi Edukasi Riset di BBPBL Lampung" required>
+        </div>
+
+        <!-- Keterangan Singkat -->
+        <div class="form-group">
+          <label for="aboutDocSubjudul">Keterangan / Narasi Kegiatan Lapangan <span class="req">*</span></label>
+          <textarea id="aboutDocSubjudul" rows="2" placeholder="Tuliskan konteks riset, kemitraan, atau kegiatan di foto..." required></textarea>
+        </div>
+
+        <!-- Urutan & Status Aktif -->
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="aboutDocUrutan">Urutan Tampil Slide</label>
+            <input type="number" id="aboutDocUrutan" min="1" max="99" value="1">
+          </div>
+          <div class="form-group form-checkbox-row" style="padding-top: 28px;">
+            <input type="checkbox" id="aboutDocAktif" checked>
+            <label for="aboutDocAktif">Slide Aktif di Tentang Kami</label>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="cancelAboutDocModalBtn" class="btn-secondary">Batal</button>
+          <button type="submit" id="saveAboutDocBtn" class="btn-primary">Simpan Dokumentasi</button>
         </div>
       </form>
     </div>
