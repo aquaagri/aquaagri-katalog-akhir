@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261015_popup_v2">
+<link rel="stylesheet" href="style.css?v=20261015_clean_ui">
 
 <!-- STRUCTURED DATA SCHEMA.ORG (JSON-LD) UNTUK SEO GOOGLE -->
 <script type="application/ld+json">
@@ -690,28 +690,11 @@
          ------------------------------------------------------------ -->
     <section id="searchView" class="view hidden" aria-label="Antarmuka Pencarian Produk">
 
-      <!-- RIWAYAT PENCARIAN TERAKHIR (RECENT SEARCHES) -->
-      <div id="searchRecentWrap" class="search-recent-box hidden" aria-label="Riwayat pencarian terakhir">
-        <div class="search-recent-header">
-          <span class="search-recent-title">
-            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
-            </svg>
-            <span>Pencarian Terakhir</span>
-          </span>
-          <button type="button" id="searchClearHistoryBtn" class="search-recent-clear-btn" aria-label="Hapus semua riwayat pencarian">Hapus</button>
-        </div>
-        <div id="searchRecentChips" class="search-recent-chips">
-          <!-- Diisi dinamis oleh script.js -->
-        </div>
-      </div>
-
       <!-- HEADING: HASIL PENCARIAN & JUMLAH PRODUK -->
       <div class="search-heading-row">
         <div class="search-heading-left">
           <h3 class="search-heading-text">Hasil Pencarian</h3>
-          <span class="search-heading-count" id="searchResultCount">48 Produk</span>
+          <span class="search-heading-count" id="searchResultCount">0 Produk</span>
         </div>
       </div>
 
@@ -738,12 +721,13 @@
         <img src="banner-bahari-real.jpg" alt="Komitmen Bahari aquaagri.id" class="about-hero-bg" loading="eager">
         <div class="about-hero-overlay"></div>
         <div class="about-hero-nav">
-          <button id="aboutBackBtn" class="category-back-btn" type="button" aria-label="Kembali ke Beranda">
-            <svg class="back-arrow-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <button id="aboutBackBtn" class="about-hero-back-pill" type="button" aria-label="Kembali ke Beranda">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
-            <span>Kembali ke Beranda</span>
+            <span>Kembali</span>
           </button>
+          <span class="about-hero-breadcrumb">Tentang AquaAgri</span>
         </div>
         <div class="about-hero-content">
           <span class="about-hero-tag">KOMITMEN & NILAI KAMI</span>
@@ -1001,11 +985,11 @@
         <p class="about-cta-desc">Jelajahi ragam produk olahan ikan lezat, tangkapan laut segar, piranti mancing, dan sarana budidaya pilihan.</p>
         <div class="about-cta-actions">
           <button id="aboutExploreBtn" class="hero-btn-primary" type="button">
-            <span>Jelajahi Semua Produk</span>
+            <span>Jelajahi Semua Produk Katalog</span>
             <span class="btn-arrow" aria-hidden="true">→</span>
           </button>
-          <button id="aboutBottomBackBtn" class="hero-btn-secondary" type="button">
-            Kembali ke Beranda
+          <button id="aboutBottomBackBtn" class="about-cta-back-link" type="button">
+            ← Kembali ke Beranda
           </button>
         </div>
       </div>
@@ -1262,6 +1246,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
-  <script src="script.js?v=20261015_popup_v2" defer></script>
+  <script src="script.js?v=20261015_clean_ui" defer></script>
 </body>
 </html>

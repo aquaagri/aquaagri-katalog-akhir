@@ -2425,9 +2425,9 @@ body.dark-mode .budidaya-group-badge {
 
 #topbarCategorySearchRow.topbar-sub-row,
 #topbarSearchInterfaceRow.topbar-sub-row {
-  padding: 6px 0 0;
-  border-bottom: 1px solid rgba(15, 118, 110, 0.12);
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+  padding: 5px 0 0;
+  border-bottom: 1px solid rgba(15, 118, 110, 0.10);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
 }
 
 body.dark-mode .topbar-sub-row {
@@ -2441,45 +2441,45 @@ body.dark-mode #topbarSearchInterfaceRow.topbar-sub-row {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
-/* TIER 2.5 SEARCH: CHIPS & URUTAN HARGA MENEMPEL LANGSUNG DENGAN FITUR SEARCH */
+/* TIER 2.5 SEARCH: CHIPS & URUTAN HARGA MENEMPEL LANGSUNG DENGAN FITUR SEARCH (COMPACT & SLEEK) */
 .search-filter-attached-bar {
-  border-top: 1px solid rgba(15, 118, 110, 0.08);
-  padding: 5px 0 7px;
-  margin-top: 5px;
-  background: rgba(255, 255, 255, 0.50);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(15, 118, 110, 0.07);
+  padding: 3px 0 4px;
+  margin-top: 3px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2.5px;
 }
 
 body.dark-mode .search-filter-attached-bar {
   border-top-color: rgba(45, 212, 191, 0.12);
-  background: rgba(8, 22, 19, 0.40);
+  background: rgba(8, 22, 19, 0.55);
 }
 
 .search-filter-attached-bar .search-chips-scroll {
   max-width: 580px;
   margin: 0 auto;
-  padding: 0 14px;
+  padding: 0 12px;
   width: 100%;
   box-sizing: border-box;
 }
 
 .search-sort-attached-row {
-  border-top: 1px solid rgba(15, 118, 110, 0.06);
-  padding-top: 4px;
+  border-top: 1px solid rgba(15, 118, 110, 0.05);
+  padding-top: 2.5px;
 }
 
 body.dark-mode .search-sort-attached-row {
-  border-top-color: rgba(45, 212, 191, 0.09);
+  border-top-color: rgba(45, 212, 191, 0.08);
 }
 
 .search-sort-attached-inner {
   max-width: 580px;
   margin: 0 auto;
-  padding: 0 14px;
+  padding: 0 12px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -2779,16 +2779,22 @@ body.dark-mode .search-chip.active {
   color: #ffffff;
 }
 
-/* HEADING PENCARIAN PILIHAN (LEBIH RAPI & ELEGAN) */
+/* HEADING PENCARIAN PILIHAN (LEBIH RAPI & ELEGAN TANPA JARAK RENGGANG) */
+#searchView {
+  padding-top: 0;
+  margin-top: -2px;
+}
+
 .search-heading-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 7px 2px 7px;
+  margin: 3px 2px 5px;
+  padding: 1px 0;
 }
 
 .search-heading-text {
-  font-size: 0.88rem;
+  font-size: 0.84rem;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
@@ -2796,25 +2802,27 @@ body.dark-mode .search-chip.active {
 }
 
 .search-heading-count {
-  font-size: 0.67rem;
+  font-size: 0.68rem;
   font-weight: 700;
   color: #0f766e;
-  background: var(--brand-teal-light);
-  padding: 2px 7.5px;
+  background: rgba(15, 118, 110, 0.08);
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  padding: 2px 8.5px;
   border-radius: var(--radius-pill);
 }
 
 body.dark-mode .search-heading-count {
-  background: rgba(20, 184, 166, 0.18);
+  background: rgba(20, 184, 166, 0.16);
+  border-color: rgba(45, 212, 191, 0.25);
   color: #2dd4bf;
 }
 
 /* ============================================================
-   GRID PRODUK SEARCH INTERFACE: LEBIH RINGKAS 15% & TAMPILAN RAPI
+   GRID PRODUK SEARCH INTERFACE: LEBIH RINGKAS & TAMPILAN RAPI
    ============================================================ */
 .search-product-grid {
-  gap: 5.5px 6px; /* 15% lebih ringkas */
-  margin-top: 3px;
+  gap: 6px 7px;
+  margin-top: 0;
 }
 
 @media (min-width: 640px) {
@@ -3311,10 +3319,50 @@ body.dark-mode .shopee-brand-word {
 .about-hero-nav {
   position: relative;
   z-index: 3;
-  padding: 10px 12px;
+  padding: 12px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.about-hero-back-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+  text-decoration: none;
+}
+
+.about-hero-back-pill:hover {
+  background: rgba(15, 23, 42, 0.88);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateX(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.38);
+  color: #ffffff;
+}
+
+.about-hero-breadcrumb {
+  font-size: 0.70rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.88);
+  letter-spacing: 0.5px;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .about-hero-content {
@@ -3549,10 +3597,45 @@ body.dark-mode .about-stat-divider {
 
 .about-cta-actions {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.about-cta-actions .hero-btn-primary {
+  width: 100%;
+  max-width: 320px;
+}
+
+.about-cta-back-link {
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #0f766e;
+  cursor: pointer;
+  padding: 5px 12px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+}
+
+.about-cta-back-link:hover {
+  color: #0d5e56;
+  text-decoration: underline;
+  transform: translateX(-2px);
+}
+
+body.dark-mode .about-cta-back-link {
+  color: #2dd4bf;
+}
+
+body.dark-mode .about-cta-back-link:hover {
+  color: #5eead4;
 }
 
 /* ============================================================
