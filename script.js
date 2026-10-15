@@ -4699,7 +4699,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // ---------- SISTEM PWA / WEBAPK (PASANG APLIKASI TANPA MENGGANGGU TAMPILAN) ----------
   function initPwaInstallation() {
     let deferredPwaPrompt = null;
-    const topBtn = document.getElementById("pwaTopInstallBtn");
     const footerBtn = document.getElementById("pwaFooterInstallBtn");
     const pwaBar = document.getElementById("pwaInstallBar");
     const barInstallBtn = document.getElementById("pwaBarInstallBtn");
@@ -4716,7 +4715,6 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
       deferredPwaPrompt = e;
 
-      if (topBtn) topBtn.classList.remove("hidden");
       if (footerBtn) footerBtn.classList.remove("hidden");
 
       // Cek apakah pengunjung sudah pernah menutup bar ini dalam 5 hari terakhir
@@ -4743,14 +4741,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const choice = await deferredPwaPrompt.userChoice;
         if (choice && choice.outcome === "accepted") {
           if (pwaBar) pwaBar.classList.add("hidden");
-          if (topBtn) topBtn.classList.add("hidden");
           if (footerBtn) footerBtn.classList.add("hidden");
         }
       } catch (err) {}
       deferredPwaPrompt = null;
     }
 
-    if (topBtn) topBtn.addEventListener("click", handleInstallClick);
     if (footerBtn) footerBtn.addEventListener("click", handleInstallClick);
     if (barInstallBtn) barInstallBtn.addEventListener("click", handleInstallClick);
 
@@ -4769,7 +4765,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.addEventListener("appinstalled", function () {
       if (pwaBar) pwaBar.classList.add("hidden");
-      if (topBtn) topBtn.classList.add("hidden");
       if (footerBtn) footerBtn.classList.add("hidden");
       deferredPwaPrompt = null;
     });

@@ -4917,42 +4917,7 @@ body.dark-mode .btn-notif-dismiss:hover {
    FITUR INSTAL APLIKASI (PWA / WEBAPK): TIDAK MENGGANGGU TAMPILAN
    ============================================================ */
 
-/* 1. Tombol Mini di Header (Subtle & Menyatu Rapi) */
-.topbar-install-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: linear-gradient(135deg, rgba(15, 118, 110, 0.12) 0%, rgba(13, 148, 136, 0.20) 100%);
-  border: 1px solid rgba(13, 148, 136, 0.35);
-  border-radius: var(--radius-pill);
-  padding: 5px 11px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #0f766e;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.topbar-install-pill:hover {
-  background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
-  color: #ffffff;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
-}
-
-body.dark-mode .topbar-install-pill {
-  background: rgba(20, 184, 166, 0.15);
-  border-color: rgba(45, 212, 191, 0.32);
-  color: #2dd4bf;
-}
-
-body.dark-mode .topbar-install-pill:hover {
-  background: #14b8a6;
-  color: #061814;
-}
-
-/* 2. Floating Bar di Bawah (Slim, Ramping, Tidak Memblokir Layar) */
+/* 1. Floating Bar di Bawah (Slim, Ramping, Tidak Memblokir Layar) */
 .pwa-install-bar {
   position: fixed;
   bottom: 18px;
