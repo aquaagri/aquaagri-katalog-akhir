@@ -5050,7 +5050,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Jalankan pemeriksaan cepat status lonceng dari database seketika
   checkCatalogBellFast();
 
-  // Re-sinkronisasi lonceng otomatis saat berpindah tab atau memfokuskan layar di Laptop / HP
+  // Re-sinkronisasi lonceng otomatis saat pengunjung kembali membuka tab di HP/Laptop
   document.addEventListener("visibilitychange", function () {
     if (document.visibilityState === "visible") {
       checkCatalogBellFast();
@@ -5059,7 +5059,12 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("focus", function () {
     checkCatalogBellFast();
   });
-  setInterval(checkCatalogBellFast, 10000);
+  // Cadangan polling ultra-hemat: hanya berjalan tiap 60 detik jika tab aktif & realtime belum terhubung
+  setInterval(function () {
+    if (document.visibilityState === "visible" && !window.__aquaAgriRealtimeSubscribed) {
+      checkCatalogBellFast();
+    }
+  }, 60000);
 
   // Cek apakah pengunjung membuka link share produk spesifik (Cara A)
   checkAndOpenSharedProduct();
