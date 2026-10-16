@@ -2506,7 +2506,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const btn = document.createElement("button");
     btn.className = "product-btn";
     btn.type = "button";
-    btn.textContent = "Lihat Produk";
+    btn.innerHTML = '<span>Lihat Produk</span> <span style="font-size:0.8em; opacity:0.85;">&rarr;</span>';
     btn.addEventListener("click", function (e) {
       e.stopPropagation();
       openAffiliateLink(produk);
@@ -2781,6 +2781,7 @@ document.addEventListener("DOMContentLoaded", function () {
       aboutSlideTimer = null;
     }
 
+    document.body.classList.remove("search-active");
     if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.add("hidden");
     if (topbarCategorySearchRow) topbarCategorySearchRow.classList.remove("hidden");
     updateHeaderOffset();
@@ -2791,6 +2792,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function goHome() {
+    document.body.classList.remove("search-active");
     currentCategory = "semua";
     currentKeyword = "";
     currentBudidayaSub = "semua";
@@ -2823,6 +2825,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function openAboutView() {
+    document.body.classList.remove("search-active");
     updateAboutStats();
     if (homeView) homeView.classList.add("hidden");
     if (categoryView) categoryView.classList.add("hidden");
@@ -2872,6 +2875,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function openVipPromoView() {
+    document.body.classList.remove("search-active");
     if (homeView) homeView.classList.add("hidden");
     if (categoryView) categoryView.classList.add("hidden");
     if (searchView) searchView.classList.add("hidden");
@@ -3341,6 +3345,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // ---------- 13. LOGIKA MOBILE SEARCH INTERFACE (MEGA BAR & CHIPS) ----------
 
   function openSearchInterface(initialKeyword = "") {
+    document.body.classList.add("search-active");
     if (homeView) homeView.classList.add("hidden");
     if (categoryView) categoryView.classList.add("hidden");
     if (aboutView) aboutView.classList.add("hidden");
@@ -3382,6 +3387,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function closeSearchInterface() {
+    document.body.classList.remove("search-active");
     if (searchView) searchView.classList.add("hidden");
     if (aboutView) aboutView.classList.add("hidden");
     if (vipPromoView) vipPromoView.classList.add("hidden");
@@ -4853,7 +4859,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let bttTicking = false;
     function checkBackToTopScroll() {
       const scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
-      if (scrollY > 240) {
+      if (scrollY > 600) {
         backToTopBtn.classList.add("visible");
       } else {
         backToTopBtn.classList.remove("visible");

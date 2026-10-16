@@ -2329,22 +2329,39 @@ body.dark-mode .product-price {
 .product-btn {
   margin-top: 4.5px;
   width: 100%;
-  border: none;
-  background: #0f766e;
-  color: #ffffff;
-  padding: 4.5px 7px; /* 5% lebih ringkas & tetap nyaman */
-  border-radius: 5.5px;
-  font-size: 0.70rem; /* 5% lebih ringkas dari 0.74rem */
+  border: 1px solid rgba(15, 118, 110, 0.28);
+  background: rgba(15, 118, 110, 0.05);
+  color: #0f766e;
+  padding: 4px 7px;
+  border-radius: 6px;
+  font-size: 0.70rem;
   font-weight: 700;
   font-family: inherit;
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
 }
 
 .product-btn:hover {
-  background: #0d5e56;
-  box-shadow: 0 3px 8px rgba(15, 118, 110, 0.28);
+  background: #0f766e;
+  color: #ffffff;
+  border-color: #0f766e;
+  box-shadow: 0 2px 8px rgba(15, 118, 110, 0.25);
+}
+
+body.dark-mode .product-btn {
+  border-color: rgba(45, 212, 191, 0.32);
+  background: rgba(45, 212, 191, 0.08);
+  color: #2dd4bf;
+}
+
+body.dark-mode .product-btn:hover {
+  background: #2dd4bf;
+  color: #041e19;
 }
 
 /* ============================================================
@@ -2426,9 +2443,22 @@ body.dark-mode .budidaya-group-badge {
   transition: all 0.25s ease;
 }
 
+/* Ketika Search Interface aktif, sembunyikan baris header logo (.topbar-inner) agar kolom search naik ke paling atas seperti Shopee/Tokopedia! */
+body.search-active .topbar-inner,
+.topbar:has(#topbarSearchInterfaceRow:not(.hidden)) .topbar-inner {
+  display: none !important;
+}
+
+/* Sembunyikan lonceng melayang saat di mode pencarian agar tidak menutupi produk */
+body.search-active .notif-floating-bell,
+body:has(#searchView:not(.hidden)) .notif-floating-bell {
+  display: none !important;
+}
+
 #topbarCategorySearchRow.topbar-sub-row,
 #topbarSearchInterfaceRow.topbar-sub-row {
-  padding: 5px 0 0;
+  padding: 6px 0 0;
+  border-top: none;
   border-bottom: 1px solid rgba(15, 118, 110, 0.10);
   box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
 }
@@ -2447,8 +2477,8 @@ body.dark-mode #topbarSearchInterfaceRow.topbar-sub-row {
 /* TIER 2.5 SEARCH: CHIPS & URUTAN HARGA MENEMPEL LANGSUNG DENGAN FITUR SEARCH (COMPACT & SLEEK) */
 .search-filter-attached-bar {
   border-top: 1px solid rgba(15, 118, 110, 0.07);
-  padding: 3px 0 4px;
-  margin-top: 3px;
+  padding: 2px 0 3px;
+  margin-top: 2px;
   background: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -2743,8 +2773,8 @@ body.dark-mode .search-icon-btn:hover {
   border: 1px solid rgba(46, 152, 176, 0.22);
   color: #0b675e;
   border-radius: var(--radius-pill);
-  padding: 4px 11px;
-  font-size: 0.70rem;
+  padding: 3.5px 10px;
+  font-size: 0.68rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -2784,8 +2814,9 @@ body.dark-mode .search-chip.active {
 
 /* HEADING PENCARIAN PILIHAN (LEBIH RAPI & ELEGAN TANPA JARAK RENGGANG) */
 #searchView {
-  padding-top: 0;
-  margin-top: -2px;
+  padding-top: 2px;
+  padding-bottom: 95px;
+  margin-top: 0;
 }
 
 .search-heading-row {
@@ -2891,10 +2922,12 @@ body.dark-mode .search-heading-count {
 
 .search-product-grid .product-btn {
   margin-top: 4.5px;
-  padding: 4.5px 7px;
+  padding: 4px 7px;
   font-size: 0.70rem;
-  border-radius: 5.5px;
-  min-height: 28px;
+  border-radius: 6px;
+  border: 1px solid rgba(15, 118, 110, 0.28);
+  background: rgba(15, 118, 110, 0.05);
+  color: #0f766e;
   line-height: 1.25;
 }
 
