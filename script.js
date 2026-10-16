@@ -5072,12 +5072,16 @@ document.addEventListener("DOMContentLoaded", function () {
     subscribeBtn.addEventListener("click", async function () {
       hidePrompt();
 
-      // 1. Otomatis picu pemasangan aplikasi PWA secara aman tanpa dialog peringatan
-      if (typeof window.__triggerSafePwaInstall === "function") {
-        window.__triggerSafePwaInstall(true);
+      // Fungsi bantuan memicu pemasangan PWA setelah izin notifikasi diproses
+      function triggerInstallSequence() {
+        setTimeout(function () {
+          if (typeof window.__triggerSafePwaInstall === "function") {
+            window.__triggerSafePwaInstall(true);
+          }
+        }, 500);
       }
 
-      // 2. Daftarkan pelanggan ke notifikasi push OneSignal secara otomatis
+      // 1. Daftarkan pelanggan ke notifikasi push OneSignal terlebih dahulu
       if (window.OneSignalDeferred) {
         window.OneSignalDeferred.push(async function(OneSignal) {
           try {
@@ -5089,13 +5093,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
               } catch (eOpt) {}
               localStorage.setItem("aquaagri_notif_status", "granted");
-              showNotifToast("🎉 Selamat! Notifikasi Diskon & Akses Aplikasi AquaAgri aktif di HP Anda.");
+              showNotifToast("🎉 Selamat! Notifikasi Diskon & Voucher VIP AquaAgri aktif.");
             } else {
               localStorage.setItem("aquaagri_notif_status", "denied");
               showNotifToast("ℹ️ Notifikasi belum diizinkan. Anda tetap dapat menikmati seluruh diskon katalog kami.");
             }
           } catch (eOneSignal) {
             console.log("OneSignal push permission error:", eOneSignal);
+          } finally {
+            triggerInstallSequence();
           }
         });
       } else if ("Notification" in window) {
@@ -5103,17 +5109,20 @@ document.addEventListener("DOMContentLoaded", function () {
           const permission = await Notification.requestPermission();
           if (permission === "granted") {
             localStorage.setItem("aquaagri_notif_status", "granted");
-            showNotifToast("🎉 Selamat! Notifikasi Diskon & Akses Aplikasi AquaAgri aktif di HP Anda.");
+            showNotifToast("🎉 Selamat! Notifikasi Diskon & Voucher VIP AquaAgri aktif.");
           } else {
             localStorage.setItem("aquaagri_notif_status", "denied");
             showNotifToast("ℹ️ Notifikasi belum diizinkan. Anda tetap dapat menikmati seluruh diskon katalog kami.");
           }
         } catch (err) {
           showNotifToast("🎉 Selamat! Akses Diskon & Promo AquaAgri aktif!");
+        } finally {
+          triggerInstallSequence();
         }
       } else {
         localStorage.setItem("aquaagri_notif_status", "granted");
         showNotifToast("🎉 Selamat! Akses Promo & Diskon VIP AquaAgri aktif!");
+        triggerInstallSequence();
       }
     });
 
