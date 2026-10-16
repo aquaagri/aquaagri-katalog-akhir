@@ -2755,6 +2755,9 @@ document.addEventListener("DOMContentLoaded", function () {
         chips.forEach(function (btn) {
           if (btn.getAttribute("data-cat") === categoryId) {
             btn.classList.add("active");
+            try {
+              btn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+            } catch (e) {}
           } else {
             btn.classList.remove("active");
           }
@@ -3809,6 +3812,9 @@ document.addEventListener("DOMContentLoaded", function () {
         sortBtns.forEach(function (b) { b.classList.remove("active"); });
         btn.classList.add("active");
         currentCategorySort = btn.getAttribute("data-sort") || "default";
+        try {
+          btn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+        } catch (e) {}
         refreshProductView();
       });
     });
