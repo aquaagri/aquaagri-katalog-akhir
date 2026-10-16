@@ -2462,7 +2462,7 @@ body:has(#searchView:not(.hidden)) .notif-floating-bell,
 
 #topbarCategorySearchRow.topbar-sub-row,
 #topbarSearchInterfaceRow.topbar-sub-row {
-  padding: 6px 0 0;
+  padding: 3.5px 0 0;
   border-top: none;
   border-bottom: 1px solid rgba(15, 118, 110, 0.10);
   box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
@@ -2482,14 +2482,14 @@ body.dark-mode #topbarSearchInterfaceRow.topbar-sub-row {
 /* TIER 2.5 SEARCH: CHIPS & URUTAN HARGA MENEMPEL LANGSUNG DENGAN FITUR SEARCH (COMPACT & SLEEK) */
 .search-filter-attached-bar {
   border-top: 1px solid rgba(15, 118, 110, 0.07);
-  padding: 2px 0 3px;
-  margin-top: 2px;
+  padding: 1.5px 0 1.5px;
+  margin-top: 1px;
   background: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
-  gap: 2.5px;
+  gap: 1.5px;
 }
 
 body.dark-mode .search-filter-attached-bar {
@@ -2508,7 +2508,7 @@ body.dark-mode .search-filter-attached-bar {
 /* BARIS TERPADU (REKOMENDASI A): JUMLAH HASIL (KIRI) + KONTROL URUTKAN (KANAN) */
 .search-unified-bar {
   border-top: 1px solid rgba(15, 118, 110, 0.07);
-  padding: 4px 0 5px;
+  padding: 2px 0 2.5px;
 }
 
 body.dark-mode .search-unified-bar {
@@ -2552,12 +2552,12 @@ body.dark-mode .search-unified-bar {
 }
 
 .search-stat-count {
-  font-size: 0.70rem;
+  font-size: 0.64rem;
   font-weight: 700;
   color: #0f766e;
   background: rgba(15, 118, 110, 0.08);
   border: 1px solid rgba(15, 118, 110, 0.18);
-  padding: 2.5px 8px;
+  padding: 2px 6.5px;
   border-radius: var(--radius-pill);
   white-space: nowrap;
   letter-spacing: -0.1px;
@@ -2617,9 +2617,9 @@ body.dark-mode .search-unified-divider {
 }
 
 .sort-pill-btn {
-  height: 25px;
-  padding: 0 7.5px;
-  font-size: 0.65rem;
+  height: 22px;
+  padding: 0 6px;
+  font-size: 0.61rem;
   font-weight: 600;
   font-family: inherit;
   border-radius: var(--radius-pill);
@@ -2629,7 +2629,7 @@ body.dark-mode .search-unified-divider {
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 2.5px;
   white-space: nowrap;
   transition: all 0.2s ease;
   flex-shrink: 0;
@@ -2637,6 +2637,8 @@ body.dark-mode .search-unified-divider {
 }
 
 .sort-pill-btn svg {
+  width: 9.5px;
+  height: 9.5px;
   flex-shrink: 0;
 }
 
@@ -2908,8 +2910,8 @@ body.dark-mode .search-icon-btn:hover {
   border: 1px solid rgba(46, 152, 176, 0.22);
   color: #0b675e;
   border-radius: var(--radius-pill);
-  padding: 3.5px 10px;
-  font-size: 0.68rem;
+  padding: 4.5px 12px;
+  font-size: 0.74rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -2947,9 +2949,9 @@ body.dark-mode .search-chip.active {
   color: #ffffff;
 }
 
-/* AREA KONTEN PENCARIAN (LEGA, BERNAFAS & PROPORSIONAL KE PRODUK) */
+/* AREA KONTEN PENCARIAN (LEBIH TINGGI MENDEKATI HEAD) */
 #searchView {
-  padding-top: 10px; /* Jarak pas 10px yang lega dari header ke baris produk pertama */
+  padding-top: 4px; /* Didekatkan langsung ke head / search interface */
   padding-bottom: 95px;
   margin-top: 0;
 }
@@ -4868,39 +4870,42 @@ body.dark-mode .category-sort-attached-row {
 .sort-pill-btn {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  border: 1px solid rgba(203, 213, 225, 0.85);
-  background: #ffffff;
-  color: #475569;
+  gap: 2.5px;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  background: var(--surface-card);
+  color: var(--text-secondary);
   font-family: inherit;
-  font-size: 0.72rem;
+  font-size: 0.61rem;
   font-weight: 600;
-  padding: 4.5px 11px;
-  border-radius: 999px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
   transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .sort-pill-btn svg {
+  width: 9.5px;
+  height: 9.5px;
   flex-shrink: 0;
-  opacity: 0.82;
+  opacity: 0.85;
 }
 
 .sort-pill-btn:hover {
-  border-color: #0d9488;
+  border-color: #0f766e;
   color: #0f766e;
-  background: #f0fdfa;
-  transform: translateY(-1px);
+  background: rgba(15, 118, 110, 0.05);
 }
 
 .sort-pill-btn.active {
-  background: linear-gradient(135deg, #0f766e 0%, #0d9488 55%, #14b8a6 100%);
+  background: #0f766e;
+  border-color: #0f766e;
   color: #ffffff;
   font-weight: 700;
-  border-color: transparent;
-  box-shadow: 0 3px 10px rgba(13, 148, 136, 0.28);
+  box-shadow: 0 2px 6px rgba(15, 118, 110, 0.25);
 }
 
 .sort-pill-btn.active svg {
