@@ -5033,6 +5033,50 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (e) {}
   }
 
+  // ---------- DETEKSI PERANGKAT IOS & MODE STANDALONE (PWA) ----------
+  function isIosDevice() {
+    return (
+      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+    );
+  }
+
+  function isStandaloneApp() {
+    return (
+      window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone === true
+    );
+  }
+
+  // Pengendali Modal Panduan Pasang iOS
+  function openIosInstallModal() {
+    const iosModal = document.getElementById("iosInstallModal");
+    if (iosModal) {
+      iosModal.classList.remove("hidden");
+      document.body.classList.add("modal-open");
+    }
+  }
+
+  function closeIosInstallModal() {
+    const iosModal = document.getElementById("iosInstallModal");
+    if (iosModal) {
+      iosModal.classList.add("hidden");
+      document.body.classList.remove("modal-open");
+    }
+  }
+
+  const iosCloseBtn = document.getElementById("iosModalCloseBtn");
+  const iosUnderstoodBtn = document.getElementById("iosGuideUnderstoodBtn");
+  const iosModalEl = document.getElementById("iosInstallModal");
+
+  if (iosCloseBtn) iosCloseBtn.addEventListener("click", closeIosInstallModal);
+  if (iosUnderstoodBtn) iosUnderstoodBtn.addEventListener("click", closeIosInstallModal);
+  if (iosModalEl) {
+    iosModalEl.addEventListener("click", function (e) {
+      if (e.target === iosModalEl) closeIosInstallModal();
+    });
+  }
+
   function initS3MarketingPushPrompt() {
     const promptBanner = document.getElementById("notifPushPrompt");
     const subscribeBtn = document.getElementById("notifSubscribeBtn");
@@ -5072,13 +5116,27 @@ document.addEventListener("DOMContentLoaded", function () {
     subscribeBtn.addEventListener("click", async function () {
       hidePrompt();
 
-      // Fungsi bantuan memicu pemasangan PWA setelah izin notifikasi diproses
+      const isIos = isIosDevice();
+      const isStandalone = isStandaloneApp();
+
+      // KONDISI 1: Pengguna iPhone membuka di Safari biasa (Belum dipasang ke Layar Utama)
+      // Sesuai standar keamanan resmi Apple WebKit, Web Push Notifications DILARANG di Safari tab biasa.
+      // Pengguna harus menambahkan ke Layar Utama terlebih dahulu.
+      if (isIos && !isStandalone) {
+        showNotifToast("📱 Khusus iPhone: Pasang ke Layar Utama terlebih dahulu agar notifikasi diskon aktif.");
+        openIosInstallModal();
+        return;
+      }
+
+      // KONDISI 2: Pengguna Android / Desktop ATAU Pengguna iPhone di PWA Standalone
       function triggerInstallSequence() {
-        setTimeout(function () {
-          if (typeof window.__triggerSafePwaInstall === "function") {
-            window.__triggerSafePwaInstall(true);
-          }
-        }, 500);
+        if (!isIos && !isStandalone) {
+          setTimeout(function () {
+            if (typeof window.__triggerSafePwaInstall === "function") {
+              window.__triggerSafePwaInstall(true);
+            }
+          }, 500);
+        }
       }
 
       // 1. Daftarkan pelanggan ke notifikasi push OneSignal terlebih dahulu
@@ -5100,6 +5158,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
           } catch (eOneSignal) {
             console.log("OneSignal push permission error:", eOneSignal);
+            if (isIos) {
+              showNotifToast("ℹ️ Di iPhone, pastikan izin notifikasi aktif di Pengaturan iOS Anda.");
+            }
           } finally {
             triggerInstallSequence();
           }
@@ -5140,7 +5201,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ---------- SISTEM PWA / WEBAPK (PASANG APLIKASI TANPA MENGGANGGU TAMPILAN) ----------
+  // ---------- SISTEM PWA / WEBAPK (PASANG APLIKASI DI ANDROID & IPHONE) ----------
   function initPwaInstallation() {
     window.__deferredPwaPrompt = null;
     const footerBtn = document.getElementById("pwaFooterInstallBtn");
@@ -5148,42 +5209,91 @@ document.addEventListener("DOMContentLoaded", function () {
     const barInstallBtn = document.getElementById("pwaBarInstallBtn");
     const barCloseBtn = document.getElementById("pwaBarCloseBtn");
 
-    const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+    const isIos = isIosDevice();
+    const isStandalone = isStandaloneApp();
 
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/OneSignalSDKWorker.js").catch(function () {});
     }
 
+    // Jika sudah terpasang sebagai aplikasi standalone (PWA aktif)
+    if (isStandalone) {
+      localStorage.setItem("aquaagri_pwa_installed", "true");
+      if (pwaBar) pwaBar.classList.add("hidden");
+      if (footerBtn) footerBtn.classList.add("hidden");
+
+      // Khusus iPhone yang baru pertama kali dibuka dari Layar Utama:
+      // Tampilkan toast ramah mengarahkan ke lonceng notifikasi
+      if (isIos && localStorage.getItem("aquaagri_notif_status") !== "granted" && !localStorage.getItem("aquaagri_ios_welcome_toast")) {
+        localStorage.setItem("aquaagri_ios_welcome_toast", "true");
+        setTimeout(function () {
+          showNotifToast("🎉 Aplikasi AquaAgri aktif di iPhone! Ketuk lonceng Diskon VIP untuk menerima update diskon.");
+        }, 2200);
+      }
+      return;
+    }
+
+    // KONDISI KHUSUS IPHONE (IOS SAFARI)
+    if (isIos) {
+      // Tampilkan tombol pasang di footer khusus pengguna iPhone
+      if (footerBtn) {
+        footerBtn.textContent = "📱 Pasang Aplikasi AquaAgri di iPhone";
+        footerBtn.classList.remove("hidden");
+      }
+
+      // Bar penawaran bawah khusus iPhone jika belum ditutup dalam 5 hari
+      const dismissed = localStorage.getItem("aquaagri_pwa_dismissed");
+      const isRecent = dismissed && (Date.now() - Number(dismissed) < 5 * 24 * 60 * 60 * 1000);
+      if (!isRecent && pwaBar) {
+        const pwaTitle = pwaBar.querySelector(".pwa-bar-title");
+        const pwaSub = pwaBar.querySelector(".pwa-bar-sub");
+        if (pwaTitle) pwaTitle.textContent = "Aplikasi AquaAgri di iPhone";
+        if (pwaSub) pwaSub.textContent = "Akses Cepat & Notifikasi Diskon";
+        setTimeout(function () {
+          if (!isStandaloneApp()) {
+            pwaBar.classList.remove("hidden");
+          }
+        }, 4500);
+      }
+    }
+
+    // LISTENER ANDROID / DESKTOP CHROME (BEFOREINSTALLPROMPT)
     window.addEventListener("beforeinstallprompt", function (e) {
       e.preventDefault();
       window.__deferredPwaPrompt = e;
 
-      if (!isStandalone && footerBtn) footerBtn.classList.remove("hidden");
+      if (!isStandaloneApp() && footerBtn) footerBtn.classList.remove("hidden");
 
       // Cek apakah pengunjung sudah pernah menutup bar ini dalam 5 hari terakhir
       const dismissed = localStorage.getItem("aquaagri_pwa_dismissed");
       const isRecent = dismissed && (Date.now() - Number(dismissed) < 5 * 24 * 60 * 60 * 1000);
 
-      // Hanya tampilkan bar bawah jika belum ditutup dan setelah delay 4,5 detik (agar tidak menimpa pop-up promo)
-      if (!isRecent && pwaBar && !isStandalone) {
+      // Hanya tampilkan bar bawah jika belum ditutup dan setelah delay 4,5 detik
+      if (!isRecent && pwaBar && !isStandaloneApp()) {
         setTimeout(function () {
-          if (window.__deferredPwaPrompt && !isStandalone) {
+          if (window.__deferredPwaPrompt && !isStandaloneApp()) {
             pwaBar.classList.remove("hidden");
           }
         }, 4500);
       }
     });
 
-    // Fungsi pasang PWA otomatis & aman (tanpa dialog alert / peringatan browser)
+    // Fungsi pasang PWA universal (otomatis menyesuaikan Android atau iPhone)
     window.__triggerSafePwaInstall = async function (isSilentFallback = true) {
-      const checkStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
-      if (checkStandalone) {
+      if (isStandaloneApp()) {
         if (!isSilentFallback) {
           showNotifToast("✅ Aplikasi AquaAgri sudah terpasang di HP Anda.");
         }
         return true;
       }
 
+      // Jika di iPhone / iPad, tampilkan panduan resmi Apple
+      if (isIosDevice()) {
+        openIosInstallModal();
+        return true;
+      }
+
+      // Jika di Android dengan prompt native
       const promptEvent = window.__deferredPwaPrompt;
       if (promptEvent) {
         try {
@@ -5201,14 +5311,9 @@ document.addEventListener("DOMContentLoaded", function () {
         return true;
       }
 
-      // Fallback ramah pengguna tanpa popup peringatan browser (alert)
+      // Fallback
       if (!isSilentFallback) {
-        const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        if (isIos) {
-          showNotifToast("📱 Pasang di iPhone: Ketuk ikon Bagikan (Share) ⎋ lalu pilih 'Tambah ke Layar Utama'");
-        } else {
-          showNotifToast("📱 Pasang Cepat: Ketuk menu browser (titik 3) lalu pilih 'Tambahkan ke Layar Utama'");
-        }
+        showNotifToast("📱 Pasang Cepat: Ketuk menu browser (titik 3) lalu pilih 'Tambahkan ke Layar Utama'");
       }
       return false;
     };

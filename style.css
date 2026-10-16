@@ -5914,6 +5914,322 @@ body.dark-mode .bottom-nav-item:hover:not(.active) {
   50% { transform: scale(1.12); }
 }
 
+/* ============================================================
+   MODAL PANDUAN INSTALASI & NOTIFIKASI IPHONE / IOS (APPLE PWA)
+   ============================================================ */
+.ios-install-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
+}
+
+.ios-install-modal-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ios-install-sheet {
+  width: 100%;
+  max-width: 460px;
+  max-height: 88vh;
+  background: #ffffff;
+  border-radius: 26px 26px 0 0;
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.28);
+  padding: 12px 20px calc(24px + env(safe-area-inset-bottom, 14px));
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  animation: iosSheetSlideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes iosSheetSlideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.ios-sheet-handle {
+  width: 40px;
+  height: 5px;
+  background: #cbd5e1;
+  border-radius: 999px;
+  margin: 4px auto 14px;
+  flex-shrink: 0;
+}
+
+.ios-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.ios-app-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ios-app-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.ios-app-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ios-app-title {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.2px;
+}
+
+.ios-app-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #0d9488;
+  background: rgba(13, 148, 136, 0.12);
+  padding: 2px 8px;
+  border-radius: 999px;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.ios-sheet-close {
+  background: #f1f5f9;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  line-height: 1;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.ios-sheet-close:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.ios-sheet-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ios-notice-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #f0fdfa;
+  border: 1px solid #99f6e4;
+  border-radius: 14px;
+  padding: 10px 13px;
+}
+
+.ios-notice-icon {
+  font-size: 1.15rem;
+  line-height: 1.2;
+}
+
+.ios-notice-text {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #0f766e;
+  line-height: 1.45;
+}
+
+.ios-notice-text strong {
+  font-weight: 700;
+  color: #115e59;
+}
+
+.ios-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ios-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 11px 13px;
+  transition: border-color 0.2s ease;
+}
+
+.ios-step-item.highlight {
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.ios-step-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #0d9488;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ios-step-item.highlight .ios-step-num {
+  background: #f59e0b;
+  font-size: 0.85rem;
+}
+
+.ios-step-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ios-step-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.ios-step-text {
+  margin: 0;
+  font-size: 0.76rem;
+  color: #475569;
+  line-height: 1.4;
+}
+
+.ios-icon-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #e2e8f0;
+  color: #1e293b;
+  font-weight: 700;
+  font-size: 0.72rem;
+  padding: 1px 7px;
+  border-radius: 6px;
+  vertical-align: middle;
+  margin: 0 2px;
+}
+
+.ios-icon-badge svg {
+  color: #0284c7;
+}
+
+.ios-sheet-footer {
+  margin-top: 14px;
+}
+
+.btn-ios-primary {
+  width: 100%;
+  padding: 13px 18px;
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(13, 148, 136, 0.35);
+  transition: all 0.2s ease;
+}
+
+.btn-ios-primary:active {
+  transform: scale(0.97);
+}
+
+/* Dark Mode untuk Modal iOS */
+body.dark-mode .ios-install-sheet {
+  background: #0f221e;
+  border: 1px solid rgba(45, 212, 191, 0.25);
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.65);
+}
+
+body.dark-mode .ios-sheet-handle {
+  background: #334155;
+}
+
+body.dark-mode .ios-app-title {
+  color: #f1f5f9;
+}
+
+body.dark-mode .ios-sheet-close {
+  background: #1e293b;
+  color: #94a3b8;
+}
+
+body.dark-mode .ios-notice-box {
+  background: rgba(13, 148, 136, 0.15);
+  border-color: rgba(45, 212, 191, 0.3);
+}
+
+body.dark-mode .ios-notice-text {
+  color: #5eead4;
+}
+
+body.dark-mode .ios-notice-text strong {
+  color: #99f6e4;
+}
+
+body.dark-mode .ios-step-item {
+  background: #0b1a17;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .ios-step-item.highlight {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+body.dark-mode .ios-step-title {
+  color: #f1f5f9;
+}
+
+body.dark-mode .ios-step-text {
+  color: #94a3b8;
+}
+
+body.dark-mode .ios-icon-badge {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
 
 
 
