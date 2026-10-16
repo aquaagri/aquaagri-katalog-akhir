@@ -3817,8 +3817,34 @@ document.addEventListener("DOMContentLoaded", function () {
         searchSortBtns.forEach(function (b) { b.classList.remove("active"); });
         btn.classList.add("active");
         currentSearchSort = btn.getAttribute("data-sort") || "default";
+        try {
+          btn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+        } catch (e) {}
         renderSearchInterfaceProducts();
       });
+    });
+
+    // Dukungan geser halus dengan mouse / trackpad (drag-to-scroll)
+    let isSortDown = false;
+    let startSortX = 0;
+    let scrollSortLeft = 0;
+
+    searchSortPills.addEventListener("mousedown", function (e) {
+      isSortDown = true;
+      searchSortPills.classList.add("is-dragging");
+      startSortX = e.pageX - searchSortPills.offsetLeft;
+      scrollSortLeft = searchSortPills.scrollLeft;
+    });
+    window.addEventListener("mouseup", function () {
+      isSortDown = false;
+      searchSortPills.classList.remove("is-dragging");
+    });
+    searchSortPills.addEventListener("mousemove", function (e) {
+      if (!isSortDown) return;
+      e.preventDefault();
+      const x = e.pageX - searchSortPills.offsetLeft;
+      const walk = (x - startSortX) * 1.5;
+      searchSortPills.scrollLeft = scrollSortLeft - walk;
     });
   }
 

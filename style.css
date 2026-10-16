@@ -2521,8 +2521,8 @@ body.dark-mode .search-unified-bar {
   padding: 0 12px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  justify-content: flex-start;
+  gap: 7px;
   width: 100%;
   box-sizing: border-box;
 }
@@ -2570,21 +2570,50 @@ body.dark-mode .search-stat-count {
   color: #2dd4bf;
 }
 
-/* SISI KANAN: PILIHAN URUTKAN ELEGAN, MINIMALIS & EFISIEN */
+/* GARIS PEMISAH SAMAR */
+.search-unified-divider {
+  width: 1px;
+  height: 15px;
+  background: rgba(15, 118, 110, 0.18);
+  flex-shrink: 0;
+  margin: 0 1px;
+}
+
+body.dark-mode .search-unified-divider {
+  background: rgba(45, 212, 191, 0.22);
+}
+
+/* SISI KANAN: PILIHAN URUTKAN ELEGAN, MINIMALIS & BISA DI-SLIDE MULUS */
 .search-unified-sort {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   overflow-x: auto;
+  overflow-y: hidden;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  justify-content: flex-end;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
   flex: 1;
   min-width: 0;
+  padding: 1px 6px 1px 1px;
+  scroll-behavior: smooth;
+  cursor: grab;
+}
+
+.search-unified-sort.is-dragging {
+  cursor: grabbing;
+  user-select: none;
 }
 
 .search-unified-sort::-webkit-scrollbar {
   display: none;
+}
+
+@media (min-width: 768px) {
+  .search-unified-sort {
+    justify-content: flex-end;
+  }
 }
 
 .sort-pill-btn {
