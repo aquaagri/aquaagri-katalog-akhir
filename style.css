@@ -2195,27 +2195,27 @@ body.dark-mode .budi-chip-btn.active {
 }
 
 /* ============================================================
-   GRID PRODUK SETIAP KATEGORI (RINGKAS & RAPI - TURUN 5%)
+   GRID PRODUK SETIAP KATEGORI (RINGKAS & RAPI - DIPERINGKAS 10%)
    ============================================================ */
 
 .product-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 6.5px 7px; /* 5% lebih ringkas */
+  gap: 6px 6.5px; /* 10% lebih ringkas */
   width: 100%;
 }
 
 @media (min-width: 640px) {
   .product-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 9.5px; /* 5% lebih ringkas */
+    gap: 8.5px; /* 10% lebih ringkas */
   }
 }
 
 @media (min-width: 1024px) {
   .product-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 11px; /* 5% lebih ringkas */
+    gap: 10px; /* 10% lebih ringkas */
   }
 }
 
@@ -2223,7 +2223,7 @@ body.dark-mode .budi-chip-btn.active {
   min-width: 0;
   background: var(--surface-card);
   border: 1px solid var(--border-card);
-  border-radius: 8px; /* 5% lebih ringkas & proporsional */
+  border-radius: 7px; /* 10% lebih ringkas & proporsional */
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -2260,20 +2260,20 @@ body.dark-mode .budi-chip-btn.active {
 
 .product-discount-badge {
   position: absolute;
-  top: 3.5px;
-  left: 3.5px;
+  top: 3px;
+  left: 3px;
   background: var(--accent-coral);
   color: #ffffff;
-  font-size: 0.55rem;
+  font-size: 0.50rem; /* 10% lebih ringkas */
   font-weight: 800;
-  padding: 1.5px 3.5px;
-  border-radius: 3.5px;
+  padding: 1px 3px;
+  border-radius: 3px;
   box-shadow: 0 2px 5px rgba(238, 77, 45, 0.3);
-  letter-spacing: 0.15px;
+  letter-spacing: 0.12px;
 }
 
 .product-body {
-  padding: 5px 6.5px; /* 5% lebih ringkas dari 6px 7px */
+  padding: 4.5px 6px; /* 10% lebih ringkas dari 5px 6.5px */
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -2281,16 +2281,16 @@ body.dark-mode .budi-chip-btn.active {
 
 .product-name {
   font-weight: 700;
-  font-size: 0.79rem; /* 5% lebih ringkas dari 0.83rem */
-  margin: 0 0 2.5px;
+  font-size: 0.73rem; /* 10% lebih ringkas dari 0.79rem */
+  margin: 0 0 2px;
   color: var(--text-primary);
-  line-height: 1.25;
+  line-height: 1.22;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height: 2.3em;
+  min-height: 2.15em;
 }
 
 /* Hilangkan deskripsi tampilan awal di kartu produk (tetap tampil lengkap di modal) */
@@ -2301,17 +2301,17 @@ body.dark-mode .budi-chip-btn.active {
 .product-price-row {
   display: flex;
   align-items: baseline;
-  gap: 3.5px;
+  gap: 3px;
   flex-wrap: wrap;
   margin-top: auto;
-  padding-top: 1.5px;
-  min-height: 1.25em;
+  padding-top: 1px;
+  min-height: 1.15em;
 }
 
 .product-price {
   font-weight: 800;
   color: #0f766e;
-  font-size: 0.84rem; /* 5% lebih ringkas dari 0.88rem */
+  font-size: 0.77rem; /* 10% lebih ringkas dari 0.84rem */
   letter-spacing: -0.2px;
 }
 
@@ -2320,21 +2320,21 @@ body.dark-mode .product-price {
 }
 
 .product-price-coret {
-  font-size: 0.59rem; /* 5% lebih ringkas dari 0.62rem */
+  font-size: 0.54rem; /* 10% lebih ringkas dari 0.59rem */
   color: var(--text-subtle);
   text-decoration: line-through;
   font-weight: 500;
 }
 
 .product-btn {
-  margin-top: 4.5px;
+  margin-top: 3.5px;
   width: 100%;
   border: 1px solid rgba(15, 118, 110, 0.28);
   background: rgba(15, 118, 110, 0.05);
   color: #0f766e;
-  padding: 4px 7px;
-  border-radius: 6px;
-  font-size: 0.70rem;
+  padding: 3.5px 6px; /* 10% lebih ringkas */
+  border-radius: 5px;
+  font-size: 0.65rem; /* 10% lebih ringkas dari 0.70rem */
   font-weight: 700;
   font-family: inherit;
   cursor: pointer;
@@ -2344,6 +2344,7 @@ body.dark-mode .product-price {
   align-items: center;
   justify-content: center;
   gap: 3px;
+  min-height: 25px;
 }
 
 .product-btn:hover {
@@ -2449,9 +2450,13 @@ body.search-active .topbar-inner,
   display: none !important;
 }
 
-/* Sembunyikan lonceng melayang saat di mode pencarian agar tidak menutupi produk */
+/* Sembunyikan lonceng diskon VIP di semua 4 kategori produk & pencarian */
+body.category-active .notif-floating-bell,
+body:has(#categoryView:not(.hidden)) .notif-floating-bell,
+#categoryView:not(.hidden) ~ #notifFloatingBell,
 body.search-active .notif-floating-bell,
-body:has(#searchView:not(.hidden)) .notif-floating-bell {
+body:has(#searchView:not(.hidden)) .notif-floating-bell,
+#searchView:not(.hidden) ~ #notifFloatingBell {
   display: none !important;
 }
 
@@ -2855,25 +2860,25 @@ body.dark-mode .search-heading-count {
    GRID PRODUK SEARCH INTERFACE: LEGA, RAPI & SELARAS DENGAN KATALOG
    ============================================================ */
 .search-product-grid {
-  gap: 6.5px 7px;
+  gap: 6px 6.5px;
   margin-top: 0;
   width: 100%;
 }
 
 @media (min-width: 640px) {
   .search-product-grid {
-    gap: 9.5px;
+    gap: 8.5px;
   }
 }
 
 @media (min-width: 1024px) {
   .search-product-grid {
-    gap: 11px;
+    gap: 10px;
   }
 }
 
 .search-product-grid .product-card {
-  border-radius: 8px;
+  border-radius: 7px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
@@ -2884,51 +2889,52 @@ body.dark-mode .search-heading-count {
 }
 
 .search-product-grid .product-discount-badge {
-  top: 3.5px;
-  left: 3.5px;
-  font-size: 0.55rem;
-  padding: 1.5px 3.5px;
-  border-radius: 3.5px;
-  letter-spacing: 0.15px;
+  top: 3px;
+  left: 3px;
+  font-size: 0.50rem;
+  padding: 1px 3px;
+  border-radius: 3px;
+  letter-spacing: 0.12px;
 }
 
 .search-product-grid .product-body {
-  padding: 5px 6.5px;
+  padding: 4.5px 6px;
 }
 
 .search-product-grid .product-name {
   font-weight: 700;
-  font-size: 0.79rem;
-  line-height: 1.25;
-  margin: 0 0 2.5px;
-  min-height: 2.3em;
+  font-size: 0.73rem;
+  line-height: 1.22;
+  margin: 0 0 2px;
+  min-height: 2.15em;
   letter-spacing: normal;
 }
 
 .search-product-grid .product-price-row {
-  gap: 3.5px;
-  padding-top: 1.5px;
-  min-height: 1.25em;
+  gap: 3px;
+  padding-top: 1px;
+  min-height: 1.15em;
 }
 
 .search-product-grid .product-price {
-  font-size: 0.84rem;
+  font-size: 0.77rem;
   letter-spacing: -0.2px;
 }
 
 .search-product-grid .product-price-coret {
-  font-size: 0.59rem;
+  font-size: 0.54rem;
 }
 
 .search-product-grid .product-btn {
-  margin-top: 4.5px;
-  padding: 4px 7px;
-  font-size: 0.70rem;
-  border-radius: 6px;
+  margin-top: 3.5px;
+  padding: 3.5px 6px;
+  font-size: 0.65rem;
+  border-radius: 5px;
   border: 1px solid rgba(15, 118, 110, 0.28);
   background: rgba(15, 118, 110, 0.05);
   color: #0f766e;
   line-height: 1.25;
+  min-height: 25px;
 }
 
 /* TOAST INTERAKTIF */

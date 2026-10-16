@@ -2782,6 +2782,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     document.body.classList.remove("search-active");
+    document.body.classList.add("category-active");
+    const floatingBellEl = document.getElementById("notifFloatingBell");
+    if (floatingBellEl) floatingBellEl.classList.add("hidden");
+
     if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.add("hidden");
     if (topbarCategorySearchRow) topbarCategorySearchRow.classList.remove("hidden");
     updateHeaderOffset();
@@ -2793,6 +2797,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function goHome() {
     document.body.classList.remove("search-active");
+    document.body.classList.remove("category-active");
     currentCategory = "semua";
     currentKeyword = "";
     currentBudidayaSub = "semua";
@@ -2820,12 +2825,20 @@ document.addEventListener("DOMContentLoaded", function () {
     if (topbarCategorySearchRow) topbarCategorySearchRow.classList.add("hidden");
     updateHeaderOffset();
 
+    // Re-evaluasi lonceng di beranda
+    if (typeof checkCatalogBellFast === "function") {
+      checkCatalogBellFast();
+    }
+
     setActiveBottomNav("tab-home");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function openAboutView() {
     document.body.classList.remove("search-active");
+    document.body.classList.add("category-active");
+    const floatingBellEl = document.getElementById("notifFloatingBell");
+    if (floatingBellEl) floatingBellEl.classList.add("hidden");
     updateAboutStats();
     if (homeView) homeView.classList.add("hidden");
     if (categoryView) categoryView.classList.add("hidden");
@@ -2876,6 +2889,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function openVipPromoView() {
     document.body.classList.remove("search-active");
+    document.body.classList.add("category-active");
+    const floatingBellEl = document.getElementById("notifFloatingBell");
+    if (floatingBellEl) floatingBellEl.classList.add("hidden");
+
     if (homeView) homeView.classList.add("hidden");
     if (categoryView) categoryView.classList.add("hidden");
     if (searchView) searchView.classList.add("hidden");
@@ -3828,7 +3845,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function openAffiliateLink(produk) {
     if (!produk || !produk.linkAffiliate) {
-      alert("Tautan produk belum tersedia.");
+      showNotifToast("ℹ️ Tautan produk sedang diperbarui.");
       return;
     }
     if (produk.id) {
@@ -3837,12 +3854,12 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const url = new URL(produk.linkAffiliate);
       if (url.protocol !== "http:" && url.protocol !== "https:") {
-        alert("Tautan produk tidak valid.");
+        showNotifToast("ℹ️ Tautan produk tidak valid.");
         return;
       }
       window.open(url.href, "_blank", "noopener,noreferrer");
     } catch (error) {
-      alert("Tautan produk tidak valid.");
+      showNotifToast("ℹ️ Tautan produk tidak valid.");
     }
   }
 
@@ -4910,36 +4927,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
     localStorage.setItem("aquaagri_catalog_bell_disabled", isBellDisabled ? "true" : "false");
 
-    if (isBellDisabled) {
-      // NONAKTIF: Sembunyikan TOTAL lonceng melayang dan banner prompt
-      if (promptBanner) promptBanner.classList.add("hidden");
+    // Sembunyikan lonceng diskon VIP di semua 4 kategori produk, pencarian, dan halaman sub
+    const isCatOpen = categoryView && !categoryView.classList.contains("hidden");
+    const isSearchOpen = searchView && !searchView.classList.contains("hidden");
+    const isAboutOpen = aboutView && !aboutView.classList.contains("hidden");
+    const isPromoOpen = vipPromoView && !vipPromoView.classList.contains("hidden");
+    const isSubPage = isCatOpen || isSearchOpen || isAboutOpen || isPromoOpen ||
+                      document.body.classList.contains("category-active") ||
+                      document.body.classList.contains("search-active");
+
+    if (isBellDisabled || isSubPage) {
+      if (promptBanner && isBellDisabled) promptBanner.classList.add("hidden");
       if (floatingBell) floatingBell.classList.add("hidden");
-      if (window.__bellPromptTimer) {
+      if (isBellDisabled && window.__bellPromptTimer) {
         clearTimeout(window.__bellPromptTimer);
         window.__bellPromptTimer = null;
       }
-    } else {
-      // AKTIF: Tampilkan lonceng melayang (kecuali jika banner prompt sedang terbuka)
-      if (floatingBell && (!promptBanner || promptBanner.classList.contains("hidden"))) {
-        floatingBell.classList.remove("hidden");
-      }
-      // Munculkan prompt otomatis setelah 3.5 detik jika pengunjung belum pernah berinteraksi
-      const notifStatus = localStorage.getItem("aquaagri_notif_status");
-      if (!notifStatus && !window.__bellPromptTimer) {
-        window.__bellPromptTimer = setTimeout(function () {
-          if (localStorage.getItem("aquaagri_catalog_bell_disabled") === "true") return;
-          const promoPopup = document.getElementById("promoPopupOverlay");
-          const prodModal = document.getElementById("productDetailModal");
-          const isPromoOpen = promoPopup && !promoPopup.classList.contains("hidden");
-          const isProdOpen = prodModal && !prodModal.classList.contains("hidden");
-          if (!isPromoOpen && !isProdOpen) {
-            if (floatingBell) floatingBell.classList.add("hidden");
-            if (promptBanner) promptBanner.classList.remove("hidden");
-          } else {
-            if (floatingBell) floatingBell.classList.remove("hidden");
-          }
-        }, 3500);
-      }
+      return;
+    }
+
+    // AKTIF DI BERANDA: Tampilkan lonceng melayang (kecuali jika banner prompt sedang terbuka)
+    if (floatingBell && (!promptBanner || promptBanner.classList.contains("hidden"))) {
+      floatingBell.classList.remove("hidden");
+    }
+    // Munculkan prompt otomatis setelah 3.5 detik jika pengunjung belum pernah berinteraksi
+    const notifStatus = localStorage.getItem("aquaagri_notif_status");
+    if (!notifStatus && !window.__bellPromptTimer) {
+      window.__bellPromptTimer = setTimeout(function () {
+        if (localStorage.getItem("aquaagri_catalog_bell_disabled") === "true") return;
+        if (document.body.classList.contains("category-active") || document.body.classList.contains("search-active")) return;
+        const promoPopup = document.getElementById("promoPopupOverlay");
+        const prodModal = document.getElementById("productDetailModal");
+        const isPromoOpenNow = promoPopup && !promoPopup.classList.contains("hidden");
+        const isProdOpenNow = prodModal && !prodModal.classList.contains("hidden");
+        if (!isPromoOpenNow && !isProdOpenNow) {
+          if (floatingBell) floatingBell.classList.add("hidden");
+          if (promptBanner) promptBanner.classList.remove("hidden");
+        } else {
+          if (floatingBell) floatingBell.classList.remove("hidden");
+        }
+      }, 3500);
     }
   }
 
@@ -4995,7 +5022,12 @@ document.addEventListener("DOMContentLoaded", function () {
     subscribeBtn.addEventListener("click", async function () {
       hidePrompt();
 
-      // Daftarkan pelanggan ke OneSignal secara otomatis
+      // 1. Otomatis picu pemasangan aplikasi PWA secara aman tanpa dialog peringatan
+      if (typeof window.__triggerSafePwaInstall === "function") {
+        window.__triggerSafePwaInstall(true);
+      }
+
+      // 2. Daftarkan pelanggan ke notifikasi push OneSignal secara otomatis
       if (window.OneSignalDeferred) {
         window.OneSignalDeferred.push(async function(OneSignal) {
           try {
@@ -5007,14 +5039,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
               } catch (eOpt) {}
               localStorage.setItem("aquaagri_notif_status", "granted");
-              showNotifToast("🎉 Selamat! Akses VIP Promo & Voucher Shopee aktif di HP Anda.");
+              showNotifToast("🎉 Selamat! Notifikasi Diskon & Akses Aplikasi AquaAgri aktif di HP Anda.");
             } else {
               localStorage.setItem("aquaagri_notif_status", "denied");
-              showNotifToast("⚠️ Izin notifikasi belum diizinkan di HP. Ketuk ikon gembok/setelan di samping alamat web lalu ubah Notifikasi ke 'Izinkan'.");
+              showNotifToast("ℹ️ Notifikasi belum diizinkan. Anda tetap dapat menikmati seluruh diskon katalog kami.");
             }
           } catch (eOneSignal) {
             console.log("OneSignal push permission error:", eOneSignal);
-            showNotifToast("Izin notifikasi: " + (eOneSignal.message || "Periksa setelan browser Anda"));
           }
         });
       } else if ("Notification" in window) {
@@ -5022,17 +5053,17 @@ document.addEventListener("DOMContentLoaded", function () {
           const permission = await Notification.requestPermission();
           if (permission === "granted") {
             localStorage.setItem("aquaagri_notif_status", "granted");
-            showNotifToast("🎉 Selamat! Akses VIP Promo & Voucher Shopee aktif di HP Anda.");
+            showNotifToast("🎉 Selamat! Notifikasi Diskon & Akses Aplikasi AquaAgri aktif di HP Anda.");
           } else {
             localStorage.setItem("aquaagri_notif_status", "denied");
-            showNotifToast("⚠️ Notifikasi belum diizinkan di HP. Ketuk ikon gembok di samping alamat web lalu ubah ke 'Izinkan'.");
+            showNotifToast("ℹ️ Notifikasi belum diizinkan. Anda tetap dapat menikmati seluruh diskon katalog kami.");
           }
         } catch (err) {
-          showNotifToast("Notifikasi aktif! Pantau diskon promo terbaru.");
+          showNotifToast("🎉 Selamat! Akses Diskon & Promo AquaAgri aktif!");
         }
       } else {
         localStorage.setItem("aquaagri_notif_status", "granted");
-        showNotifToast("🎉 Akses VIP Promo Anda telah aktif!");
+        showNotifToast("🎉 Selamat! Akses Promo & Diskon VIP AquaAgri aktif!");
       }
     });
 
@@ -5049,6 +5080,112 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   }
+
+  // ---------- SISTEM PWA / WEBAPK (PASANG APLIKASI TANPA MENGGANGGU TAMPILAN) ----------
+  function initPwaInstallation() {
+    window.__deferredPwaPrompt = null;
+    const footerBtn = document.getElementById("pwaFooterInstallBtn");
+    const pwaBar = document.getElementById("pwaInstallBar");
+    const barInstallBtn = document.getElementById("pwaBarInstallBtn");
+    const barCloseBtn = document.getElementById("pwaBarCloseBtn");
+
+    const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/OneSignalSDKWorker.js").catch(function () {});
+    }
+
+    window.addEventListener("beforeinstallprompt", function (e) {
+      e.preventDefault();
+      window.__deferredPwaPrompt = e;
+
+      if (!isStandalone && footerBtn) footerBtn.classList.remove("hidden");
+
+      // Cek apakah pengunjung sudah pernah menutup bar ini dalam 5 hari terakhir
+      const dismissed = localStorage.getItem("aquaagri_pwa_dismissed");
+      const isRecent = dismissed && (Date.now() - Number(dismissed) < 5 * 24 * 60 * 60 * 1000);
+
+      // Hanya tampilkan bar bawah jika belum ditutup dan setelah delay 4,5 detik (agar tidak menimpa pop-up promo)
+      if (!isRecent && pwaBar && !isStandalone) {
+        setTimeout(function () {
+          if (window.__deferredPwaPrompt && !isStandalone) {
+            pwaBar.classList.remove("hidden");
+          }
+        }, 4500);
+      }
+    });
+
+    // Fungsi pasang PWA otomatis & aman (tanpa dialog alert / peringatan browser)
+    window.__triggerSafePwaInstall = async function (isSilentFallback = true) {
+      const checkStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+      if (checkStandalone) {
+        if (!isSilentFallback) {
+          showNotifToast("✅ Aplikasi AquaAgri sudah terpasang di HP Anda.");
+        }
+        return true;
+      }
+
+      const promptEvent = window.__deferredPwaPrompt;
+      if (promptEvent) {
+        try {
+          promptEvent.prompt();
+          const choice = await promptEvent.userChoice;
+          if (choice && choice.outcome === "accepted") {
+            localStorage.setItem("aquaagri_pwa_installed", "true");
+            if (pwaBar) pwaBar.classList.add("hidden");
+            if (footerBtn) footerBtn.classList.add("hidden");
+          }
+        } catch (err) {
+          console.warn("PWA install prompt error:", err);
+        }
+        window.__deferredPwaPrompt = null;
+        return true;
+      }
+
+      // Fallback ramah pengguna tanpa popup peringatan browser (alert)
+      if (!isSilentFallback) {
+        const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIos) {
+          showNotifToast("📱 Pasang di iPhone: Ketuk ikon Bagikan (Share) ⎋ lalu pilih 'Tambah ke Layar Utama'");
+        } else {
+          showNotifToast("📱 Pasang Cepat: Ketuk menu browser (titik 3) lalu pilih 'Tambahkan ke Layar Utama'");
+        }
+      }
+      return false;
+    };
+
+    async function handleInstallClick() {
+      if (typeof window.__triggerSafePwaInstall === "function") {
+        await window.__triggerSafePwaInstall(false);
+      }
+    }
+
+    if (footerBtn) footerBtn.addEventListener("click", handleInstallClick);
+    if (barInstallBtn) barInstallBtn.addEventListener("click", handleInstallClick);
+
+    if (barCloseBtn) {
+      barCloseBtn.addEventListener("click", function () {
+        if (pwaBar) {
+          pwaBar.classList.add("hiding");
+          setTimeout(function () {
+            pwaBar.classList.add("hidden");
+            pwaBar.classList.remove("hiding");
+          }, 350);
+        }
+        localStorage.setItem("aquaagri_pwa_dismissed", String(Date.now()));
+      });
+    }
+
+    window.addEventListener("appinstalled", function () {
+      if (pwaBar) pwaBar.classList.add("hidden");
+      if (footerBtn) footerBtn.classList.add("hidden");
+      window.__deferredPwaPrompt = null;
+      showNotifToast("🎉 Aplikasi AquaAgri berhasil terpasang di HP Anda!");
+    });
+  }
+
+  // Jalankan inisialisasi PWA terlebih dahulu agar trigger siap saat CTA diklik
+  initPwaInstallation();
 
   // Inisialisasi Sistem Notifikasi S3 Marketing
   initS3MarketingPushPrompt();
@@ -5077,80 +5214,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Sinkronisasi otomatis dengan database Supabase
   syncCatalogFromSupabase();
-
-  // ---------- SISTEM PWA / WEBAPK (PASANG APLIKASI TANPA MENGGANGGU TAMPILAN) ----------
-  function initPwaInstallation() {
-    let deferredPwaPrompt = null;
-    const footerBtn = document.getElementById("pwaFooterInstallBtn");
-    const pwaBar = document.getElementById("pwaInstallBar");
-    const barInstallBtn = document.getElementById("pwaBarInstallBtn");
-    const barCloseBtn = document.getElementById("pwaBarCloseBtn");
-
-    const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
-    if (isStandalone) return;
-
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/OneSignalSDKWorker.js").catch(function () {});
-    }
-
-    window.addEventListener("beforeinstallprompt", function (e) {
-      e.preventDefault();
-      deferredPwaPrompt = e;
-
-      if (footerBtn) footerBtn.classList.remove("hidden");
-
-      // Cek apakah pengunjung sudah pernah menutup bar ini dalam 5 hari terakhir
-      const dismissed = localStorage.getItem("aquaagri_pwa_dismissed");
-      const isRecent = dismissed && (Date.now() - Number(dismissed) < 5 * 24 * 60 * 60 * 1000);
-
-      // Hanya tampilkan bar bawah jika belum ditutup dan setelah delay 4,5 detik (agar tidak menimpa pop-up promo)
-      if (!isRecent && pwaBar) {
-        setTimeout(function () {
-          if (deferredPwaPrompt && !isStandalone) {
-            pwaBar.classList.remove("hidden");
-          }
-        }, 4500);
-      }
-    });
-
-    async function handleInstallClick() {
-      if (!deferredPwaPrompt) {
-        alert("Untuk memasang aplikasi AquaAgri:\n1. Buka menu browser di HP (titik 3 di pojok kanan atas)\n2. Pilih 'Tambahkan ke Layar Utama' atau 'Install Aplikasi'");
-        return;
-      }
-      try {
-        deferredPwaPrompt.prompt();
-        const choice = await deferredPwaPrompt.userChoice;
-        if (choice && choice.outcome === "accepted") {
-          if (pwaBar) pwaBar.classList.add("hidden");
-          if (footerBtn) footerBtn.classList.add("hidden");
-        }
-      } catch (err) {}
-      deferredPwaPrompt = null;
-    }
-
-    if (footerBtn) footerBtn.addEventListener("click", handleInstallClick);
-    if (barInstallBtn) barInstallBtn.addEventListener("click", handleInstallClick);
-
-    if (barCloseBtn) {
-      barCloseBtn.addEventListener("click", function () {
-        if (pwaBar) {
-          pwaBar.classList.add("hiding");
-          setTimeout(function () {
-            pwaBar.classList.add("hidden");
-            pwaBar.classList.remove("hiding");
-          }, 350);
-        }
-        localStorage.setItem("aquaagri_pwa_dismissed", String(Date.now()));
-      });
-    }
-
-    window.addEventListener("appinstalled", function () {
-      if (pwaBar) pwaBar.classList.add("hidden");
-      if (footerBtn) footerBtn.classList.add("hidden");
-      deferredPwaPrompt = null;
-    });
-  }
 
   // ---------- SISTEM BOTTOM NAVIGATION BAR (SIMPLE, MODERN & ELEGAN) ----------
   function initBottomNavBar() {
@@ -5197,6 +5260,5 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   initBottomNavBar();
-  initPwaInstallation();
 });
 
