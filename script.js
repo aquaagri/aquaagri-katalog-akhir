@@ -3517,7 +3517,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // Input search interface real-time
   if (searchInterfaceInput) {
     searchInterfaceInput.addEventListener("input", function () {
-      if (activeSearchChip.type === "kw" && searchChipsScroll) {
+      const q = searchInterfaceInput.value.trim();
+      // Jika pengguna mulai mengetik kata kunci baru dan sebelumnya memilih chip spesifik,
+      // reset chip aktif ke "Semua Kategori" agar pencarian menjangkau seluruh katalog dan tidak 0 produk
+      if (q && activeSearchChip.value !== "semua" && searchChipsScroll) {
         const chips = searchChipsScroll.querySelectorAll(".search-chip");
         chips.forEach(function (c) { c.classList.remove("active"); });
         const allChip = searchChipsScroll.querySelector('.search-chip[data-value="semua"]');
@@ -3555,7 +3558,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Chips di search interface (horizontal scrollable)
+  // Chips di search interface (horizontal scrollable dengan auto-center)
   if (searchChipsScroll) {
     const chips = searchChipsScroll.querySelectorAll(".search-chip");
     chips.forEach(function (chip) {
@@ -3565,6 +3568,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const type = chip.getAttribute("data-type");
         const val = chip.getAttribute("data-value");
         activeSearchChip = { type: type, value: val };
+        try {
+          chip.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+        } catch (e) {}
         renderSearchInterfaceProducts();
       });
     });
@@ -3812,8 +3818,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchSortPills = document.getElementById("searchSortPills");
   if (searchSortPills) {
     const searchSortBtns = searchSortPills.querySelectorAll(".sort-pill-btn");
+    let isSortDown = false;
+    let startSortX = 0;
+    let scrollSortLeft = 0;
+    let hasDraggedSort = false;
+
     searchSortBtns.forEach(function (btn) {
       btn.addEventListener("click", function () {
+        if (hasDraggedSort) {
+          return;
+        }
         searchSortBtns.forEach(function (b) { b.classList.remove("active"); });
         btn.classList.add("active");
         currentSearchSort = btn.getAttribute("data-sort") || "default";
@@ -3825,25 +3839,28 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Dukungan geser halus dengan mouse / trackpad (drag-to-scroll)
-    let isSortDown = false;
-    let startSortX = 0;
-    let scrollSortLeft = 0;
-
     searchSortPills.addEventListener("mousedown", function (e) {
       isSortDown = true;
+      hasDraggedSort = false;
       searchSortPills.classList.add("is-dragging");
       startSortX = e.pageX - searchSortPills.offsetLeft;
       scrollSortLeft = searchSortPills.scrollLeft;
     });
     window.addEventListener("mouseup", function () {
-      isSortDown = false;
-      searchSortPills.classList.remove("is-dragging");
+      if (isSortDown) {
+        isSortDown = false;
+        searchSortPills.classList.remove("is-dragging");
+        setTimeout(function () { hasDraggedSort = false; }, 60);
+      }
     });
     searchSortPills.addEventListener("mousemove", function (e) {
       if (!isSortDown) return;
-      e.preventDefault();
       const x = e.pageX - searchSortPills.offsetLeft;
       const walk = (x - startSortX) * 1.5;
+      if (Math.abs(walk) > 5) {
+        hasDraggedSort = true;
+      }
+      e.preventDefault();
       searchSortPills.scrollLeft = scrollSortLeft - walk;
     });
   }
