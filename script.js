@@ -4825,6 +4825,7 @@ document.addEventListener("DOMContentLoaded", function () {
         renderSampleCarousel();
         refreshProductView();
         renderSearchInterfaceProducts();
+        renderVipPromoProducts();
         checkAndOpenSharedProduct();
       }
 
