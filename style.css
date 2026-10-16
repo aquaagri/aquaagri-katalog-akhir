@@ -2505,21 +2505,23 @@ body.dark-mode .search-filter-attached-bar {
   box-sizing: border-box;
 }
 
-.search-sort-attached-row {
-  border-top: 1px solid rgba(15, 118, 110, 0.05);
-  padding-top: 2.5px;
+/* BARIS TERPADU (REKOMENDASI A): JUMLAH HASIL (KIRI) + KONTROL URUTKAN (KANAN) */
+.search-unified-bar {
+  border-top: 1px solid rgba(15, 118, 110, 0.07);
+  padding: 4px 0 5px;
 }
 
-body.dark-mode .search-sort-attached-row {
-  border-top-color: rgba(45, 212, 191, 0.08);
+body.dark-mode .search-unified-bar {
+  border-top-color: rgba(45, 212, 191, 0.10);
 }
 
-.search-sort-attached-inner {
+.search-unified-inner {
   max-width: 580px;
   margin: 0 auto;
   padding: 0 12px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
   width: 100%;
   box-sizing: border-box;
@@ -2527,19 +2529,118 @@ body.dark-mode .search-sort-attached-row {
 
 @media (min-width: 768px) {
   .search-filter-attached-bar .search-chips-scroll,
-  .search-sort-attached-inner {
+  .search-unified-inner {
     max-width: 920px;
     padding: 0 24px;
-    gap: 10px;
+    gap: 12px;
   }
 }
 
 @media (min-width: 1024px) {
   .search-filter-attached-bar .search-chips-scroll,
-  .search-sort-attached-inner {
+  .search-unified-inner {
     max-width: 1140px;
     padding: 0 28px;
   }
+}
+
+/* SISI KIRI: INDIKATOR STATISTIK HASIL */
+.search-unified-stat {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.search-stat-count {
+  font-size: 0.70rem;
+  font-weight: 700;
+  color: #0f766e;
+  background: rgba(15, 118, 110, 0.08);
+  border: 1px solid rgba(15, 118, 110, 0.18);
+  padding: 2.5px 8px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  letter-spacing: -0.1px;
+  line-height: 1.25;
+}
+
+body.dark-mode .search-stat-count {
+  background: rgba(20, 184, 166, 0.16);
+  border-color: rgba(45, 212, 191, 0.25);
+  color: #2dd4bf;
+}
+
+/* SISI KANAN: PILIHAN URUTKAN ELEGAN, MINIMALIS & EFISIEN */
+.search-unified-sort {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  justify-content: flex-end;
+  flex: 1;
+  min-width: 0;
+}
+
+.search-unified-sort::-webkit-scrollbar {
+  display: none;
+}
+
+.sort-pill-btn {
+  height: 25px;
+  padding: 0 7.5px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  background: var(--surface-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.sort-pill-btn svg {
+  flex-shrink: 0;
+}
+
+.sort-pill-btn:hover {
+  border-color: #0f766e;
+  color: #0f766e;
+  background: rgba(15, 118, 110, 0.05);
+}
+
+.sort-pill-btn.active {
+  background: #0f766e;
+  border-color: #0f766e;
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(15, 118, 110, 0.25);
+}
+
+body.dark-mode .sort-pill-btn {
+  background: #0f241f;
+  border-color: rgba(45, 212, 191, 0.22);
+  color: #cbd5e1;
+}
+
+body.dark-mode .sort-pill-btn:hover {
+  background: #153832;
+  color: #f1fbf8;
+  border-color: #2dd4bf;
+}
+
+body.dark-mode .sort-pill-btn.active {
+  background: #2dd4bf;
+  border-color: #2dd4bf;
+  color: #061814;
 }
 
 .topbar-sub-inner {
@@ -2817,43 +2918,11 @@ body.dark-mode .search-chip.active {
   color: #ffffff;
 }
 
-/* HEADING PENCARIAN PILIHAN (LEBIH RAPI & ELEGAN TANPA JARAK RENGGANG) */
+/* AREA KONTEN PENCARIAN (LEGA, BERNAFAS & PROPORSIONAL KE PRODUK) */
 #searchView {
-  padding-top: 2px;
+  padding-top: 10px; /* Jarak pas 10px yang lega dari header ke baris produk pertama */
   padding-bottom: 95px;
   margin-top: 0;
-}
-
-.search-heading-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 3px 2px 5px;
-  padding: 1px 0;
-}
-
-.search-heading-text {
-  font-size: 0.84rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
-  letter-spacing: -0.2px;
-}
-
-.search-heading-count {
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: #0f766e;
-  background: rgba(15, 118, 110, 0.08);
-  border: 1px solid rgba(15, 118, 110, 0.16);
-  padding: 2px 8.5px;
-  border-radius: var(--radius-pill);
-}
-
-body.dark-mode .search-heading-count {
-  background: rgba(20, 184, 166, 0.16);
-  border-color: rgba(45, 212, 191, 0.25);
-  color: #2dd4bf;
 }
 
 /* ============================================================

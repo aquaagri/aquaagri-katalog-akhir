@@ -35,7 +35,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261016_compact_pwa_v4">
+<link rel="stylesheet" href="style.css?v=20261016_unified_head_v5">
 
 <!-- STRUCTURED DATA SCHEMA.ORG (JSON-LD) UNTUK SEO GOOGLE -->
 <script type="application/ld+json">
@@ -192,36 +192,34 @@
           <button class="search-chip" data-type="kw" data-value="Kerupuk Tenggiri" type="button">Kerupuk Tenggiri</button>
         </div>
 
-        <!-- 2. FITUR URUTAN HARGA DI SESUAIKAN DENGAN FORMAT PIL ELEGAN -->
-        <div class="search-sort-attached-row" id="searchSortPillBar" aria-label="Urutkan pencarian produk">
-          <div class="search-sort-attached-inner">
-            <span class="sort-bar-label">
-              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M7 15l5 5 5-5"/>
-                <path d="M7 9l5-5 5 5"/>
-              </svg>
-              <span>Urutkan</span>
-            </span>
-            <span class="sort-bar-divider" aria-hidden="true"></span>
-            <div class="sort-pills-scroll" id="searchSortPills">
-              <button type="button" class="sort-pill-btn active" data-sort="default">
+        <!-- 2. BARIS TERPADU (REKOMENDASI A): JUMLAH HASIL (KIRI) + KONTROL URUTKAN (KANAN) -->
+        <div class="search-unified-bar" id="searchSortPillBar" aria-label="Urutkan pencarian produk">
+          <div class="search-unified-inner">
+            <!-- SISI KIRI: INDIKATOR JUMLAH HASIL PENCARIAN -->
+            <div class="search-unified-stat">
+              <span class="search-stat-count" id="searchResultCount">0 Produk</span>
+            </div>
+
+            <!-- SISI KANAN: KONTROL URUTKAN PRODUK ELEGAN & MINIMALIS -->
+            <div class="search-unified-sort" id="searchSortPills">
+              <button type="button" class="sort-pill-btn active" data-sort="default" title="Urutan Default">
                 <span>Default</span>
               </button>
-              <button type="button" class="sort-pill-btn" data-sort="price-asc">
+              <button type="button" class="sort-pill-btn" data-sort="price-asc" title="Harga Termurah">
                 <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
                 <span>Termurah</span>
               </button>
-              <button type="button" class="sort-pill-btn" data-sort="price-desc">
+              <button type="button" class="sort-pill-btn" data-sort="price-desc" title="Harga Termahal">
                 <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
                 <span>Termahal</span>
               </button>
-              <button type="button" class="sort-pill-btn" data-sort="discount-desc">
+              <button type="button" class="sort-pill-btn" data-sort="discount-desc" title="Diskon Terbesar">
                 <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
-                <span>Diskon Besar</span>
+                <span>Diskon</span>
               </button>
-              <button type="button" class="sort-pill-btn" data-sort="popular">
+              <button type="button" class="sort-pill-btn" data-sort="popular" title="Produk Terpopuler">
                 <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <span>Terpopuler</span>
+                <span>Populer</span>
               </button>
             </div>
           </div>
@@ -704,14 +702,6 @@
          Gaya simple, modern, clean, profesional khas aquaagri.id
          ------------------------------------------------------------ -->
     <section id="searchView" class="view hidden" aria-label="Antarmuka Pencarian Produk">
-
-      <!-- HEADING: HASIL PENCARIAN & JUMLAH PRODUK -->
-      <div class="search-heading-row">
-        <div class="search-heading-left">
-          <h3 class="search-heading-text">Hasil Pencarian</h3>
-          <span class="search-heading-count" id="searchResultCount">0 Produk</span>
-        </div>
-      </div>
 
       <!-- GRID PRODUK 2 KOLOM RAPI & COMPACT -->
       <div class="product-grid search-product-grid" id="searchProductGrid">
@@ -1486,6 +1476,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
-  <script src="script.js?v=20261016_compact_pwa_v4" defer></script>
+  <script src="script.js?v=20261016_unified_head_v5" defer></script>
 </body>
 </html>
