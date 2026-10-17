@@ -2213,6 +2213,7 @@ body.dark-mode .category-search-pill:focus-within {
   overscroll-behavior-x: contain;
   scroll-behavior: smooth;
   scroll-padding: 0 16px;
+  position: relative;
 }
 
 .category-chips-nav::-webkit-scrollbar {
@@ -2267,12 +2268,16 @@ body.dark-mode .cat-chip-btn.active {
   display: flex;
   gap: 6px;
   overflow-x: auto;
+  overflow-y: hidden;
   scrollbar-width: none;
   padding: 2px 2px 2px;
   margin-bottom: 0;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
   scroll-behavior: smooth;
   scroll-padding: 0 16px;
+  position: relative;
 }
 
 .budidaya-subchips-nav::-webkit-scrollbar {
@@ -2730,12 +2735,13 @@ body.dark-mode .search-unified-divider {
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x;
   overscroll-behavior-x: contain;
-  flex: 1;
+  flex: 1 1 0%;
   min-width: 0;
   padding: 2px 6px 2px 1px;
   scroll-behavior: smooth;
   scroll-padding: 0 16px;
   cursor: grab;
+  position: relative;
 }
 
 .search-unified-sort.is-dragging {
@@ -3051,6 +3057,7 @@ body.dark-mode .search-icon-btn:hover {
   overscroll-behavior-x: contain;
   scroll-behavior: smooth;
   scroll-padding: 0 16px;
+  position: relative;
 }
 
 .search-chips-scroll::-webkit-scrollbar {
@@ -3119,12 +3126,12 @@ body.dark-mode .search-chip.active {
 }
 
 /* ============================================================
-   GRID PRODUK SEARCH INTERFACE: LEGA, RAPI & SELARAS DENGAN PROMO VIP
-   Ukuran kotak produk disesuaikan hampir sama persis dengan halaman Promo VIP
+   GRID PRODUK SEARCH INTERFACE: ELEGAN, RINGKAS & LEGA
+   Format persis seperti tampilan di 4 kategori, diperkecil sedikit agar lega
    ============================================================ */
 .search-product-grid {
-  padding: 2px 14px 20px;
-  gap: 6px 6.5px;
+  padding: 2px 2px 20px;
+  gap: 6.5px 7px;
   margin-top: 0;
   width: 100%;
   box-sizing: border-box;
@@ -3132,21 +3139,23 @@ body.dark-mode .search-chip.active {
 
 @media (min-width: 640px) {
   .search-product-grid {
-    padding: 4px 16px 24px;
+    padding: 4px 2px 24px;
     gap: 8.5px;
   }
 }
 
 @media (min-width: 1024px) {
   .search-product-grid {
-    padding: 6px 16px 28px;
+    padding: 6px 0 28px;
+    max-width: 960px;
+    margin: 0 auto;
     gap: 10px;
   }
 }
 
 .search-product-grid .product-card {
-  border-radius: 7px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-radius: 6.5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .search-product-grid .product-card:hover {
@@ -3156,35 +3165,35 @@ body.dark-mode .search-chip.active {
 }
 
 .search-product-grid .product-discount-badge {
-  top: 3px;
-  left: 3px;
-  font-size: 0.50rem;
+  top: 2.5px;
+  left: 2.5px;
+  font-size: 0.48rem;
   padding: 1px 3px;
-  border-radius: 3px;
-  letter-spacing: 0.12px;
+  border-radius: 2.5px;
+  letter-spacing: 0.1px;
 }
 
 .search-product-grid .product-body {
-  padding: 4.5px 6px;
+  padding: 3.5px 5px;
 }
 
 .search-product-grid .product-name {
   font-weight: 700;
-  font-size: 0.73rem;
-  line-height: 1.22;
-  margin: 0 0 2px;
-  min-height: 2.15em;
+  font-size: 0.69rem;
+  line-height: 1.2;
+  margin: 0 0 1.5px;
+  min-height: 2.05em;
   letter-spacing: normal;
 }
 
 .search-product-grid .product-price-row {
-  gap: 3px;
+  gap: 2.5px;
   padding-top: 1px;
-  min-height: 1.15em;
+  min-height: 1.1em;
 }
 
 .search-product-grid .product-price {
-  font-size: 0.77rem;
+  font-size: 0.73rem;
   letter-spacing: -0.2px;
 }
 
@@ -3193,19 +3202,19 @@ body.dark-mode .search-product-grid .product-price {
 }
 
 .search-product-grid .product-price-coret {
-  font-size: 0.54rem;
+  font-size: 0.51rem;
 }
 
 .search-product-grid .product-btn {
-  margin-top: 3.5px;
-  padding: 3.5px 6px;
-  font-size: 0.65rem;
-  border-radius: 5px;
+  margin-top: 3px;
+  padding: 2.5px 5px;
+  font-size: 0.62rem;
+  border-radius: 4.5px;
   border: 1px solid rgba(15, 118, 110, 0.28);
   background: rgba(15, 118, 110, 0.05);
   color: #0f766e;
   line-height: 1.25;
-  min-height: 25px;
+  min-height: 22px;
 }
 
 body.dark-mode .search-product-grid .product-btn {
@@ -5036,12 +5045,17 @@ body.dark-mode .category-sort-attached-row {
   align-items: center;
   gap: 5px;
   overflow-x: auto;
+  overflow-y: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
   scroll-behavior: smooth;
   scroll-padding: 0 16px;
-  flex: 1;
+  flex: 1 1 0%;
+  min-width: 0;
+  position: relative;
 }
 
 .sort-pills-scroll::-webkit-scrollbar {

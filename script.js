@@ -2719,19 +2719,25 @@ document.addEventListener("DOMContentLoaded", function () {
     ) || element.parentElement;
     if (!parent) return;
 
-    requestAnimationFrame(function () {
+    function executeScroll() {
       try {
-        const parentRect = parent.getBoundingClientRect();
-        const elRect = element.getBoundingClientRect();
-        const currentScrollLeft = parent.scrollLeft;
+        const parentWidth = parent.clientWidth;
+        if (parentWidth <= 0) return;
 
-        // Hitung posisi horizontal tombol relatif terhadap kontainer
-        const elOffsetLeft = (elRect.left - parentRect.left) + currentScrollLeft;
-        // Hitung target scroll agar tombol pas di tengah kontainer
-        const targetScrollLeft = elOffsetLeft - (parentRect.clientWidth / 2) + (elRect.width / 2);
+        let elLeft = 0;
+        if (element.offsetParent === parent) {
+          elLeft = element.offsetLeft;
+        } else {
+          const parentRect = parent.getBoundingClientRect();
+          const elRect = element.getBoundingClientRect();
+          elLeft = (elRect.left - parentRect.left) + parent.scrollLeft;
+        }
+
+        const elWidth = element.offsetWidth || 50;
+        const targetScrollLeft = elLeft - (parentWidth / 2) + (elWidth / 2);
 
         parent.scrollTo({
-          left: Math.max(0, targetScrollLeft),
+          left: Math.max(0, Math.round(targetScrollLeft)),
           behavior: "smooth"
         });
       } catch (e) {
@@ -2739,10 +2745,16 @@ document.addEventListener("DOMContentLoaded", function () {
           element.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
         } catch (err) {}
       }
-    });
+    }
+
+    // Jalankan segera dan jadwalkan ulang dalam 40ms untuk menjamin layout stabil
+    executeScroll();
+    setTimeout(executeScroll, 40);
   }
 
   function openCategory(categoryId, categoryName) {
+    const isAlreadyInCategory = categoryView && !categoryView.classList.contains("hidden");
+
     currentCategory = categoryId;
     currentKeyword = searchInputCategory ? searchInputCategory.value : "";
 
@@ -2761,10 +2773,28 @@ document.addEventListener("DOMContentLoaded", function () {
       categoryHeaderDesc.textContent = bannerInfo.deskripsi;
     }
 
-    // Di halaman kategori:
-    // Jika Kategori Budidaya Modern (Benih-Pakan-Budidaya):
-    // Sembunyikan categoryChipsNav (Semua, Olahan Ikan, Ikan Segar, Pancing, Budidaya)
-    // dan tampilkan hanya budidayaSubchipsNav (Semua, Pakan, Benih, Alat & Aksesoris, Suplemen)
+    // 1. Tampilkan categoryView terlebih dahulu agar kontainer dan chip memiliki dimensi (clientWidth > 0)
+    if (homeView) homeView.classList.add("hidden");
+    if (searchView) searchView.classList.add("hidden");
+    if (aboutView) aboutView.classList.add("hidden");
+    if (vipPromoView) vipPromoView.classList.add("hidden");
+    if (categoryView) categoryView.classList.remove("hidden");
+
+    if (aboutSlideTimer) {
+      clearInterval(aboutSlideTimer);
+      aboutSlideTimer = null;
+    }
+
+    document.body.classList.remove("search-active");
+    document.body.classList.add("category-active");
+    const floatingBellEl = document.getElementById("notifFloatingBell");
+    if (floatingBellEl) floatingBellEl.classList.add("hidden");
+
+    if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.add("hidden");
+    if (topbarCategorySearchRow) topbarCategorySearchRow.classList.remove("hidden");
+    updateHeaderOffset();
+
+    // 2. Aktifkan & geser otomatis chip kategori yang dipilih
     if (categoryId === "Benih-Pakan-Budidaya") {
       if (categoryChipsNav) {
         categoryChipsNav.classList.add("hidden");
@@ -2806,29 +2836,13 @@ document.addEventListener("DOMContentLoaded", function () {
       filterSelect.value = categoryId;
     }
 
-    if (homeView) homeView.classList.add("hidden");
-    if (searchView) searchView.classList.add("hidden");
-    if (aboutView) aboutView.classList.add("hidden");
-    if (vipPromoView) vipPromoView.classList.add("hidden");
-    if (categoryView) categoryView.classList.remove("hidden");
-
-    if (aboutSlideTimer) {
-      clearInterval(aboutSlideTimer);
-      aboutSlideTimer = null;
-    }
-
-    document.body.classList.remove("search-active");
-    document.body.classList.add("category-active");
-    const floatingBellEl = document.getElementById("notifFloatingBell");
-    if (floatingBellEl) floatingBellEl.classList.add("hidden");
-
-    if (topbarSearchInterfaceRow) topbarSearchInterfaceRow.classList.add("hidden");
-    if (topbarCategorySearchRow) topbarCategorySearchRow.classList.remove("hidden");
-    updateHeaderOffset();
-
     refreshProductView();
     setActiveBottomNav("tab-katalog");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // Hanya reset posisi layar ke atas jika berpindah dari halaman lain
+    if (!isAlreadyInCategory) {
+      window.scrollTo(0, 0);
+    }
   }
 
   function goHome() {
