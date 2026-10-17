@@ -3137,7 +3137,237 @@ document.addEventListener("DOMContentLoaded", function () {
   let aboutSlideIndex = 0;
   let aboutSlideTimer = null;
   let isAboutSlidePaused = false;
-  let isAboutSliderBound = false;
+  let isAboutSliderDragging = false;
+  let isAboutSliderEventsBound = false;
+
+  function goToAboutSlide(index) {
+    const track = document.getElementById("aboutSliderTrack");
+    const dotsWrap = document.getElementById("aboutSliderDots");
+    if (!track) return;
+    const slides = track.querySelectorAll(".about-slide");
+    const total = slides.length;
+    if (total === 0) return;
+
+    if (index >= total) index = 0;
+    if (index < 0) index = total - 1;
+    aboutSlideIndex = index;
+
+    track.style.transition = "transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)";
+    track.style.transform = "translateX(-" + (aboutSlideIndex * 100) + "%)";
+
+    slides.forEach(function (slide, i) {
+      if (i === aboutSlideIndex) {
+        slide.classList.add("active");
+      } else {
+        slide.classList.remove("active");
+      }
+    });
+
+    if (dotsWrap) {
+      const dots = dotsWrap.querySelectorAll(".about-slide-dot");
+      dots.forEach(function (dot, i) {
+        if (i === aboutSlideIndex) {
+          dot.classList.add("active");
+        } else {
+          dot.classList.remove("active");
+        }
+      });
+    }
+  }
+
+  function nextAboutSlide() {
+    goToAboutSlide(aboutSlideIndex + 1);
+  }
+
+  function prevAboutSlide() {
+    goToAboutSlide(aboutSlideIndex - 1);
+  }
+
+  function startAboutSlideTimer() {
+    stopAboutSlideTimer();
+    const aboutViewEl = document.getElementById("aboutView");
+    if (aboutViewEl && aboutViewEl.classList.contains("hidden")) return;
+
+    aboutSlideTimer = setInterval(function () {
+      if (!isAboutSlidePaused && !isAboutSliderDragging) {
+        nextAboutSlide();
+      }
+    }, 3500); // Bergeser otomatis setiap 3,5 detik secara halus
+  }
+
+  function stopAboutSlideTimer() {
+    if (aboutSlideTimer) {
+      clearInterval(aboutSlideTimer);
+      aboutSlideTimer = null;
+    }
+  }
+
+  function bindAboutSliderInteractions() {
+    const sliderBox = document.getElementById("aboutSliderBox");
+    const track = document.getElementById("aboutSliderTrack");
+    const prevBtn = document.getElementById("aboutSlidePrevBtn");
+    const nextBtn = document.getElementById("aboutSlideNextBtn");
+    const dotsWrap = document.getElementById("aboutSliderDots");
+
+    if (!sliderBox || !track || isAboutSliderEventsBound) return;
+
+    if (prevBtn) {
+      prevBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        prevAboutSlide();
+        startAboutSlideTimer();
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        nextAboutSlide();
+        startAboutSlideTimer();
+      });
+    }
+
+    if (dotsWrap) {
+      dotsWrap.addEventListener("click", function (e) {
+        const dot = e.target.closest(".about-slide-dot");
+        if (!dot) return;
+        const idx = parseInt(dot.getAttribute("data-index"), 10);
+        if (!isNaN(idx)) {
+          goToAboutSlide(idx);
+          startAboutSlideTimer();
+        }
+      });
+    }
+
+    sliderBox.addEventListener("mouseenter", function () {
+      isAboutSlidePaused = true;
+    });
+    sliderBox.addEventListener("mouseleave", function () {
+      isAboutSlidePaused = false;
+    });
+
+    // Touch Swipe Gestures untuk Layar Sentuh HP (Android & iPhone)
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchDeltaX = 0;
+    let isHorizontalGesture = false;
+
+    sliderBox.addEventListener("touchstart", function (e) {
+      if (!e.touches || e.touches.length === 0) return;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchDeltaX = 0;
+      isHorizontalGesture = false;
+      isAboutSliderDragging = true;
+      isAboutSlidePaused = true;
+      stopAboutSlideTimer();
+    }, { passive: true });
+
+    sliderBox.addEventListener("touchmove", function (e) {
+      if (!isAboutSliderDragging || !e.touches || e.touches.length === 0) return;
+      const currentX = e.touches[0].clientX;
+      const currentY = e.touches[0].clientY;
+      const dx = currentX - touchStartX;
+      const dy = currentY - touchStartY;
+
+      if (!isHorizontalGesture) {
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 7) {
+          isHorizontalGesture = true;
+        } else if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 7) {
+          isAboutSliderDragging = false;
+          return;
+        }
+      }
+
+      if (isHorizontalGesture) {
+        touchDeltaX = dx;
+        const boxWidth = sliderBox.offsetWidth || 350;
+        const percentOffset = (touchDeltaX / boxWidth) * 100;
+        track.style.transition = "none";
+        track.style.transform = "translateX(calc(-" + (aboutSlideIndex * 100) + "% + " + percentOffset + "%))";
+      }
+    }, { passive: true });
+
+    function onTouchEnd() {
+      if (!isAboutSliderDragging) return;
+      isAboutSliderDragging = false;
+
+      const boxWidth = sliderBox.offsetWidth || 350;
+      const threshold = Math.max(35, boxWidth * 0.12);
+
+      if (isHorizontalGesture && touchDeltaX < -threshold) {
+        nextAboutSlide();
+      } else if (isHorizontalGesture && touchDeltaX > threshold) {
+        prevAboutSlide();
+      } else {
+        goToAboutSlide(aboutSlideIndex);
+      }
+
+      touchDeltaX = 0;
+      isHorizontalGesture = false;
+      setTimeout(function () {
+        isAboutSlidePaused = false;
+        startAboutSlideTimer();
+      }, 1200);
+    }
+
+    sliderBox.addEventListener("touchend", onTouchEnd, { passive: true });
+    sliderBox.addEventListener("touchcancel", onTouchEnd, { passive: true });
+
+    // Mouse Drag Gestures untuk Komputer / Desktop
+    let mouseStartX = 0;
+    let mouseDeltaX = 0;
+    let isMouseDown = false;
+
+    sliderBox.addEventListener("mousedown", function (e) {
+      if (e.target.closest("#aboutSlidePrevBtn, #aboutSlideNextBtn, .about-slide-dot")) return;
+      isMouseDown = true;
+      mouseStartX = e.clientX;
+      mouseDeltaX = 0;
+      stopAboutSlideTimer();
+      sliderBox.style.cursor = "grabbing";
+    });
+
+    window.addEventListener("mousemove", function (e) {
+      if (!isMouseDown) return;
+      mouseDeltaX = e.clientX - mouseStartX;
+      if (Math.abs(mouseDeltaX) > 4) {
+        const boxWidth = sliderBox.offsetWidth || 350;
+        const percentOffset = (mouseDeltaX / boxWidth) * 100;
+        track.style.transition = "none";
+        track.style.transform = "translateX(calc(-" + (aboutSlideIndex * 100) + "% + " + percentOffset + "%))";
+      }
+    });
+
+    window.addEventListener("mouseup", function () {
+      if (!isMouseDown) return;
+      isMouseDown = false;
+      sliderBox.style.cursor = "";
+
+      const boxWidth = sliderBox.offsetWidth || 350;
+      const threshold = Math.max(35, boxWidth * 0.12);
+
+      if (mouseDeltaX < -threshold) {
+        nextAboutSlide();
+      } else if (mouseDeltaX > threshold) {
+        prevAboutSlide();
+      } else {
+        goToAboutSlide(aboutSlideIndex);
+      }
+      mouseDeltaX = 0;
+      setTimeout(function () {
+        startAboutSlideTimer();
+      }, 1200);
+    });
+
+    isAboutSliderEventsBound = true;
+  }
+
+  function initAboutSlider() {
+    bindAboutSliderInteractions();
+    goToAboutSlide(aboutSlideIndex);
+    startAboutSlideTimer();
+  }
 
   function renderDynamicAboutSlider(docsList) {
     const track = document.getElementById("aboutSliderTrack");
@@ -3164,7 +3394,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="about-slide${activeCls}">
           <div class="about-slide-img-box">
             <span class="about-slide-badge">${escapeHtml(badge)}</span>
-            <img src="${escapeHtml(img)}" alt="${escapeHtml(title)}" class="about-slide-img" loading="${idx === 0 ? "eager" : "lazy"}">
+            <img src="${escapeHtml(img)}" alt="${escapeHtml(title)}" class="about-slide-img" loading="${idx === 0 ? "eager" : "lazy"}" draggable="false">
           </div>
           <div class="about-slide-body">
             <h4 class="about-slide-title">${escapeHtml(title)}</h4>
@@ -3216,114 +3446,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     renderDynamicAboutSlider(docs);
-  }
-
-  function initAboutSlider() {
-    const sliderBox = document.getElementById("aboutSliderBox");
-    const track = document.getElementById("aboutSliderTrack");
-    const dotsWrap = document.getElementById("aboutSliderDots");
-    const prevBtn = document.getElementById("aboutSlidePrevBtn");
-    const nextBtn = document.getElementById("aboutSlideNextBtn");
-
-    if (!sliderBox || !track) return;
-
-    const slides = track.querySelectorAll(".about-slide");
-    const totalSlides = slides.length;
-    if (totalSlides === 0) return;
-
-    function showAboutSlide(index) {
-      if (index >= totalSlides) index = 0;
-      if (index < 0) index = totalSlides - 1;
-      aboutSlideIndex = index;
-
-      slides.forEach(function (slide, i) {
-        if (i === aboutSlideIndex) {
-          slide.classList.add("active");
-        } else {
-          slide.classList.remove("active");
-        }
-      });
-
-      if (dotsWrap) {
-        const dots = dotsWrap.querySelectorAll(".about-slide-dot");
-        dots.forEach(function (dot, i) {
-          if (i === aboutSlideIndex) {
-            dot.classList.add("active");
-          } else {
-            dot.classList.remove("active");
-          }
-        });
-      }
-    }
-
-    function nextAboutSlide() {
-      showAboutSlide(aboutSlideIndex + 1);
-    }
-
-    function prevAboutSlide() {
-      showAboutSlide(aboutSlideIndex - 1);
-    }
-
-    function startAboutSlideTimer() {
-      if (aboutSlideTimer) clearInterval(aboutSlideTimer);
-      aboutSlideTimer = setInterval(function () {
-        if (!isAboutSlidePaused) {
-          nextAboutSlide();
-        }
-      }, 2500); // Bergeser otomatis setiap 2,5 detik
-    }
-
-    if (!isAboutSliderBound) {
-      if (prevBtn) {
-        prevBtn.addEventListener("click", function () {
-          prevAboutSlide();
-          startAboutSlideTimer();
-        });
-      }
-
-      if (nextBtn) {
-        nextBtn.addEventListener("click", function () {
-          nextAboutSlide();
-          startAboutSlideTimer();
-        });
-      }
-
-      if (dotsWrap) {
-        dotsWrap.addEventListener("click", function (e) {
-          const dot = e.target.closest(".about-slide-dot");
-          if (!dot) return;
-          const idx = parseInt(dot.getAttribute("data-index"), 10);
-          if (!isNaN(idx)) {
-            showAboutSlide(idx);
-            startAboutSlideTimer();
-          }
-        });
-      }
-
-      sliderBox.addEventListener("mouseenter", function () { isAboutSlidePaused = true; });
-      sliderBox.addEventListener("mouseleave", function () { isAboutSlidePaused = false; });
-
-      let touchStartX = 0;
-      sliderBox.addEventListener("touchstart", function (e) {
-        touchStartX = e.touches[0].clientX;
-        isAboutSlidePaused = true;
-      }, { passive: true });
-
-      sliderBox.addEventListener("touchend", function (e) {
-        const diffX = e.changedTouches[0].clientX - touchStartX;
-        if (diffX > 40) {
-          prevAboutSlide();
-        } else if (diffX < -40) {
-          nextAboutSlide();
-        }
-        setTimeout(function () { isAboutSlidePaused = false; }, 2000);
-      }, { passive: true });
-
-      isAboutSliderBound = true;
-    }
-
-    showAboutSlide(aboutSlideIndex);
-    startAboutSlideTimer();
   }
 
   // ---------- SISTEM RIWAYAT PENCARIAN TERAKHIR (RECENT SEARCHES) ----------
