@@ -1388,16 +1388,17 @@ body.dark-mode .view-all-link:hover {
 /* Tag Diskon Coral Tunggal */
 .featured-clean-disc {
   position: absolute;
-  top: 5px;
-  left: 5px;
+  top: 6px;
+  left: 6px;
   background: var(--accent-coral);
   color: #ffffff;
-  font-size: 0.60rem;
+  font-size: 0.68rem;
   font-weight: 800;
-  padding: 2px 4px;
-  border-radius: 4px;
+  padding: 2.5px 6.5px;
+  border-radius: 4.5px;
   letter-spacing: 0.2px;
-  box-shadow: 0 2px 5px rgba(238, 77, 45, 0.3);
+  box-shadow: 0 2px 6px rgba(238, 77, 45, 0.35);
+  line-height: 1.2;
   z-index: 2;
 }
 
@@ -2403,16 +2404,18 @@ body.dark-mode .budi-chip-btn.active {
 
 .product-discount-badge {
   position: absolute;
-  top: 3px;
-  left: 3px;
+  top: 5px;
+  left: 5px;
   background: var(--accent-coral);
   color: #ffffff;
-  font-size: 0.50rem; /* 10% lebih ringkas */
+  font-size: 0.67rem; /* Jelas, tajam & nyaman dibaca di layar HP */
   font-weight: 800;
-  padding: 1px 3px;
-  border-radius: 3px;
-  box-shadow: 0 2px 5px rgba(238, 77, 45, 0.3);
-  letter-spacing: 0.12px;
+  padding: 2.5px 6px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(238, 77, 45, 0.35);
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+  z-index: 2;
 }
 
 .product-body {
@@ -3177,12 +3180,14 @@ body.dark-mode .search-chip.active {
 }
 
 .search-product-grid .product-discount-badge {
-  top: 2.5px;
-  left: 2.5px;
-  font-size: 0.48rem;
-  padding: 1px 3px;
-  border-radius: 2.5px;
-  letter-spacing: 0.1px;
+  top: 4.5px;
+  left: 4.5px;
+  font-size: 0.64rem;
+  padding: 2px 5.5px;
+  border-radius: 4px;
+  letter-spacing: 0.15px;
+  line-height: 1.2;
+  z-index: 2;
 }
 
 .search-product-grid .product-body {
