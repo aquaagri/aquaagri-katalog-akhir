@@ -2708,6 +2708,40 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 2800);
   }
 
+  /**
+   * Menggeser baris scroll horizontal secara halus & presisi ke posisi tengah
+   * saat salah satu tombol kategori atau urutan harga disentuh/diaktifkan di mobile
+   */
+  function scrollPillToCenter(element, container) {
+    if (!element) return;
+    const parent = container || element.closest(
+      ".category-chips-nav, .budidaya-subchips-nav, .sort-pills-scroll, .search-chips-scroll, .search-unified-sort"
+    ) || element.parentElement;
+    if (!parent) return;
+
+    requestAnimationFrame(function () {
+      try {
+        const parentRect = parent.getBoundingClientRect();
+        const elRect = element.getBoundingClientRect();
+        const currentScrollLeft = parent.scrollLeft;
+
+        // Hitung posisi horizontal tombol relatif terhadap kontainer
+        const elOffsetLeft = (elRect.left - parentRect.left) + currentScrollLeft;
+        // Hitung target scroll agar tombol pas di tengah kontainer
+        const targetScrollLeft = elOffsetLeft - (parentRect.clientWidth / 2) + (elRect.width / 2);
+
+        parent.scrollTo({
+          left: Math.max(0, targetScrollLeft),
+          behavior: "smooth"
+        });
+      } catch (e) {
+        try {
+          element.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+        } catch (err) {}
+      }
+    });
+  }
+
   function openCategory(categoryId, categoryName) {
     currentCategory = categoryId;
     currentKeyword = searchInputCategory ? searchInputCategory.value : "";
@@ -2742,6 +2776,7 @@ document.addEventListener("DOMContentLoaded", function () {
         budiChips.forEach(function (btn) {
           if (btn.getAttribute("data-sub") === "semua") {
             btn.classList.add("active");
+            scrollPillToCenter(btn, budidayaSubchipsNav);
           } else {
             btn.classList.remove("active");
           }
@@ -2755,9 +2790,7 @@ document.addEventListener("DOMContentLoaded", function () {
         chips.forEach(function (btn) {
           if (btn.getAttribute("data-cat") === categoryId) {
             btn.classList.add("active");
-            try {
-              btn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
-            } catch (e) {}
+            scrollPillToCenter(btn, categoryChipsNav);
           } else {
             btn.classList.remove("active");
           }
@@ -3571,9 +3604,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const type = chip.getAttribute("data-type");
         const val = chip.getAttribute("data-value");
         activeSearchChip = { type: type, value: val };
-        try {
-          chip.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
-        } catch (e) {}
+        scrollPillToCenter(chip, searchChipsScroll);
         renderSearchInterfaceProducts();
       });
     });
@@ -3750,6 +3781,7 @@ document.addEventListener("DOMContentLoaded", function () {
     catChips.forEach(function (btn) {
       btn.addEventListener("click", function () {
         const catId = btn.getAttribute("data-cat");
+        scrollPillToCenter(btn, categoryChipsNav);
         openCategory(catId);
       });
     });
@@ -3765,6 +3797,7 @@ document.addEventListener("DOMContentLoaded", function () {
           b.classList.remove("active");
         });
         btn.classList.add("active");
+        scrollPillToCenter(btn, budidayaSubchipsNav);
         refreshProductView();
       });
     });
@@ -3807,14 +3840,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const categorySortBar = document.getElementById("categorySortBar");
   if (categorySortBar) {
     const sortBtns = categorySortBar.querySelectorAll(".sort-pill-btn");
+    const sortScrollContainer = categorySortBar.querySelector(".sort-pills-scroll");
     sortBtns.forEach(function (btn) {
       btn.addEventListener("click", function () {
         sortBtns.forEach(function (b) { b.classList.remove("active"); });
         btn.classList.add("active");
         currentCategorySort = btn.getAttribute("data-sort") || "default";
-        try {
-          btn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
-        } catch (e) {}
+        scrollPillToCenter(btn, sortScrollContainer || btn.parentElement);
         refreshProductView();
       });
     });
@@ -3837,9 +3869,7 @@ document.addEventListener("DOMContentLoaded", function () {
         searchSortBtns.forEach(function (b) { b.classList.remove("active"); });
         btn.classList.add("active");
         currentSearchSort = btn.getAttribute("data-sort") || "default";
-        try {
-          btn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
-        } catch (e) {}
+        scrollPillToCenter(btn, searchSortPills);
         renderSearchInterfaceProducts();
       });
     });
@@ -4294,6 +4324,7 @@ document.addEventListener("DOMContentLoaded", function () {
       allBtn.type = "button";
       allBtn.textContent = "Semua";
       allBtn.addEventListener("click", function () {
+        scrollPillToCenter(allBtn, categoryChipsNav);
         openCategory("semua");
       });
       categoryChipsNav.appendChild(allBtn);
@@ -4305,6 +4336,7 @@ document.addEventListener("DOMContentLoaded", function () {
         btn.type = "button";
         btn.textContent = cat.nama;
         btn.addEventListener("click", function () {
+          scrollPillToCenter(btn, categoryChipsNav);
           openCategory(cat.id, cat.nama);
         });
         categoryChipsNav.appendChild(btn);

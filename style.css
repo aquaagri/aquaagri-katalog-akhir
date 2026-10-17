@@ -707,52 +707,131 @@ body.dark-mode .hero-features-strip {
 
 @media (min-width: 768px) {
   .hero-clean-section {
-    margin: 4px 0 12px;
+    margin: 6px 0 14px;
+  }
+  .hero-clean-card {
+    border-radius: 22px;
+    box-shadow: 0 8px 30px rgba(5, 23, 28, 0.18);
   }
   .hero-clean-body {
-    display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
-    min-height: 230px;
-    align-items: stretch;
-  }
-  .hero-clean-content {
-    padding: 20px 18px 16px 22px;
-  }
-  .hero-clean-title {
-    font-size: 1.48rem;
-    line-height: 1.22;
-    margin-bottom: 7px;
-  }
-  .hero-clean-desc {
-    font-size: 0.82rem;
-    max-width: 420px;
-    line-height: 1.46;
-    margin-bottom: 13px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    min-height: 260px;
+    overflow: hidden;
   }
   .hero-clean-visual {
-    position: relative;
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
-    min-height: 230px;
-    mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.35) 6%, rgba(0, 0, 0, 1) 20%);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.35) 6%, rgba(0, 0, 0, 1) 20%);
+    min-height: 260px;
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+    z-index: 1;
+  }
+  .hero-clean-img {
+    object-position: center 38%;
+  }
+  .hero-clean-visual::after {
+    background: linear-gradient(
+      90deg,
+      rgba(5, 23, 28, 0.92) 0%,
+      rgba(5, 23, 28, 0.78) 40%,
+      rgba(5, 23, 28, 0.35) 72%,
+      rgba(5, 23, 28, 0.10) 100%
+    );
+  }
+  body.dark-mode .hero-clean-visual::after {
+    background: linear-gradient(
+      90deg,
+      rgba(3, 16, 20, 0.95) 0%,
+      rgba(3, 16, 20, 0.84) 40%,
+      rgba(3, 16, 20, 0.38) 72%,
+      rgba(3, 16, 20, 0.12) 100%
+    );
+  }
+  .hero-clean-content {
+    position: relative;
+    z-index: 4;
+    padding: 28px 34px;
+    max-width: 540px;
+  }
+  .hero-clean-label {
+    font-size: 0.65rem;
+    letter-spacing: 1.8px;
+    padding: 3px 11px;
+    margin-bottom: 9px;
+  }
+  .hero-clean-title {
+    font-size: 1.65rem;
+    line-height: 1.24;
+    margin-bottom: 9px;
+    letter-spacing: -0.4px;
+  }
+  .hero-clean-desc {
+    font-size: 0.86rem;
+    max-width: 480px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    color: rgba(240, 253, 250, 0.94);
+  }
+  .hero-slide-indicators {
+    right: 22px;
+    bottom: 16px;
+    background: rgba(5, 23, 28, 0.45);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 5px 11px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
   }
 }
 
 @media (min-width: 1024px) {
+  .hero-clean-section {
+    margin: 8px 0 18px;
+  }
+  .hero-clean-card {
+    border-radius: 24px;
+  }
   .hero-clean-body {
-    grid-template-columns: 1.08fr 0.92fr;
-    min-height: 255px;
+    min-height: 295px;
+  }
+  .hero-clean-visual {
+    min-height: 295px;
   }
   .hero-clean-content {
-    padding: 24px 22px 18px 26px;
+    padding: 34px 44px;
+    max-width: 620px;
+  }
+  .hero-clean-label {
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    padding: 3.5px 12px;
+    margin-bottom: 10px;
   }
   .hero-clean-title {
-    font-size: 1.68rem;
+    font-size: 1.95rem;
+    line-height: 1.24;
+    margin-bottom: 11px;
+    letter-spacing: -0.5px;
   }
   .hero-clean-desc {
-    font-size: 0.85rem;
-    max-width: 460px;
+    font-size: 0.92rem;
+    max-width: 530px;
+    line-height: 1.55;
+    margin-bottom: 18px;
+  }
+  .hero-btn-primary {
+    padding: 9px 22px;
+    font-size: 0.88rem;
+    border-radius: 999px;
+  }
+  .hero-slide-indicators {
+    right: 28px;
+    bottom: 20px;
+    padding: 6px 13px;
   }
 }
 
@@ -1978,6 +2057,87 @@ body.dark-mode .step-icon {
   flex-shrink: 0;
 }
 
+@media (min-width: 768px) {
+  .category-banner-card {
+    min-height: 195px;
+    margin-bottom: 12px;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(5, 23, 28, 0.12);
+  }
+  .category-banner-bg {
+    object-position: center 36%;
+  }
+  .category-banner-overlay {
+    background: linear-gradient(
+      90deg,
+      rgba(6, 26, 30, 0.92) 0%,
+      rgba(6, 26, 30, 0.78) 42%,
+      rgba(6, 26, 30, 0.35) 75%,
+      rgba(6, 26, 30, 0.12) 100%
+    );
+  }
+  body.dark-mode .category-banner-overlay {
+    background: linear-gradient(
+      90deg,
+      rgba(4, 18, 22, 0.94) 0%,
+      rgba(4, 18, 22, 0.82) 42%,
+      rgba(4, 18, 22, 0.38) 75%,
+      rgba(4, 18, 22, 0.15) 100%
+    );
+  }
+  .category-banner-content {
+    padding: 24px 30px 18px;
+    gap: 5px;
+    max-width: 680px;
+  }
+  .category-banner-tag {
+    font-size: 0.68rem;
+    letter-spacing: 1.8px;
+  }
+  .category-banner-title {
+    font-size: 1.62rem;
+    letter-spacing: -0.4px;
+  }
+  .category-banner-desc {
+    font-size: 0.85rem;
+    max-width: 560px;
+    line-height: 1.48;
+    margin-bottom: 8px;
+  }
+  .category-banner-footer {
+    gap: 10px;
+  }
+  .category-count-badge {
+    font-size: 0.74rem;
+    padding: 3.5px 12px;
+  }
+  .category-quality-badge {
+    font-size: 0.76rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .category-banner-card {
+    min-height: 225px;
+    margin-bottom: 16px;
+    border-radius: 22px;
+    box-shadow: 0 8px 26px rgba(5, 23, 28, 0.15);
+  }
+  .category-banner-content {
+    padding: 28px 38px 22px;
+    gap: 6px;
+    max-width: 740px;
+  }
+  .category-banner-title {
+    font-size: 1.85rem;
+  }
+  .category-banner-desc {
+    font-size: 0.90rem;
+    max-width: 620px;
+    line-height: 1.5;
+  }
+}
+
 /* ============================================================
    PENCARIAN & FILTER PADA HALAMAN KATEGORI
    ============================================================ */
@@ -2052,6 +2212,7 @@ body.dark-mode .category-search-pill:focus-within {
   touch-action: pan-x;
   overscroll-behavior-x: contain;
   scroll-behavior: smooth;
+  scroll-padding: 0 16px;
 }
 
 .category-chips-nav::-webkit-scrollbar {
@@ -2068,8 +2229,13 @@ body.dark-mode .category-search-pill:focus-within {
   font-size: 0.74rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease, transform 0.12s ease;
   white-space: nowrap;
+  scroll-margin: 0 16px;
+}
+
+.cat-chip-btn:active {
+  transform: scale(0.96);
 }
 
 .cat-chip-btn:hover {
@@ -2105,6 +2271,8 @@ body.dark-mode .cat-chip-btn.active {
   padding: 2px 2px 2px;
   margin-bottom: 0;
   -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scroll-padding: 0 16px;
 }
 
 .budidaya-subchips-nav::-webkit-scrollbar {
@@ -2121,9 +2289,14 @@ body.dark-mode .cat-chip-btn.active {
   font-size: 0.74rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease, transform 0.12s ease;
   white-space: nowrap;
   box-shadow: var(--shadow-xs);
+  scroll-margin: 0 16px;
+}
+
+.budi-chip-btn:active {
+  transform: scale(0.96);
 }
 
 .budi-chip-btn:hover {
@@ -2561,6 +2734,7 @@ body.dark-mode .search-unified-divider {
   min-width: 0;
   padding: 2px 6px 2px 1px;
   scroll-behavior: smooth;
+  scroll-padding: 0 16px;
   cursor: grab;
 }
 
@@ -2876,6 +3050,7 @@ body.dark-mode .search-icon-btn:hover {
   touch-action: pan-x;
   overscroll-behavior-x: contain;
   scroll-behavior: smooth;
+  scroll-padding: 0 16px;
 }
 
 .search-chips-scroll::-webkit-scrollbar {
@@ -2893,12 +3068,17 @@ body.dark-mode .search-icon-btn:hover {
   font-size: 0.70rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease, transform 0.12s ease;
   white-space: nowrap;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  scroll-margin: 0 16px;
+}
+
+.search-chip:active {
+  transform: scale(0.96);
 }
 
 .search-chip:hover {
@@ -2939,22 +3119,27 @@ body.dark-mode .search-chip.active {
 }
 
 /* ============================================================
-   GRID PRODUK SEARCH INTERFACE: LEGA, RAPI & SELARAS DENGAN KATALOG
+   GRID PRODUK SEARCH INTERFACE: LEGA, RAPI & SELARAS DENGAN PROMO VIP
+   Ukuran kotak produk disesuaikan hampir sama persis dengan halaman Promo VIP
    ============================================================ */
 .search-product-grid {
+  padding: 2px 14px 20px;
   gap: 6px 6.5px;
   margin-top: 0;
   width: 100%;
+  box-sizing: border-box;
 }
 
 @media (min-width: 640px) {
   .search-product-grid {
+    padding: 4px 16px 24px;
     gap: 8.5px;
   }
 }
 
 @media (min-width: 1024px) {
   .search-product-grid {
+    padding: 6px 16px 28px;
     gap: 10px;
   }
 }
@@ -3003,6 +3188,10 @@ body.dark-mode .search-chip.active {
   letter-spacing: -0.2px;
 }
 
+body.dark-mode .search-product-grid .product-price {
+  color: #2dd4bf;
+}
+
 .search-product-grid .product-price-coret {
   font-size: 0.54rem;
 }
@@ -3017,6 +3206,12 @@ body.dark-mode .search-chip.active {
   color: #0f766e;
   line-height: 1.25;
   min-height: 25px;
+}
+
+body.dark-mode .search-product-grid .product-btn {
+  border-color: rgba(45, 212, 191, 0.32);
+  background: rgba(45, 212, 191, 0.08);
+  color: #2dd4bf;
 }
 
 /* TOAST INTERAKTIF */
@@ -4844,6 +5039,8 @@ body.dark-mode .category-sort-attached-row {
   scrollbar-width: none;
   -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scroll-padding: 0 16px;
   flex: 1;
 }
 
@@ -4867,9 +5064,14 @@ body.dark-mode .category-sort-attached-row {
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1), transform 0.12s ease;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
   position: relative;
+  scroll-margin: 0 16px;
+}
+
+.sort-pill-btn:active {
+  transform: scale(0.95);
 }
 
 .sort-pill-btn::before {
