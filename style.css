@@ -2603,9 +2603,15 @@ body:has(#searchView:not(.hidden)) .notif-floating-bell,
   display: none !important;
 }
 
-#topbarCategorySearchRow.topbar-sub-row,
-#topbarSearchInterfaceRow.topbar-sub-row {
+#topbarCategorySearchRow.topbar-sub-row {
   padding: 6px 0 4px;
+  border-top: none;
+  border-bottom: 1px solid rgba(15, 118, 110, 0.08);
+  box-shadow: 0 3px 14px rgba(15, 23, 42, 0.04);
+}
+
+#topbarSearchInterfaceRow.topbar-sub-row {
+  padding: 5px 0 2px;
   border-top: none;
   border-bottom: 1px solid rgba(15, 118, 110, 0.08);
   box-shadow: 0 3px 14px rgba(15, 23, 42, 0.04);
@@ -2625,12 +2631,12 @@ body.dark-mode #topbarSearchInterfaceRow.topbar-sub-row {
 /* TIER 2.5 SEARCH: CHIPS & URUTAN HARGA MENEMPEL SELEMPANG LEGA, RAPI & MODERN */
 .search-filter-attached-bar {
   border-top: none;
-  padding: 5px 0 3px;
-  margin-top: 4px;
+  padding: 4px 0 1px;
+  margin-top: 3px;
   background: transparent;
   display: flex;
   flex-direction: column;
-  gap: 5px; /* Jeda bernafas alami antara baris kategori dan baris urutan */
+  gap: 4px; /* Jeda bernafas alami antara baris kategori dan baris urutan */
 }
 
 body.dark-mode .search-filter-attached-bar {
@@ -2649,7 +2655,7 @@ body.dark-mode .search-filter-attached-bar {
 /* BARIS TERPADU: JUMLAH HASIL (KIRI) + KONTROL URUTKAN (KANAN) TANPA BORDER BERTUMPUK */
 .search-unified-bar {
   border-top: none;
-  padding: 1px 0 4px;
+  padding: 0 0 1px;
 }
 
 body.dark-mode .search-unified-bar {
@@ -2843,6 +2849,9 @@ body.dark-mode .sort-pill-btn.active {
   .topbar-sub-row {
     padding: 8px 0 10px;
   }
+  #topbarSearchInterfaceRow.topbar-sub-row {
+    padding: 7px 0 3px;
+  }
   .topbar-sub-inner {
     max-width: 920px;
     padding: 0 24px;
@@ -2853,6 +2862,9 @@ body.dark-mode .sort-pill-btn.active {
 @media (min-width: 1024px) {
   .topbar-sub-row {
     padding: 9px 0 11px;
+  }
+  #topbarSearchInterfaceRow.topbar-sub-row {
+    padding: 8px 0 4px;
   }
   .topbar-sub-inner {
     max-width: 1140px;
@@ -3118,9 +3130,9 @@ body.dark-mode .search-chip.active {
   color: #ffffff;
 }
 
-/* AREA KONTEN PENCARIAN (LEGA, BERSIH & PROPORSIONAL DARI HEAD) */
+/* AREA KONTEN PENCARIAN (LEGA, BERSIH, RAPAT & PROPORSIONAL DARI HEAD) */
 #searchView {
-  padding-top: 11px; /* Jarak pas & nyaman: kartu produk tidak menabrak baris header */
+  padding-top: 2px; /* Dibuat rapat ke bagian head secara rapi dan presisi */
   padding-bottom: 95px;
   margin-top: 0;
 }
@@ -3130,7 +3142,7 @@ body.dark-mode .search-chip.active {
    Format persis seperti tampilan di 4 kategori, diperkecil sedikit agar lega
    ============================================================ */
 .search-product-grid {
-  padding: 2px 2px 20px;
+  padding: 1px 2px 20px;
   gap: 6.5px 7px;
   margin-top: 0;
   width: 100%;
@@ -3139,14 +3151,14 @@ body.dark-mode .search-chip.active {
 
 @media (min-width: 640px) {
   .search-product-grid {
-    padding: 4px 2px 24px;
+    padding: 2px 2px 24px;
     gap: 8.5px;
   }
 }
 
 @media (min-width: 1024px) {
   .search-product-grid {
-    padding: 6px 0 28px;
+    padding: 3px 0 28px;
     max-width: 960px;
     margin: 0 auto;
     gap: 10px;
