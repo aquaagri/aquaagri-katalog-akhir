@@ -4316,6 +4316,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   if (vipActivateNotifBtn) {
     vipActivateNotifBtn.addEventListener("click", function () {
+      playAquaAgriRingtone();
       const bell = document.getElementById("notifFloatingBell");
       if (bell) {
         bell.click();
@@ -5111,12 +5112,94 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // ============================================================
+  // SISTEM AUDIO RINGTONE UNIVERSAL (HP ANDROID, IPHONE & KOMPUTER)
+  // Memutar suara ramah "Terima Kasih" saat pengunjung:
+  // 1. Mengklik "Aktifkan Diskon & Voucher Gratis"
+  // 2. Mengklik "Pemasangan Aplikasi" (Android, iPhone Safari, atau Komputer)
+  // Aman, non-blocking, kompatibel WebKit iOS & Android Chrome
+  // ============================================================
+  let aquaAgriRingtoneAudio = null;
+  let lastRingtonePlayedTime = 0;
+
+  function initAquaAgriRingtone() {
+    if (!aquaAgriRingtoneAudio) {
+      aquaAgriRingtoneAudio = document.getElementById("aquaAgriRingtone");
+      if (!aquaAgriRingtoneAudio) {
+        try {
+          aquaAgriRingtoneAudio = new Audio("ringtone-terimakasih.mp3");
+        } catch (eAudio) {}
+      }
+      if (aquaAgriRingtoneAudio) {
+        aquaAgriRingtoneAudio.preload = "auto";
+        try {
+          aquaAgriRingtoneAudio.volume = 1.0;
+        } catch (eVol) {}
+      }
+    }
+    return aquaAgriRingtoneAudio;
+  }
+
+  function playAquaAgriRingtone() {
+    try {
+      const now = Date.now();
+      // Debounce 500ms mencegah suara restart jika tombol tertekan 2 kali berturut-turut
+      if (now - lastRingtonePlayedTime < 500) {
+        return;
+      }
+      lastRingtonePlayedTime = now;
+
+      const audio = initAquaAgriRingtone();
+      if (!audio) return;
+
+      // Reset waktu putar ke detik awal
+      try {
+        audio.currentTime = 0;
+      } catch (eTime) {}
+
+      // Putar audio secara sinkron saat user gesture (wajib untuk iOS WebKit & Android)
+      const playPromise = audio.play();
+      if (playPromise !== undefined && typeof playPromise.catch === "function") {
+        playPromise.catch(function (err) {
+          // Tangani secara senyap jika perangkat dalam mode hening (Silent Switch) atau hemat baterai
+          console.log("Ringtone audio notice:", err);
+        });
+      }
+    } catch (err) {
+      console.warn("Ringtone error notice:", err);
+    }
+  }
+  window.playAquaAgriRingtone = playAquaAgriRingtone;
+
+  // Siapkan preload audio pada interaksi/sentuhan pertama agar seketika berbunyi tanpa jeda jaringan
+  (function setupAudioPreloadOnFirstTouch() {
+    const unlock = function () {
+      try {
+        const audio = initAquaAgriRingtone();
+        if (audio && typeof audio.load === "function") {
+          audio.load();
+        }
+      } catch (e) {}
+      window.removeEventListener("touchstart", unlock, { passive: true });
+      window.removeEventListener("pointerdown", unlock, { passive: true });
+      window.removeEventListener("click", unlock, { passive: true });
+    };
+    window.addEventListener("touchstart", unlock, { passive: true, once: true });
+    window.addEventListener("pointerdown", unlock, { passive: true, once: true });
+    window.addEventListener("click", unlock, { passive: true, once: true });
+  })();
+
   const iosCloseBtn = document.getElementById("iosModalCloseBtn");
   const iosUnderstoodBtn = document.getElementById("iosGuideUnderstoodBtn");
   const iosModalEl = document.getElementById("iosInstallModal");
 
   if (iosCloseBtn) iosCloseBtn.addEventListener("click", closeIosInstallModal);
-  if (iosUnderstoodBtn) iosUnderstoodBtn.addEventListener("click", closeIosInstallModal);
+  if (iosUnderstoodBtn) {
+    iosUnderstoodBtn.addEventListener("click", function () {
+      playAquaAgriRingtone();
+      closeIosInstallModal();
+    });
+  }
   if (iosModalEl) {
     iosModalEl.addEventListener("click", function (e) {
       if (e.target === iosModalEl) closeIosInstallModal();
@@ -5160,6 +5243,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Klik Aktifkan Diskon & Voucher (CTA S3 Marketing)
     subscribeBtn.addEventListener("click", async function () {
+      playAquaAgriRingtone();
       hidePrompt();
 
       const isIos = isIosDevice();
@@ -5326,6 +5410,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fungsi pasang PWA universal (otomatis menyesuaikan Android atau iPhone)
     window.__triggerSafePwaInstall = async function (isSilentFallback = true) {
+      if (!isSilentFallback) {
+        playAquaAgriRingtone();
+      }
+
       if (isStandaloneApp()) {
         if (!isSilentFallback) {
           showNotifToast("✅ Aplikasi AquaAgri sudah terpasang di HP Anda.");
@@ -5365,6 +5453,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     async function handleInstallClick() {
+      playAquaAgriRingtone();
       if (typeof window.__triggerSafePwaInstall === "function") {
         await window.__triggerSafePwaInstall(false);
       }
